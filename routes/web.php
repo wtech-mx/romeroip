@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth']], function() {
 });
 
 //Route Hooks - Do not delete//
-Route::view('/especialists', 'livewire.especialists.index')->middleware('auth');
+Route::view('especialists', 'livewire.especialists.index')->name('index.especialists')->middleware('auth');
 
 /*|--------------------------------------------------------------------------
 |Configuracion
