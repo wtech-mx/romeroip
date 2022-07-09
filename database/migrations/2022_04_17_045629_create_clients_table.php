@@ -15,14 +15,15 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre_compañia');
             $table->string('nombre');
-            $table->string('apellido');
-            $table->integer('edad')->nullable();
-            $table->string('sanguineo')->nullable();
-            $table->string('ocupacion')->nullable();
-            $table->integer('telefono')->unique();
-            $table->date('fecha_nacimiento')->nullable();
+            $table->string('nombre_corto')->nullable();
+            $table->string('rfc')->nullable();
+            $table->string('pais');
+            $table->string('posicion')->nullable();
+            $table->string('pagina_web')->nullable();
             $table->string('email')->unique()->nullable();
+            $table->string('notas', 500);
 
             $table->timestamps();
         });

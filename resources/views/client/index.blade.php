@@ -13,12 +13,12 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Client') }}
+                                {{ __('Cliente') }}
                             </span>
 
                              <div class="float-right">
                                 <a href="{{ route('clients.create') }}" class="btn btn-sm float-right"  data-placement="left" style="background: {{$configuracion->color_boton_add}}; color: #ffff">
-                                  {{ __('Create New') }}
+                                  {{ __('Nuevo cliente') }}
                                 </a>
                               </div>
                         </div>
@@ -30,16 +30,10 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-
-										<th>Nombre</th>
-										<th>Apellido</th>
-										<th>Edad</th>
-										<th>Sanguineo</th>
-										<th>Ocupacion</th>
-										<th>Telefono</th>
-										<th>Fecha Nacimiento</th>
+                                        <th>Nombre Compañia</th>
+										<th>Nombre Contacto</th>
 										<th>Email</th>
-
+										<th>Telefono</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -48,23 +42,30 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
 
-											<td>{{ $client->nombre }}</td>
-											<td>{{ $client->apellido }}</td>
-											<td>{{ $client->edad }}</td>
-											<td>{{ $client->sanguineo }}</td>
-											<td>{{ $client->ocupacion }}</td>
-											<td>{{ $client->telefono }}</td>
-											<td>{{ $client->fecha_nacimiento }}</td>
+											<td>{{ $client->nombre_compañia }}</td>
+											<td>{{ $client->nombre_corto }}</td>
 											<td>{{ $client->email }}</td>
+											<td>5539907266</td>
 
                                             <td>
-                                                <form action="{{ route('clients.destroy',$client->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('clients.show',$client->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('clients.edit',$client->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
-                                                </form>
+                                                <div class="dropdown ">
+                                                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                      <i class="fas fa-ellipsis-v"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                        <form action="{{ route('clients.destroy',$client->id) }}" method="POST">
+                                                            <a class="dropdown-item" href="{{ route('clients.show',$client->id) }}">
+                                                                Ver
+                                                            </a>
+                                                            <a class="dropdown-item" href="{{ route('clients.edit',$client->id) }}">
+                                                                Editar
+                                                            </a>
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a class="dropdown-item">Borrar</a>
+                                                        </form>
+                                                    </div>
+                                                  </div>
                                             </td>
                                         </tr>
                                     @endforeach

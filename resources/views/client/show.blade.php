@@ -11,48 +11,58 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-left">
-                            <span class="card-title">Show Client</span>
+                            <span class="card-title">Ver cliente</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn" href="{{ route('clients.index') }}" style="background: {{$configuracion->color_boton_close}}; color: #ffff"> Back</a>
+                            <a class="btn" href="{{ route('clients.index') }}" style="background: {{$configuracion->color_boton_close}}; color: #ffff"> Atrás</a>
                         </div>
                     </div>
 
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>Nombre de la Compañia:</strong>
+                                {{ $client->nombre_compañia }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>RFC:</strong>
+                                {{ $client->rfc }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>Pais:</strong>
+                                {{ $client->pais }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mb-5">
+                            </div>
 
-                        <div class="form-group">
-                            <strong>Nombre:</strong>
-                            {{ $client->nombre }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Apellido:</strong>
-                            {{ $client->apellido }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Edad:</strong>
-                            {{ $client->edad }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Sanguineo:</strong>
-                            {{ $client->sanguineo }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Ocupacion:</strong>
-                            {{ $client->ocupacion }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Telefono:</strong>
-                            {{ $client->telefono }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Fecha Nacimiento:</strong>
-                            {{ $client->fecha_nacimiento }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Email:</strong>
-                            {{ $client->email }}
-                        </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>Nombre del contacto:</strong>
+                                {{ $client->nombre }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>Nombre corto:</strong>
+                                {{ $client->nombre_corto }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>Posicion:</strong>
+                                {{ $client->posicion }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>Email:</strong>
+                                {{ $client->email }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>Página web:</strong>
+                                {{ $client->pagina_web }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 mb-5">
+                            </div>
 
+                            <div class="col-xs-12 col-sm-12 col-md-6 mt-3">
+                                <strong>Notas:</strong>
+                                {{ $client->notas }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

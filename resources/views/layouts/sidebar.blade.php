@@ -28,9 +28,9 @@
                     <span class="nav-link-text">Clientes</span>
                 </a>
 
-              <a class="nav-link {{ (Request::is('especialists*') ? 'active' : '') }}" href="{{ route('index.especialists') }}">
+              <a class="nav-link {{ (Request::is('especialists*') ? 'active' : '') }}" href="#">
                 <i class="fa fa-user-md" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
-                <span class="nav-link-text">Especialistas</span>
+                <span class="nav-link-text">Titular</span>
               </a>
             </li>
 

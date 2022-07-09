@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Create Client
+    Crear cliente
 @endsection
 
 @section('content')
@@ -12,8 +12,8 @@
           <div class="card">
             <!-- Card header -->
             <div class="card-header">
-              <h3 class="mb-3">Create Client</h3>
-               <a class="btn" href="{{ route('clients.index') }}" style="background: {{$configuracion->color_boton_close}}; color: #ffff"> Back</a>
+              <h3 class="mb-3">Crear cliente</h3>
+               <a class="btn" href="{{ route('clients.index') }}" style="background: {{$configuracion->color_boton_close}}; color: #ffff"> Atrás</a>
                     @includeif('partials.errors')
             </div>
 

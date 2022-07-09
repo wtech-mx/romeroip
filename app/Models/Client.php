@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property $id
  * @property $nombre
- * @property $apellido
- * @property $edad
- * @property $sanguineo
- * @property $ocupacion
- * @property $telefono
- * @property $fecha_nacimiento
+ * @property $nombre_corto
+ * @property $rfc
+ * @property $pais
+ * @property $posicion
+ * @property $pagina_web
+ * @property $nombre_compañia
  * @property $email
+ * @property $notas
  * @property $created_at
  * @property $updated_at
  *
@@ -24,11 +25,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Client extends Model
 {
-    
+
     static $rules = [
 		'nombre' => 'required',
-		'apellido' => 'required',
-		'telefono' => 'required',
+		'rfc' => 'required',
+		'posicion' => 'required',
     ];
 
     protected $perPage = 20;
@@ -38,7 +39,7 @@ class Client extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre','apellido','edad','sanguineo','ocupacion','telefono','fecha_nacimiento','email'];
+    protected $fillable = ['nombre','nombre_corto','rfc','pais','posicion','pagina_web','email','notas','nombre_compañia'];
 
 
 
