@@ -1,147 +1,162 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
-  <meta name="author" content="Creative Tim">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('favicon/'. $configuracion->favicon) }}">
+  <link rel="icon" type="image/png" href="{{ asset('favicon/'. $configuracion->favicon) }}">
   <title>
-       @yield('template_title') - {{$configuracion->nombre_sistema}}
+    @yield('template_title') - {{$configuracion->nombre_sistema}}
   </title>
-  {{-- <title>@hasSection('title') @yield('title') | @endif {{ config('app.name', 'Laravel') }}</title> --}}
-
-  <!-- Favicon -->
-
-  <link rel="icon" href="{{ asset('favicon/'. $configuracion->favicon) }}" type="image/png">
-  <!-- Fonts -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
-  <!-- Icons -->
-  <link rel="stylesheet" href="{{ asset('assets/vendor/nucleo/css/nucleo.css') }}" type="text/css">
-  <link rel="stylesheet" href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" type="text/css">
-  <!-- Page plugins -->
-  <!-- Argon CSS -->
-  <link rel="stylesheet" href="{{ asset('assets/css/argon.css?v=1.1.0') }}" type="text/css">
-
-    <!-- sweetalert2 JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-    <!-- Datatable -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.1/css/bootstrap.min.css">
-    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-  @livewireStyles
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="{{ asset('assets/css/nucleo-icons.css')}}" rel="stylesheet" />
+  <link href="{{ asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="{{ asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
 </head>
 
-<body style="overflow-x: hidden">
-@auth
-    <!-- Sidenav -->
+<body class="g-sidenav-show   bg-gray-100">
+  <div class="min-height-300 bg-primary position-absolute w-100"></div>
+
+
+   <!-- Sidenav -->
     @include('layouts.sidebar')
 
-    <!-- Main content -->
-    <div class="main-content" id="panel">
+  <main class="main-content position-relative border-radius-lg ">
+    <!-- Navbar -->
+    @include('layouts.navbar')
+    <!-- End Navbar -->
 
-        <!-- header -->
+    <div class="container-fluid py-4">
+
         @include('layouts.header')
-        <!-- header -->
 
-        <!-- Breadgrum -->
-        <div class="header pb-6" style="background-color: {{$configuracion->color_principal}}">
-          <div class="container-fluid">
-            <div class="header-body">
-              <div class="row align-items-center py-4">
-                <div class="col-lg-6 col-7">
-                  <h6 class="h2 text-white d-inline-block mb-0">Default</h6>
-                  <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                    <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                      <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                      <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">Default</li>
-                    </ol>
-                  </nav>
-                </div>
-              </div>
-                @yield('breadcrumb')
-            </div>
-          </div>
-        </div>
-        <!-- Breadgrum -->
+        @yield('content')
 
-        <!-- Page content -->
+       <!-- Modal lateral Congif -->
+        @include('layouts.footer')
+      <!-- End Modal lateral Congif -->
 
-        <div class="container-fluid mt--6">
-          <div class="row">
-               @yield('content')
-          </div>
-        </div>
-
-
-        <!-- Footer -->
-        <footer class="footer pt-0">
-            <div class="row align-items-center justify-content-lg-between">
-              <div class="col-lg-6">
-                <div class="copyright text-center text-lg-left text-muted">
-                  &copy; 2022 <a href="https://www.wtech.com.mx/landing-page/" class="font-weight-bold ml-1" target="_blank">Power By WebTech</a>
-                </div>
-              </div>
-            </div>
-          </footer>
-        <!-- Footer -->
-@endauth
     </div>
+  </main>
 
-    @include('layouts.alertas')
 
-    <!--livewire -->
-    @livewireScripts
+   <!-- Modal lateral Congif -->
+    @include('layouts.modal_config')
+  <!-- End Modal lateral Congif -->
 
-    <script type="text/javascript">
-        window.livewire.on('closeModal', () => {
-            $('#createDataModal').modal('hide');
-        });
-    </script>
+  <!--   Core JS Files   -->
+  <script src="{{ asset('assets/js/core/popper.min.js')}}"></script>
+  <script src="{{ asset('assets/js/core/bootstrap.min.js')}}"></script>
+  <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
+  <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
+  <!-- Kanban scripts -->
+  <script src="{{ asset('assets/js/plugins/dragula/dragula.min.js')}}"></script>
+  <script src="{{ asset('assets/js/plugins/jkanban/jkanban.js')}}"></script>
+  <script src="{{ asset('assets/js/plugins/chartjs.min.js')}}"></script>
+  <script>
+    var ctx1 = document.getElementById("chart-line").getContext("2d");
 
-   <script>
-    $(document).ready(function () {
-        $.noConflict();
-        var table = $('#table_id').DataTable({
-            "ordering": false,
-            autoFill: true,
-            responsive: true,
-            fixedHeader: true,
-            language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
+    new Chart(ctx1, {
+      type: "line",
+      data: {
+        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+          label: "Mobile apps",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#5e72e4",
+          backgroundColor: gradientStroke1,
+          borderWidth: 3,
+          fill: true,
+          data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+          maxBarThickness: 6
+
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              padding: 10,
+              color: '#fbfbfb',
+              font: {
+                size: 11,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
             }
-        });
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              color: '#ccc',
+              padding: 20,
+              font: {
+                size: 11,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+        },
+      },
     });
-    </script>
-  <!-- Argon Scripts -->
-  <!-- Core -->
-  <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/js-cookie/js.cookie.js') }}"></script>
-  <script src="{{ asset('assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
-  <!-- Optional JS -->
-  <script src="{{ asset('assets/vendor/chart.js/dist/Chart.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/chart.js/dist/Chart.extension.js') }}"></script>
-  <!-- Optional JS -->
-  <script src="{{ asset('assets/vendor/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/datatables.net-select/js/dataTables.select.min.js') }}"></script>
-
-  <!-- Argon JS -->
-  <script src="{{ asset('assets/js/argon.js?v=1.1.0') }}"></script>
-  <!-- Demo JS - remove this in your project -->
-  <script src="{{ asset('assets/js/demo.min.js') }}"></script>
-
-
-
+  </script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{{ asset('assets/js/argon-dashboard.min.js?v=2.0.4')}}"></script>
 </body>
 
 </html>
