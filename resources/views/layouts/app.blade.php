@@ -40,6 +40,7 @@
 
         @yield('content')
 
+
        <!-- Modal lateral Congif -->
         @include('layouts.footer')
       <!-- End Modal lateral Congif -->

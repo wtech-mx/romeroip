@@ -12,6 +12,7 @@
           <div class="card">
             <!-- Card header -->
             <div class="card-header">
+                @include('layouts.simple_alert')
               <h3 class="mb-3">Configuracion Sistema</h3>
             </div>
 

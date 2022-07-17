@@ -37,6 +37,7 @@ class ClientController extends Controller
     public function create()
     {
         $client = new Client();
+
         return view('client.create', compact('client'));
     }
 

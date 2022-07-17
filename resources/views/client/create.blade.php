@@ -18,17 +18,15 @@
             </div>
 
             <div class="card-body mb-5">
-
                 <form method="POST" action="{{ route('clients.store') }}"  role="form" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         @include('client.form')
                     </div>
                 </form>
-
+              </div>
             </div>
 
-          </div>
         </div>
       </div>
 </div>
