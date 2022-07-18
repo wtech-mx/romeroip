@@ -1,4 +1,6 @@
+<main class="main-content max-height-vh-100 h-100">
 <div class="container-fluid my-5 py-2">
+
       <div class="row mb-5">
 
         <div class="col-lg-3">
@@ -7,49 +9,55 @@
               <li class="nav-item">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#profile">
                   <i class="ni ni-spaceship me-2 text-dark opacity-6"></i>
-                  <span class="text-sm">Profile</span>
+                  <span class="text-sm">Reference Numbers</span>
                 </a>
               </li>
               <li class="nav-item pt-2">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#basic-info">
                   <i class="ni ni-books me-2 text-dark opacity-6"></i>
-                  <span class="text-sm">Basic Info</span>
+                  <span class="text-sm">General Information</span>
                 </a>
               </li>
               <li class="nav-item pt-2">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#password">
                   <i class="ni ni-atom me-2 text-dark opacity-6"></i>
-                  <span class="text-sm">Change Password</span>
+                  <span class="text-sm">Important Dates</span>
                 </a>
               </li>
               <li class="nav-item pt-2">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#2fa">
                   <i class="ni ni-ui-04 me-2 text-dark opacity-6"></i>
-                  <span class="text-sm">2FA</span>
+                  <span class="text-sm">Trademark Information</span>
                 </a>
               </li>
               <li class="nav-item pt-2">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#accounts">
                   <i class="ni ni-badge me-2 text-dark opacity-6"></i>
-                  <span class="text-sm">Accounts</span>
+                  <span class="text-sm">Goods / Services</span>
                 </a>
               </li>
               <li class="nav-item pt-2">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#notifications">
                   <i class="ni ni-bell-55 me-2 text-dark opacity-6"></i>
-                  <span class="text-sm">Notifications</span>
+                  <span class="text-sm">Priority Information</span>
                 </a>
               </li>
               <li class="nav-item pt-2">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#sessions">
                   <i class="ni ni-watch-time me-2 text-dark opacity-6"></i>
-                  <span class="text-sm">Sessions</span>
+                  <span class="text-sm">Client’s Information</span>
                 </a>
               </li>
               <li class="nav-item pt-2">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#delete">
                   <i class="ni ni-settings-gear-65 me-2 text-dark opacity-6"></i>
-                  <span class="text-sm">Delete Account</span>
+                  <span class="text-sm">Applicant / Owner’s Information</span>
+                </a>
+              </li>
+              <li class="nav-item pt-2">
+                <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#notes">
+                  <i class="ni ni-settings-gear-65 me-2 text-dark opacity-6"></i>
+                  <span class="text-sm">Important Notes</span>
                 </a>
               </li>
             </ul>
@@ -61,7 +69,7 @@
           <!-- Card Basic Info -->
           <div class="card" id="basic-info">
             <div class="card-header">
-              <h5>Basic Info</h5>
+              <h5>Reference Numbers</h5>
             </div>
             <div class="card-body pt-0">
               <div class="row">
@@ -150,7 +158,7 @@
           <!-- Card Change Password -->
           <div class="card mt-4" id="password">
             <div class="card-header">
-              <h5>Change Password</h5>
+              <h5>Important Dates</h5>
             </div>
             <div class="card-body pt-0">
               <label class="form-label">Current password</label>
@@ -482,38 +490,30 @@
               <button class="btn bg-gradient-danger mb-0 ms-2" type="button" name="button">Delete Account</button>
             </div>
           </div>
-        </div>
-      </div>
-      <footer class="footer pt-3  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                © <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                for a better web.
-              </div>
+          <!-- Card notes Account -->
+          <div class="card mt-4" id="notes">
+            <div class="card-header">
+              <h5>Notes Account</h5>
+              <p class="text-sm mb-0">Once you delete your account, there is no going back. Please be certain.</p>
             </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
-                </li>
-              </ul>
+            <div class="card-body d-sm-flex pt-0">
+              <div class="d-flex align-items-center mb-sm-0 mb-4">
+                <div>
+                  <div class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault0">
+                  </div>
+                </div>
+                <div class="ms-2">
+                  <span class="text-dark font-weight-bold d-block text-sm">Confirm</span>
+                  <span class="text-xs d-block">I want to delete my account.</span>
+                </div>
+              </div>
+              <button class="btn btn-outline-secondary mb-0 ms-auto" type="button" name="button">Deactivate</button>
+              <button class="btn bg-gradient-danger mb-0 ms-2" type="button" name="button">Delete Account</button>
             </div>
           </div>
         </div>
-      </footer>
+      </div>
+
     </div>
+</main>
