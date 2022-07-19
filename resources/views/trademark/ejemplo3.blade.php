@@ -2,133 +2,436 @@
         <div class="col-lg-4">
           <div class="card h-100">
             <div class="card-body">
-              <h5 class="font-weight-bolder">Product Image</h5>
+              <h5 class="font-weight-bolder">Reference Numbers</h5>
               <div class="row">
-                <div class="col-12">
-                  <img class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
-                </div>
-                <div class="col-12 mt-5">
-                  <div class="d-flex">
-                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button">Edit</button>
-                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button">Remove</button>
+                <div class="col-6">
+                  <label class="form-label">Our Ref.</label>
+                  <div class="input-group">
+                    <input id="firstName" name="firstName" class="form-control" type="text" placeholder="Alec" required="required">
                   </div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Client Ref.</label>
+                  <div class="input-group">
+                    <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label">Opposition No.</label>
+                  <div class="input-group">
+                    <input id="firstName" name="firstName" class="form-control" type="number" placeholder="Alec" required="required">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Filing Date</label>
+                  <div class="input-group">
+                    <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label">Litigation No.</label>
+                  <div class="input-group">
+                    <input id="firstName" name="firstName" class="form-control" type="number" placeholder="Alec" required="required">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Filing Date</label>
+                  <div class="input-group">
+                    <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                  </div>
+                </div>
+
+
+                <div class="col-6">
+                    <label class="form-label">Instance</label>
+                    <div class="input-group">
+                        <input id="firstName" name="firstName" class="form-control" type="text" placeholder="Alec" required="required">
+                    </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <div class="col-lg-8 mt-lg-0 mt-4">
           <div class="card">
             <div class="card-body">
-              <h5 class="font-weight-bolder">Product Information</h5>
-              <div class="row">
-                <div class="col-12 col-sm-6">
-                  <label>Name</label>
-                  <input class="form-control" type="text" value="Minimal Bar Stool" />
+              <h5 class="font-weight-bolder">General Information</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">Application No.</label>
+                        <div class="input-group">
+                            <input id="firstName" name="firstName" class="form-control" type="number" placeholder="Alec" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Registration No.</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="number" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                  <label>Weight</label>
-                  <input class="form-control" type="number" value="2" />
+                <div class="row">
+                    <div class="col-2">
+                        <label class="form-label">Filing Date</label>
+                        <div class="input-group">
+                            <input id="firstName" name="firstName" class="form-control" type="date" placeholder="Alec" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label class="form-label">First Use Date</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label class="form-label">Expiration Date</label>
+                        <div class="input-group">
+                            <input id="firstName" name="firstName" class="form-control" type="date" placeholder="Alec" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label class="form-label">Publication Date</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <label class="form-label">Registration Date</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-3">
-                  <label class="mt-4">Collection</label>
-                  <input class="form-control" type="text" value="Summer" />
+
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <label class="form-label">Int. Registration No</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Int. Registration Date</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Contracting State or Organization</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Designated Countries</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-3">
-                  <label class="mt-4">Price</label>
-                  <input class="form-control" type="text" value="$90" />
+
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <label class="form-label">Country</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Origin</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Status</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-3">
-                  <label class="mt-4">Quantity</label>
-                  <input class="form-control" type="number" value="50" />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <label class="mt-4">Description</label>
-                  <p class="form-text text-muted text-xs ms-1 d-inline">
-                    (optional)
-                  </p>
-                  <div id="edit-deschiption-edit" class="h-50">
-                    Long sleeves black denim jacket with a twisted design. Contrast stitching. Button up closure. White arrow prints on the back.
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <label class="mt-4">Category</label>
-                  <select class="form-control" name="choices-category" id="choices-category-edit">
-                    <option value="Choice 1" selected="">Furniture</option>
-                    <option value="Choice 2">Real Estate</option>
-                    <option value="Choice 3">Electronics</option>
-                    <option value="Choice 4">Clothing</option>
-                    <option value="Choice 5">Others</option>
-                  </select>
-                  <label>Color</label>
-                  <select class="form-control" name="choices-color" id="choices-color-edit">
-                    <option value="Choice 1" selected="">Black</option>
-                    <option value="Choice 2">White</option>
-                    <option value="Choice 3">Blue</option>
-                    <option value="Choice 4">Orange</option>
-                    <option value="Choice 5">Green</option>
-                  </select>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row mt-4">
+
+    <div class="row mt-4">
         <div class="col-sm-4">
           <div class="card">
             <div class="card-body">
-              <h5 class="font-weight-bolder">Socials</h5>
-              <label>Shoppify Handle</label>
-              <input class="form-control" type="text" value="@argon" />
-              <label class="mt-4">Facebook Account</label>
-              <input class="form-control" type="text" value="https://" />
-              <label class="mt-4">Instagram Account</label>
-              <input class="form-control" type="text" value="https://" />
+              <h5 class="font-weight-bolder">Important Dates</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">Declaration of Use</label>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label">Last</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label">Next</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                    <hr class="horizontal dark">
+                    <div class="col-6">
+                        <label class="form-label">Renewal</label>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label">Last</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label">Next</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                </div>
             </div>
           </div>
         </div>
+
         <div class="col-sm-8 mt-sm-0 mt-4">
           <div class="card">
             <div class="card-body">
               <div class="row">
-                <h5 class="font-weight-bolder">Pricing</h5>
-                <div class="col-3">
-                  <label>Price</label>
-                  <input class="form-control" type="number" value="99.00" />
-                </div>
-                <div class="col-4">
-                  <label>Currency</label>
-                  <select class="form-control" name="choices-sizes" id="choices-currency-edit">
-                    <option value="Choice 1" selected="">USD</option>
-                    <option value="Choice 2">EUR</option>
-                    <option value="Choice 3">GBP</option>
-                    <option value="Choice 4">CNY</option>
-                    <option value="Choice 5">INR</option>
-                    <option value="Choice 6">BTC</option>
-                  </select>
-                </div>
-                <div class="col-5">
-                  <label>SKU</label>
-                  <input class="form-control" type="text" value="71283476591" />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <label class="mt-4">Tags</label>
-                  <select class="form-control" name="choices-tags" id="choices-tags-edit" multiple>
-                    <option value="Choice 1" selected>In Stock</option>
-                    <option value="Choice 2">Out of Stock</option>
-                    <option value="Choice 3">Sale</option>
-                    <option value="Choice 4">Black Friday</option>
-                  </select>
+                <h5 class="font-weight-bolder">Trademark Information</h5>
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <label class="form-label">Type of Application</label>
+                        <div class="input-group">
+                          <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Type of Mark</label>
+                        <div class="input-group">
+                          <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Trademark</label>
+                        <div class="input-group">
+                          <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Design</label>
+                        <div class="input-group">
+                          <input id="lastName" name="lastName" class="form-control" type="file" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Description</label>
+                        <div class="input-group">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Disclaimer</label>
+                        <div class="input-group">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Translation</label>
+                        <div class="input-group">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Transliteration</label>
+                        <div class="input-group">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-sm-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="font-weight-bolder">Goods / Services</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">Class </label>
+                        <div class="input-group">
+                            <select class="form-control" id="inputGroupSelect01">
+                                <option selected>Select class</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Goods/Services</label>
+                        <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Translation</label>
+                        <div class="input-group">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-8 mt-sm-0 mt-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <h5 class="font-weight-bolder">Priority Information</h5>
+
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">Country / Office</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                          </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Priority No.</label>
+                        <div class="input-group">
+                          <input id="lastName" name="lastName" class="form-control" type="number" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Filing Date</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-sm-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="font-weight-bolder">Client’s Information</h5>
+
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">Client</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                          </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Contact</label>
+                        <div class="input-group">
+                          <input id="lastName" name="lastName" class="form-control" type="number" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Address</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Billing Address</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="date" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-8 mt-sm-0 mt-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <h5 class="font-weight-bolder">Applicant / Owner’s Information</h5>
+
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">Holder</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                            </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Address</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Industrial/Commercial Address</label>
+                        <div class="input-group">
+                            <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                        </div>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="font-weight-bolder">Notes</h5>
+
+              <div class="row">
+                <div class="col-12">
+                    <div class="input-group">
+                        <input id="lastName" name="lastName" class="form-control" type="text" placeholder="Thompson" required="required">
+                    </div>
+                </div>
+            </div>
+
+            </div>
+          </div>
+        </div>
+    </div>

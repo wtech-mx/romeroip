@@ -62,6 +62,7 @@
   <script src="{{ asset('assets/js/plugins/dragula/dragula.min.js')}}"></script>
   <script src="{{ asset('assets/js/plugins/jkanban/jkanban.js')}}"></script>
   <script src="{{ asset('assets/js/plugins/chartjs.min.js')}}"></script>
+  <script src="../../../assets/js/plugins/multistep-form.js"></script>
   <script>
     var ctx1 = document.getElementById("chart-line").getContext("2d");
 
@@ -145,6 +146,59 @@
       },
     });
   </script>
+    <script>
+            if (document.getElementById('edit-deschiption')) {
+            var quill = new Quill('#edit-deschiption', {
+                theme: 'snow' // Specify theme in configuration
+            });
+            };
+
+            if (document.getElementById('choices-category')) {
+            var element = document.getElementById('choices-category');
+            const example = new Choices(element, {
+                searchEnabled: false
+            });
+            };
+
+            if (document.getElementById('choices-sizes')) {
+            var element = document.getElementById('choices-sizes');
+            const example = new Choices(element, {
+                searchEnabled: false
+            });
+            };
+
+            if (document.getElementById('choices-currency')) {
+            var element = document.getElementById('choices-currency');
+            const example = new Choices(element, {
+                searchEnabled: false
+            });
+            };
+
+            if (document.getElementById('choices-tags')) {
+            var tags = document.getElementById('choices-tags');
+            const examples = new Choices(tags, {
+                removeItemButton: true
+            });
+
+
+            examples.setChoices(
+                [{
+                    value: 'One',
+                    label: 'Expired',
+                    disabled: true
+                },
+                {
+                    value: 'Two',
+                    label: 'Out of Stock',
+                    selected: true
+                }
+                ],
+                'value',
+                'label',
+                false,
+            );
+            }
+    </script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
