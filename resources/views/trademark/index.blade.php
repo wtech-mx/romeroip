@@ -16,13 +16,13 @@
                 <div>
                   <h5 class="mb-0">All TRADEMARKS</h5>
                   <p class="text-sm mb-0">
-                    A lightweight, extendable, dependency-free javascript HTML table plugin.
+
                   </p>
                 </div>
 
                 <div class="ms-auto my-auto mt-lg-0 mt-4">
                   <div class="ms-auto my-auto">
-                    <a href="/trademark/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; New Mark</a>
+                    <a href="romeroip/trademark/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; New Mark</a>
                     <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
                       Import
                     </button>
@@ -61,11 +61,14 @@
                 <table class="table table-flush" id="products-list">
                   <thead class="thead-light">
                     <tr>
-                      <th>Product</th>
-                      <th>Category</th>
-                      <th>Price</th>
-                      <th>SKU</th>
-                      <th>Quantity</th>
+                      <th>Our Ref.</th>
+                      <th>Trademark Name</th>
+                      <th>Class</th>
+                      <th>Application No.</th>
+                      <th>Filing Date</th>
+                      <th>Registration No.</th>
+                      <th>Registration Date	</th>
+                      <th>Declaration of Use</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -73,21 +76,18 @@
 
                   <tbody>
                     <tr>
+                     <td class="text-sm">101</td>
+                      <td class="text-sm">Vencedor y Diseño</td>
+                      <td class="text-sm">30</td>
+                      <td class="text-sm">159967</td>
+                      <td class="text-sm">Jan/24/1980</td>
+                      <td class="text-sm">255822	</td>
+                      <td class="text-sm">Feb/04/1981	</td>
+                      <td class="text-sm">Jan/24/2025	</td>
                       <td>
-                        <div class="d-flex">
-                          <div class="form-check my-auto">
-                            <input class="form-check-input" type="checkbox" id="customCheck1" checked>
-                          </div>
-                          <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/adidas-hoodie.jpg" alt="hoodie">
-                          <h6 class="ms-3 my-auto">BKLGO Full Zip Hoodie</h6>
-                        </div>
-                      </td>
-                      <td class="text-sm">Clothing</td>
-                      <td class="text-sm">$1,321</td>
-                      <td class="text-sm">243598234</td>
-                      <td class="text-sm">0</td>
-                      <td>
-                        <span class="badge badge-danger badge-sm">Out of Stock</span>
+                          <span class="badge badge-danger badge-sm">
+                              Pendiente
+                          </span>
                       </td>
                       <td class="text-sm">
                         <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
@@ -103,55 +103,12 @@
                     </tr>
                   </tbody>
 
-                  <tfoot>
-                    <tr>
-                      <th>Product</th>
-                      <th>Category</th>
-                      <th>Price</th>
-                      <th>SKU</th>
-                      <th>Quantity</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </tfoot>
                 </table>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <footer class="footer pt-3  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                © <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                for a better web.
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
 
 @endsection
