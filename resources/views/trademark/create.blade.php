@@ -13,7 +13,7 @@
             <!-- Card header -->
             <div class="card-header">
               <h3 class="mb-3">Crear Watemark</h3>
-               <a class="btn" href="{{ route('clients.index') }}" style="background: {{$configuracion->color_boton_close}}; color: #ffff"> Atrás</a>
+               <a class="btn" href="javascript: history.go(-1)" style="background: {{$configuracion->color_boton_close}}; color: #ffff"> Atrás</a>
                     @includeif('partials.errors')
             </div>
 
