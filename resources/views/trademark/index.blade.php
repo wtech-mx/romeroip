@@ -22,7 +22,7 @@
 
                 <div class="ms-auto my-auto mt-lg-0 mt-4">
                   <div class="ms-auto my-auto">
-                    <a href="romeroip/trademark/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; New Mark</a>
+                    <a href="/trademark/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; New Mark</a>
                     <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
                       Import
                     </button>
