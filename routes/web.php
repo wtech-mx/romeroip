@@ -28,6 +28,8 @@ Auth::routes();
 
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
+Route::get('/lang/change', [HomeController::class, 'change'])->name('changeLang');
+
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('permisos', PermisosController::class);
