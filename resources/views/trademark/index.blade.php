@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Crear cliente
+{{ __('messages.all_trademark') }}
 @endsection
 
 @section('content')
@@ -14,42 +14,42 @@
             <div class="card-header pb-0">
               <div class="d-lg-flex">
                 <div>
-                  <h5 class="mb-0">ALL TRADEMARKS</h5>
+                  <h5 class="mb-0">{{ __('messages.all_trademark') }}</h5>
                   <p class="text-sm mb-0">
 
                   </p>
                 </div>
-                
+
                 <div class="ms-auto my-auto mt-lg-0 mt-4">
                   <div class="ms-auto my-auto">
-                    <a href="/trademarks/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; New Trademark</a>
+                    <a href="/trademarks/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; {{ __('messages.new_trademark') }}</a>
                     <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
-                      Import
+                        {{ __('messages.import') }}
                     </button>
                     <div class="modal fade" id="import" tabindex="-1" aria-hidden="true">
                       <div class="modal-dialog mt-lg-10">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="ModalLabel">Import CSV</h5>
+                            <h5 class="modal-title" id="ModalLabel">{{ __('messages.import') }} CSV</h5>
                             <i class="fas fa-upload ms-3"></i>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <p>You can browse your computer for a file.</p>
-                            <input type="text" placeholder="Browse file..." class="form-control mb-3">
+                            <p>{{ __('messages.text_import') }}</p>
+                            <input type="text" placeholder="{{ __('messages.import_place') }}..." class="form-control mb-3">
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" id="importCheck" checked="">
-                              <label class="custom-control-label" for="importCheck">I accept the terms and conditions</label>
+                              <label class="custom-control-label" for="importCheck">{{ __('messages.import_check') }}</label>
                             </div>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn bg-gradient-primary btn-sm">Upload</button>
+                            <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal">{{ __('messages.close') }}</button>
+                            <button type="button" class="btn bg-gradient-primary btn-sm">{{ __('messages.upload') }}</button>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">Export</button>
+                    <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
                   </div>
                 </div>
 
@@ -62,16 +62,16 @@
                   <thead class="thead-light">
                     <tr>
                       <th>#</th>
-                      <th>Our Ref.</th>
-                      <th>Trademark Name</th>
-                      <th>Class</th>
-                      <th>Application No.</th>
-                      <th>Filing Date</th>
-                      <th>Registration No.</th>
-                      <th>Registration Date	</th>
-                      <th>Declaration of Use</th>
-                      <th>Status</th>
-                      <th>Action</th>
+                      <th>{{ __('messages.our_ref') }}</th>
+                      <th>{{ __('messages.trademark_name') }}</th>
+                      <th>{{ __('messages.class') }}</th>
+                      <th>{{ __('messages.application_no') }}</th>
+                      <th>{{ __('messages.filing_date') }}</th>
+                      <th>{{ __('messages.registration_no') }}</th>
+                      <th>{{ __('messages.registration_date') }}</th>
+                      <th>{{ __('messages.declaration_use') }}</th>
+                      <th>{{ __('messages.status') }}</th>
+                      <th>{{ __('messages.action') }}</th>
                     </tr>
                   </thead>
 

@@ -17,6 +17,13 @@ return [
 
     'save' => 'Guardar',
     'back' => 'Atrás',
+    'close' => 'Cerrar',
+    'upload' => 'Subir',
+    'import' => 'Importar',
+    'text_import' => 'Acepto los términos y condiciones',
+    'import_place' => 'Buscar Archivo...',
+    'import_check' => 'Acepto los términos y condiciones',
+    'export' => 'Exportar',
 
     'company_name' => 'Nombre de empresa',
     'contact_name' => 'Nombre de contacto',
@@ -29,5 +36,18 @@ return [
     'position' => 'Posición',
     'website' => 'Sitio web',
     'note' => 'Nota',
+
+    'all_trademark' => 'Todas las marcas registradas',
+    'our_ref' => 'Nuestra ref.',
+    'trademark_name' => 'Nombre de marcas',
+    'class' => 'Clase',
+    'application_no' => 'Solicitud No.',
+    'filing_date' => 'Fecha de Presentación',
+    'registration_no' => 'Registro No.',
+    'registration_date' => 'Fecha de Concesión',
+    'declaration_use' => 'Declaración de Uso',
+    'status' => 'Estatus',
+    'action' => 'Acciones',
+    'new_trademark' => 'Nueva marca',
 
 ];
