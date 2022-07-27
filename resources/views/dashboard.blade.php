@@ -3,31 +3,6 @@
 @section('content')
 
 <div class="row mb-lg-7">
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-md-2 col-md-offset-6 text-right">
-
-                <strong>Select Language: </strong>
-
-            </div>
-
-            <div class="col-md-4">
-
-                <select class="form-control changeLang" >
-
-                    <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
-
-                    <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>Español</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-    </div>
 
     <div class="col-xl-9">
         <div class="card card-calendar">
@@ -119,15 +94,6 @@
 @endsection
 
 @section('js_custom')
-    <script type="text/javascript">
-
-        var url = "{{ route('changeLang') }}";
-
-        $(".changeLang").change(function(){
-            window.location.href = url + "?lang="+ $(this).val();
-        });
-
-    </script>
     <script !src="">
     var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
       contentHeight: 'auto',

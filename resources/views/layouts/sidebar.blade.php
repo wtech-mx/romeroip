@@ -15,7 +15,7 @@
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
              <i class="ni ni-shop text-primary text-sm opacity-10" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">{{ __('messages.dashboard') }}</span>
           </a>
         </li>
 
@@ -24,7 +24,7 @@
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
              <i class="ni ni-circle-08 text-sm opacity-10" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
             </div>
-            <span class="nav-link-text ms-1">Clientes</span>
+            <span class="nav-link-text ms-1">{{ __('messages.client') }}</span>
           </a>
         </li>
 
@@ -33,7 +33,7 @@
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
              <i class="fa fa-user-md text-sm opacity-10" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
             </div>
-            <span class="nav-link-text ms-1">Titular</span>
+            <span class="nav-link-text ms-1">{{ __('messages.holder') }}</span>
           </a>
         </li>
 
@@ -42,12 +42,12 @@
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
              <i class="fa fa-user-md text-sm opacity-10" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
             </div>
-            <span class="nav-link-text ms-1">Trademark</span>
+            <span class="nav-link-text ms-1">{{ __('messages.trademark') }}</span>
           </a>
         </li>
 
         <li class="nav-item mt-3">
-          <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Modulos</h6>
+          <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6">{{ __('messages.modules') }}</h6>
         </li>
 
         <li class="nav-item">
@@ -55,19 +55,19 @@
             <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
               <i class="ni ni-settings text-primary text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Roles y Permisos</span>
+            <span class="nav-link-text ms-1">{{ __('messages.roles_permissions') }}</span>
           </a>
           <div class="collapse " id="pagesExamples">
             <ul class="nav ms-4">
               <li class="nav-item ">
                 <a class="nav-link {{ (Request::is('users*') ? 'show' : '') }}" href="{{ route('users.index') }}">
                   <span class="sidenav-mini-icon"> P </span>
-                  <span class="sidenav-normal">Users</span>
+                  <span class="sidenav-normal">{{ __('messages.users') }}</span>
                 </a>
 
                 <a class="nav-link {{ (Request::is('roles*') ? 'show' : '') }}" href="{{ route('roles.index') }}">
                   <span class="sidenav-mini-icon"> P </span>
-                  <span class="sidenav-normal">Role</span>
+                  <span class="sidenav-normal">{{ __('messages.role') }}</span>
                 </a>
               </li>
             </ul>
@@ -75,7 +75,7 @@
         </li>
 
         <li class="nav-item mt-3">
-          <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Confuración</h6>
+          <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6">{{ __('messages.setting') }}</h6>
         </li>
 
         <li class="nav-item">
@@ -83,14 +83,14 @@
             <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
               <i class="ni ni-settings-gear-65  text-primary text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Sistema</span>
+            <span class="nav-link-text ms-1">{{ __('messages.system') }}</span>
           </a>
           <div class="collapse " id="sistem">
             <ul class="nav ms-4">
               <li class="nav-item ">
                 <a class="nav-link {{ (Request::is('configuracion*') ? 'show' : '') }}" href="{{ route('index.configuracion') }}">
                   <span class="sidenav-mini-icon">U</span>
-                  <span class="sidenav-normal">Custom </span>
+                  <span class="sidenav-normal">{{ __('messages.custom') }} </span>
                 </a>
               </li>
             </ul>
@@ -102,7 +102,7 @@
             <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
              <i class="fa fa-arrow-right text-dark" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
             </div>
-            <span class="nav-link-text ms-1">{{ __('Logout') }}</span>
+            <span class="nav-link-text ms-1">{{ __('messages.logout') }}</span>
           </a>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
               @csrf

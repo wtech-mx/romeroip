@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Crear cliente
+    {{ __('messages.create_client') }}
 @endsection
 
 @section('content')
@@ -12,8 +12,8 @@
           <div class="card">
             <!-- Card header -->
             <div class="card-header">
-              <h3 class="mb-3">Crear cliente</h3>
-               <a class="btn" href="{{ route('clients.index') }}" style="background: {{$configuracion->color_boton_close}}; color: #ffff"> Atrás</a>
+              <h3 class="mb-3">{{ __('messages.create_client') }}</h3>
+               <a class="btn" href="{{ route('clients.index') }}" style="background: {{$configuracion->color_boton_close}}; color: #ffff">{{ __('messages.back') }}</a>
                     @includeif('partials.errors')
             </div>
 

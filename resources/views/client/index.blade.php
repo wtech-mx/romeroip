@@ -13,12 +13,12 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Cliente') }}
+                                {{ __('messages.client') }}
                             </span>
 
                              <div class="float-right">
                                 <a href="{{ route('clients.create') }}" class="btn btn-sm float-right"  data-placement="left" style="background: {{$configuracion->color_boton_add}}; color: #ffff">
-                                  {{ __('Nuevo cliente') }}
+                                  {{ __('messages.new_client') }}
                                 </a>
                               </div>
                         </div>
@@ -30,10 +30,10 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        <th>Nombre Compañia</th>
-										<th>Nombre Contacto</th>
-										<th>Email</th>
-										<th>Telefono</th>
+                                        <th>{{ __('messages.company_name') }}</th>
+										<th>{{ __('messages.contact_name') }}</th>
+										<th>{{ __('messages.email') }}</th>
+										<th>{{ __('messages.phone') }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
