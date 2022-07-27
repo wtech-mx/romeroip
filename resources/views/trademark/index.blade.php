@@ -14,7 +14,7 @@
             <div class="card-header pb-0">
               <div class="d-lg-flex">
                 <div>
-                  <h5 class="mb-0">All TRADEMARKS</h5>
+                  <h5 class="mb-0">ALL TRADEMARKS</h5>
                   <p class="text-sm mb-0">
 
                   </p>
@@ -22,7 +22,7 @@
 
                 <div class="ms-auto my-auto mt-lg-0 mt-4">
                   <div class="ms-auto my-auto">
-                    <a href="https://wtech.com.mx/romeroip/trademark/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; New Mark</a>
+                    <a href="/trademarks/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; New Trademark</a>
                     <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
                       Import
                     </button>
@@ -61,6 +61,7 @@
                 <table class="table table-flush" id="products-list">
                   <thead class="thead-light">
                     <tr>
+                      <th>#</th>
                       <th>Our Ref.</th>
                       <th>Trademark Name</th>
                       <th>Class</th>
@@ -76,14 +77,19 @@
 
                   <tbody>
                     <tr>
-                     <td class="text-sm">101</td>
-                      <td class="text-sm">Vencedor y Diseño</td>
-                      <td class="text-sm">30</td>
-                      <td class="text-sm">159967</td>
-                      <td class="text-sm">Jan/24/1980</td>
-                      <td class="text-sm">255822	</td>
-                      <td class="text-sm">Feb/04/1981	</td>
-                      <td class="text-sm">Jan/24/2025	</td>
+                      <td class="text-center ">
+                        <div class="form-check" style="left: 20px; position: absolute;">
+                            <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" >
+                        </div>
+                      </td>
+                      <td class="text-center">101</td>
+                      <td class="text-center">Vencedor y Diseño</td>
+                      <td class="text-center">30</td>
+                      <td class="text-center">159967</td>
+                      <td class="text-center">Jan/24/1980</td>
+                      <td class="text-center">255822	</td>
+                      <td class="text-center">Feb/04/1981	</td>
+                      <td class="text-center">Jan/24/2025	</td>
                       <td>
                           <span class="badge badge-danger badge-sm">
                               Pendiente

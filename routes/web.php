@@ -44,11 +44,11 @@ Route::view('especialists', 'livewire.especialists.index')->name('index.especial
 Route::get('/configuracion', [App\Http\Controllers\ConfiguracionController::class, 'index'])->name('index.configuracion');
 Route::patch('/configuracion/update', [App\Http\Controllers\ConfiguracionController::class, 'update'])->name('update.configuracion');
 
-Route::get('/trademark', function () {
+Route::get('/trademarks', function () {
     return view('trademark.index');
 });
 
-Route::get('/trademark/create', function () {
+Route::get('/trademarks/create', function () {
     return view('trademark.create');
 });
 

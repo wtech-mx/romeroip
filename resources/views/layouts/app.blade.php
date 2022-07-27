@@ -35,7 +35,7 @@
 
     <div class="container-fluid py-4">
 
-        @include('layouts.header')
+        {{-- @include('layouts.header') --}}
 
         @yield('content')
 
