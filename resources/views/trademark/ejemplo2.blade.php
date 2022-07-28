@@ -111,9 +111,14 @@
 
                       <div class="col-6">
                         <label class="form-label">{{ __('messages.status') }}</label>
-                        <div class="input-group">
-                            <input id="lastName" name="lastName" class="form-control" type="text" placeholder="{{ __('messages.status') }}" required="required">
-                        </div>
+                        <select class="form-control" id="inputGroupSelect01">
+                            <option selected>{{ __('messages.select') }}</option>
+                            <option value="{{ __('messages.live') }}">{{ __('messages.live') }}</option>
+                            <option value="{{ __('messages.pending') }}">{{ __('messages.pending') }}</option>
+                            <option value="{{ __('messages.abandoned') }}">{{ __('messages.abandoned') }}</option>
+                            <option value="{{ __('messages.lapsed') }}">{{ __('messages.lapsed') }}</option>
+                            <option value="{{ __('messages.inactive') }}">{{ __('messages.inactive') }}</option>
+                        </select>
                       </div>
 
                       <div class="col-6">
@@ -301,9 +306,9 @@
                           <div class="input-group">
                               <select class="form-control" id="inputGroupSelect01">
                                   <option selected>{{ __('messages.select') }}</option>
-                                  <option value="1">{{ __('messages.one') }}</option>
-                                  <option value="2">{{ __('messages.two') }}</option>
-                                  <option value="3">{{ __('messages.three') }}</option>
+                                  @for($i=0; $i<=45; $i++)
+                                  <option value="{{$i}}">{{$i}}</option>
+                                  @endfor
                                 </select>
                           </div>
                       </div>
