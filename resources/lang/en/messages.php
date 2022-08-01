@@ -40,7 +40,7 @@ return [
     'website' => 'Website',
     'note' => 'Note',
 
-    'new_trademark' => 'New trademark',
+    'new_trademark' => 'New Trademark',
     'trademark_name' => 'Trademarks name',
     'all_trademark' => 'All trademarks',
     'reference_numbers' => 'Reference Numbers',

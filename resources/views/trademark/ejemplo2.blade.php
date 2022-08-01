@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="input-group">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                             </div>
                         </div>
                     </div>
@@ -232,7 +232,7 @@
                 <h5>{{ __('messages.trademark_information') }}</h5>
               </div>
               <div class="card-body pt-0">
-                    <div class="row mt-5">
+                    <div class="row">
                         <div class="col-6">
                             <div class="row">
                                 <div class="col-12">
@@ -244,7 +244,7 @@
                                 <div class="col-12">
                                     <label class="form-label">{{ __('messages.description') }}</label>
                                     <div class="input-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -262,19 +262,19 @@
                                 <div class="col-12">
                                     <label class="form-label">{{ __('messages.translation') }}</label>
                                     <div class="input-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">{{ __('messages.transliteration') }}</label>
                                     <div class="input-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">{{ __('messages.disclaimer') }}</label>
                                     <div class="input-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -313,24 +313,24 @@
                           </div>
                       </div>
 
-                      <div class="col-6">
+                      {{-- <div class="col-6">
                           <label class="form-label">{{ __('messages.goods_services') }}</label>
                           <div class="input-group">
                             <input id="lastName" name="lastName" class="form-control" type="text" placeholder="{{ __('messages.goods_services') }}" required="required">
                           </div>
-                      </div>
+                      </div> --}}
 
                       <div class="col-12">
                         <label class="form-label">{{ __('messages.description') }}</label>
                         <div class="input-group">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                         </div>
                     </div>
 
                       <div class="col-12">
                           <label class="form-label">{{ __('messages.translation') }}</label>
                           <div class="input-group">
-                              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                              <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                           </div>
                       </div>
                   </div>
@@ -390,7 +390,7 @@
                       <div class="col-12">
                           <label class="form-label">{{ __('messages.address') }}</label>
                           <div class="input-group">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                           </div>
                       </div>
                   </div>
@@ -413,14 +413,14 @@
                         <div class="col-12">
                             <label class="form-label">{{ __('messages.address') }}</label>
                             <div class="input-group">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                             </div>
                         </div>
 
                         <div class="col-12">
                             <label class="form-label">{{ __('messages.industrial_address') }}</label>
                             <div class="input-group">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                             </div>
                         </div>
                     </div>

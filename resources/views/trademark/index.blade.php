@@ -1,3 +1,5 @@
+{{-- @php($trademarks = App\Models\Trademarks::all())
+@livewire('trademarks.index') --}}
 @extends('layouts.app')
 
 @section('template_title')
@@ -22,33 +24,7 @@
 
                 <div class="ms-auto my-auto mt-lg-0 mt-4">
                   <div class="ms-auto my-auto">
-                    <a href="https://wtech.com.mx/romeroip/trademarks/create" class="btn bg-gradient-primary btn-sm mb-0" target="">+&nbsp; {{ __('messages.new_trademark') }}</a>
-                    {{-- <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
-                        {{ __('messages.import') }}
-                    </button>
-                    <div class="modal fade" id="import" tabindex="-1" aria-hidden="true">
-                      <div class="modal-dialog mt-lg-10">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="ModalLabel">{{ __('messages.import') }} CSV</h5>
-                            <i class="fas fa-upload ms-3"></i>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <p>{{ __('messages.text_import') }}</p>
-                            <input type="text" placeholder="{{ __('messages.import_place') }}..." class="form-control mb-3">
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" id="importCheck" checked="">
-                              <label class="custom-control-label" for="importCheck">{{ __('messages.import_check') }}</label>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal">{{ __('messages.close') }}</button>
-                            <button type="button" class="btn bg-gradient-primary btn-sm">{{ __('messages.upload') }}</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div> --}}
+                    <a href="https://wtech.com.mx/romeroip/trademarks/create" class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">+&nbsp; {{ __('messages.new_trademark') }}</a>
                     <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
                   </div>
                 </div>

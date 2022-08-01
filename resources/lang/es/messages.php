@@ -40,7 +40,7 @@ return [
     'website' => 'Sitio web',
     'note' => 'Nota',
 
-    'new_trademark' => 'Nueva marca',
+    'new_trademark' => 'Nueva Marca',
     'trademark_name' => 'Nombre de marca',
     'all_trademark' => 'Todas las marcas registradas',
     'reference_numbers' => 'Número de referencia',
