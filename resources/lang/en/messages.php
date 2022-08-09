@@ -38,9 +38,10 @@ return [
     'short_name' => 'Short name',
     'position' => 'Position',
     'website' => 'Website',
+    'note_important' => 'Important Note',
     'note' => 'Note',
 
-    'new_trademark' => 'New Trademark',
+    'new_trademark' => 'New Mark',
     'trademark_name' => 'Trademarks name',
     'all_trademark' => 'All trademarks',
     'reference_numbers' => 'Reference Numbers',

@@ -6,11 +6,12 @@
             <!-- Card notes Account -->
             <div class="card" id="notes">
                 <div class="card-header">
-                    <h5>{{ __('messages.note') }}</h5>
+                    <h5>{{ __('messages.note_important') }}</h5>
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
                         <div class="col-12">
+                            <label class="form-label">{{ __('messages.note') }}</label>
                             <div class="input-group">
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                             </div>
@@ -41,7 +42,7 @@
                   <div class="col-6">
                     <label class="form-label">{{ __('messages.opposition_no') }}</label>
                     <div class="input-group">
-                      <input id="firstName" name="firstName" class="form-control" type="number" placeholder="{{ __('messages.opposition_no') }}" required="required">
+                      <input id="firstName" name="firstName" class="form-control" type="text" placeholder="{{ __('messages.opposition_no') }}" required="required">
                     </div>
                   </div>
                   <div class="col-6">
@@ -54,7 +55,7 @@
                   <div class="col-6">
                     <label class="form-label">{{ __('messages.litigation_no') }}</label>
                     <div class="input-group">
-                      <input id="firstName" name="firstName" class="form-control" type="number" placeholder="{{ __('messages.litigation_no') }}" required="required">
+                      <input id="firstName" name="firstName" class="form-control" type="text" placeholder="{{ __('messages.litigation_no') }}" required="required">
                     </div>
                   </div>
                   <div class="col-6">
@@ -76,7 +77,7 @@
                       <div class="col-6">
                         <label class="form-label">{{ __('messages.application_no') }}</label>
                         <div class="input-group">
-                          <input id="firstName" name="firstName" class="form-control" type="number" placeholder="{{ __('messages.application_no') }}" required="required">
+                          <input id="firstName" name="firstName" class="form-control" type="text" placeholder="{{ __('messages.application_no') }}" required="required">
                         </div>
                       </div>
 
@@ -91,7 +92,7 @@
                      <div class="col-6">
                         <label class="form-label">{{ __('messages.registration_no') }}</label>
                         <div class="input-group">
-                          <input id="lastName" name="lastName" class="form-control" type="number" placeholder="{{ __('messages.registration_no') }}" required="required">
+                          <input id="lastName" name="lastName" class="form-control" type="text" placeholder="{{ __('messages.registration_no') }}" required="required">
                         </div>
                       </div>
 
@@ -184,9 +185,9 @@
             <!-- Card Change Password -->
             <div class="card mt-4" id="password">
               <div class="card-header d-flex">
-                <h5 class="mb-0">{{ __('messages.important_dates') }}</h5>
+                <h5>{{ __('messages.important_dates') }}</h5>
               </div>
-              <div class="card-body">
+              <div class="card-body pt-0">
                   <div class="row">
                         <div class="col-6">
                             <label class="form-label">{{ __('messages.declaration_use') }}</label>
@@ -271,12 +272,6 @@
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <label class="form-label">{{ __('messages.disclaimer') }}</label>
-                                    <div class="input-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -284,9 +279,20 @@
                         <div class="col-6">
                             <div class="row">
                                 <div class="col-12">
+                                    <label class="form-label">{{ __('messages.disclaimer') }}</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
                                     <label class="form-label">{{ __('messages.design') }}</label>
                                     <div class="input-group">
                                         <input id="lastName" name="lastName" class="form-control" type="file" placeholder="Thompson" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-5">
+                                    <div class="input-group">
+                                        <embed src="{{asset('logo/'.$configuracion->logo) }}" style="width: 300px; height: 100px;">
                                     </div>
                                 </div>
                             </div>
@@ -323,14 +329,14 @@
                       <div class="col-12">
                         <label class="form-label">{{ __('messages.description') }}</label>
                         <div class="input-group">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
                         </div>
                     </div>
 
                       <div class="col-12">
                           <label class="form-label">{{ __('messages.translation') }}</label>
                           <div class="input-group">
-                              <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                              <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
                           </div>
                       </div>
                   </div>
@@ -346,7 +352,7 @@
                         <div class="col-6">
                             <label class="form-label">{{ __('messages.priority_no') }}</label>
                             <div class="input-group">
-                            <input id="lastName" name="lastName" class="form-control" type="number" placeholder="{{ __('messages.priority_no') }}" required="required">
+                            <input id="lastName" name="lastName" class="form-control" type="text" placeholder="{{ __('messages.priority_no') }}" required="required">
                             </div>
                         </div>
 
@@ -397,7 +403,7 @@
               </div>
             </div>
             <!-- Card applicant Account -->
-            <div class="card mt-4 mb-5" id="delete">
+            <div class="card mt-4 mb-5" id="holder">
                 <div class="card-header">
                     <h5>{{ __('messages.holder_info') }}</h5>
                 </div>
@@ -434,7 +440,7 @@
             <li class="nav-item pt-2">
                 <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#notes">
                     <i class="ni ni-settings-gear-65 me-2 text-dark opacity-6"></i>
-                    <span class="text-sm">{{ __('messages.note') }}</span>
+                    <span class="text-sm">{{ __('messages.note_important') }}</span>
                 </a>
                 </li>
               <li class="nav-item">
@@ -480,7 +486,7 @@
                 </a>
               </li>
               <li class="nav-item pt-2">
-                <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#notes">
+                <a class="nav-link text-body d-flex align-items-center" data-scroll="" href="#holder">
                   <i class="ni ni-settings-gear-65 me-2 text-dark opacity-6"></i>
                   <span class="text-sm">{{ __('messages.holder_info') }}</span>
                 </a>

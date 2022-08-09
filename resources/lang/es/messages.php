@@ -38,6 +38,7 @@ return [
     'short_name' => 'Nombre corto',
     'position' => 'Posición',
     'website' => 'Sitio web',
+    'note_important' => 'Nota Importante',
     'note' => 'Nota',
 
     'new_trademark' => 'Nueva Marca',
