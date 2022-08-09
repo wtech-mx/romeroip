@@ -54,3 +54,5 @@ Route::get('/trademarks/create', function () {
     return view('trademark.create');
 });
 
+Route::get('/trademarks/index', App\Http\Livewire\Trademarks\Index::class)->name('index.trademarks');
+Route::get('/trademarks/create', App\Http\Livewire\Trademarks\Create::class)->name('create.trademarks');
