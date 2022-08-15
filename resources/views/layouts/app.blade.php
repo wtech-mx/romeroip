@@ -22,6 +22,7 @@
   <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  @livewireStyles
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
@@ -76,7 +77,7 @@
         });
 
     </script>
-    
+
   <script>
             var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
 
@@ -149,6 +150,7 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{ asset('assets/js/argon-dashboard.min.js?v=2.0.4')}}"></script>
+  @livewireScripts
 </body>
 
 </html>

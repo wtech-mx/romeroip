@@ -11,7 +11,7 @@
                 </div>
 
                 <main class="main-content max-height-vh-100 h-100">
-                    <form wire:submit.prevent="submit">
+                    <form wire:submit.prevent="save">
                         <div class="container-fluid">
                             <div class="row mb-5">
 
@@ -527,6 +527,9 @@
                                     <div class="col-lg-3">
                                         <div class="card position-sticky top-1">
                                             <ul class="nav flex-column bg-white border-radius-lg p-3">
+                                                <li class="nav-item pt-2">
+                                                    <button type="submit">Save</button>
+                                                </li>
                                                 <li class="nav-item pt-2">
                                                     <a class="nav-link text-body d-flex align-items-center" data-scroll=""
                                                         href="#notes">

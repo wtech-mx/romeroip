@@ -2,9 +2,7 @@
 @livewire('trademarks.index') --}}
 @extends('layouts.app')
 
-@section('template_title')
-{{ __('messages.all_trademark') }}
-@endsection
+
 
 @section('content')
 
@@ -24,7 +22,7 @@
 
                 <div class="ms-auto my-auto mt-lg-0 mt-4">
                   <div class="ms-auto my-auto">
-                    <a href="https://wtech.com.mx/romeroip/trademarks/create" class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">+&nbsp; {{ __('messages.new_trademark') }}</a>
+                    <a href="/trademarks/create" class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">+&nbsp; {{ __('messages.new_trademark') }}</a>
                     <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
                   </div>
                 </div>
@@ -91,6 +89,6 @@
           </div>
         </div>
       </div>
-    </div>
+</div>
 
 @endsection
