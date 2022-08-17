@@ -96,6 +96,7 @@ return [
     'client_info' => 'Información del cliente',
     'address' => 'Dirección',
     'contact' => 'Contacto',
+    'billing_address' => 'Dirección de Facturación',
 
     'holder_info' => 'Información del titular',
     'holder' => 'Titular',

@@ -97,6 +97,7 @@ return [
     'client_info' => 'Client’s Information',
     'address' => 'Address',
     'contact' => 'Contact',
+    'billing_address' => 'Billing Address',
 
     'holder_info' => 'Holder Information',
     'holder' => 'Holder',

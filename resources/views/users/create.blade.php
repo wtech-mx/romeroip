@@ -4,6 +4,10 @@
     Create Usuarios
 @endsection
 
+@section('page_actuality')
+Create Usuarios
+@endsection
+
 @section('content')
 
 <div class="container-fluid mt-3">

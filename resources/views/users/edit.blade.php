@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Create Usuario
+    Editar Usuario
+@endsection
+
+@section('page_actuality')
+Editar Usuario
 @endsection
 
 @section('content')

@@ -4,6 +4,10 @@
      Roles
 @endsection
 
+@section('page_actuality')
+Roles
+@endsection
+
 @section('content')
 
 <div class="container-fluid mt-3">

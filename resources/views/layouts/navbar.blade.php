@@ -18,16 +18,22 @@
                 <i class="ni ni-box-2"></i>
               </a>
             </li>
-            <li class="breadcrumb-item text-sm text-white"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Default</li>
+            <li class="breadcrumb-item text-sm text-white"><a class="opacity-5 text-white" href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">@yield('page_actuality')</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0 text-white">Default</h6>
         </nav>
 
 
 
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="dropdown" style="margin-right: 1rem;">
+                <select class="form-control changeLang" style="margin-right: 2rem;">
+                    <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
+                    <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>Español</option>
+                </select>
+            </div>
+
             <div class="input-group">
               <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
               <input type="text" class="form-control" placeholder="Type here...">
@@ -42,7 +48,7 @@
               </a>
             </li>
 
-            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+            <li class="nav-item d-xl-none px-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
                   <i class="sidenav-toggler-line bg-white"></i>
@@ -51,20 +57,15 @@
                 </div>
               </a>
             </li>
-            <div class="dropdown">
-                <select class="form-control changeLang" >
-                    <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
-                    <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>Español</option>
-                </select>
-            </div>
 
-            <li class="nav-item px-3 d-flex align-items-center">
+
+            {{-- <li class="nav-item px-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0">
                 <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
               </a>
-            </li>
+            </li> --}}
 
-            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+            <li class="nav-item dropdown px-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell cursor-pointer"></i>
               </a>

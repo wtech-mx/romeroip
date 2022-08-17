@@ -4,6 +4,10 @@
     Editar Client
 @endsection
 
+@section('page_actuality')
+Editar Cliente
+@endsection
+
 @section('content')
 
 <div class="container-fluid mt-3">

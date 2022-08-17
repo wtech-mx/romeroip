@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Trademarks;
 
+use App\Models\Trademarks;
 use Livewire\Component;
 
 class Create extends Component
@@ -13,7 +14,7 @@ class Create extends Component
     $address_holder, $industrial_address;
 
     public function save(){
-        Product::create([
+        Trademarks::create([
             'client_ref' => $this->client_ref,
             'notes' => $this->notes,
             'our_ref' => $this->our_ref,
@@ -34,7 +35,7 @@ class Create extends Component
             'expiration_date' => $this->expiration_date,
             'contracting_organization' => $this->contracting_organization,
             'publication_date' => $this->publication_date,
-        ])
+        ]);
     }
 
     public function render()

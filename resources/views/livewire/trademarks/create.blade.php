@@ -1,3 +1,7 @@
+@section('page_actuality')
+{{ __('messages.new_trademark') }}
+@endsection
+
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col">
@@ -365,9 +369,9 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-12 mt-5">
-                                                                <div class="input-group">
-                                                                    <embed src="{{asset('logo/'.$configuracion->logo) }}"
-                                                                        style="width: 300px; height: 100px;">
+                                                                <div class="d-flex justify-content-center">
+                                                                    <embed src="{{asset('logo/FEDERIKA.jpg') }}"
+                                                                        style="width: 300px; height: 300px;">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -527,9 +531,6 @@
                                     <div class="col-lg-3">
                                         <div class="card position-sticky top-1">
                                             <ul class="nav flex-column bg-white border-radius-lg p-3">
-                                                <li class="nav-item pt-2">
-                                                    <button type="submit">Save</button>
-                                                </li>
                                                 <li class="nav-item pt-2">
                                                     <a class="nav-link text-body d-flex align-items-center" data-scroll=""
                                                         href="#notes">

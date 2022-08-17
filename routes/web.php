@@ -34,7 +34,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('permisos', PermisosController::class);
     Route::resource('users', UserController::class);
-    Route::resource('clients', ClientController::class);
 });
 
 //Route Hooks - Do not delete//
@@ -56,3 +55,6 @@ Route::get('/trademarks/create', function () {
 
 Route::get('/trademarks/index', App\Http\Livewire\Trademarks\Index::class)->name('index.trademarks');
 Route::get('/trademarks/create', App\Http\Livewire\Trademarks\Create::class)->name('create.trademarks');
+
+Route::get('/clients/index', App\Http\Livewire\Clients\Index::class)->name('index.clients');
+Route::get('/clients/create', App\Http\Livewire\Clients\Create::class)->name('create.clients');

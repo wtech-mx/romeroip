@@ -60,21 +60,21 @@ return new class extends Migration
             $table->string('country_office')->nullable();
             $table->date('priority_date')->nullable();
 
-            $table->unsignedBigInteger('client');
-            $table->foreign('client')
+            $table->unsignedBigInteger('id_client');
+            $table->foreign('id_client')
                 ->references('id')->on('clients')
                 ->inDelete('set null');
-            $table->unsignedBigInteger('contact');
-            $table->foreign('contact')
-                ->references('id')->on('contact_client')
+            $table->unsignedBigInteger('id_contact');
+            $table->foreign('id_contact')
+                ->references('id')->on('contact_clients')
                 ->inDelete('set null');
-            $table->unsignedBigInteger('address');
-            $table->foreign('address')
-                ->references('id')->on('address_client')
+            $table->unsignedBigInteger('id_address');
+            $table->foreign('id_address')
+                ->references('id')->on('adress_contact')
                 ->inDelete('set null');
 
-            $table->unsignedBigInteger('holder');
-            $table->foreign('holder')
+            $table->unsignedBigInteger('id_holder');
+            $table->foreign('id_holder')
                 ->references('id')->on('holder_client')
                 ->inDelete('set null');
             $table->unsignedBigInteger('address_holder');

@@ -4,6 +4,10 @@
     Configuracion
 @endsection
 
+@section('page_actuality')
+Configuracion
+@endsection
+
 @section('content')
 
 <div class="container-fluid mt-3">

@@ -2,6 +2,12 @@
 {{ __('messages.all_trademark') }}
 @endsection
 
+@section('page_actuality')
+{{ __('messages.trademark') }}
+@endsection
+
+@include('filtros')
+
 <div class="container-fluid py-4">
     <div class="row">
       <div class="col-12">

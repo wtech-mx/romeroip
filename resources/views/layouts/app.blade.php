@@ -52,7 +52,7 @@
 
 
    <!-- Modal lateral Congif -->
-    @include('layouts.modal_config')
+    {{-- @include('layouts.modal_config') --}}
   <!-- End Modal lateral Congif -->
 
   <!--   Core JS Files   -->

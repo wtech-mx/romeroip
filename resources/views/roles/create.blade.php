@@ -4,6 +4,10 @@
     Create Rol
 @endsection
 
+@section('page_actuality')
+Create Rol
+@endsection
+
 @section('content')
 
 <div class="container-fluid mt-3">
