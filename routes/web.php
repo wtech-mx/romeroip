@@ -56,5 +56,9 @@ Route::get('/trademarks/create', function () {
 Route::get('/trademarks/index', App\Http\Livewire\Trademarks\Index::class)->name('index.trademarks');
 Route::get('/trademarks/create', App\Http\Livewire\Trademarks\Create::class)->name('create.trademarks');
 
-Route::get('/clients/index', App\Http\Livewire\Clients\Index::class)->name('index.clients');
-Route::get('/clients/create', App\Http\Livewire\Clients\Create::class)->name('create.clients');
+Route::get('/clients/index', [App\Http\Controllers\ClientController::class, 'index'])->name('index.clients');
+Route::get('/clients/create', [App\Http\Controllers\ClientController::class, 'create'])->name('create.clients');
+Route::post('/clients/store', [App\Http\Controllers\ClientController::class, 'store'])->name('store.clients');
+Route::get('/clients/edit/{id}', [App\Http\Controllers\ClientController::class, 'edit'])->name('edit.clients');
+Route::patch('/clients/update/{id}', [App\Http\Controllers\ClientController::class, 'update'])->name('update.clients');
+Route::delete('/clients/delete/{id}', [App\Http\Controllers\ClientController::class, 'destroy'])->name('delete.clients');

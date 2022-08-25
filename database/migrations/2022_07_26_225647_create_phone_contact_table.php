@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('phone_clients', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_contact');
-            $table->foreign('id_contact')
-                ->references('id')->on('contact_clients')
+            $table->unsignedBigInteger('id_clients');
+            $table->foreign('id_clients')
+                ->references('id')->on('clients')
                 ->inDelete('set null');
 
             $table->string('phone')->nullable();
