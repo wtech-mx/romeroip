@@ -5,6 +5,8 @@
 
 @section('content')
 
+@include('filtros')
+
 <div class="container-fluid mt-5">
     <div class="row">
         <div class="col-sm-12">
@@ -51,11 +53,11 @@
                                             <a class="dropdown-item" href="{{ route('edit.clients', $client->id) }}">
                                                 Editar
                                             </a>
-                                            <form action="{{ route('delete.clients',$client->id) }}" method="POST">
+                                            {{-- <form action="{{ route('delete.clients',$client->id) }}" method="POST">
                                                 {{csrf_field() }}
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <a class="btn" type="submit">Borrar</a>
-                                            </form>
+                                            </form> --}}
                                         </td>
                                     </tr>
                                 @endforeach
