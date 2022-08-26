@@ -53,8 +53,12 @@ Route::get('/trademarks/create', function () {
     return view('trademark.create');
 });
 
-Route::get('/trademarks/index', App\Http\Livewire\Trademarks\Index::class)->name('index.trademarks');
-Route::get('/trademarks/create', App\Http\Livewire\Trademarks\Create::class)->name('create.trademarks');
+Route::get('/trademarks/index', [App\Http\Controllers\TrademarksController::class, 'index'])->name('index.trademarks');
+Route::get('/trademarks/create', [App\Http\Controllers\TrademarksController::class, 'create'])->name('create.trademarks');
+// Select anidados
+Route::get('/trademarks/client', [App\Http\Controllers\TrademarksController::class, 'index']);
+Route::post('/trademarks/contact', [App\Http\Controllers\TrademarksController::class, 'contact']);
+Route::post('/trademarks/address', [App\Http\Controllers\TrademarksController::class, 'address']);
 
 Route::get('/clients/index', [App\Http\Controllers\ClientController::class, 'index'])->name('index.clients');
 Route::get('/clients/create', [App\Http\Controllers\ClientController::class, 'create'])->name('create.clients');
@@ -62,3 +66,5 @@ Route::post('/clients/store', [App\Http\Controllers\ClientController::class, 'st
 Route::get('/clients/edit/{id}', [App\Http\Controllers\ClientController::class, 'edit'])->name('edit.clients');
 Route::patch('/clients/update/{id}', [App\Http\Controllers\ClientController::class, 'update'])->name('update.clients');
 Route::delete('/clients/delete/{id}', [App\Http\Controllers\ClientController::class, 'destroy'])->name('delete.clients');
+
+

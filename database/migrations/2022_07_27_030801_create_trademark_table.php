@@ -70,17 +70,17 @@ return new class extends Migration
                 ->inDelete('set null');
             $table->unsignedBigInteger('id_address');
             $table->foreign('id_address')
-                ->references('id')->on('adress_contact')
+                ->references('id')->on('adress_clients')
                 ->inDelete('set null');
 
-            $table->unsignedBigInteger('id_holder');
-            $table->foreign('id_holder')
-                ->references('id')->on('holder_client')
-                ->inDelete('set null');
-            $table->unsignedBigInteger('address_holder');
-            $table->foreign('address_holder')
-                ->references('id')->on('holder_address')
-                ->inDelete('set null');
+            // $table->unsignedBigInteger('id_holder');
+            // $table->foreign('id_holder')
+            //     ->references('id')->on('holder_client')
+            //     ->inDelete('set null');
+            // $table->unsignedBigInteger('address_holder');
+            // $table->foreign('address_holder')
+            //     ->references('id')->on('holder_address')
+            //     ->inDelete('set null');
             $table->string('industrial_address')->nullable();
         });
     }

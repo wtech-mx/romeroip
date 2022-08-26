@@ -34,7 +34,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $client = new Clients();
+        $client = Clients::get();
 
         return view('client.create', compact('client'));
     }
@@ -54,53 +54,59 @@ class ClientController extends Controller
         $client->notes = $request->get('notes');
         $client->save();
 
-        $name = $request->name;
-        $short_name = $request->short_name;
-        $position = $request->position;
-        $email = $request->email;
-        $web_page = $request->web_page;
+        if($request->name != NULL){
+            $name = $request->name;
+            $short_name = $request->short_name;
+            $position = $request->position;
+            $email = $request->email;
+            $web_page = $request->web_page;
 
-        for ($count = 0; $count < count($name); $count++) {
-            $data = array(
-                'name' => $name[$count],
-                'short_name' => $short_name[$count],
-                'position' => $position[$count],
-                'email' => $email[$count],
-                'web_page' => $web_page[$count],
-                'id_client' => $client->id,
-            );
-            $insert_data[] = $data;
+            for ($count = 0; $count < count($name); $count++) {
+                $data = array(
+                    'name' => $name[$count],
+                    'short_name' => $short_name[$count],
+                    'position' => $position[$count],
+                    'email' => $email[$count],
+                    'web_page' => $web_page[$count],
+                    'id_client' => $client->id,
+                );
+                $insert_data[] = $data;
+            }
+
+            ContactClient::insert($insert_data);
         }
 
-        ContactClient::insert($insert_data);
+        if($request->phone != NULL){
+            $phone = $request->phone;
+            $fax = $request->fax;
 
-        $phone = $request->phone;
-        $fax = $request->fax;
+            for ($count = 0; $count < count($phone); $count++) {
+                $data = array(
+                    'phone' => $phone[$count],
+                    'fax' => $fax[$count],
+                    'id_clients' => $client->id,
+                );
+                $insert_data2[] = $data;
+            }
 
-        for ($count = 0; $count < count($phone); $count++) {
-            $data = array(
-                'phone' => $phone[$count],
-                'fax' => $fax[$count],
-                'id_clients' => $client->id,
-            );
-            $insert_data2[] = $data;
+            PhoneContact::insert($insert_data2);
         }
 
-        PhoneContact::insert($insert_data2);
+        if($request->address != NULL){
+            $address = $request->address;
+            $billing_address = $request->billing_address;
 
-        $address = $request->address;
-        $billing_address = $request->billing_address;
+            for ($count = 0; $count < count($address); $count++) {
+                $data = array(
+                    'address' => $address[$count],
+                    'billing_address' => $billing_address[$count],
+                    'id_clients' => $client->id,
+                );
+                $insert_data3[] = $data;
+            }
 
-        for ($count = 0; $count < count($address); $count++) {
-            $data = array(
-                'address' => $address[$count],
-                'billing_address' => $billing_address[$count],
-                'id_clients' => $client->id,
-            );
-            $insert_data3[] = $data;
+            AddressContact::insert($insert_data3);
         }
-
-        AddressContact::insert($insert_data3);
 
         Session::flash('success', 'Se ha guardado sus datos con exito');
         return redirect()->route('index.clients')

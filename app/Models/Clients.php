@@ -15,4 +15,12 @@ class Clients extends Model
                             'vat_no',
                             'country',
                             'notes'];
+
+    public function ContactClient(){
+        return $this->hasOne('App\Models\ContactClient', 'id_client');
+    }
+    
+    public function AddressContact(){
+        return $this->hasOne('App\Models\AddressContact', 'id_clients');
+    }
 }

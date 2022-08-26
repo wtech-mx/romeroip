@@ -92,8 +92,7 @@ update Client
                                                         <label class="form-label">{{ __('messages.contact_name')}}</label>
                                                         <div class="input-group">
                                                             <input name="name[]" id="name[]" class="form-control"
-                                                                type="text" placeholder="{{ __('messages.contact_name') }}"
-                                                                required="required" value="{{$contact->name}}">
+                                                                type="text" placeholder="{{ __('messages.contact_name') }}" value="{{$contact->name}}">
                                                         </div>
                                                     </div>
 
@@ -101,8 +100,7 @@ update Client
                                                         <label class="form-label">{{ __('messages.short_name') }}</label>
                                                         <div class="input-group">
                                                             <input name="short_name[]" id="short_name[]" class="form-control" type="text"
-                                                                placeholder="{{ __('messages.short_name') }}"
-                                                                required="required" value="{{$contact->short_name}}">
+                                                                placeholder="{{ __('messages.short_name') }}" value="{{$contact->short_name}}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -112,7 +110,7 @@ update Client
                                                         <div class="input-group">
                                                             <input name="position[]" id="position[]" class="form-control"
                                                                 type="text" placeholder="{{ __('messages.position') }}"
-                                                                required="required" value="{{$contact->position}}">
+                                                                value="{{$contact->position}}">
                                                         </div>
                                                     </div>
 
@@ -121,7 +119,7 @@ update Client
                                                         <div class="input-group">
                                                             <input name="email[]" id="email[]" class="form-control" type="text"
                                                                 placeholder="{{ __('messages.email') }}"
-                                                                required="required" value="{{$contact->email}}">
+                                                                value="{{$contact->email}}">
                                                         </div>
                                                     </div>
 
@@ -130,7 +128,7 @@ update Client
                                                         <div class="input-group">
                                                             <input name="web_page[]" id="web_page[]" class="form-control"
                                                                 type="text" placeholder="{{ __('messages.website') }}"
-                                                                required="required" value="{{$contact->web_page}}">
+                                                                value="{{$contact->web_page}}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -185,7 +183,7 @@ update Client
                                                         <div class="input-group">
                                                             <input name="phone[]" id="phone[]" class="form-control"
                                                             type="number" placeholder="{{ __('messages.phone') }}"
-                                                            required="required" value="{{$phone->phone}}">
+                                                            value="{{$phone->phone}}">
                                                         </div>
                                                     </div>
 
@@ -194,7 +192,7 @@ update Client
                                                         <div class="input-group">
                                                             <input name="fax[]" id="fax[]" class="form-control"
                                                             type="number" placeholder="Fax"
-                                                            required="required" value="{{$phone->fax}}">
+                                                            value="{{$phone->fax}}">
                                                         </div>
                                                     </div>
                                                 @endforeach

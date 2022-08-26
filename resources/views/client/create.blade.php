@@ -88,8 +88,7 @@
                                                         <label class="form-label">{{ __('messages.contact_name')}}</label>
                                                         <div class="input-group">
                                                             <input name="name[]" id="name[]" class="form-control"
-                                                                type="text" placeholder="{{ __('messages.contact_name') }}"
-                                                                required="required">
+                                                                type="text" placeholder="{{ __('messages.contact_name') }}">
                                                         </div>
                                                     </div>
 
@@ -97,8 +96,7 @@
                                                         <label class="form-label">{{ __('messages.short_name') }}</label>
                                                         <div class="input-group">
                                                             <input name="short_name[]" id="short_name[]" class="form-control" type="text"
-                                                                placeholder="{{ __('messages.short_name') }}"
-                                                                required="required">
+                                                                placeholder="{{ __('messages.short_name') }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -108,8 +106,7 @@
                                                         <div class="input-group">
                                                             <input name="position[]" id="position[]" class="form-control"
                                                                 type="text"
-                                                                placeholder="{{ __('messages.position') }}"
-                                                                required="required">
+                                                                placeholder="{{ __('messages.position') }}">
                                                         </div>
                                                     </div>
 
@@ -117,8 +114,7 @@
                                                         <label class="form-label">{{ __('messages.email') }}</label>
                                                         <div class="input-group">
                                                             <input name="email[]" id="email[]" class="form-control" type="text"
-                                                                placeholder="{{ __('messages.email') }}"
-                                                                required="required">
+                                                                placeholder="{{ __('messages.email') }}">
                                                         </div>
                                                     </div>
 
@@ -126,8 +122,7 @@
                                                         <label class="form-label">{{ __('messages.website') }}</label>
                                                         <div class="input-group">
                                                             <input name="web_page[]" id="web_page[]" class="form-control"
-                                                                type="text" placeholder="{{ __('messages.website') }}"
-                                                                required="required">
+                                                                type="text" placeholder="{{ __('messages.website') }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -175,8 +170,7 @@
                                                         <label class="form-label">{{ __('messages.phone') }}</label>
                                                         <div class="input-group">
                                                             <input name="phone[]" id="phone[]" class="form-control"
-                                                            type="number" placeholder="{{ __('messages.phone') }}"
-                                                            required="required">
+                                                            type="number" placeholder="{{ __('messages.phone') }}">
                                                         </div>
                                                     </div>
 
@@ -184,8 +178,7 @@
                                                         <label class="form-label">Fax</label>
                                                         <div class="input-group">
                                                             <input name="fax[]" id="fax[]" class="form-control"
-                                                            type="number" placeholder="Fax"
-                                                            required="required">
+                                                            type="number" placeholder="Fax">
                                                         </div>
                                                     </div>
                                                 </div>

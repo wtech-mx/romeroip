@@ -40,7 +40,7 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.trademarks.create')
+        return view('trademark.create')
         ->extends('layouts.app')
         ->section('content');
     }
