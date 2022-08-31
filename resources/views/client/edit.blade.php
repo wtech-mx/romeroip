@@ -20,7 +20,7 @@ update Client
                             style="background: {{$configuracion->color_boton_close}}; color: #ffff"> Back</a>
                         @includeif('partials.errors')
                         <button type="submit" class="btn"
-                            style="background: {{$configuracion->color_boton_save}}; color: #ffff">Update</button>
+                        style="border: 2px solid #F82018; color: #F82018;">Update</button>
                     </div>
 
                     <main class="main-content max-height-vh-100 h-100">
@@ -66,7 +66,7 @@ update Client
                                                 <div class="col-12">
                                                     <label class="form-label">{{ __('messages.country') }}</label>
                                                     <div class="input-group">
-                                                        <select class="form-control" name="country" id="country">
+                                                        <select class="form-control js-example-basic-single" name="country" id="country">
                                                             <option value="{{$client->country}}">{{$client->country}}
                                                             </option>
                                                             @include('client.paises')
@@ -221,6 +221,12 @@ update Client
 @endsection
 
 @section('js_custom')
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
+</script>
+
 <script type="text/javascript">
     $(document).ready(function(){
             var i=1;

@@ -59,7 +59,7 @@
                                                 <div class="col-12">
                                                     <label class="form-label">{{ __('messages.country') }}</label>
                                                     <div class="input-group">
-                                                        <select class="form-control" name="country" id="country">
+                                                        <select class="form-control js-example-basic-single" name="country" id="country">
                                                             @include('client.paises')
                                                         </select>
                                                     </div>
@@ -278,6 +278,12 @@
         $("#factura").click(function(){
             $(".input_fac").toggle("slide");
         });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
     });
 </script>
 @endsection
