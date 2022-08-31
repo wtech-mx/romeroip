@@ -92,6 +92,7 @@ return [
     'priority_no' => 'Prioridad No.',
     'country_office' => 'País / Oficina',
     'priority_date' => 'Fecha de prioridad',
+    'vat_no' => 'R.F.C.',
 
     'client_info' => 'Información del cliente',
     'address' => 'Dirección',

@@ -98,6 +98,7 @@ return [
     'address' => 'Address',
     'contact' => 'Contact',
     'billing_address' => 'Billing Address',
+    'vat_no' => 'VAT No.',
 
     'holder_info' => 'Holder Information',
     'holder' => 'Holder',

@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('short_name')->nullable();
             $table->string('position')->nullable();
             $table->string('email')->nullable();
-            $table->string('web_page')->nullable();
         });
     }
 

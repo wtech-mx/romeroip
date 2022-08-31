@@ -130,7 +130,7 @@
                                                     <div class="col-6">
                                                         <label class="form-label">{{ __('messages.origin') }}</label>
                                                         <div class="input-group">
-                                                            <select class="form-control" name="country" id="country">
+                                                            <select class="form-control js-example-basic-single" name="country" id="country">
                                                                 @include('client.paises')
                                                             </select>
                                                         </div>
@@ -507,7 +507,7 @@
                                                     <div class="col-12">
                                                         <label class="form-label">{{ __('messages.client') }}</label>
                                                         <div class="input-group">
-                                                            <select class="form-control usuario" id="id_client" name="id_client">
+                                                            <select class="form-control js-example-basic-single" id="id_client" name="id_client">
                                                                <option value="">{{ __('messages.client') }}</option>
                                                                @foreach ($clients as $client)
                                                                    <option value="{{ $client->id }}">{{ $client->company_name }}</option>
@@ -655,6 +655,11 @@
 @endsection
 @section('js_custom')
 <script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
+</script>
+<script>
     const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
     document.getElementById('id_client').addEventListener('change',(e)=>{
         fetch('contact',{
@@ -693,5 +698,6 @@
             document.getElementById("id_address").innerHTML = opciones;
         }).catch(error =>console.error(error));
     })
+
 </script>
 @endsection

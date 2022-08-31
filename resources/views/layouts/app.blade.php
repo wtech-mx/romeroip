@@ -20,6 +20,8 @@
   <link href="{{ asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
+  <!-- Select2  -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   @livewireStyles
@@ -65,6 +67,7 @@
   <script src="{{ asset('assets/js/plugins/dragula/dragula.min.js')}}"></script>
   <script src="{{ asset('assets/js/plugins/jkanban/jkanban.js')}}"></script>
   <script src="{{ asset('assets/js/plugins/chartjs.min.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     @yield('js_custom')
 

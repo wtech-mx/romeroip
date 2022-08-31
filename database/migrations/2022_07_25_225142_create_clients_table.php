@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('vat_no')->nullable();
             $table->string('country')->nullable();
-            $table->string('notes')->nullable();
+            $table->string('web_page')->nullable();
         });
     }
 

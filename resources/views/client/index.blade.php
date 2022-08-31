@@ -31,9 +31,8 @@
                                 <tr class="text-center">
                                     <th>No</th>
                                     <th>{{ __('messages.company_name') }}</th>
-                                    <th>R.F.C.</th>
+                                    <th>{{ __('messages.vat_no') }}</th>
                                     <th>{{ __('messages.country') }}</th>
-                                    <th>{{ __('messages.note') }}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -45,7 +44,6 @@
                                         <td>{{ $client->company_name }}</td>
                                         <td>{{ $client->vat_no }}</td>
                                         <td>{{ $client->country }}</td>
-                                        <td>{{ $client->notes }}</td>
 
                                         <td>
                                             <a class="dropdown-item" href="{{ route('edit.clients', $client->id) }}">

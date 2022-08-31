@@ -51,7 +51,7 @@ class ClientController extends Controller
         $client->company_name = $request->get('company_name');
         $client->vat_no = $request->get('vat_no');
         $client->country = $request->get('country');
-        $client->notes = $request->get('notes');
+        $client->web_page = $request->get('web_page');
         $client->save();
 
         if($request->name != NULL){
@@ -59,7 +59,6 @@ class ClientController extends Controller
             $short_name = $request->short_name;
             $position = $request->position;
             $email = $request->email;
-            $web_page = $request->web_page;
 
             for ($count = 0; $count < count($name); $count++) {
                 $data = array(
@@ -67,7 +66,6 @@ class ClientController extends Controller
                     'short_name' => $short_name[$count],
                     'position' => $position[$count],
                     'email' => $email[$count],
-                    'web_page' => $web_page[$count],
                     'id_client' => $client->id,
                 );
                 $insert_data[] = $data;
@@ -78,14 +76,27 @@ class ClientController extends Controller
 
         if($request->phone != NULL){
             $phone = $request->phone;
-            $fax = $request->fax;
+            if($request->fax != NULL){
+                $fax = $request->fax;
+            }else{
+                $fax = $request->phone;
+            }
 
             for ($count = 0; $count < count($phone); $count++) {
-                $data = array(
-                    'phone' => $phone[$count],
-                    'fax' => $fax[$count],
-                    'id_clients' => $client->id,
-                );
+                if($request->fax == NULL){
+                    $data = array(
+                        'phone' => $phone[$count],
+                        'fax' => $fax[$count],
+                        'id_clients' => $client->id,
+                    );
+                }else{
+                    $data = array(
+                        'phone' => $phone[$count],
+                        'fax' => '-',
+                        'id_clients' => $client->id,
+                    );
+                }
+
                 $insert_data2[] = $data;
             }
 
@@ -93,19 +104,17 @@ class ClientController extends Controller
         }
 
         if($request->address != NULL){
-            $address = $request->address;
-            $billing_address = $request->billing_address;
+            $client_address = new AddressContact;
+            $client_address->address = $request->get('address');
 
-            for ($count = 0; $count < count($address); $count++) {
-                $data = array(
-                    'address' => $address[$count],
-                    'billing_address' => $billing_address[$count],
-                    'id_clients' => $client->id,
-                );
-                $insert_data3[] = $data;
+            if($request->billing_address != NULL){
+                $client_address->billing_address = $request->get('billing_address');
+            }else{
+                $client_address->billing_address = $request->get('address');
             }
 
-            AddressContact::insert($insert_data3);
+            $client_address->id_clients = $client->id;
+            $client_address->save();
         }
 
         Session::flash('success', 'Se ha guardado sus datos con exito');
@@ -123,7 +132,7 @@ class ClientController extends Controller
     {
         $client = Clients::find($id);
         $contacts = ContactClient::where('id_client', $client->id)->get();
-        $address = AddressContact::where('id_clients', $client->id)->get();
+        $address = AddressContact::where('id_clients', $id)->first();
         $phones = PhoneContact::where('id_clients', $client->id)->get();
 
         return view('client.edit', compact('client', 'contacts', 'address', 'phones'));
@@ -142,60 +151,74 @@ class ClientController extends Controller
         $client->company_name = $request->get('company_name');
         $client->vat_no = $request->get('vat_no');
         $client->country = $request->get('country');
-        $client->notes = $request->get('notes');
+        $client->web_page = $request->get('web_page');
         $client->update();
 
         $contact_client = ContactClient::where('id_client', $client->id)->delete();
         $phone_client = PhoneContact::where('id_clients', $client->id)->delete();
-        $address_client = AddressContact::where('id_clients', $client->id)->delete();
 
-        $name = $request->name;
-        $short_name = $request->short_name;
-        $position = $request->position;
-        $email = $request->email;
-        $web_page = $request->web_page;
+        if($request->name != NULL){
+            $name = $request->name;
+            $short_name = $request->short_name;
+            $position = $request->position;
+            $email = $request->email;
 
-        for ($count = 0; $count < count($name); $count++) {
-            $data = array(
-                'name' => $name[$count],
-                'short_name' => $short_name[$count],
-                'position' => $position[$count],
-                'email' => $email[$count],
-                'web_page' => $web_page[$count],
-                'id_client' => $client->id,
-            );
-            $insert_data[] = $data;
+            for ($count = 0; $count < count($name); $count++) {
+                $data = array(
+                    'name' => $name[$count],
+                    'short_name' => $short_name[$count],
+                    'position' => $position[$count],
+                    'email' => $email[$count],
+                    'id_client' => $client->id,
+                );
+                $insert_data[] = $data;
+            }
+
+            ContactClient::insert($insert_data);
         }
 
-        ContactClient::insert($insert_data);
+        if($request->phone != NULL){
+            $phone = $request->phone;
+            if($request->fax != NULL){
+                $fax = $request->fax;
+            }else{
+                $fax = $request->phone;
+            }
 
-        $phone = $request->phone;
-        $fax = $request->fax;
+            for ($count = 0; $count < count($phone); $count++) {
+                if($request->fax == NULL){
+                    $data = array(
+                        'phone' => $phone[$count],
+                        'fax' => $fax[$count],
+                        'id_clients' => $client->id,
+                    );
+                }else{
+                    $data = array(
+                        'phone' => $phone[$count],
+                        'fax' => '-',
+                        'id_clients' => $client->id,
+                    );
+                }
 
-        for ($count = 0; $count < count($phone); $count++) {
-            $data = array(
-                'phone' => $phone[$count],
-                'fax' => $fax[$count],
-                'id_clients' => $client->id,
-            );
-            $insert_data2[] = $data;
+                $insert_data2[] = $data;
+            }
+
+            PhoneContact::insert($insert_data2);
         }
+        
+        if($request->address != NULL){
+            $client_address = AddressContact::where('id_clients', $client->id)->first();
+            $client_address->address = $request->get('address');
 
-        PhoneContact::insert($insert_data2);
+            if($request->billing_address != NULL){
+                $client_address->billing_address = $request->get('billing_address');
+            }else{
+                $client_address->billing_address = $request->get('address');
+            }
 
-        $address = $request->address;
-        $billing_address = $request->billing_address;
-
-        for ($count = 0; $count < count($address); $count++) {
-            $data = array(
-                'address' => $address[$count],
-                'billing_address' => $billing_address[$count],
-                'id_clients' => $client->id,
-            );
-            $insert_data3[] = $data;
+            $client_address->id_clients = $client->id;
+            $client_address->update();
         }
-
-        AddressContact::insert($insert_data3);
 
         Session::flash('edit', 'Se ha editado sus datos con exito');
         return redirect()->route('index.clients')

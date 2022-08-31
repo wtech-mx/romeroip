@@ -15,6 +15,5 @@ class ContactClient extends Model
                             'name',
                             'short_name',
                             'position',
-                            'email',
-                            'web_page'];
+                            'email'];
 }

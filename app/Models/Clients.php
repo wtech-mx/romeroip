@@ -11,16 +11,21 @@ class Clients extends Model
     public $timestamps = false;
 
     protected $table = 'clients';
-    protected $fillable = ['company_name',
-                            'vat_no',
-                            'country',
-                            'notes'];
+    protected $fillable = [
+        'company_name',
+        'vat_no',
+        'country',
+        'notes',
+        'web_page'
+    ];
 
-    public function ContactClient(){
+    public function ContactClient()
+    {
         return $this->hasOne('App\Models\ContactClient', 'id_client');
     }
-    
-    public function AddressContact(){
+
+    public function AddressContact()
+    {
         return $this->hasOne('App\Models\AddressContact', 'id_clients');
     }
 }
