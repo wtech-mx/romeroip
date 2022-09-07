@@ -36,22 +36,15 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
 });
 
-//Route Hooks - Do not delete//
-Route::view('especialists', 'livewire.especialists.index')->name('index.especialists')->middleware('auth');
-
 /*|--------------------------------------------------------------------------
 |Configuracion
 |--------------------------------------------------------------------------*/
 Route::get('/configuracion', [App\Http\Controllers\ConfiguracionController::class, 'index'])->name('index.configuracion');
 Route::patch('/configuracion/update', [App\Http\Controllers\ConfiguracionController::class, 'update'])->name('update.configuracion');
 
-Route::get('/trademarks/index', [App\Http\Controllers\TrademarksController::class, 'index'])->name('index.trademarks');
-Route::get('/trademarks/create', [App\Http\Controllers\TrademarksController::class, 'create'])->name('create.trademarks');
-// Select anidados
-Route::get('/trademarks/client', [App\Http\Controllers\TrademarksController::class, 'index']);
-Route::post('/trademarks/contact', [App\Http\Controllers\TrademarksController::class, 'contact']);
-Route::post('/trademarks/address', [App\Http\Controllers\TrademarksController::class, 'address']);
-
+/*|--------------------------------------------------------------------------
+|Clients
+|--------------------------------------------------------------------------*/
 Route::get('/clients/index', [App\Http\Controllers\ClientController::class, 'index'])->name('index.clients');
 Route::get('/clients/create', [App\Http\Controllers\ClientController::class, 'create'])->name('create.clients');
 Route::post('/clients/store', [App\Http\Controllers\ClientController::class, 'store'])->name('store.clients');
@@ -59,4 +52,22 @@ Route::get('/clients/edit/{id}', [App\Http\Controllers\ClientController::class, 
 Route::patch('/clients/update/{id}', [App\Http\Controllers\ClientController::class, 'update'])->name('update.clients');
 Route::delete('/clients/delete/{id}', [App\Http\Controllers\ClientController::class, 'destroy'])->name('delete.clients');
 
+/*|--------------------------------------------------------------------------
+|Holder
+|--------------------------------------------------------------------------*/
+Route::get('/holder/index', [App\Http\Controllers\HolderController::class, 'index'])->name('index.holder');
+Route::get('/holder/create', [App\Http\Controllers\HolderController::class, 'create'])->name('create.holder');
+Route::post('/holder/store', [App\Http\Controllers\HolderController::class, 'store'])->name('store.holder');
+Route::get('/holder/edit/{id}', [App\Http\Controllers\HolderController::class, 'edit'])->name('edit.holder');
+Route::patch('/holder/update/{id}', [App\Http\Controllers\HolderController::class, 'update'])->name('update.holder');
+Route::delete('/holder/delete/{id}', [App\Http\Controllers\HolderController::class, 'destroy'])->name('delete.holder');
 
+/*|--------------------------------------------------------------------------
+|Trademarks
+|--------------------------------------------------------------------------*/
+Route::get('/trademarks/index', [App\Http\Controllers\TrademarksController::class, 'index'])->name('index.trademarks');
+Route::get('/trademarks/create', [App\Http\Controllers\TrademarksController::class, 'create'])->name('create.trademarks');
+// Select anidados
+Route::get('/trademarks/client', [App\Http\Controllers\TrademarksController::class, 'index']);
+Route::post('/trademarks/contact', [App\Http\Controllers\TrademarksController::class, 'contact']);
+Route::post('/trademarks/address', [App\Http\Controllers\TrademarksController::class, 'address']);

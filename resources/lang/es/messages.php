@@ -17,6 +17,7 @@ return [
 
     'save' => 'Guardar',
     'back' => 'Atrás',
+    'update' => 'Actualizar',
     'action' => 'Accion',
     'close' => 'Cerrar',
     'upload' => 'Subir',
@@ -27,6 +28,7 @@ return [
     'import_place' => 'Buscar Archivo...',
     'import_check' => 'Acepto los términos y condiciones',
     'export' => 'Exportar',
+    'new' => 'Nuevo',
 
     'company_name' => 'Nombre de empresa',
     'contact_name' => 'Nombre de contacto',

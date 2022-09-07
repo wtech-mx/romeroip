@@ -17,6 +17,7 @@ return [
 
     'save' => 'Save',
     'back' => 'Back',
+    'update' => 'Update',
     'action' => 'Action',
     'close' => 'Close',
     'upload' => 'Upload',
@@ -27,6 +28,7 @@ return [
     'import_place' => 'Browse file...',
     // 'import_check' => 'I accept the terms and conditions',
     'export' => 'Export',
+    'new' => 'New',
 
     'company_name' => 'Company name',
     'contact_name' => 'Contact name',
