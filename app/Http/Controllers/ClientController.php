@@ -22,13 +22,8 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $company_name = $request->get('company_name');
-        $vat_no = $request->get('vat_no');
 
-        $clients = Clients::
-        CompanyName($company_name)
-        ->VatNo($vat_no)
-        ->paginate(4);
+        $clients = Clients::get();
 
         return view('client.index', compact('clients'));
     }
