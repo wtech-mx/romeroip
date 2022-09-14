@@ -46,6 +46,7 @@
                                                     <label class="form-label">{{ __('messages.country') }}</label>
                                                     <div class="input-group">
                                                         <select class="form-control js-example-basic-single" name="country" id="country">
+                                                            <option selected>{{ __('messages.select') }}</option>
                                                             @include('client.paises')
                                                         </select>
                                                     </div>
