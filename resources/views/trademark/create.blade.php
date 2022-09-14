@@ -59,7 +59,7 @@
                                                             <div class="input-group">
                                                                 <input id="our_ref" name="our_ref" class="form-control"
                                                                     type="text" placeholder="{{ __('messages.our_ref') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
                                                         <div class="col-6">
@@ -67,7 +67,7 @@
                                                             <div class="input-group">
                                                                 <input id="client_ref" name="client_ref" class="form-control"
                                                                     type="text" placeholder="{{ __('messages.client_ref') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -78,7 +78,7 @@
                                                                 <input id="opposition_no" name="opposition_no" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.opposition_no') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
                                                         <div class="col-6">
@@ -87,7 +87,7 @@
                                                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control"
                                                                     type="date"
                                                                     placeholder="{{ __('messages.filing_date') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -98,7 +98,7 @@
                                                                 <input id="litigation_no" name="litigation_no" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.litigation_no') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
                                                         <div class="col-6">
@@ -107,7 +107,7 @@
                                                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control"
                                                                     type="date"
                                                                     placeholder="{{ __('messages.filing_date') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -127,7 +127,7 @@
                                                                 <input id="application_no" name="application_no" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.application_no') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -152,7 +152,7 @@
                                                                 <input id="registration_no" name="registration_no" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.registration_no') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -171,7 +171,7 @@
                                                                 <input id="filing_date_general" name="filing_date_general" class="form-control"
                                                                     type="date"
                                                                     placeholder="{{ __('messages.filing_date') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -198,7 +198,7 @@
                                                                 <input id="first_date" name="first_date" class="form-control"
                                                                     type="date"
                                                                     placeholder="{{ __('messages.first_date') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -209,7 +209,7 @@
                                                                 <input id="int_registration_no" name="int_registration_no" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.int_registration_no') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -220,7 +220,7 @@
                                                                 <input id="registration_date" name="registration_date" class="form-control"
                                                                     type="date"
                                                                     placeholder="{{ __('messages.registration_date') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -231,7 +231,7 @@
                                                                 <input id="int_registration_date" name="int_registration_date" class="form-control"
                                                                     type="date"
                                                                     placeholder="{{ __('messages.int_registration_date') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -242,7 +242,7 @@
                                                                 <input id="expiration_date" name="expiration_date" class="form-control"
                                                                     type="date"
                                                                     placeholder="{{ __('messages.expiration_date') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -253,7 +253,7 @@
                                                                 <input id="contracting_organization" name="contracting_organization" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.contracting_organization') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -264,7 +264,7 @@
                                                                 <input id="publication_date" name="publication_date" class="form-control"
                                                                     type="date"
                                                                     placeholder="{{ __('messages.publication_date') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -275,7 +275,7 @@
                                                                 <input id="designated_countries" name="designated_countries" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.designated_countries') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -304,7 +304,7 @@
                                                             <div class="input-group">
                                                                 <input id="last_declaration" name="last_declaration" class="form-control"
                                                                     type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -313,7 +313,7 @@
                                                             <div class="input-group">
                                                                 <input id="last_renewal" name="last_renewal" class="form-control"
                                                                     type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -322,7 +322,7 @@
                                                             <div class="input-group">
                                                                 <input id="next_declaration" name="next_declaration" class="form-control"
                                                                     type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -331,7 +331,7 @@
                                                             <div class="input-group">
                                                                 <input id="next_renewal" name="next_renewal" class="form-control"
                                                                     type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -353,7 +353,7 @@
                                                                         <input id="trademark" name="trademark"
                                                                             class="form-control" type="text"
                                                                             placeholder="{{ __('messages.trademark') }}"
-                                                                            required="required">
+                                                                            >
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -370,7 +370,7 @@
                                                                         <input id="type_application" name="type_application"
                                                                             class="form-control" type="text"
                                                                             placeholder="{{ __('messages.type_application') }}"
-                                                                            required="required">
+                                                                            >
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -380,7 +380,7 @@
                                                                         <input id="type_mark" name="type_mark"
                                                                             class="form-control" type="text"
                                                                             placeholder="{{ __('messages.type_mark') }}"
-                                                                            required="required">
+                                                                            >
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -415,7 +415,7 @@
                                                                     <div class="input-group">
                                                                         <input id="design" name="design"
                                                                             class="form-control" type="file"
-                                                                            placeholder="Thompson" required="required">
+                                                                            placeholder="Thompson" >
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mt-5">
@@ -478,7 +478,7 @@
                                                                 <input id="priority_no" name="priority_no" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.priority_no') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -489,7 +489,7 @@
                                                                 <input id="country_office" name="country_office" class="form-control"
                                                                     type="text"
                                                                     placeholder="{{ __('messages.country_office') }}"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
 
@@ -499,7 +499,7 @@
                                                             <div class="input-group">
                                                                 <input id="priority_date" name="priority_date" class="form-control"
                                                                     type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    >
                                                             </div>
                                                         </div>
                                                     </div>
