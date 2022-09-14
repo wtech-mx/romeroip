@@ -29,6 +29,10 @@ return [
     'import_check' => 'Acepto los términos y condiciones',
     'export' => 'Exportar',
     'new' => 'Nuevo',
+    'simple_search' => 'Búsqueda Simple',
+    'advanced_search' => 'Búsqueda Avanzada',
+    'from' => 'De',
+    'to' => 'A',
 
     'company_name' => 'Nombre de empresa',
     'contact_name' => 'Nombre de contacto',
@@ -42,6 +46,7 @@ return [
     'website' => 'Sitio web',
     'note_important' => 'Notas Importantes',
     'note' => 'Notas',
+    'information' => 'Información',
 
     'new_trademark' => 'Nueva Marca',
     'trademark_name' => 'Nombre de marca',
@@ -86,6 +91,8 @@ return [
     'translation' => 'Traducción',
     'transliteration' => 'Transliteración',
     'disclaimer' => 'Leyendas No Reservables',
+    'national' => 'Nacional',
+    'international' => 'Internacional',
 
     'goods_services' => 'Productos / Servicios',
     'class' => 'Clase',

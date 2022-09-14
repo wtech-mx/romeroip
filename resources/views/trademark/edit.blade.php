@@ -515,7 +515,7 @@
                                                         <div class="col-12">
                                                             <label class="form-label">{{ __('messages.client') }}</label>
                                                             <div class="input-group">
-                                                            <select class="form-control js-example-basic-single" id="id_client" name="id_client">
+                                                                <select class="form-control js-example-basic-single" id="id_client" name="id_client">
                                                                 <option value="">{{ __('messages.client') }}</option>
                                                                 @foreach ($clients as $client)
                                                                     <option value="{{ $client->id }}">{{ $client->company_name }}</option>

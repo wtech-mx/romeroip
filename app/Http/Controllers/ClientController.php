@@ -20,9 +20,15 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Clients::get();
+        $company_name = $request->get('company_name');
+        $vat_no = $request->get('vat_no');
+
+        $clients = Clients::
+        CompanyName($company_name)
+        ->VatNo($vat_no)
+        ->paginate(4);
 
         return view('client.index', compact('clients'));
     }
@@ -52,7 +58,9 @@ class ClientController extends Controller
         $client->vat_no = $request->get('vat_no');
         $client->country = $request->get('country');
         $client->web_page = $request->get('web_page');
+        $client->email = $request->get('email2');
         $client->save();
+
 
         if($request->name != NULL){
             $name = $request->name;
@@ -152,6 +160,7 @@ class ClientController extends Controller
         $client->vat_no = $request->get('vat_no');
         $client->country = $request->get('country');
         $client->web_page = $request->get('web_page');
+        $client->email = $request->get('email');
         $client->update();
 
         $contact_client = ContactClient::where('id_client', $client->id)->delete();
@@ -205,7 +214,7 @@ class ClientController extends Controller
 
             PhoneContact::insert($insert_data2);
         }
-        
+
         if($request->address != NULL){
             $client_address = AddressContact::where('id_clients', $client->id)->first();
             $client_address->address = $request->get('address');

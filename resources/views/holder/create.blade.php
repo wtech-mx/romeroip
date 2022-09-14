@@ -29,20 +29,20 @@
                                     <!-- Card holder -->
                                     <div class="card mt-4" id="profile">
                                         <div class="card-header">
-                                            <h5>{{ __('messages.holder') }}</h5>
+                                            <h5>{{ __('messages.holder_info') }}</h5>
                                         </div>
                                         <div class="card-body pt-0">
                                             <div class="row">
-                                                <div class="col-12">
-                                                    <label class="form-label">{{ __('messages.company_name') }}</label>
+                                                <div class="col-6">
+                                                    <label class="form-label">{{ __('messages.holder') }}</label>
                                                     <div class="input-group">
                                                         <input name="company_name" id="company_name"
                                                             class="form-control" type="text"
-                                                            placeholder="{{ __('messages.company_name') }}"
+                                                            placeholder="{{ __('messages.holder') }}"
                                                             required="required">
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-6">
                                                     <label class="form-label">{{ __('messages.country') }}</label>
                                                     <div class="input-group">
                                                         <select class="form-control js-example-basic-single" name="country" id="country">
@@ -59,21 +59,21 @@
                                     <!-- Card Address  -->
                                     <div class="card mt-4">
                                         <div class="card-header d-flex">
-                                            <h5>{{ __('messages.address') }}</h5>
+                                            <h5>{{ __('messages.address') }} {{ __('messages.information') }}</h5>
                                         </div>
                                         <div class="card-body pt-0" id="address_client">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <label class="form-label">{{ __('messages.address') }}</label>
                                                     <div class="input-group">
-                                                        <textarea class="form-control" name="address[]" id="address[]" rows="1"></textarea>
+                                                        <textarea class="form-control" name="address[]" id="address[]" rows="5"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-6 input_fac">
                                                     <label class="form-label">{{ __('messages.industrial_address')}}</label>
                                                     <div class="input-group">
-                                                        <textarea class="form-control" name="commercial_address[]" id="commercial_address[]" rows="1"></textarea>
+                                                        <textarea class="form-control" name="commercial_address[]" id="commercial_address[]" rows="5"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -82,37 +82,6 @@
                                             <div class="col-12">
                                                 <a href="javascript:;" id="agregar_address" class="btn" style="border: 2px solid #F82018; color: #F82018; margin-left: 25px;">{{ __('messages.address') }} +</a>
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Card Phone -->
-                                    <div class="card mt-4">
-                                        <div class="card-header d-flex">
-                                            <h5>{{ __('messages.phone') }}</h5>
-                                        </div>
-                                        <div class="card-body pt-0" id="phone_client">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label class="form-label">{{ __('messages.phone') }}</label>
-                                                    <div class="input-group">
-                                                        <input name="phone[]" id="phone[]" class="form-control"
-                                                            type="text" placeholder="{{ __('messages.phone') }}">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-6">
-                                                    <label class="form-label">Fax</label>
-                                                    <div class="input-group">
-                                                        <input name="fax[]" id="fax[]" class="form-control"
-                                                            type="text" placeholder="Fax">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <a href="javascript:;" id="agregar_phone" class="btn"
-                                            style="border: 2px solid #F82018; color: #F82018; margin-left: 25px;">{{
-                                                __('messages.phone') }} +</a>
                                         </div>
                                     </div>
 
@@ -137,37 +106,22 @@
         function agregar_address(){
 
             var fila='<hr>'+
-                    '<div class="row">'+
+            '<div class="row">'+
                         '<div class="col-6">'+
                             '<label class="form-label">{{ __('messages.address') }}</label>'+
                             '<div class="input-group">'+
-                                '<textarea class="form-control" name="address[]" id="address[]" rows="1"></textarea>'+
+                                '<textarea class="form-control" name="address[]" id="address[]" rows="5"></textarea>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-6">'+
+                            '<label class="form-label">{{ __('messages.industrial_address') }}</label>'+
+                            '<div class="input-group">'+
+                                '<textarea class="form-control" name="commercial_address[]" id="commercial_address[]" rows="5"></textarea>'+
                             '</div>'+
                         '</div>'+
                     '</div>';
 
             $('#address_client').append(fila);
-        }
-</script>
-
-<script type="text/javascript">
-    $('#agregar_phone').click(function(){
-            agregar_phone();
-        });
-
-        function agregar_phone(){
-
-            var fila='<hr>'+
-                    '<div class="row">'+
-                        '<div class="col-6">'+
-                            '<label class="form-label">{{ __('messages.phone') }}</label>'+
-                            '<div class="input-group">'+
-                                '<input name="phone[]" id="phone[]" class="form-control" type="text" placeholder="{{ __('messages.phone') }}">'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>';
-
-            $('#phone_client').append(fila);
         }
 </script>
 

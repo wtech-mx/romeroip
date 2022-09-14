@@ -67,7 +67,12 @@ Route::delete('/holder/delete/{id}', [App\Http\Controllers\HolderController::cla
 |--------------------------------------------------------------------------*/
 Route::get('/trademarks/index', [App\Http\Controllers\TrademarksController::class, 'index'])->name('index.trademarks');
 Route::get('/trademarks/create', [App\Http\Controllers\TrademarksController::class, 'create'])->name('create.trademarks');
-// Select anidados
-Route::get('/trademarks/client', [App\Http\Controllers\TrademarksController::class, 'index']);
-Route::post('/trademarks/contact', [App\Http\Controllers\TrademarksController::class, 'contact']);
-Route::post('/trademarks/address', [App\Http\Controllers\TrademarksController::class, 'address']);
+Route::post('/trademarks/store', [App\Http\Controllers\TrademarksController::class, 'store'])->name('store.trademarks');
+Route::get('/trademarks/edit/{id}', [App\Http\Controllers\TrademarksController::class, 'edit'])->name('edit.trademarks');
+Route::patch('/trademarks/update/{id}', [App\Http\Controllers\TrademarksController::class, 'update'])->name('update.trademarks');
+// Select anidado
+Route::get('/trademarks/crear/{id}', [App\Http\Controllers\TrademarksController::class, 'GetClientAgainstMainCatEdit']);
+Route::get('/trademarks/address/{id}', [App\Http\Controllers\TrademarksController::class, 'GetAddressAgainstMainCatEdit']);
+
+Route::get('/trademarks/holder/{id}', [App\Http\Controllers\TrademarksController::class, 'GetHolderAgainstMainCatEdit']);
+Route::get('/trademarks/holder/industrial/{id}', [App\Http\Controllers\TrademarksController::class, 'GetHolderIAgainstMainCatEdit']);

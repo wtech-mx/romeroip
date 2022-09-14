@@ -56,7 +56,14 @@
                                                             type="text" placeholder="{{ __('messages.vat_no') }}">
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-6">
+                                                    <label class="form-label">{{ __('messages.email') }}</label>
+                                                    <div class="input-group">
+                                                        <input name="email2" id="email2" class="form-control"
+                                                            type="text" placeholder="{{ __('messages.email') }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
                                                     <label class="form-label">{{ __('messages.country') }}</label>
                                                     <div class="input-group">
                                                         <select class="form-control js-example-basic-single" name="country" id="country">

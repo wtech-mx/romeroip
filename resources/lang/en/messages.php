@@ -29,6 +29,10 @@ return [
     // 'import_check' => 'I accept the terms and conditions',
     'export' => 'Export',
     'new' => 'New',
+    'simple_search' => 'Simple Search',
+    'advanced_search' => 'Advanced Search',
+    'from' => 'From',
+    'to' => 'To',
 
     'company_name' => 'Company name',
     'contact_name' => 'Contact name',
@@ -42,6 +46,7 @@ return [
     'website' => 'Website',
     'note_important' => 'Important Notes',
     'note' => 'Notes',
+    'information' => 'Information',
 
     'new_trademark' => 'New Mark',
     'trademark_name' => 'Trademarks name',
@@ -87,6 +92,8 @@ return [
     'translation' => 'Translation',
     'transliteration' => 'Transliteration',
     'disclaimer' => 'Disclaimer',
+    'national' => 'National',
+    'international' => 'International',
 
     'goods_services' => 'Goods / Services',
     'class' => 'Class',

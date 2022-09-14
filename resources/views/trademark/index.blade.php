@@ -50,37 +50,35 @@
                   </thead>
 
                   <tbody>
-                    <tr>
-                      <td class="text-center ">
-                        <div class="form-check" style="left: 20px; position: absolute;">
-                            <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" >
-                        </div>
-                      </td>
-                      <td class="text-center">101</td>
-                      <td class="text-center">Vencedor y Diseño</td>
-                      <td class="text-center">30</td>
-                      <td class="text-center">159967</td>
-                      <td class="text-center">Jan/24/1980</td>
-                      <td class="text-center">255822	</td>
-                      <td class="text-center">Feb/04/1981	</td>
-                      <td class="text-center">Jan/24/2025	</td>
-                      <td>
-                          <span class="badge badge-danger badge-sm">
-                              Pendiente
-                          </span>
-                      </td>
-                      <td class="text-sm">
-                        <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
-                          <i class="fas fa-eye text-secondary"></i>
-                        </a>
-                        <a href="javascript:;" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                          <i class="fas fa-user-edit text-secondary"></i>
-                        </a>
-                        <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                          <i class="fas fa-trash text-secondary"></i>
-                        </a>
-                      </td>
-                    </tr>
+                    @foreach ($trademarks as $trademark)
+                        <tr>
+                        <td class="text-center ">
+                            <div class="form-check" style="left: 20px; position: absolute;">
+                                <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" >
+                            </div>
+                        </td>
+                        <td class="text-center">{{ $trademark->our_ref }}</td>
+                        <td class="text-center">{{ $trademark->trademark }}</td>
+                        <td class="text-center">{{ $trademark->class }}</td>
+                        <td class="text-center">{{ $trademark->application_no }}</td>
+                        <td class="text-center">{{ $trademark->filing_date_opposition }}</td>
+                        <td class="text-center">{{ $trademark->registration_no }}</td>
+                        <td class="text-center">{{ $trademark->registration_date }}</td>
+                        <td class="text-center">{{ $trademark->last_declaration }}</td>
+                        <td class="text-center">{{ $trademark->status }}</td>
+                        <td class="text-sm">
+                            <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
+                            <i class="fas fa-eye text-secondary"></i>
+                            </a>
+                            <a href="javascript:;" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
+                            <i class="fas fa-user-edit text-secondary"></i>
+                            </a>
+                            <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
+                            <i class="fas fa-trash text-secondary"></i>
+                            </a>
+                        </td>
+                        </tr>
+                    @endforeach
                   </tbody>
 
                 </table>

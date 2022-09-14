@@ -28,4 +28,16 @@ class Clients extends Model
     {
         return $this->hasOne('App\Models\AddressContact', 'id_clients');
     }
+
+    public function scopeCompanyName($query, $company_name)
+    {
+        if($company_name)
+            return $query->where('company_name', 'LIKE', "%$company_name%");
+    }
+
+    public function scopeVatNo($query, $vat_no)
+    {
+        if($vat_no)
+            return $query->where('vat_no', 'LIKE', "%$vat_no%");
+    }
 }

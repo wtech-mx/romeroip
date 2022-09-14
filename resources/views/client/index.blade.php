@@ -17,6 +17,13 @@
                         </span>
 
                          <div class="float-right">
+                            {{ Form::open(['route' => 'index.clients', 'method' => 'GET', 'class' => 'form-inline pull-right']) }}
+                                <div class="form-group">
+                                    {{ Form::text('company_name', null, ['class' => 'form-control', 'placeholder' => 'company_name']) }}
+                                </div>
+
+                            {{ Form::close() }}
+
                             <a href="{{ route('create.clients') }}" class="btn btn-sm float-right"  data-placement="left" style="background: {{$configuracion->color_boton_add}}; color: #ffff">
                               {{ __('messages.new_client') }}
                             </a>
