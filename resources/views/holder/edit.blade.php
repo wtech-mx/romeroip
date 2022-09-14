@@ -72,14 +72,14 @@
                                                 <div class="col-6">
                                                     <label class="form-label">{{ __('messages.address') }}</label>
                                                     <div class="input-group">
-                                                        <textarea class="form-control" name="address[]" id="address[]" rows="1">{{$address->address}}</textarea>
+                                                        <textarea class="form-control" name="address[]" id="address[]" rows="5">{{$address->address}}</textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-6 input_fac">
                                                     <label class="form-label">{{ __('messages.industrial_address')}}</label>
                                                     <div class="input-group">
-                                                        <textarea class="form-control" name="commercial_address[]" id="commercial_address[]" rows="1">{{$address->address}}</textarea>
+                                                        <textarea class="form-control" name="commercial_address[]" id="commercial_address[]" rows="5">{{$address->address}}</textarea>
                                                     </div>
                                                 </div>
                                                 @endforeach
