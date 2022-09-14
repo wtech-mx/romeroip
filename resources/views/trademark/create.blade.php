@@ -420,8 +420,8 @@
                                                                 </div>
                                                                 <div class="col-12 mt-5">
                                                                     <div class="input-group">
-                                                                        <embed src="{{ asset('logo/' . $configuracion->logo) }}"
-                                                                            style="width: 300px; height: 100px;">
+                                                                        <embed src="{{ asset('logo/FEDERIKA.jpg') }}"
+                                                                            style="width: 300px; height: 300px;">
                                                                     </div>
                                                                 </div>
                                                             </div>
