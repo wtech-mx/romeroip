@@ -33,6 +33,7 @@ return [
     'advanced_search' => 'Búsqueda Avanzada',
     'from' => 'De',
     'to' => 'A',
+    'all' => 'Todo',
 
     'company_name' => 'Nombre de empresa',
     'contact_name' => 'Nombre de contacto',
@@ -53,6 +54,7 @@ return [
     'all_trademark' => 'Todas las marcas registradas',
     'reference_numbers' => 'Número de referencia',
     'our_ref' => 'Nuestra ref.',
+    'our_refs' => 'Nuestras Referencias.',
     'client_ref' => 'Cliente Ref.',
     'opposition_no' => 'Número de oposición',
     'filing_date' => 'Fecha de Presentación',

@@ -33,6 +33,7 @@ return [
     'advanced_search' => 'Advanced Search',
     'from' => 'From',
     'to' => 'To',
+    'all' => 'All',
 
     'company_name' => 'Company name',
     'contact_name' => 'Contact name',
@@ -53,6 +54,7 @@ return [
     'all_trademark' => 'All trademarks',
     'reference_numbers' => 'Reference Numbers',
     'our_ref' => 'Our Ref.',
+    'our_refs' => 'Our Refs.',
     'client_ref' => 'Client Ref.',
     'opposition_no' => 'Opposition No.',
     'filing_date' => 'Filing Date',

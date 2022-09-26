@@ -4,18 +4,18 @@
             <div class="card">
                 <div class="card-header">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span id="card_title">
+                        <h5 class="mb-0">
                             {{ __('messages.simple_search') }}
-                        </span>
+                        </h5>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-3">
-                            <label class="form-label">{{ __('messages.our_ref') }}</label>
+                            <label class="form-label">{{ __('messages.our_ref') }} / {{ __('messages.client_ref') }} </label>
                             <div class="input-group">
                                 <input wire:model="our_ref" class="form-control"
-                                    type="text" placeholder="{{ __('messages.our_ref') }}"
+                                    type="text" placeholder="{{ __('messages.our_ref') }} / {{ __('messages.client_ref') }} "
                                     required="required">
                             </div>
                         </div>
@@ -47,27 +47,9 @@
 
                     <div class="row mt-3">
                         <div class="col-3">
-                            <label class="form-label">{{ __('messages.client') }}</label>
-                            <select class="form-control">
-                                <option value="">{{ __('messages.select') }}</option>
-                                @foreach ($clients as $client)
-                                    <option value="{{ $client->id }}">{{ $client->company_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.trademark') }}</label>
-                            <select class="form-control">
-                                <option value="">{{ __('messages.select') }}</option>
-                                @foreach ($trademarks as $trademark)
-                                    <option value="{{ $trademark->id }}">{{ $trademark->trademark }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-3">
                             <label class="form-label">{{ __('messages.origin') }}</label>
                             <select class="form-control" name="origin" id="origin">
-                                <option selected>{{ __('messages.select') }}</option>
+                                <option selected>{{ __('messages.all') }}</option>
                                 <option value="{{ __('messages.national') }}">
                                     {{ __('messages.national') }}</option>
                                 <option value="{{ __('messages.international') }}">
@@ -75,26 +57,29 @@
                             </select>
                         </div>
                         <div class="col-3">
-                            <label class="form-label">{{ __('messages.status') }}</label>
-                            <select class="form-control" wire:model="status">
-                                <option value="{{ __('messages.live') }}" selected>{{ __('messages.live') }}
-                                </option>
-                                <option value="{{ __('messages.pending') }}">{{
-                                    __('messages.pending') }}</option>
-                                <option value="{{ __('messages.abandoned') }}">{{
-                                    __('messages.abandoned') }}</option>
-                                <option value="{{ __('messages.lapsed') }}">{{ __('messages.lapsed')
-                                    }}</option>
-                                <option value="{{ __('messages.inactive') }}">{{
-                                    __('messages.inactive') }}</option>
-                                <option value="ALL">ALL</option>
-                            </select>
+                            <label class="form-label">{{ __('messages.client') }}</label>
+                            <input wire:model="client" class="form-control"
+                            type="text" placeholder="{{ __('messages.client') }}"
+                            required="required">
                         </div>
+                        <div class="col-3">
+                            <label class="form-label">{{ __('messages.holder') }}</label>
+                            <input wire:model="holder" class="form-control"
+                            type="text" placeholder="{{ __('messages.holder') }}"
+                            required="required">
+                        </div>
+                        <div class="col-3">
+                            <label class="form-label">{{ __('messages.trademark') }}</label>
+                            <input wire:model="trademark" class="form-control"
+                            type="text" placeholder="{{ __('messages.trademark') }}"
+                            required="required">
+                        </div>
+
                     </div>
 
                     <div class="d-lg-flex">
                         <div class="ms-auto my-auto mt-lg-0 mt-4">
-                            <a class="btn btn-outline-warning mt-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <a class="btn mt-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="border: 2px solid #F82018; color: #F82018;">
                                 {{ __('messages.advanced_search') }}
                             </a>
                         </div>
@@ -103,12 +88,10 @@
                     <div class="collapse" id="collapseExample">
                         <div class="row mt-3">
                             <div class="col-3">
-                                <label class="form-label">{{ __('messages.client_ref') }}</label>
-                                <div class="input-group">
-                                    <input wire:model="client_ref" class="form-control"
-                                        type="text" placeholder="{{ __('messages.client_ref') }}"
-                                        required="required">
-                                </div>
+                                <label class="form-label">{{ __('messages.status') }}</label>
+                                <input wire:model="status" class="form-control"
+                                type="text" placeholder="{{ __('messages.status') }}"
+                                required="required">
                             </div>
                             <div class="col-3">
                                 <label class="form-label">{{ __('messages.opposition_no') }}</label>
@@ -129,7 +112,7 @@
                             <div class="col-3">
                                 <label class="form-label">{{ __('messages.class') }}</label>
                                 <select class="form-control" wire:model="class">
-                                    <option selected>{{ __('messages.select') }}</option>
+                                    <option selected>{{ __('messages.all') }}</option>
                                     @for($i=0; $i<=45; $i++) <option value="{{$i}}">{{$i}}</option> @endfor
                                 </select>
                             </div>
@@ -137,27 +120,32 @@
 
                         <div class="row mt-3">
                             <div class="col-6">
-                                <label class="form-label">{{ __('messages.our_ref') }}</label>
+                                <label class="form-label">{{ __('messages.our_refs') }}</label>
                                 <div class="input-group">
-                                    <input wire:model="our_ref" class="form-control"
-                                        type="text" placeholder="{{ __('messages.our_ref') }}"
+                                    <input wire:model="our_refs" class="form-control"
+                                        type="text" placeholder="{{ __('messages.our_refs') }}"
                                         required="required">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <label class="form-label">{{ __('messages.country') }}</label>
                                 <div class="input-group">
-                                    <input wire:model="country" class="form-control"
-                                        type="text" placeholder="{{ __('messages.country') }}"
-                                        required="required">
+                                    <select class="form-control js-example-basic-single" name="country" id="country">
+                                        <option selected>{{ __('messages.select') }}</option>
+                                        @include('client.paises')
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <label class="form-label">{{ __('messages.national') }}</label>
                                 <div class="input-group">
-                                    <input wire:model="national" class="form-control"
-                                        type="text" placeholder="{{ __('messages.national') }}"
-                                        required="required">
+                                    <select class="form-control" name="origin" id="origin">
+                                        <option selected>{{ __('messages.select') }}</option>
+                                        <option value="{{ __('messages.national') }}">
+                                            {{ __('messages.national') }}</option>
+                                        <option value="{{ __('messages.international') }}">
+                                            {{ __('messages.international') }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
