@@ -70,6 +70,7 @@ Route::get('/trademarks/create', [App\Http\Controllers\TrademarksController::cla
 Route::post('/trademarks/store', [App\Http\Controllers\TrademarksController::class, 'store'])->name('store.trademarks');
 Route::get('/trademarks/edit/{id}', [App\Http\Controllers\TrademarksController::class, 'edit'])->name('edit.trademarks');
 Route::patch('/trademarks/update/{id}', [App\Http\Controllers\TrademarksController::class, 'update'])->name('update.trademarks');
+
 // Select anidado
 Route::get('/trademarks/crear/{id}', [App\Http\Controllers\TrademarksController::class, 'GetClientAgainstMainCatEdit']);
 Route::get('/trademarks/address/{id}', [App\Http\Controllers\TrademarksController::class, 'GetAddressAgainstMainCatEdit']);

@@ -18,14 +18,38 @@ class TrademarksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $trademarks = Trademarks::get();
-        $clients = Clients::get();
-        $holder = Holder::get();
+     public function index(Request $request) {
+        $client_ref = $request->get('client_ref');
+        $application_no = $request->get('application_no');
+        $registration_no = $request->get('registration_no');
+        $int_registration_no = $request->get('int_registration_no');
+        $origin = $request->get('origin');
+        $id_client = $request->id_client;
+        $id_holder = $request->id_holder;
+        $trademark = $request->get('trademark');
 
-        return view('trademark.index', compact('trademarks', 'clients', 'holder'));
-    }
+        $trademarks = Trademarks::
+        client_ref($client_ref)
+        ->application_no($application_no)
+        ->registration_no($registration_no)
+        ->int_registration_no($int_registration_no)
+        ->origin($origin)
+        ->whereHas('Clients', function($query) use($id_client){
+            if ($id_client) {
+                return $query->where('company_name', $id_client);
+            }
+        })
+        ->whereHas('Holder', function($query) use($id_holder){
+            if ($id_holder) {
+                return $query->where('company_name', $id_holder);
+            }
+        })
+        ->trademark($trademark)
+        ->paginate(5);
+
+
+      return view('trademark.index', compact('trademarks'));
+     }
 
     /* Trae los contacto con el cliente seleccionado  */
     public function GetClientAgainstMainCatEdit($id)

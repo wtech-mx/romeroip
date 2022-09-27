@@ -10,72 +10,69 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.our_ref') }} / {{ __('messages.client_ref') }} </label>
-                            <div class="input-group">
-                                <input wire:model="our_ref" class="form-control"
-                                    type="text" placeholder="{{ __('messages.our_ref') }} / {{ __('messages.client_ref') }} "
-                                    required="required">
+                    <form class="form-inline">
+                        <div class="row">
+                            <div class="col-3">
+                                <label class="form-label">{{ __('messages.our_ref') }} / {{ __('messages.client_ref') }} </label>
+                                <div class="input-group">
+                                    <input name="client_ref" class="form-control"
+                                        type="search" placeholder="{{ __('messages.our_ref') }} / {{ __('messages.client_ref') }} ">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.application_no') }}</label>
-                            <div class="input-group">
-                                <input wire:model="application_no" class="form-control"
-                                    type="text" placeholder="{{ __('messages.application_no') }}"
-                                    required="required">
+                            <div class="col-3">
+                                <label class="form-label">{{ __('messages.application_no') }}</label>
+                                <div class="input-group">
+                                    <input name="application_no" class="form-control"
+                                        type="text" placeholder="{{ __('messages.application_no') }}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.registration_no') }}</label>
-                            <div class="input-group">
-                                <input wire:model="registration_no" class="form-control"
-                                    type="text" placeholder="{{ __('messages.registration_no') }}"
-                                    required="required">
+                            <div class="col-3">
+                                <label class="form-label">{{ __('messages.registration_no') }}</label>
+                                <div class="input-group">
+                                    <input name="registration_no" class="form-control"
+                                        type="text" placeholder="{{ __('messages.registration_no') }}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.int_registration_no') }}</label>
-                            <div class="input-group">
-                                <input wire:model="int_registration_no" class="form-control"
-                                    type="text" placeholder="{{ __('messages.int_registration_no') }}"
-                                    required="required">
+                            <div class="col-3">
+                                <label class="form-label">{{ __('messages.int_registration_no') }}</label>
+                                <div class="input-group">
+                                    <input name="int_registration_no" class="form-control"
+                                        type="text" placeholder="{{ __('messages.int_registration_no') }}">
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.origin') }}</label>
-                            <select class="form-control" name="origin" id="origin">
-                                <option selected>{{ __('messages.all') }}</option>
-                                <option value="{{ __('messages.national') }}">
-                                    {{ __('messages.national') }}</option>
-                                <option value="{{ __('messages.international') }}">
-                                    {{ __('messages.international') }}</option>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.client') }}</label>
-                            <input wire:model="client" class="form-control"
-                            type="text" placeholder="{{ __('messages.client') }}"
-                            required="required">
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.holder') }}</label>
-                            <input wire:model="holder" class="form-control"
-                            type="text" placeholder="{{ __('messages.holder') }}"
-                            required="required">
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">{{ __('messages.trademark') }}</label>
-                            <input wire:model="trademark" class="form-control"
-                            type="text" placeholder="{{ __('messages.trademark') }}"
-                            required="required">
                         </div>
 
-                    </div>
+                        <div class="row mt-3">
+                            <div class="col-3">
+                                <label class="form-label">{{ __('messages.origin') }}</label>
+                                <select class="form-control" name="origin" id="origin">
+                                    <option value="" selected>{{ __('messages.all') }}</option>
+                                    <option value="{{ __('messages.national') }}">
+                                        {{ __('messages.national') }}</option>
+                                    <option value="{{ __('messages.international') }}">
+                                        {{ __('messages.international') }}</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label class="form-label">{{ __('messages.client') }}</label>
+                                <input name="id_client" id="id_client" class="form-control"
+                                type="text" placeholder="{{ __('messages.client') }}">
+                            </div>
+                            <div class="col-3">
+                                <label class="form-label">{{ __('messages.holder') }}</label>
+                                <input name="id_holder" class="form-control"
+                                type="text" placeholder="{{ __('messages.holder') }}">
+                            </div>
+                            <div class="col-3">
+                                <label class="form-label">{{ __('messages.trademark') }}</label>
+                                <input name="trademark" class="form-control"
+                                type="text" placeholder="{{ __('messages.trademark') }}">
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                    </form>
 
                     <div class="d-lg-flex">
                         <div class="ms-auto my-auto mt-lg-0 mt-4">

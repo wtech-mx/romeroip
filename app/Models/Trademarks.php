@@ -55,16 +55,53 @@ class Trademarks extends Model
                             'id_address',
                             'industrial_address'];
 
-    public function Clients(){
+
+                            public function Clients(){
         return $this->belongsTo(Clients::class,'id_client');
     }
 
-    public function ContactClient(){
-        return $this->belongsTo(ContactClient::class,'id_contact');
+    public function Client(){
+        return $this->hasOne(Client::class,'id_client');
+    }
+
+    public function Holder(){
+        return $this->belongsTo(Holder::class,'id_holder');
     }
 
     public function AddressContact(){
         return $this->belongsTo(AddressContact::class,'id_address');
     }
 
+    // ========================================================Filtros====================================================================
+
+    public function scopeClient_ref($query, $client_ref) {
+    	if ($client_ref) {
+    		return $query->where('client_ref','like',"%$client_ref%");
+    	}
+    }
+    public function scopeApplication_no($query, $application_no) {
+    	if ($application_no) {
+    		return $query->where('application_no','like',"%$application_no%");
+    	}
+    }
+    public function scopeRegistration_no($query, $registration_no) {
+    	if ($registration_no) {
+    		return $query->where('registration_no','like',"%$registration_no%");
+    	}
+    }
+    public function scopeInt_registration_no($query, $int_registration_no) {
+    	if ($int_registration_no) {
+    		return $query->where('int_registration_no','like',"%$int_registration_no%");
+    	}
+    }
+    public function scopeOrigin($query, $origin) {
+    	if ($origin) {
+    		return $query->where('origin','like',"%$origin%");
+    	}
+    }
+    public function scopeTrademark($query, $trademark) {
+    	if ($trademark) {
+    		return $query->where('trademark','like',"%$trademark%");
+    	}
+    }
 }
