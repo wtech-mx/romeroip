@@ -99,9 +99,9 @@ class TrademarksController extends Controller
             ->class($class)
             ->country($country)
             ->where('last_declaration', '>=', $from_declaration)
-            ->where('next_declaration', '<=', $to_declaration)
+            ->where('last_declaration', '<=', $to_declaration)
             ->where('last_renewal', '>=', $from_renewal)
-            ->where('next_renewal', '<=', $to_renewal)
+            ->where('last_renewal', '<=', $to_renewal)
             ->where('our_ref', '>=', $from_ref)
             ->where('our_ref', '<=', $to_ref)
         ->get();
