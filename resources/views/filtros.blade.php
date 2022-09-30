@@ -146,7 +146,7 @@
                                 <div class="col-3">
                                     <label class="form-label">{{ __('messages.national') }}</label>
                                     <div class="input-group">
-                                        <select class="form-control" name="origin" id="origin">
+                                        <select class="form-control" name="national" id="national">
                                             <option value="" selected>{{ __('messages.select') }}</option>
                                             <option value="{{ __('messages.national') }}">
                                                 {{ __('messages.national') }}</option>
