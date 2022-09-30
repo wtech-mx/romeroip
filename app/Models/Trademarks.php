@@ -104,4 +104,30 @@ class Trademarks extends Model
     		return $query->where('trademark','like',"%$trademark%");
     	}
     }
+    public function scopeStatus($query, $status) {
+    	if ($status) {
+    		return $query->where('status','like',"%$status%");
+    	}
+    }
+    public function scopeOpposition_no($query, $opposition_no) {
+    	if ($opposition_no) {
+    		return $query->where('opposition_no','like',"%$opposition_no%");
+    	}
+    }
+    public function scopeLitigation_no($query, $litigation_no) {
+    	if ($litigation_no) {
+    		return $query->where('litigation_no','like',"%$litigation_no%");
+    	}
+    }
+    public function scopeClass($query, $class) {
+    	if ($class) {
+    		return $query->where('class','like',"%$class%");
+    	}
+    }
+    public function scopeCountry($query, $country) {
+    	if ($country) {
+    		return $query->where('country','like',"%$country%");
+    	}
+    }
+
 }

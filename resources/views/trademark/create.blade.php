@@ -57,9 +57,17 @@
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.our_ref') }}</label>
                                                             <div class="input-group">
+                                                                @php
+                                                                    if($trademark == null){
+                                                                        $suma= '1001';
+                                                                    }else{
+                                                                        $suma= $trademark->our_ref + 1;
+                                                                    }
+                                                                @endphp
+
                                                                 <input id="our_ref" name="our_ref" class="form-control"
-                                                                    type="text" placeholder="{{ __('messages.our_ref') }}"
-                                                                    >
+                                                                    type="text" value="{{ $suma }}">
+
                                                             </div>
                                                         </div>
                                                         <div class="col-6">

@@ -71,126 +71,139 @@
 
                         </div>
 
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                        <div class="d-lg-flex">
+                            <div class="ms-auto mt-4 p-2">
+                                <a class="btn mt-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="border: 2px solid #F82018; color: #F82018;">
+                                    {{ __('messages.advanced_search') }}
+                                </a>
+                            </div>
+
+                            <div class="ms-auto mt-4 p-2">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                            </div>
+                        </div>
+
+                        <div class="collapse" id="collapseExample">
+                            <div class="row mt-3">
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.status') }}</label>
+                                    <input name="status" class="form-control"
+                                    type="text" placeholder="{{ __('messages.status') }}">
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.opposition_no') }}</label>
+                                    <div class="input-group">
+                                        <input name="opposition_no" class="form-control"
+                                            type="text" placeholder="{{ __('messages.opposition_no') }}">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.litigation_no') }}</label>
+                                    <div class="input-group">
+                                        <input name="litigation_no" class="form-control"
+                                            type="text" placeholder="{{ __('messages.litigation_no') }}">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.class') }}</label>
+                                    <select class="form-control" name="class">
+                                        <option value="" selected>{{ __('messages.all') }}</option>
+                                        @for($i=0; $i<=45; $i++) <option value="{{$i}}">{{$i}}</option> @endfor
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <label class="form-label">{{ __('messages.our_refs') }}</label>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.from') }}</label>
+                                    <div class="input-group">
+                                        <input name="from_refs" class="form-control"
+                                            type="text" placeholder="{{ __('messages.from') }}">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.to') }}</label>
+                                    <div class="input-group">
+                                        <input name="to_refs" class="form-control"
+                                            type="text" placeholder="{{ __('messages.to') }}">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.country') }}</label>
+                                    <div class="input-group">
+                                        <select class="form-control js-example-basic-single" name="country" id="country">
+                                            <option value="" selected>{{ __('messages.select') }}</option>
+                                            @include('client.paises')
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.national') }}</label>
+                                    <div class="input-group">
+                                        <select class="form-control" name="origin" id="origin">
+                                            <option value="" selected>{{ __('messages.select') }}</option>
+                                            <option value="{{ __('messages.national') }}">
+                                                {{ __('messages.national') }}</option>
+                                            <option value="{{ __('messages.international') }}">
+                                                {{ __('messages.international') }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <label class="form-label">{{ __('messages.declaration_use') }}</label>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">{{ __('messages.renewal') }}</label>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.from') }}</label>
+                                    <div class="input-group">
+                                        <input name="last_declaration" class="form-control"
+                                            type="date" placeholder="{{ __('messages.from') }}"
+                                            >
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.to') }}</label>
+                                    <div class="input-group">
+                                        <input name="next_declaration" class="form-control"
+                                            type="date" placeholder="{{ __('messages.to') }}"
+                                            >
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.from') }}</label>
+                                    <div class="input-group">
+                                        <input name="last_renewal" class="form-control"
+                                            type="date" placeholder="{{ __('messages.from') }}"
+                                            >
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">{{ __('messages.to') }}</label>
+                                    <div class="input-group">
+                                        <input name="next_renewal" class="form-control"
+                                            type="date" placeholder="{{ __('messages.to') }}"
+                                            >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </form>
-
-                    <div class="d-lg-flex">
-                        <div class="ms-auto my-auto mt-lg-0 mt-4">
-                            <a class="btn mt-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="border: 2px solid #F82018; color: #F82018;">
-                                {{ __('messages.advanced_search') }}
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="collapse" id="collapseExample">
-                        <div class="row mt-3">
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.status') }}</label>
-                                <input wire:model="status" class="form-control"
-                                type="text" placeholder="{{ __('messages.status') }}"
-                                required="required">
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.opposition_no') }}</label>
-                                <div class="input-group">
-                                    <input wire:model="opposition_no" class="form-control"
-                                        type="text" placeholder="{{ __('messages.opposition_no') }}"
-                                        required="required">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.litigation_no') }}</label>
-                                <div class="input-group">
-                                    <input wire:model="litigation_no" class="form-control"
-                                        type="text" placeholder="{{ __('messages.litigation_no') }}"
-                                        required="required">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.class') }}</label>
-                                <select class="form-control" wire:model="class">
-                                    <option selected>{{ __('messages.all') }}</option>
-                                    @for($i=0; $i<=45; $i++) <option value="{{$i}}">{{$i}}</option> @endfor
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label class="form-label">{{ __('messages.our_refs') }}</label>
-                                <div class="input-group">
-                                    <input wire:model="our_refs" class="form-control"
-                                        type="text" placeholder="{{ __('messages.our_refs') }}"
-                                        required="required">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.country') }}</label>
-                                <div class="input-group">
-                                    <select class="form-control js-example-basic-single" name="country" id="country">
-                                        <option selected>{{ __('messages.select') }}</option>
-                                        @include('client.paises')
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.national') }}</label>
-                                <div class="input-group">
-                                    <select class="form-control" name="origin" id="origin">
-                                        <option selected>{{ __('messages.select') }}</option>
-                                        <option value="{{ __('messages.national') }}">
-                                            {{ __('messages.national') }}</option>
-                                        <option value="{{ __('messages.international') }}">
-                                            {{ __('messages.international') }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label class="form-label">{{ __('messages.declaration_use') }}</label>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">{{ __('messages.renewal') }}</label>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.from') }}</label>
-                                <div class="input-group">
-                                    <input wire:model="from" class="form-control"
-                                        type="date" placeholder="{{ __('messages.from') }}"
-                                        required="required">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.to') }}</label>
-                                <div class="input-group">
-                                    <input wire:model="to" class="form-control"
-                                        type="date" placeholder="{{ __('messages.to') }}"
-                                        required="required">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.from') }}</label>
-                                <div class="input-group">
-                                    <input wire:model="from" class="form-control"
-                                        type="date" placeholder="{{ __('messages.from') }}"
-                                        required="required">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('messages.to') }}</label>
-                                <div class="input-group">
-                                    <input wire:model="to" class="form-control"
-                                        type="date" placeholder="{{ __('messages.to') }}"
-                                        required="required">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

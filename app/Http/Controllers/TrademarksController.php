@@ -19,6 +19,7 @@ class TrademarksController extends Controller
      * @return \Illuminate\Http\Response
      */
      public function index(Request $request) {
+        $fecha_actual = date("Y-m-d");
         $client_ref = $request->get('client_ref');
         $application_no = $request->get('application_no');
         $registration_no = $request->get('registration_no');
@@ -27,6 +28,53 @@ class TrademarksController extends Controller
         $id_client = $request->id_client;
         $id_holder = $request->id_holder;
         $trademark = $request->get('trademark');
+        $status = $request->get('status');
+        $opposition_no = $request->get('opposition_no');
+        $litigation_no = $request->get('litigation_no');
+        $class = $request->get('class');
+        $country = $request->get('country');
+        $from_declaration = $request->get('last_declaration');
+        $to_declaration = $request->get('next_declaration');
+        $from_renewal = $request->get('last_renewal');
+        $to_renewal = $request->get('next_renewal');
+        $from_ref = $request->get('from_refs');
+        $to_ref = $request->get('to_refs');
+
+        if($from_declaration == null){
+            $from_declaration = date("Y-m-d",strtotime($fecha_actual."- 5 year"));
+        }else{
+            $from_declaration = $request->get('last_declaration');
+        }
+
+        if($to_declaration == null){
+            $to_declaration = date("Y-m-d",strtotime($fecha_actual."+ 5 year"));
+        }else{
+            $to_declaration = $request->get('next_declaration');
+        }
+
+        if($from_renewal == null){
+            $from_renewal = date("Y-m-d",strtotime($fecha_actual."- 5 year"));
+        }else{
+            $from_renewal = $request->get('last_renewal');
+        }
+
+        if($to_renewal == null){
+            $to_renewal = date("Y-m-d",strtotime($fecha_actual."+ 5 year"));
+        }else{
+            $to_renewal = $request->get('next_renewal');
+        }
+
+        if($from_ref == null){
+            $from_ref = 1000;
+        }else{
+            $from_ref = $request->get('from_refs');
+        }
+
+        if($to_ref == null){
+            $to_ref = 1000000;
+        }else{
+            $to_ref = $request->get('to_refs');
+        }
 
         $trademarks = Trademarks::
         client_ref($client_ref)
@@ -45,8 +93,18 @@ class TrademarksController extends Controller
             }
         })
         ->trademark($trademark)
-        ->paginate(5);
-
+        ->status($status)
+        ->opposition_no($opposition_no)
+        ->litigation_no($litigation_no)
+        ->class($class)
+        ->country($country)
+        ->where('last_declaration', '>=', $from_declaration)
+        ->where('next_declaration', '<=', $to_declaration)
+        ->where('last_renewal', '>=', $from_renewal)
+        ->where('next_renewal', '<=', $to_renewal)
+        ->where('our_ref', '>=', $from_ref)
+        ->where('our_ref', '<=', $to_ref)
+        ->get();
 
       return view('trademark.index', compact('trademarks'));
      }
@@ -86,7 +144,11 @@ class TrademarksController extends Controller
         $address_contacts = AddressContact::get();
         $holders = Holder::get();
 
-        return view('trademark.create', compact('clients', 'address_contacts', 'holders'));
+        $trademark = Trademarks::
+        orderBy('id', 'desc')
+        ->first();
+
+        return view('trademark.create', compact('clients', 'address_contacts', 'holders', 'trademark'));
     }
 
     public function store(Request $request)
