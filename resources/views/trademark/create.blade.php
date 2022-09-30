@@ -307,13 +307,15 @@
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.renewal') }}</label>
                                                         </div>
-
+                                                        <?php
+                                                         $fcha = date("Y-m-d");
+                                                         $fecha = date("Y-m-d",strtotime($fcha."+ 1 week"));
+                                                        ?>
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_declaration" name="last_declaration" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    >
+                                                                    type="date" placeholder="Thompson" value="{{$fcha}}">
                                                             </div>
                                                         </div>
 
@@ -321,8 +323,7 @@
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_renewal" name="last_renewal" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    >
+                                                                    type="date" placeholder="Thompson" value="{{$fcha}}">
                                                             </div>
                                                         </div>
 
@@ -330,8 +331,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_declaration" name="next_declaration" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    >
+                                                                    type="date" placeholder="Thompson" value="{{$fecha}}">
                                                             </div>
                                                         </div>
 
@@ -339,8 +339,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_renewal" name="next_renewal" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    >
+                                                                    type="date" placeholder="Thompson" value="{{$fecha}}">
                                                             </div>
                                                         </div>
                                                     </div>

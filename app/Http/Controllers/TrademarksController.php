@@ -77,33 +77,33 @@ class TrademarksController extends Controller
         }
 
         $trademarks = Trademarks::
-        client_ref($client_ref)
-        ->application_no($application_no)
-        ->registration_no($registration_no)
-        ->int_registration_no($int_registration_no)
-        ->origin($origin)
-        ->whereHas('Clients', function($query) use($id_client){
-            if ($id_client) {
-                return $query->where('company_name', $id_client);
-            }
-        })
-        ->whereHas('Holder', function($query) use($id_holder){
-            if ($id_holder) {
-                return $query->where('company_name', $id_holder);
-            }
-        })
-        ->trademark($trademark)
-        ->status($status)
-        ->opposition_no($opposition_no)
-        ->litigation_no($litigation_no)
-        ->class($class)
-        ->country($country)
-        ->where('last_declaration', '>=', $from_declaration)
-        ->where('next_declaration', '<=', $to_declaration)
-        ->where('last_renewal', '>=', $from_renewal)
-        ->where('next_renewal', '<=', $to_renewal)
-        ->where('our_ref', '>=', $from_ref)
-        ->where('our_ref', '<=', $to_ref)
+            client_ref($client_ref)
+            ->application_no($application_no)
+            ->registration_no($registration_no)
+            ->int_registration_no($int_registration_no)
+            ->origin($origin)
+            ->whereHas('Clients', function($query) use($id_client){
+                if ($id_client) {
+                    return $query->where('company_name', $id_client);
+                }
+            })
+            ->whereHas('Holder', function($query) use($id_holder){
+                if ($id_holder) {
+                    return $query->where('company_name', $id_holder);
+                }
+            })
+            ->trademark($trademark)
+            ->status($status)
+            ->opposition_no($opposition_no)
+            ->litigation_no($litigation_no)
+            ->class($class)
+            ->country($country)
+            ->where('last_declaration', '>=', $from_declaration)
+            ->where('next_declaration', '<=', $to_declaration)
+            ->where('last_renewal', '>=', $from_renewal)
+            ->where('next_renewal', '<=', $to_renewal)
+            ->where('our_ref', '>=', $from_ref)
+            ->where('our_ref', '<=', $to_ref)
         ->get();
 
       return view('trademark.index', compact('trademarks'));
