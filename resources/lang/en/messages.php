@@ -50,6 +50,7 @@ return [
     'information' => 'Information',
 
     'new_trademark' => 'New Mark',
+    'edit_trademark' => 'Edit Mark',
     'trademark_name' => 'Trademarks name',
     'all_trademark' => 'All trademarks',
     'reference_numbers' => 'Reference Numbers',

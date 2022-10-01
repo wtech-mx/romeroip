@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    {{ __('messages.new_trademark') }}
+    {{ __('messages.edit_trademark') }}
 @endsection
 <head>
     <meta charset="UTF-8">
@@ -14,15 +14,16 @@
             <div class="col">
                 <div class="card">
                     <!-- Card header -->
-                    <form method="POST" action="{{ route('store.trademarks') }}" enctype="multipart/form-data" role="form">
+                    <form method="POST" action="{{ route('update.trademarks', $trademark->id) }}" enctype="multipart/form-data" role="form">
                         @csrf
+                        <input type="hidden" name="_method" value="PATCH">
                         <div class="card-header">
-                            <h3 class="mb-3">{{ __('messages.new_trademark') }}</h3>
+                            <h3 class="mb-3">{{ __('messages.edit_trademark') }}</h3>
                             <a class="btn" href="javascript: history.go(-1)"
                                 style="background: {{ $configuracion->color_boton_close }}; color: #ffff"> {{ __('messages.back') }}</a>
                             @includeif('partials.errors')
                             <button type="submit" class="btn"
-                            style="border: 2px solid #F82018; color: #F82018;">{{ __('messages.save') }}</button>
+                            style="border: 2px solid #F82018; color: #F82018;">{{ __('messages.update') }}</button>
                         </div>
 
                         <div class="card-body">
@@ -41,7 +42,7 @@
                                                         <div class="col-12">
                                                             <label class="form-label">{{ __('messages.note') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="notes" name="notes" rows="1"></textarea>
+                                                                <textarea class="form-control" id="notes" name="notes" rows="1">{{$trademark->notes}}</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -58,16 +59,15 @@
                                                             <label class="form-label">{{ __('messages.our_ref') }}</label>
                                                             <div class="input-group">
                                                                 <input id="our_ref" name="our_ref" class="form-control"
-                                                                    type="text" placeholder="{{ __('messages.our_ref') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->our_ref }}">
+
                                                             </div>
                                                         </div>
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.client_ref') }}</label>
                                                             <div class="input-group">
                                                                 <input id="client_ref" name="client_ref" class="form-control"
-                                                                    type="text" placeholder="{{ __('messages.client_ref') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->client_ref }}">
                                                             </div>
                                                         </div>
 
@@ -76,18 +76,14 @@
                                                                 class="form-label">{{ __('messages.opposition_no') }}</label>
                                                             <div class="input-group">
                                                                 <input id="opposition_no" name="opposition_no" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.opposition_no') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->opposition_no }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.filing_date') }}"
-                                                                    required="required">
+                                                                    type="date" value="{{ $trademark->filing_date_opposition }}">
                                                             </div>
                                                         </div>
 
@@ -96,18 +92,14 @@
                                                                 class="form-label">{{ __('messages.litigation_no') }}</label>
                                                             <div class="input-group">
                                                                 <input id="litigation_no" name="litigation_no" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.litigation_no') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->litigation_no }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.filing_date') }}"
-                                                                    required="required">
+                                                                    type="date" value="{{ $trademark->filing_date_litigation }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -125,9 +117,7 @@
                                                                 class="form-label">{{ __('messages.application_no') }}</label>
                                                             <div class="input-group">
                                                                 <input id="application_no" name="application_no" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.application_no') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->application_no }}">
                                                             </div>
                                                         </div>
 
@@ -135,7 +125,7 @@
                                                             <label class="form-label">{{ __('messages.origin') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="origin" id="origin">
-                                                                    <option selected>{{ __('messages.select') }}</option>
+                                                                    <option value="{{ $trademark->origin }}" selected>{{ $trademark->origin }}</option>
                                                                     <option value="{{ __('messages.national') }}">
                                                                         {{ __('messages.national') }}</option>
                                                                     <option value="{{ __('messages.international') }}">
@@ -150,9 +140,7 @@
                                                                 class="form-label">{{ __('messages.registration_no') }}</label>
                                                             <div class="input-group">
                                                                 <input id="registration_no" name="registration_no" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.registration_no') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->registration_no }}">
                                                             </div>
                                                         </div>
 
@@ -160,6 +148,7 @@
                                                             <label class="form-label">{{ __('messages.country') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control js-example-basic-single" name="country" id="country">
+                                                                    <option value="{{ $trademark->country }}" selected>{{ $trademark->country }}</option>
                                                                     @include('client.paises')
                                                                 </select>
                                                             </div>
@@ -169,16 +158,14 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_general" name="filing_date_general" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.filing_date') }}"
-                                                                    required="required">
+                                                                    type="date" value="{{ $trademark->filing_date_general }}">
                                                             </div>
                                                         </div>
 
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.status') }}</label>
                                                             <select class="form-control" id="status" name="status">
-                                                                <option selected>{{ __('messages.select') }}</option>
+                                                                <option value="{{ $trademark->status }}" selected>{{ $trademark->status }}</option>
                                                                 <option value="{{ __('messages.live') }}">
                                                                     {{ __('messages.live') }}</option>
                                                                 <option value="{{ __('messages.pending') }}">
@@ -196,9 +183,7 @@
                                                             <label class="form-label">{{ __('messages.first_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="first_date" name="first_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.first_date') }}"
-                                                                    required="required">
+                                                                    type="date" value="{{ $trademark->first_date }}">
                                                             </div>
                                                         </div>
 
@@ -207,9 +192,7 @@
                                                                 class="form-label">{{ __('messages.int_registration_no') }}</label>
                                                             <div class="input-group">
                                                                 <input id="int_registration_no" name="int_registration_no" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.int_registration_no') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->int_registration_no }}">
                                                             </div>
                                                         </div>
 
@@ -218,9 +201,7 @@
                                                                 class="form-label">{{ __('messages.registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="registration_date" name="registration_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.registration_date') }}"
-                                                                    required="required">
+                                                                    type="date" value="{{ $trademark->registration_date }}">
                                                             </div>
                                                         </div>
 
@@ -229,9 +210,7 @@
                                                                 class="form-label">{{ __('messages.int_registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="int_registration_date" name="int_registration_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.int_registration_date') }}"
-                                                                    required="required">
+                                                                    type="date" value="{{ $trademark->int_registration_date }}">
                                                             </div>
                                                         </div>
 
@@ -240,9 +219,7 @@
                                                                 class="form-label">{{ __('messages.expiration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="expiration_date" name="expiration_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.expiration_date') }}"
-                                                                    required="required">
+                                                                    type="date" value="{{ $trademark->expiration_date }}">
                                                             </div>
                                                         </div>
 
@@ -251,9 +228,7 @@
                                                                 class="form-label">{{ __('messages.contracting_organization') }}</label>
                                                             <div class="input-group">
                                                                 <input id="contracting_organization" name="contracting_organization" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.contracting_organization') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->contracting_organization }}">
                                                             </div>
                                                         </div>
 
@@ -262,9 +237,7 @@
                                                                 class="form-label">{{ __('messages.publication_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="publication_date" name="publication_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.publication_date') }}"
-                                                                    required="required">
+                                                                    type="date" value="{{ $trademark->publication_date }}">
                                                             </div>
                                                         </div>
 
@@ -273,9 +246,7 @@
                                                                 class="form-label">{{ __('messages.designated_countries') }}</label>
                                                             <div class="input-group">
                                                                 <input id="designated_countries" name="designated_countries" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.designated_countries') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{ $trademark->designated_countries }}">
                                                             </div>
                                                         </div>
 
@@ -303,8 +274,7 @@
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_declaration" name="last_declaration" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    type="date" placeholder="Thompson" value="{{ $trademark->last_declaration }}">
                                                             </div>
                                                         </div>
 
@@ -312,8 +282,7 @@
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_renewal" name="last_renewal" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    type="date" placeholder="Thompson" value="{{$trademark->last_renewal}}">
                                                             </div>
                                                         </div>
 
@@ -321,8 +290,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_declaration" name="next_declaration" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    type="date" placeholder="Thompson" value="{{$trademark->next_declaration}}">
                                                             </div>
                                                         </div>
 
@@ -330,8 +298,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_renewal" name="next_renewal" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    type="date" placeholder="Thompson" value="{{$trademark->next_renewal}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -352,15 +319,14 @@
                                                                     <div class="input-group">
                                                                         <input id="trademark" name="trademark"
                                                                             class="form-control" type="text"
-                                                                            placeholder="{{ __('messages.trademark') }}"
-                                                                            required="required">
+                                                                            value="{{$trademark->trademark}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
                                                                     <label
                                                                         class="form-label">{{ __('messages.description') }}</label>
                                                                     <div class="input-group">
-                                                                        <textarea class="form-control" id="description_trademark" name="description_trademark" rows="1"></textarea>
+                                                                        <textarea class="form-control" id="description_trademark" name="description_trademark" rows="1">{{$trademark->description_trademark}}</textarea>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -369,8 +335,7 @@
                                                                     <div class="input-group">
                                                                         <input id="type_application" name="type_application"
                                                                             class="form-control" type="text"
-                                                                            placeholder="{{ __('messages.type_application') }}"
-                                                                            required="required">
+                                                                            value="{{$trademark->type_application}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -379,22 +344,21 @@
                                                                     <div class="input-group">
                                                                         <input id="type_mark" name="type_mark"
                                                                             class="form-control" type="text"
-                                                                            placeholder="{{ __('messages.type_mark') }}"
-                                                                            required="required">
+                                                                            value="{{$trademark->type_mark}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
                                                                     <label
                                                                         class="form-label">{{ __('messages.translation') }}</label>
                                                                     <div class="input-group">
-                                                                        <textarea class="form-control" id="translation" name="translation" rows="1"></textarea>
+                                                                        <textarea class="form-control" id="translation" name="translation" rows="1">{{$trademark->translation}}</textarea>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
                                                                     <label
                                                                         class="form-label">{{ __('messages.transliteration') }}</label>
                                                                     <div class="input-group">
-                                                                        <textarea class="form-control" id="transliteration_trademark" name="transliteration_trademark" rows="1"></textarea>
+                                                                        <textarea class="form-control" id="transliteration_trademark" name="transliteration_trademark" rows="1">{{$trademark->transliteration_trademark}}</textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -406,7 +370,7 @@
                                                                     <label
                                                                         class="form-label">{{ __('messages.disclaimer') }}</label>
                                                                     <div class="input-group">
-                                                                        <textarea class="form-control" id="disclaimer" name="disclaimer" rows="1"></textarea>
+                                                                        <textarea class="form-control" id="disclaimer" name="disclaimer" rows="1">{{$trademark->disclaimer}}</textarea>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -415,13 +379,19 @@
                                                                     <div class="input-group">
                                                                         <input id="design" name="design"
                                                                             class="form-control" type="file"
-                                                                            placeholder="Thompson" required="required">
+                                                                            value="{{$trademark->design}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mt-5">
                                                                     <div class="input-group">
-                                                                        <embed src="{{ asset('logo/' . $configuracion->logo) }}"
-                                                                            style="width: 300px; height: 100px;">
+                                                                        @if ($trademark->design == NULL)
+                                                                        <img id="blah" src="{{asset('design/no-image.jpg') }}"
+                                                                            style="width: 300px; height: 300px;">
+                                                                        @else
+                                                                        <img id="blah" src="{{asset('design/'.$trademark->design) }}"
+                                                                            style="width: 300px; height: 300px;">
+                                                                        @endif
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -440,7 +410,7 @@
                                                             <label class="form-label">{{ __('messages.class') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" id="class" name="class">
-                                                                    <option selected>{{ __('messages.select') }}</option>
+                                                                    <option value="{{$trademark->class}}" selected>{{ $trademark->class }}</option>
                                                                     @for ($i = 0; $i <= 45; $i++)
                                                                         <option value="{{ $i }}">
                                                                             {{ $i }}</option>
@@ -452,14 +422,14 @@
                                                         <div class="col-12">
                                                             <label class="form-label">{{ __('messages.description') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="description_good" name="description_good" rows="2"></textarea>
+                                                                <textarea class="form-control" id="description_good" name="description_good" rows="2">{{ $trademark->description_good }}</textarea>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-12">
                                                             <label class="form-label">{{ __('messages.translation') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="translation_good" name="translation_good" rows="2"></textarea>
+                                                                <textarea class="form-control" id="translation_good" name="translation_good" rows="2">{{ $trademark->translation_good }}</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -476,9 +446,7 @@
                                                             <label class="form-label">{{ __('messages.priority_no') }}</label>
                                                             <div class="input-group">
                                                                 <input id="priority_no" name="priority_no" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.priority_no') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{$trademark->priority_no}}">
                                                             </div>
                                                         </div>
 
@@ -487,9 +455,7 @@
                                                                 class="form-label">{{ __('messages.country_office') }}</label>
                                                             <div class="input-group">
                                                                 <input id="country_office" name="country_office" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.country_office') }}"
-                                                                    required="required">
+                                                                    type="text" value="{{$trademark->country_office}}">
                                                             </div>
                                                         </div>
 
@@ -498,8 +464,7 @@
                                                                 class="form-label">{{ __('messages.priority_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="priority_date" name="priority_date" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    required="required">
+                                                                    type="date" value="{{$trademark->priority_date}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -515,8 +480,8 @@
                                                         <div class="col-12">
                                                             <label class="form-label">{{ __('messages.client') }}</label>
                                                             <div class="input-group">
-                                                                <select class="form-control js-example-basic-single" id="id_client" name="id_client">
-                                                                <option value="">{{ __('messages.client') }}</option>
+                                                            <select class="form-control js-example-basic-single" id="id_client" name="id_client">
+                                                                <option value="{{$trademark->id_client}}"></option>
                                                                 @foreach ($clients as $client)
                                                                     <option value="{{ $client->id }}">{{ $client->company_name }}</option>
                                                                 @endforeach
@@ -554,7 +519,7 @@
                                                             <label class="form-label">{{ __('messages.holder') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control js-example-basic-single" id="id_holder" name="id_holder">
-                                                                    <option value="">{{ __('messages.holder') }}</option>
+                                                                    <option value="{{$trademark->id_holder}}">{{ __('messages.holder') }}</option>
                                                                     @foreach ($holders as $holder)
                                                                         <option value="{{ $holder->id }}">{{ $holder->company_name }}</option>
                                                                     @endforeach
@@ -565,7 +530,7 @@
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.address') }}</label>
                                                             <select class="form-control" name="address_holder" id="address_holder">
-                                                                <option value="">Seleccione Addres</option>
+                                                                <option value="{{$trademark->address_holder}}">Seleccione Addres</option>
                                                             </select>
                                                         </div>
 
@@ -573,7 +538,7 @@
                                                             <label class="form-label">{{ __('messages.industrial_address') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="industrial_address" id="industrial_address">
-                                                                    <option value="">Seleccione Industrial/Commercial Address</option>
+                                                                    <option value="{{$trademark->industrial_address}}">Seleccione Industrial/Commercial Address</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -767,5 +732,22 @@
             });
         });
     });
+</script>
+<script>
+    function readURL(input) {
+  if (input.files && input.files[0]) { //Revisamos que el input tenga contenido
+    var reader = new FileReader(); //Leemos el contenido
+
+    reader.onload = function(e) { //Al cargar el contenido lo pasamos como atributo de la imagen de arriba
+      $('#blah').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$("#design").change(function() { //Cuando el input cambie (se cargue un nuevo archivo) se va a ejecutar de nuevo el cambio de imagen y se verá reflejado.
+  readURL(this);
+});
 </script>
 @endsection

@@ -61,7 +61,7 @@ class Trademarks extends Model
     }
 
     public function Client(){
-        return $this->hasOne(Client::class,'id_client');
+        return $this->belongsTo(Client::class,'id_client');
     }
 
     public function Holder(){

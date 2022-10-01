@@ -428,8 +428,7 @@
                                                                 </div>
                                                                 <div class="col-12 mt-5">
                                                                     <div class="input-group">
-                                                                        <embed src="{{ asset('logo/FEDERIKA.jpg') }}"
-                                                                            style="width: 300px; height: 300px;">
+                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}" alt="Imagen" style="width: 300px; height: 300px;"/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -775,5 +774,22 @@
             });
         });
     });
+</script>
+<script>
+    function readURL(input) {
+  if (input.files && input.files[0]) { //Revisamos que el input tenga contenido
+    var reader = new FileReader(); //Leemos el contenido
+
+    reader.onload = function(e) { //Al cargar el contenido lo pasamos como atributo de la imagen de arriba
+      $('#blah').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$("#design").change(function() { //Cuando el input cambie (se cargue un nuevo archivo) se va a ejecutar de nuevo el cambio de imagen y se verá reflejado.
+  readURL(this);
+});
 </script>
 @endsection

@@ -67,10 +67,7 @@
                             <td class="text-center">{{ $trademark->last_declaration }}</td>
                             <td class="text-center">{{ $trademark->status }}</td>
                             <td class="text-sm">
-                                <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
-                                <i class="fas fa-eye text-secondary"></i>
-                                </a>
-                                <a href="javascript:;" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
+                                <a href="{{ route('edit.trademarks', $trademark->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
                                 <i class="fas fa-user-edit text-secondary"></i>
                                 </a>
                                 <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
