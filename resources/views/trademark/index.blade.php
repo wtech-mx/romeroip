@@ -30,7 +30,7 @@
               </div>
             </div>
 
-            <div class="card-body px-0 pb-0">
+            <div class="card-body px-0 pb-0" style="padding-top: 1rem;">
               <div class="table-responsive">
                 <table class="table table-flush" id="products-list">
                   <thead class="thead-light">

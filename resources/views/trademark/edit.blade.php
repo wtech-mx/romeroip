@@ -17,7 +17,7 @@
                     <form method="POST" action="{{ route('update.trademarks', $trademark->id) }}" enctype="multipart/form-data" role="form">
                         @csrf
                         <input type="hidden" name="_method" value="PATCH">
-                        <div class="card-header">
+                        <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                             <h3 class="mb-3">{{ __('messages.edit_trademark') }}</h3>
                             <a class="btn" href="javascript: history.go(-1)"
                                 style="background: {{ $configuracion->color_boton_close }}; color: #ffff"> {{ __('messages.back') }}</a>
@@ -34,7 +34,7 @@
                                         <div class="col-lg-9 mt-lg-0 mt-4">
                                             <!-- Card notes -->
                                             <div class="card" id="notes">
-                                                <div class="card-header">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.note_important') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
@@ -50,7 +50,7 @@
                                             </div>
                                             <!-- Card References number -->
                                             <div class="card mt-4" id="profile">
-                                                <div class="card-header">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.reference_numbers') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
@@ -107,7 +107,7 @@
                                             </div>
                                             <!-- Card General Information -->
                                             <div class="card mt-4" id="basic-info">
-                                                <div class="card-header">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.general_information') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
@@ -256,7 +256,7 @@
                                             </div>
                                             <!-- Card Dates -->
                                             <div class="card mt-4" id="password">
-                                                <div class="card-header d-flex">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.important_dates') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
@@ -306,7 +306,7 @@
                                             </div>
                                             <!-- Card Trademark -->
                                             <div class="card mt-4" id="2fa">
-                                                <div class="card-header">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.trademark_information') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
@@ -382,7 +382,7 @@
                                                                             value="{{$trademark->design}}">
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12 mt-5">
+                                                                <div class="col-12 mt-2" style="padding-left: 6rem;">
                                                                     <div class="input-group">
                                                                         @if ($trademark->design == NULL)
                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}"
@@ -401,7 +401,7 @@
                                             </div>
                                             <!-- Card Good Service -->
                                             <div class="card mt-4" id="accounts">
-                                                <div class="card-header">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.goods_services') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
@@ -437,7 +437,7 @@
                                             </div>
                                             <!-- Card Information -->
                                             <div class="card mt-4" id="notifications">
-                                                <div class="card-header pb-3">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.priority_information') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
@@ -472,7 +472,7 @@
                                             </div>
                                             <!-- Card Client -->
                                             <div class="card mt-4" id="sessions">
-                                                <div class="card-header">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.client_info') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
@@ -510,7 +510,7 @@
                                             </div>
                                             <!-- Card Holder -->
                                             <div class="card mt-4 mb-5" id="holder">
-                                                <div class="card-header">
+                                                <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.holder_info') }}</h5>
                                                 </div>
                                                 <div class="card-body pt-0">
