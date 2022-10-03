@@ -61,15 +61,23 @@ class Trademarks extends Model
     }
 
     public function Client(){
-        return $this->belongsTo(Client::class,'id_client');
+        return $this->belongsTo(Clients::class,'id_client');
+    }
+
+    public function ContactClient(){
+        return $this->belongsTo(ContactClient::class,'id_contact');
+    }
+
+    public function AddressContact(){
+        return $this->belongsTo(AddressContact::class,'id_address');
     }
 
     public function Holder(){
         return $this->belongsTo(Holder::class,'id_holder');
     }
 
-    public function AddressContact(){
-        return $this->belongsTo(AddressContact::class,'id_address');
+    public function AddressHolder(){
+        return $this->belongsTo(AddressHolder::class,'address_holder');
     }
 
     // ========================================================Filtros====================================================================
