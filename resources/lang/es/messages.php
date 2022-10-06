@@ -34,6 +34,7 @@ return [
     'from' => 'De',
     'to' => 'A',
     'all' => 'Todo',
+    'search' => 'Buscar',
 
     'company_name' => 'Nombre de empresa',
     'contact_name' => 'Nombre de contacto',

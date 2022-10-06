@@ -187,8 +187,7 @@
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.status') }}</label>
                                                             <select class="form-control" id="status" name="status">
-                                                                <option selected>{{ __('messages.select') }}</option>
-                                                                <option value="{{ __('messages.live') }}">
+                                                                <option selected value="{{ __('messages.live') }}">
                                                                     {{ __('messages.live') }}</option>
                                                                 <option value="{{ __('messages.pending') }}">
                                                                     {{ __('messages.pending') }}</option>

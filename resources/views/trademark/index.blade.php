@@ -22,8 +22,8 @@
 
                 <div class="ms-auto my-auto mt-lg-0 mt-4">
                   <div class="ms-auto my-auto">
-                    <a href="{{ route('create.trademarks') }}" class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">+&nbsp; {{ __('messages.new_trademark') }}</a>
-                    <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
+                    <a href="{{ route('create.trademarks') }}" class="btn btn-sm mb-0 mt-sm-0 mt-1" style="border: 2px solid #F82018; color: #F82018;" data-type="csv" type="button" name="button">&nbsp; {{ __('messages.new_trademark') }}</a>
+                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" style="border: 2px solid #F82018; color: #F82018;" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
                   </div>
                 </div>
 

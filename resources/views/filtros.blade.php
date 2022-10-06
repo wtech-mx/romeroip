@@ -14,7 +14,7 @@
                                     <a class="btn btn-sm mb-0 mt-sm-0 mt-1" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="border: 2px solid #F82018; color: #F82018;">
                                         {{ __('messages.advanced_search') }}
                                     </a>
-                                    <button class="btn btn-outline-success btn-sm mb-0 mt-sm-0 mt-1" type="submit">Buscar</button>
+                                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" type="submit" style="border: 2px solid #F82018; color: #F82018;">{{ __('messages.search') }}</button>
                                 </div>
                             </div>
                         </div>
