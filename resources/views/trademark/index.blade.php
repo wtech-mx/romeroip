@@ -51,6 +51,11 @@
 
                   <tbody>
                         @foreach ($trademarks as $trademark)
+                            <?php
+                                $filing_date_opposition = date("d/m/Y", strtotime($trademark->filing_date_opposition));
+
+                                $last_declaration = date("d/m/Y", strtotime($trademark->last_declaration));
+                            ?>
                             <tr>
                             <td class="text-center ">
                                 <div class="form-check" style="left: 20px; position: absolute;">
@@ -61,18 +66,18 @@
                             <td class="text-center">{{ $trademark->trademark }}</td>
                             <td class="text-center">{{ $trademark->class }}</td>
                             <td class="text-center">{{ $trademark->application_no }}</td>
-                            <td class="text-center">{{ $trademark->filing_date_opposition }}</td>
+                            <td class="text-center">{{ $filing_date_opposition }}</td>
                             <td class="text-center">{{ $trademark->registration_no }}</td>
                             <td class="text-center">{{ $trademark->registration_date }}</td>
-                            <td class="text-center">{{ $trademark->last_declaration }}</td>
+                            <td class="text-center">{{ $last_declaration }}</td>
                             <td class="text-center">{{ $trademark->status }}</td>
                             <td class="text-sm">
                                 <a href="{{ route('edit.trademarks', $trademark->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
                                 <i class="fas fa-user-edit text-secondary"></i>
                                 </a>
-                                <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
+                                {{-- <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
                                 <i class="fas fa-trash text-secondary"></i>
-                                </a>
+                                </a> --}}
                             </td>
                             </tr>
                         @endforeach
