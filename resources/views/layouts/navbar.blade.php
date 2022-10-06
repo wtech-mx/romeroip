@@ -24,14 +24,44 @@
         </nav>
 
 
-
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="dropdown" style="margin-right: 1rem;">
-                <select class="form-control changeLang" style="margin-right: 2rem;">
-                    <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
-                    <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>Español</option>
-                </select>
+
+            <div class="dropdown">
+                <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{Auth::user()->name;}}
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+
+                  <li>
+                    <a class="dropdown-item" href="#" style="display: flex;">
+                        <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center" style="display: inline-block!important;">
+                         <i class="fa fa-arrow-right text-dark" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
+                        </div>
+
+                        <select class="form-control changeLang" style="border: solid 1px transparent;">
+                            <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
+                            <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>Español</option>
+                        </select>
+                      </a>
+                  </li>
+
+                  <li class="">
+
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                      <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center" style="display: inline-block!important;">
+                       <i class="fa fa-arrow-right text-dark" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
+                      </div>
+                      <span class="ms-1 text-dark">{{ __('messages.logout') }}</span>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                  </li>
+
+                </ul>
             </div>
 
             {{-- <div class="input-group">
@@ -41,12 +71,6 @@
           </div>
 
           <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-flex align-items-center">
-              <a href="../../pages/authentication/signin/illustration.html" class="nav-link text-white font-weight-bold px-0" target="_blank">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
-              </a>
-            </li>
 
             <li class="nav-item d-xl-none px-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">

@@ -97,18 +97,6 @@
           </div>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-            <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center">
-             <i class="fa fa-arrow-right text-dark" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
-            </div>
-            <span class="nav-link-text ms-1">{{ __('messages.logout') }}</span>
-          </a>
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-              @csrf
-          </form>
-        </li>
-
       </ul>
 
     </div>
