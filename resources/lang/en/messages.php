@@ -96,7 +96,7 @@ return [
     'translation' => 'Translation',
     'transliteration' => 'Transliteration',
     'disclaimer' => 'Disclaimer',
-    'national' => 'National',
+    'national' => 'Nationallity',
     'international' => 'International',
 
     'goods_services' => 'Goods / Services',

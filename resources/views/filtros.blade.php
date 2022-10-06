@@ -136,7 +136,7 @@
                                         <label class="form-label">{{ __('messages.country') }}</label>
                                         <div class="input-group">
                                             <select class="form-control js-example-basic-single" name="country" id="country">
-                                                <option value="" selected>{{ __('messages.select') }}</option>
+                                                <option value="" selected>{{ __('messages.all') }}</option>
                                                 @include('client.paises')
                                             </select>
                                         </div>
@@ -145,11 +145,8 @@
                                         <label class="form-label">{{ __('messages.national') }}</label>
                                         <div class="input-group">
                                             <select class="form-control" name="national" id="national">
-                                                <option value="" selected>{{ __('messages.select') }}</option>
-                                                <option value="{{ __('messages.national') }}">
-                                                    {{ __('messages.national') }}</option>
-                                                <option value="{{ __('messages.international') }}">
-                                                    {{ __('messages.international') }}</option>
+                                                <option value="" selected>{{ __('messages.all') }}</option>
+                                                @include('client.paises')
                                             </select>
                                         </div>
                                     </div>
