@@ -28,7 +28,7 @@
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
 
             <div class="dropdown">
-                <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="border: 2px solid #fff; color: #fff;">
                     {{Auth::user()->name;}}
                 </button>
 
