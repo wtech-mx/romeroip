@@ -53,7 +53,7 @@ return [
     'new_trademark' => 'Nueva Marca',
     'edit_trademark' => 'Editar Marca',
     'trademark_name' => 'Nombre de marca',
-    'all_trademark' => 'Todas las marcas registradas',
+    'all_trademark' => 'Resultados de la búsqueda',
     'reference_numbers' => 'Número de referencia',
     'our_ref' => 'Nuestra ref.',
     'our_refs' => 'Nuestras Referencias.',

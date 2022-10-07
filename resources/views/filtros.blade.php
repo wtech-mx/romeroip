@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <form class="form-inline">
+                <form action="{{ route('advance_search') }}" method="GET" >
 
                     <div class="card-header pb-0">
                         <div class="d-lg-flex">
@@ -14,7 +14,11 @@
                                     <a class="btn btn-sm mb-0 mt-sm-0 mt-1" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="border: 2px solid #F82018; color: #F82018;">
                                         {{ __('messages.advanced_search') }}
                                     </a>
+
                                     <button class="btn btn-sm mb-0 mt-sm-0 mt-1" type="submit" style="border: 2px solid #F82018; color: #F82018;">{{ __('messages.search') }}</button>
+                                    {{-- @if(Route::currentRouteName() != 'index.trademarks')
+                                    <a class="btn btn-sm mb-0 mt-sm-0 mt-1" href="{{ route('index.trademarks') }}" style="border: 2px solid #F82018; color: #F82018;"><i class="fa fa-refresh"></i></a>
+                                    @endif --}}
                                 </div>
                             </div>
                         </div>

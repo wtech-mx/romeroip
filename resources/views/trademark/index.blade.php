@@ -14,7 +14,11 @@
             <div class="card-header pb-0">
               <div class="d-lg-flex">
                 <div>
-                  <h5 class="mb-0">{{ __('messages.all_trademark') }}</h5>
+                    @if(Route::currentRouteName() != 'index.trademarks')
+                    <h5 class="mb-0">{{ __('messages.all_trademark') }}: {{ $trademarks->count() }}</h5>
+                    @else
+                    <h5 class="mb-0">{{ __('messages.all_trademark') }}: 0</h5>
+                    @endif
                   <p class="text-sm mb-0">
 
                   </p>
@@ -23,7 +27,7 @@
                 <div class="ms-auto my-auto mt-lg-0 mt-4">
                   <div class="ms-auto my-auto">
                     <a href="{{ route('create.trademarks') }}" class="btn btn-sm mb-0 mt-sm-0 mt-1" style="border: 2px solid #F82018; color: #F82018;" data-type="csv" type="button" name="button">&nbsp; {{ __('messages.new_trademark') }}</a>
-                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" style="border: 2px solid #F82018; color: #F82018;" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
+                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" style="background: #F82018; color: #fff;" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
                   </div>
                 </div>
 
@@ -50,7 +54,9 @@
                   </thead>
 
                   <tbody>
+                   @if(Route::currentRouteName() != 'index.trademarks')
                         @foreach ($trademarks as $trademark)
+
                             <?php
                                 $filing_date_opposition = date("d/m/Y", strtotime($trademark->filing_date_opposition));
 
@@ -81,9 +87,11 @@
                             </td>
                             </tr>
                         @endforeach
+                    @endif
                   </tbody>
 
                 </table>
+
               </div>
             </div>
           </div>

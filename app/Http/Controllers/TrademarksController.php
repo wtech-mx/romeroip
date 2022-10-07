@@ -10,6 +10,7 @@ use App\Models\Trademarks;
 use Illuminate\Http\Request;
 use Session;
 use DB;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class TrademarksController extends Controller
 {
@@ -18,93 +19,74 @@ class TrademarksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function index(Request $request) {
-        $fecha_actual = date("Y-m-d");
-        $client_ref = $request->get('client_ref');
-        $application_no = $request->get('application_no');
-        $registration_no = $request->get('registration_no');
-        $int_registration_no = $request->get('int_registration_no');
-        $origin = $request->get('origin');
-        $id_client = $request->id_client;
-        $id_holder = $request->id_holder;
-        $trademark = $request->get('trademark');
-        $status = $request->get('status');
-        $opposition_no = $request->get('opposition_no');
-        $litigation_no = $request->get('litigation_no');
-        $class = $request->get('class');
-        $country = $request->get('country');
-        $from_declaration = $request->get('last_declaration');
-        $to_declaration = $request->get('next_declaration');
-        $from_renewal = $request->get('last_renewal');
-        $to_renewal = $request->get('next_renewal');
-        $from_ref = $request->get('from_refs');
-        $to_ref = $request->get('to_refs');
+     public function index() {
 
-        if($from_declaration == null){
-            $from_declaration = date("Y-m-d",strtotime($fecha_actual."- 5 year"));
-        }else{
-            $from_declaration = $request->get('last_declaration');
+
+      return view('trademark.index');
+     }
+
+     public function advance(Request $request) {
+        $trademarks = DB::table('trademark');
+        $marca = Trademarks::get();
+        if( $request->client_ref){
+                $trademarks = $trademarks->where('client_ref', 'LIKE', "%" . $request->client_ref . "%")
+                                         ->orWhere('our_ref', 'LIKE', "%" . $request->client_ref . "%");
         }
-
-        if($to_declaration == null){
-            $to_declaration = date("Y-m-d",strtotime($fecha_actual."+ 5 year"));
-        }else{
-            $to_declaration = $request->get('next_declaration');
+        if( $request->application_no){
+            $trademarks = $trademarks->where('application_no', 'LIKE', "%" . $request->application_no . "%");
         }
-
-        if($from_renewal == null){
-            $from_renewal = date("Y-m-d",strtotime($fecha_actual."- 5 year"));
-        }else{
-            $from_renewal = $request->get('last_renewal');
+        if( $request->registration_no){
+            $trademarks = $trademarks->where('registration_no', 'LIKE', "%" . $request->registration_no . "%");
         }
-
-        if($to_renewal == null){
-            $to_renewal = date("Y-m-d",strtotime($fecha_actual."+ 5 year"));
-        }else{
-            $to_renewal = $request->get('next_renewal');
+        if( $request->int_registration_no){
+            $trademarks = $trademarks->where('int_registration_no', 'LIKE', "%" . $request->int_registration_no . "%");
         }
-
-        if($from_ref == null){
-            $from_ref = 1000;
-        }else{
-            $from_ref = $request->get('from_refs');
+        if( $request->origin){
+            $trademarks = $trademarks->where('origin', 'LIKE', "%" . $request->origin . "%");
         }
-
-        if($to_ref == null){
-            $to_ref = 1000000;
-        }else{
-            $to_ref = $request->get('to_refs');
+        if( $request->id_client){
+            $id_client = $request->id_client;
+            $trademarks = Trademarks::whereHas('Client', function(Builder $query) use($id_client) {
+                     $query->where('company_name', $id_client);
+            });
         }
-
-        $trademarks = Trademarks::
-            client_ref($client_ref)
-            ->application_no($application_no)
-            ->registration_no($registration_no)
-            ->int_registration_no($int_registration_no)
-            ->origin($origin)
-            ->whereHas('Clients', function($query) use($id_client){
-                if ($id_client) {
-                    return $query->where('company_name', $id_client);
-                }
-            })
-            ->whereHas('Holder', function($query) use($id_holder){
-                if ($id_holder) {
-                    return $query->where('company_name', $id_holder);
-                }
-            })
-            ->trademark($trademark)
-            ->status($status)
-            ->opposition_no($opposition_no)
-            ->litigation_no($litigation_no)
-            ->class($class)
-            ->country($country)
-            ->where('last_declaration', '>=', $from_declaration)
-            ->where('last_declaration', '<=', $to_declaration)
-            ->where('last_renewal', '>=', $from_renewal)
-            ->where('last_renewal', '<=', $to_renewal)
-            ->where('our_ref', '>=', $from_ref)
-            ->where('our_ref', '<=', $to_ref)
-        ->get();
+        if( $request->id_holder){
+            $id_holder = $request->id_holder;
+            $trademarks = Trademarks::whereHas('Holder', function(Builder $query) use($id_holder) {
+                        $query->where('company_name', $id_holder);
+            });
+        }
+        if( $request->trademark){
+            $trademarks = $trademarks->where('trademark', 'LIKE', "%" . $request->trademark . "%");
+        }
+        if( $request->status){
+            $trademarks = $trademarks->where('status', 'LIKE', "%" . $request->status . "%");
+        }
+        if( $request->opposition_no){
+            $trademarks = $trademarks->where('opposition_no', 'LIKE', "%" . $request->opposition_no . "%");
+        }
+        if( $request->litigation_no){
+            $trademarks = $trademarks->where('litigation_no', 'LIKE', "%" . $request->litigation_no . "%");
+        }
+        if( $request->class){
+            $trademarks = $trademarks->where('class', 'LIKE', "%" . $request->class . "%");
+        }
+        if( $request->country){
+            $trademarks = $trademarks->where('country', 'LIKE', "%" . $request->country . "%");
+        }
+        if( $request->last_declaration && $request->next_declaration ){
+            $trademarks = $trademarks->where('last_declaration', '>=', $request->last_declaration)
+                                     ->where('last_declaration', '<=', $request->next_declaration);
+        }
+        if( $request->last_renewal && $request->next_renewal ){
+            $trademarks = $trademarks->where('last_renewal', '>=', $request->last_renewal)
+                                     ->where('last_renewal', '<=', $request->next_renewal);
+        }
+        if( $request->from_refs && $request->to_refs ){
+            $trademarks = $trademarks->where('our_ref', '>=', $request->from_refs)
+                                     ->where('our_ref', '<=', $request->to_refs);
+        }
+        $trademarks = $trademarks->paginate(10);
 
       return view('trademark.index', compact('trademarks'));
      }

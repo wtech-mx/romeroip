@@ -53,7 +53,7 @@ return [
     'new_trademark' => 'New Trademark',
     'edit_trademark' => 'Edit Mark',
     'trademark_name' => 'Trademarks name',
-    'all_trademark' => 'All trademarks',
+    'all_trademark' => 'Search Results',
     'reference_numbers' => 'Reference Numbers',
     'our_ref' => 'Our Ref.',
     'our_refs' => 'Our Refs.',

@@ -66,6 +66,7 @@ Route::delete('/holder/delete/{id}', [App\Http\Controllers\HolderController::cla
 |Trademarks
 |--------------------------------------------------------------------------*/
 Route::get('/trademarks/index', [App\Http\Controllers\TrademarksController::class, 'index'])->name('index.trademarks');
+Route::get('/trademarks/advance', [App\Http\Controllers\TrademarksController::class, 'advance'])->name('advance_search');
 Route::get('/trademarks/create', [App\Http\Controllers\TrademarksController::class, 'create'])->name('create.trademarks');
 Route::post('/trademarks/store', [App\Http\Controllers\TrademarksController::class, 'store'])->name('store.trademarks');
 Route::get('/trademarks/edit/{id}', [App\Http\Controllers\TrademarksController::class, 'edit'])->name('edit.trademarks');
