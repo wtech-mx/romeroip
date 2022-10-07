@@ -55,7 +55,7 @@
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.our_ref') }}</label>
                                                             <div class="input-group">
                                                                 <input id="our_ref" name="our_ref" class="form-control"
@@ -63,7 +63,7 @@
 
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.client_ref') }}</label>
                                                             <div class="input-group">
                                                                 <input id="client_ref" name="client_ref" class="form-control"
@@ -71,7 +71,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.opposition_no') }}</label>
                                                             <div class="input-group">
@@ -79,7 +79,7 @@
                                                                     type="text" value="{{ $trademark->opposition_no }}">
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control"
@@ -87,7 +87,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.litigation_no') }}</label>
                                                             <div class="input-group">
@@ -95,7 +95,7 @@
                                                                     type="text" value="{{ $trademark->litigation_no }}">
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control"
@@ -112,7 +112,7 @@
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.application_no') }}</label>
                                                             <div class="input-group">
@@ -121,7 +121,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.origin') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="origin" id="origin">
@@ -135,7 +135,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.registration_no') }}</label>
                                                             <div class="input-group">
@@ -144,7 +144,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.country') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control js-example-basic-single" name="country" id="country">
@@ -154,7 +154,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_general" name="filing_date_general" class="form-control"
@@ -162,7 +162,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.status') }}</label>
                                                             <select class="form-control" id="status" name="status">
                                                                 <option value="{{ $trademark->status }}" selected>{{ $trademark->status }}</option>
@@ -179,7 +179,7 @@
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.first_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="first_date" name="first_date" class="form-control"
@@ -187,7 +187,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.int_registration_no') }}</label>
                                                             <div class="input-group">
@@ -196,7 +196,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.registration_date') }}</label>
                                                             <div class="input-group">
@@ -205,7 +205,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.int_registration_date') }}</label>
                                                             <div class="input-group">
@@ -214,7 +214,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.expiration_date') }}</label>
                                                             <div class="input-group">
@@ -223,7 +223,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.contracting_organization') }}</label>
                                                             <div class="input-group">
@@ -232,7 +232,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.publication_date') }}</label>
                                                             <div class="input-group">
@@ -241,7 +241,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.designated_countries') }}</label>
                                                             <div class="input-group">
@@ -261,16 +261,16 @@
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.declaration_use') }}</label>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.renewal') }}</label>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_declaration" name="last_declaration" class="form-control"
@@ -278,7 +278,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_renewal" name="last_renewal" class="form-control"
@@ -286,7 +286,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_declaration" name="next_declaration" class="form-control"
@@ -294,7 +294,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_renewal" name="next_renewal" class="form-control"
@@ -313,7 +313,7 @@
                                                     <div class="row">
                                                         <div class="col-6">
                                                             <div class="row">
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.trademark') }}</label>
                                                                     <div class="input-group">
@@ -322,14 +322,14 @@
                                                                             value="{{$trademark->trademark}}">
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.description') }}</label>
                                                                     <div class="input-group">
                                                                         <textarea class="form-control" id="description_trademark" name="description_trademark" rows="1">{{$trademark->description_trademark}}</textarea>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.type_application') }}</label>
                                                                     <div class="input-group">
@@ -338,7 +338,7 @@
                                                                             value="{{$trademark->type_application}}">
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.type_mark') }}</label>
                                                                     <div class="input-group">
@@ -347,14 +347,14 @@
                                                                             value="{{$trademark->type_mark}}">
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.translation') }}</label>
                                                                     <div class="input-group">
                                                                         <textarea class="form-control" id="translation" name="translation" rows="1">{{$trademark->translation}}</textarea>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.transliteration') }}</label>
                                                                     <div class="input-group">
@@ -366,14 +366,14 @@
 
                                                         <div class="col-6">
                                                             <div class="row">
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.disclaimer') }}</label>
                                                                     <div class="input-group">
                                                                         <textarea class="form-control" id="disclaimer" name="disclaimer" rows="1">{{$trademark->disclaimer}}</textarea>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.design') }}</label>
                                                                     <div class="input-group">
@@ -382,7 +382,7 @@
                                                                             value="{{$trademark->design}}">
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12 mt-2" style="padding-left: 6rem;">
+                                                                <div class="col-12 p-2 mt-2" style="padding-left: 6rem;">
                                                                     <div class="input-group">
                                                                         @if ($trademark->design == NULL)
                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}"
@@ -406,7 +406,7 @@
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.class') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" id="class" name="class">
@@ -419,14 +419,14 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12">
+                                                        <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.description') }}</label>
                                                             <div class="input-group">
                                                                 <textarea class="form-control" id="description_good" name="description_good" rows="2">{{ $trademark->description_good }}</textarea>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12">
+                                                        <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.translation') }}</label>
                                                             <div class="input-group">
                                                                 <textarea class="form-control" id="translation_good" name="translation_good" rows="2">{{ $trademark->translation_good }}</textarea>
@@ -442,7 +442,7 @@
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.priority_no') }}</label>
                                                             <div class="input-group">
                                                                 <input id="priority_no" name="priority_no" class="form-control"
@@ -450,7 +450,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.country_office') }}</label>
                                                             <div class="input-group">
@@ -459,7 +459,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label
                                                                 class="form-label">{{ __('messages.priority_date') }}</label>
                                                             <div class="input-group">
@@ -477,7 +477,7 @@
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
-                                                        <div class="col-12">
+                                                        <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.client') }}</label>
                                                             <div class="input-group">
                                                             <select class="form-control js-example-basic-single" id="id_client" name="id_client">
@@ -489,7 +489,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12">
+                                                        <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.contact') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="id_contact" id="id_contact">
@@ -498,7 +498,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12">
+                                                        <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.address') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="id_address" id="id_address">
@@ -516,7 +516,7 @@
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
-                                                        <div class="col-12">
+                                                        <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.holder') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control js-example-basic-single" id="id_holder" name="id_holder">
@@ -528,14 +528,14 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.address') }}</label>
                                                             <select class="form-control" name="address_holder" id="address_holder">
                                                                 <option value="{{$trademark->address_holder}}">{{$trademark->AddressHolder->address}}</option>
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.industrial_address') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="industrial_address" id="industrial_address">
