@@ -2,10 +2,10 @@
 @livewire('trademarks.index') --}}
 @extends('layouts.app')
 
-
-
 @section('content')
+
 @include('filtros')
+
 <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12">

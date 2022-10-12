@@ -187,8 +187,8 @@
                                                         <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.status') }}</label>
                                                             <select class="form-control" id="status" name="status">
-                                                                <option selected value="{{ __('messages.live') }}">
-                                                                    {{ __('messages.live') }}</option>
+                                                                <option selected value="{{ __('messages.registered') }}">
+                                                                    {{ __('messages.registered') }}</option>
                                                                 <option value="{{ __('messages.pending') }}">
                                                                     {{ __('messages.pending') }}</option>
                                                                 <option value="{{ __('messages.abandoned') }}">
@@ -426,11 +426,12 @@
                                                                 </div>
                                                                 <div class="col-12 mt-2" style="padding-left: 6rem;">
                                                                     <div class="input-group">
-                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}" alt="Imagen" style="width: 300px; height: 300px;"/>
+                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}" alt="Imagen" style="width: 300px; height: auto;"/>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -488,14 +489,14 @@
                                                         </div>
 
                                                         <div class="col-6 p-2">
-                                                            <label
-                                                                class="form-label">{{ __('messages.country_office') }}</label>
+                                                            <label class="form-label">{{ __('messages.country_office') }}</label>
                                                             <div class="input-group">
-                                                                <input id="country_office" name="country_office" class="form-control"
-                                                                    type="text"
-                                                                    placeholder="{{ __('messages.country_office') }}"
-                                                                    >
+                                                                <select class="form-control" name="country_office" id="country_office">
+                                                                    <option selected>{{ __('messages.select') }}</option>
+                                                                    @include('client.paises')
+                                                                </select>
                                                             </div>
+
                                                         </div>
 
                                                         <div class="col-6 p-2">
@@ -549,7 +550,7 @@
                                                 </div>
                                             </div>
                                             <!-- Card Holder -->
-                                            <div class="card mt-4 mb-5" id="holder">
+                                            <div class="card mt-4" id="holder">
                                                 <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                                                     <h5>{{ __('messages.holder_info') }}</h5>
                                                 </div>
@@ -578,7 +579,7 @@
                                                             <label class="form-label">{{ __('messages.industrial_address') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="industrial_address" id="industrial_address">
-                                                                    <option value="">Seleccione Industrial/Commercial Address</option>
+                                                                    <option value="">Seleccione Industrial / Commercial Address</option>
                                                                 </select>
                                                             </div>
                                                         </div>

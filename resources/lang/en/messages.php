@@ -14,7 +14,7 @@ return [
     'system' => 'System',
     'custom' => 'Custom',
     'logout' => 'Logout',
-
+    'registered' => 'registered',
     'save' => 'Save',
     'back' => 'Back',
     'update' => 'Update',
@@ -96,7 +96,7 @@ return [
     'translation' => 'Translation',
     'transliteration' => 'Transliteration',
     'disclaimer' => 'Disclaimer',
-    'national' => 'Nationallity',
+    'national' => 'National',
     'international' => 'International',
 
     'goods_services' => 'Goods / Services',

@@ -15,7 +15,7 @@
                                         {{ __('messages.advanced_search') }}
                                     </a>
 
-                                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" type="submit" style="border: 2px solid #F82018; color: #F82018;">{{ __('messages.search') }}</button>
+                                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" type="submit" style="background-color: #F82018; color: #ffffff;">{{ __('messages.search') }}</button>
                                     {{-- @if(Route::currentRouteName() != 'index.trademarks')
                                     <a class="btn btn-sm mb-0 mt-sm-0 mt-1" href="{{ route('index.trademarks') }}" style="border: 2px solid #F82018; color: #F82018;"><i class="fa fa-refresh"></i></a>
                                     @endif --}}
@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <label class="form-label">{{ __('messages.registration_no') }}</label>
+                                    <label class="form-label">{{ __('messages.registration_no') }}.</label>
                                     <div class="input-group">
                                         <input name="registration_no" class="form-control"
                                             type="text" placeholder="{{ __('messages.registration_no') }}">
@@ -89,8 +89,15 @@
                                 <div class="row mt-3">
                                     <div class="col-3">
                                         <label class="form-label">{{ __('messages.status') }}</label>
-                                        <input name="status" class="form-control"
-                                        type="text" placeholder="{{ __('messages.status') }}">
+
+                                        <select class="form-control" name="status">
+                                            <option value="Registered" selected>{{ __('messages.registered') }}</option>
+                                            <option value="Pending" >{{ __('messages.pending') }}</option>
+                                            <option value="Abandoned" >{{ __('messages.abandoned') }}</option>
+                                            <option value="Lapsed" >{{ __('messages.lapsed') }}</option>
+                                            <option value="Inactive" >{{ __('messages.inactive') }}</option>
+                                        </select>
+
                                     </div>
                                     <div class="col-3">
                                         <label class="form-label">{{ __('messages.opposition_no') }}</label>

@@ -61,10 +61,10 @@ return [
     'opposition_no' => 'Número de oposición',
     'filing_date' => 'Fecha de Presentación',
     'litigation_no' => 'Litigio No.',
-
     'general_information' => 'General Information',
     'application_no' => 'Número de solicitud',
     'origin' => 'Origen',
+    'registered' => 'Registrado',
     'live' => 'Vigente',
     'pending' => 'Pendiente',
     'abandoned' => 'Abandonada',
