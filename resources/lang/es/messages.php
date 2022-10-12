@@ -52,7 +52,15 @@ return [
 
     'new_trademark' => 'Nueva Marca',
     'edit_trademark' => 'Editar Marca',
-    'trademark_name' => 'Nombre de marca',
+    'trademark_name' => 'Nombre comercial',
+    'slogan' => 'Eslogan',
+    'collective_mark' => 'Marca colectiva',
+    'certification_mark' => 'Marca de certificación',
+    'nontraditional' => 'No tradicional',
+    'word_marks' => 'Marcas de palabras',
+    'design_marks' => 'Marcas de diseño',
+    'combined_marks' => 'Marcas combinadas',
+    'tridimensional_marks' => 'Marcas tridimensionales',
     'all_trademark' => 'Resultados de la búsqueda',
     'reference_numbers' => 'Número de referencia',
     'our_ref' => 'Nuestra ref.',
@@ -83,7 +91,9 @@ return [
 
     'important_dates' => 'Fechas importantes',
     'declaration_use' => 'Declaración de Uso',
+    'declarations_use' => 'Declaraciones de Uso',
     'renewal' => 'Renovación',
+    'renewals' => 'Renovaciones',
     'last' => 'Última',
     'next' => 'Siguiente',
 

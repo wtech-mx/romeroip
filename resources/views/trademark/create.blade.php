@@ -373,20 +373,28 @@
                                                                     <label
                                                                         class="form-label">{{ __('messages.type_application') }}</label>
                                                                     <div class="input-group">
-                                                                        <input id="type_application" name="type_application"
-                                                                            class="form-control" type="text"
-                                                                            placeholder="{{ __('messages.type_application') }}"
-                                                                            >
+                                                                        <select class="form-control" id="type_application" name="type_application">
+                                                                            <option value="" selected>{{ __('messages.select') }}</option>
+                                                                            <option value="Trademark">{{ __('messages.trademark') }}</option>
+                                                                            <option value="Trade Name">{{ __('messages.trademark_name') }}</option>
+                                                                            <option value="Slogan">{{ __('messages.slogan') }}</option>
+                                                                            <option value="Collective Mark">{{ __('messages.collective_mark') }}</option>
+                                                                            <option value="Certification Mark">{{ __('messages.certification_mark') }}</option>
+                                                                            <option value="Nontraditional">{{ __('messages.nontraditional') }}</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.type_mark') }}</label>
                                                                     <div class="input-group">
-                                                                        <input id="type_mark" name="type_mark"
-                                                                            class="form-control" type="text"
-                                                                            placeholder="{{ __('messages.type_mark') }}"
-                                                                            >
+                                                                        <select class="form-control" id="type_mark" name="type_mark">
+                                                                            <option value="" selected>{{ __('messages.select') }}</option>
+                                                                            <option value="Word Marks">{{ __('messages.word_marks') }}</option>
+                                                                            <option value="Design Marks">{{ __('messages.design_marks') }}</option>
+                                                                            <option value="Combined Marks">{{ __('messages.combined_marks') }}</option>
+                                                                            <option value="Tridimensional Marks">{{ __('messages.tridimensional_marks') }}</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 p-2">
@@ -534,7 +542,7 @@
                                                             <label class="form-label">{{ __('messages.contact') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="id_contact" id="id_contact">
-                                                                    <option value="">seleccione contacto</option>
+                                                                    <option value="">{{ __('messages.select') }}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -571,7 +579,7 @@
                                                         <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.address') }}</label>
                                                             <select class="form-control" name="address_holder" id="address_holder">
-                                                                <option value="">Seleccione Addres</option>
+                                                                <option value="">{{ __('messages.select') }}</option>
                                                             </select>
                                                         </div>
 

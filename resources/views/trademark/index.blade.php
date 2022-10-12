@@ -39,15 +39,18 @@
                 <table class="table table-flush" id="products-list">
                   <thead class="thead-light">
                     <tr>
-                      <th>#</th>
                       <th>{{ __('messages.our_ref') }}</th>
-                      <th>{{ __('messages.trademark_name') }}</th>
+                      <th>{{ __('messages.trademark') }}</th>
                       <th>{{ __('messages.class') }}</th>
                       <th>{{ __('messages.application_no') }}</th>
-                      <th>{{ __('messages.filing_date') }}</th>
                       <th>{{ __('messages.registration_no') }}</th>
                       <th>{{ __('messages.registration_date') }}</th>
                       <th>{{ __('messages.declaration_use') }}</th>
+                      <th>{{ __('messages.renewal') }}</th>
+                      <th>{{ __('messages.holder') }}</th>
+                      <th>{{ __('messages.client') }}</th>
+                      <th>{{ __('messages.client_ref') }}</th>
+                      <th>{{ __('messages.origin') }}</th>
                       <th>{{ __('messages.status') }}</th>
                       <th>{{ __('messages.action') }}</th>
                     </tr>
@@ -56,26 +59,33 @@
                   <tbody>
                    @if(Route::currentRouteName() != 'index.trademarks')
                         @foreach ($trademarks as $trademark)
-
-                            <?php
-                                $filing_date_opposition = date("d/m/Y", strtotime($trademark->filing_date_opposition));
-
-                                $last_declaration = date("d/m/Y", strtotime($trademark->last_declaration));
-                            ?>
                             <tr>
-                            <td class="text-center ">
+                            {{-- <td class="text-center ">
                                 <div class="form-check" style="left: 20px; position: absolute;">
                                     <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" >
                                 </div>
-                            </td>
+                            </td> --}}
                             <td class="text-center">{{ $trademark->our_ref }}</td>
                             <td class="text-center">{{ $trademark->trademark }}</td>
                             <td class="text-center">{{ $trademark->class }}</td>
                             <td class="text-center">{{ $trademark->application_no }}</td>
-                            <td class="text-center">{{ $filing_date_opposition }}</td>
                             <td class="text-center">{{ $trademark->registration_no }}</td>
                             <td class="text-center">{{ $trademark->registration_date }}</td>
-                            <td class="text-center">{{ $last_declaration }}</td>
+                            <td class="text-center">{{ $trademark->last_declaration }}</td>
+                            <td class="text-center">{{ $trademark->last_renewal }}</td>
+                                @if ($trademark->id_holder == NULL)
+                                    <td class="text-center"></td>
+                                @else
+                                    <td class="text-center">{{ $trademark->Holder->company_name }}</td>
+                                @endif
+
+                                @if ($trademark->id_client == NULL)
+                                    <td class="text-center"></td>
+                                @else
+                                    <td class="text-center">{{ $trademark->Client->company_name }}</td>
+                                @endif
+                            <td class="text-center">{{ $trademark->client_ref }}</td>
+                            <td class="text-center">{{ $trademark->origin }}</td>
                             <td class="text-center">{{ $trademark->status }}</td>
                             <td class="text-sm">
                                 <a href="{{ route('edit.trademarks', $trademark->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">

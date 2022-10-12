@@ -333,18 +333,28 @@
                                                                     <label
                                                                         class="form-label">{{ __('messages.type_application') }}</label>
                                                                     <div class="input-group">
-                                                                        <input id="type_application" name="type_application"
-                                                                            class="form-control" type="text"
-                                                                            value="{{$trademark->type_application}}">
+                                                                        <select class="form-control" id="type_application" name="type_application">
+                                                                            <option value="{{$trademark->type_application}}" selected>{{$trademark->type_application}}</option>
+                                                                            <option value="Trademark">{{ __('messages.trademark') }}</option>
+                                                                            <option value="Trade Name">{{ __('messages.trademark_name') }}</option>
+                                                                            <option value="Slogan">{{ __('messages.slogan') }}</option>
+                                                                            <option value="Collective Mark">{{ __('messages.collective_mark') }}</option>
+                                                                            <option value="Certification Mark">{{ __('messages.certification_mark') }}</option>
+                                                                            <option value="Nontraditional">{{ __('messages.nontraditional') }}</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.type_mark') }}</label>
                                                                     <div class="input-group">
-                                                                        <input id="type_mark" name="type_mark"
-                                                                            class="form-control" type="text"
-                                                                            value="{{$trademark->type_mark}}">
+                                                                        <select class="form-control" id="type_mark" name="type_mark">
+                                                                            <option value="{{$trademark->type_mark}}" selected>{{$trademark->type_mark}}</option>
+                                                                            <option value="Word Marks">{{ __('messages.word_marks') }}</option>
+                                                                            <option value="Design Marks">{{ __('messages.design_marks') }}</option>
+                                                                            <option value="Combined Marks">{{ __('messages.combined_marks') }}</option>
+                                                                            <option value="Tridimensional Marks">{{ __('messages.tridimensional_marks') }}</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 p-2">
@@ -481,7 +491,12 @@
                                                             <label class="form-label">{{ __('messages.client') }}</label>
                                                             <div class="input-group">
                                                             <select class="form-control js-example-basic-single" id="id_client" name="id_client">
+                                                                @if ($trademark->id_client == NULL)
+                                                                <option value="">{{ __('messages.client') }}</option>
+                                                                @else
                                                                 <option value="{{$trademark->id_client}}">{{$trademark->Client->company_name}}</option>
+                                                                @endif
+
                                                                 @foreach ($clients as $client)
                                                                     <option value="{{ $client->id }}">{{ $client->company_name }}</option>
                                                                 @endforeach
@@ -493,7 +508,12 @@
                                                             <label class="form-label">{{ __('messages.contact') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="id_contact" id="id_contact">
+                                                                    @if ($trademark->id_contact == NULL)
+                                                                    <option value="">{{ __('messages.select') }}</option>
+                                                                    @else
                                                                     <option value="{{$trademark->id_contact}}" selected>{{$trademark->ContactClient->name}}</option>
+                                                                    @endif
+
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -502,7 +522,12 @@
                                                             <label class="form-label">{{ __('messages.address') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="id_address" id="id_address">
+                                                                    @if ($trademark->id_address == NULL)
+
+                                                                    @else
                                                                     <option value="{{$trademark->id_address}}" selected>{{$trademark->AddressContact->address}}</option>
+                                                                    @endif
+
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -520,7 +545,12 @@
                                                             <label class="form-label">{{ __('messages.holder') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control js-example-basic-single" id="id_holder" name="id_holder">
+                                                                    @if ($trademark->id_holder == NULL)
+                                                                    <option value="">{{ __('messages.holder') }}</option>
+                                                                    @else
                                                                     <option value="{{$trademark->id_holder}}">{{$trademark->Holder->company_name}}</option>
+                                                                    @endif
+
                                                                     @foreach ($holders as $holder)
                                                                         <option value="{{ $holder->id }}">{{ $holder->company_name }}</option>
                                                                     @endforeach
@@ -531,7 +561,12 @@
                                                         <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.address') }}</label>
                                                             <select class="form-control" name="address_holder" id="address_holder">
+                                                                @if ($trademark->address_holder == NULL)
+                                                                <option value="">{{ __('messages.select') }}</option>
+                                                                @else
                                                                 <option value="{{$trademark->address_holder}}">{{$trademark->AddressHolder->address}}</option>
+                                                                @endif
+
                                                             </select>
                                                         </div>
 
@@ -539,7 +574,12 @@
                                                             <label class="form-label">{{ __('messages.industrial_address') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="industrial_address" id="industrial_address">
+                                                                    @if ($trademark->industrial_address == NULL)
+
+                                                                    @else
                                                                     <option value="{{$trademark->industrial_address}}">{{$trademark->industrial_address}}</option>
+                                                                    @endif
+
                                                                 </select>
                                                             </div>
                                                         </div>

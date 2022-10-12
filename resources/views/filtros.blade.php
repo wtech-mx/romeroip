@@ -165,14 +165,14 @@
 
                                 <div class="row mt-3">
                                     <div class="col-6">
-                                        <label class="form-label">{{ __('messages.declaration_use') }}</label>
+                                        <label class="form-label">{{ __('messages.declarations_use') }}</label>
                                     </div>
                                     <div class="col-6">
-                                        <label class="form-label">{{ __('messages.renewal') }}</label>
+                                        <label class="form-label">{{ __('messages.renewals') }}</label>
                                     </div>
                                 </div>
 
-                                <div class="row mt-1">
+                                <div class="row">
                                     <div class="col-3">
                                         <label class="form-label">{{ __('messages.from') }}</label>
                                         <div class="input-group">
