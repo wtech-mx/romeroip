@@ -154,7 +154,7 @@
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <label class="form-label">{{ __('messages.national') }}</label>
+                                        <label class="form-label">{{ __('messages.nationality') }}</label>
                                         <div class="input-group">
                                             <select class="form-control" name="national" id="national">
                                                 <option value="" selected>{{ __('messages.all') }}</option>

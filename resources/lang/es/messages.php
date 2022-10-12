@@ -106,6 +106,7 @@ return [
     'transliteration' => 'Transliteración',
     'disclaimer' => 'Leyendas No Reservables',
     'national' => 'Nacional',
+    'nationality' => 'Nacionalidad',
     'international' => 'Internacional',
 
     'goods_services' => 'Productos / Servicios',

@@ -106,7 +106,8 @@ return [
     'translation' => 'Translation',
     'transliteration' => 'Transliteration',
     'disclaimer' => 'Disclaimer',
-    'national' => 'Nationality',
+    'nationality' => 'Nationality',
+    'national' => 'National',
     'international' => 'International',
 
     'goods_services' => 'Goods / Services',
@@ -125,5 +126,5 @@ return [
 
     'holder_info' => 'Holder Information',
     'holder' => 'Holder',
-    'industrial_address' => 'Industrial/Commercial Address',
+    'industrial_address' => 'Industrial / Commercial Address',
 ];

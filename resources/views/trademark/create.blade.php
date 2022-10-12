@@ -350,8 +350,12 @@
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
+
                                                         <div class="col-6">
                                                             <div class="row">
+                                                                <div class="col-12 ">
+                                                                    <label class="form-label" style="opacity: 0">sin_espacio</label>
+                                                                </div>
                                                                 <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.trademark') }}</label>
@@ -416,14 +420,17 @@
 
                                                         <div class="col-6 ">
                                                             <div class="row">
-                                                                <div class="col-12">
+                                                                <div class="col-12 ">
+                                                                    <label class="form-label" style="opacity: 0">sin_espacio</label>
+                                                                </div>
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.disclaimer') }}</label>
                                                                     <div class="input-group">
                                                                         <textarea class="form-control" id="disclaimer" name="disclaimer" rows="1"></textarea>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12">
+                                                                <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.design') }}</label>
                                                                     <div class="input-group">
@@ -432,9 +439,9 @@
                                                                             placeholder="Thompson" >
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-12 mt-2" style="padding-left: 6rem;">
+                                                                <div class="col-12 mt-2" style="">
                                                                     <div class="input-group">
-                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}" alt="Imagen" style="width: 300px; height: auto;"/>
+                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}" alt="Imagen" style="width: 300px; height: 300px;"/>
                                                                     </div>
                                                                 </div>
                                                             </div>
