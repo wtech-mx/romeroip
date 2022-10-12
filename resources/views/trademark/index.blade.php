@@ -76,13 +76,15 @@
                                 @if ($trademark->id_holder == NULL)
                                     <td class="text-center"></td>
                                 @else
-                                    <td class="text-center">{{ $trademark->Holder->company_name }}</td>
+                                <td class="text-center"></td>
+                                    {{-- <td class="text-center">{{$trademark->Holder->company_name}}</td> --}}
                                 @endif
 
                                 @if ($trademark->id_client == NULL)
                                     <td class="text-center"></td>
                                 @else
-                                    <td class="text-center">{{ $trademark->Client->company_name }}</td>
+                                <td class="text-center"></td>
+                                    {{-- <td class="text-center">{{$trademark->Client->company_name}}</td> --}}
                                 @endif
                             <td class="text-center">{{ $trademark->client_ref }}</td>
                             <td class="text-center">{{ $trademark->origin }}</td>

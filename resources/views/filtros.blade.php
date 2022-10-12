@@ -90,8 +90,9 @@
                                     <div class="col-3">
                                         <label class="form-label">{{ __('messages.status') }}</label>
 
-                                        <select class="form-control" name="status">
-                                            <option value="Registered" selected>{{ __('messages.registered') }}</option>
+                                        <select class="form-control" name="status" id="status">
+                                            <option value="" selected>{{ __('messages.all') }}</option>
+                                            <option value="Registered">{{ __('messages.registered') }}</option>
                                             <option value="Pending" >{{ __('messages.pending') }}</option>
                                             <option value="Abandoned" >{{ __('messages.abandoned') }}</option>
                                             <option value="Lapsed" >{{ __('messages.lapsed') }}</option>
