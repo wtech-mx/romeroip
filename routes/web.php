@@ -46,6 +46,7 @@ Route::patch('/configuracion/update', [App\Http\Controllers\ConfiguracionControl
 |Clients
 |--------------------------------------------------------------------------*/
 Route::get('/clients/index', [App\Http\Controllers\ClientController::class, 'index'])->name('index.clients');
+Route::get('/clients/advance', [App\Http\Controllers\ClientController::class, 'advance'])->name('advance_search.clients');
 Route::get('/clients/create', [App\Http\Controllers\ClientController::class, 'create'])->name('create.clients');
 Route::post('/clients/store', [App\Http\Controllers\ClientController::class, 'store'])->name('store.clients');
 Route::get('/clients/edit/{id}', [App\Http\Controllers\ClientController::class, 'edit'])->name('edit.clients');

@@ -8,6 +8,7 @@ use App\Models\ContactClient;
 use App\Models\PhoneContact;
 use Illuminate\Http\Request;
 use Session;
+use DB;
 
 /**
  * Class ClientController
@@ -23,10 +24,27 @@ class ClientController extends Controller
     public function index(Request $request)
     {
 
-        $clients = Clients::get();
-
-        return view('client.index', compact('clients'));
+        return view('client.index');
     }
+
+    public function advance(Request $request) {
+        $clients = DB::table('clients');
+        if( $request->company_name){
+                $clients = $clients->where('company_name', 'LIKE', "%" . $request->company_name . "%");
+        }
+        if( $request->email){
+            $clients = $clients->where('email', 'LIKE', "%" . $request->email . "%");
+        }
+        if( $request->vat_no){
+            $clients = $clients->where('vat_no', 'LIKE', "%" . $request->vat_no . "%");
+        }
+        if( $request->country){
+            $clients = $clients->where('country', 'LIKE', "%" . $request->country . "%");
+        }
+        $clients = $clients->paginate(10);
+
+      return view('client.index', compact('clients'));
+     }
 
     /**
      * Show the form for creating a new resource.

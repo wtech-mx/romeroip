@@ -27,7 +27,6 @@ class TrademarksController extends Controller
 
      public function advance(Request $request) {
         $trademarks = DB::table('trademark');
-        $marca = Trademarks::get();
         if( $request->client_ref){
                 $trademarks = $trademarks->where('client_ref', 'LIKE', "%" . $request->client_ref . "%")
                                          ->orWhere('our_ref', 'LIKE', "%" . $request->client_ref . "%");
