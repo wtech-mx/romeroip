@@ -263,11 +263,11 @@
                                                     <div class="row">
                                                         <div class="col-6 p-2">
                                                             <label
-                                                                class="form-label">{{ __('messages.declaration_use') }}</label>
+                                                                class="form-label">{{ __('messages.declarations_use') }}</label>
                                                         </div>
 
                                                         <div class="col-6 p-2">
-                                                            <label class="form-label">{{ __('messages.renewal') }}</label>
+                                                            <label class="form-label">{{ __('messages.renewals') }}</label>
                                                         </div>
 
                                                         <div class="col-6 p-2">

@@ -299,11 +299,11 @@
                                                 <div class="card-body pt-0">
                                                     <div class="row">
                                                         <div class="col-6 ">
-                                                            <label class="form-label">{{ __('messages.declaration_use') }}</label>
+                                                            <label class="form-label">{{ __('messages.declarations_use') }}</label>
                                                         </div>
 
                                                         <div class="col-6 ">
-                                                            <label class="form-label">{{ __('messages.renewal') }}</label>
+                                                            <label class="form-label">{{ __('messages.renewals') }}</label>
                                                         </div>
                                                         <?php
                                                          $fcha = date("Y-m-d");
