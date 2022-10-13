@@ -82,7 +82,7 @@ return [
     'country' => 'Country',
     'status' => 'Status',
     'first_date' => 'First Use Date',
-    'int_registration_no' => 'Int. Registration No',
+    'int_registration_no' => 'Int. Registration No.',
     'registration_date' => 'Registration Date',
     'int_registration_date' => 'Int. Registration Date',
     'expiration_date' => 'Expiration Date',

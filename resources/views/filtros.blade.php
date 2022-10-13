@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <label class="form-label">{{ __('messages.registration_no') }}.</label>
+                                    <label class="form-label">{{ __('messages.registration_no') }}</label>
                                     <div class="input-group">
                                         <input name="registration_no" class="form-control"
                                             type="text" placeholder="{{ __('messages.registration_no') }}">
