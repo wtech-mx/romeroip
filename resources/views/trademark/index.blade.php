@@ -38,7 +38,8 @@
               <div class="table-responsive">
                 <table class="table table-flush" id="products-list">
                   <thead class="thead-light">
-                    <tr>
+                    <tr style="font-size: 13px;">
+                      <th>#</th>
                       <th>{{ __('messages.our_ref') }}</th>
                       <th>{{ __('messages.trademark') }}</th>
                       <th>{{ __('messages.class') }}</th>
@@ -59,12 +60,12 @@
                   <tbody>
                    @if(Route::currentRouteName() != 'index.trademarks')
                         @foreach ($trademarks as $trademark)
-                            <tr>
-                            {{-- <td class="text-center ">
-                                <div class="form-check" style="left: 20px; position: absolute;">
+                            <tr style="font-size: 12px;">
+                             <td class="text-center ">
+                                <div class="form-check" style="">
                                     <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" >
                                 </div>
-                            </td> --}}
+                            </td>
                             <td class="text-center">{{ $trademark->our_ref }}</td>
                             <td class="text-center">{{ $trademark->trademark }}</td>
                             <td class="text-center">{{ $trademark->class }}</td>

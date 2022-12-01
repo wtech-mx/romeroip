@@ -17,10 +17,10 @@
                     <div class="card-header">
                         <h3 class="mb-3">{{ __('messages.update') }} {{ __('messages.client') }}</h3>
                         <a class="btn" href="{{ route('index.clients') }}"
-                            style="background: {{$configuracion->color_boton_close}}; color: #ffff"> {{ __('messages.back') }}</a>
+                            style="background: {{$configuracion->color_boton_close}}; color: #ffff;width: 110px;"> {{ __('messages.back') }}</a>
                         @includeif('partials.errors')
                         <button type="submit" class="btn"
-                        style="border: 2px solid #F82018; color: #F82018;">{{ __('messages.update') }}</button>
+                        style="border: 2px solid #F82018; color: #F82018;width: 110px;">{{ __('messages.update') }}</button>
                     </div>
 
                     <main class="main-content max-height-vh-100 h-100">

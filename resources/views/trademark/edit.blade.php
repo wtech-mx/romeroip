@@ -20,10 +20,10 @@
                         <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                             <h3 class="mb-3">{{ __('messages.edit_trademark') }}</h3>
                             <a class="btn" href="javascript: history.go(-1)"
-                                style="background: {{ $configuracion->color_boton_close }}; color: #ffff"> {{ __('messages.back') }}</a>
+                                style="background: {{ $configuracion->color_boton_close }}; color: #ffff;width: 110px;"> {{ __('messages.back') }}</a>
                             @includeif('partials.errors')
                             <button type="submit" class="btn"
-                            style="border: 2px solid #F82018; color: #F82018;">{{ __('messages.update') }}</button>
+                            style="border: 2px solid #F82018; color: #F82018;width: 110px;">{{ __('messages.update') }}</button>
                         </div>
 
                         <div class="card-body">
@@ -396,10 +396,10 @@
                                                                     <div class="input-group">
                                                                         @if ($trademark->design == NULL)
                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}"
-                                                                            style="width: 300px; height: 300px;">
+                                                                            style="width: 345px; height: 320px;">
                                                                         @else
                                                                         <img id="blah" src="{{asset('design/'.$trademark->design) }}"
-                                                                            style="width: 300px; height: 300px;">
+                                                                            style="width: 345px; height: 320px;">
                                                                         @endif
 
                                                                     </div>
@@ -432,14 +432,14 @@
                                                         <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.description') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="description_good" name="description_good" rows="2">{{ $trademark->description_good }}</textarea>
+                                                                <textarea class="form-control" id="description_good" name="description_good" rows="5">{{ $trademark->description_good }}</textarea>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.translation') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="translation_good" name="translation_good" rows="2">{{ $trademark->translation_good }}</textarea>
+                                                                <textarea class="form-control" id="translation_good" name="translation_good" rows="5">{{ $trademark->translation_good }}</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
