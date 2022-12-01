@@ -93,7 +93,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-6 input_fac" style="display: none;">
+                                                <div class="col-6 input_fac" >
                                                     <label class="form-label">{{ __('messages.billing_address')
                                                         }}</label>
                                                     <div class="input-group">
@@ -103,13 +103,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        {{-- <div class="row">
                                             <div class="col-12">
                                                 <a id="factura" class="btn"
                                                     style="border: 2px solid #F82018; color: #F82018; margin-left: 25px;">¿Dirección
                                                     de factura?</a>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
 
                                     <!-- Card Phone -->
@@ -280,14 +280,14 @@
         }
 </script>
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
 
     $(document).ready(function(){
         $("#factura").click(function(){
             $(".input_fac").toggle("slide");
         });
     });
-</script>
+</script> --}}
 
 <script>
     $(document).ready(function() {

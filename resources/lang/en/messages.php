@@ -48,6 +48,7 @@ return [
     'note_important' => 'Important Notes',
     'note' => 'Notes',
     'information' => 'Information',
+    'office' => 'Office',
     'search' => 'Search',
 
     'new_trademark' => 'New Trademark',

@@ -83,7 +83,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control"
-                                                                    type="date" value="{{ $trademark->filing_date_opposition }}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->filing_date_opposition }}">
                                                             </div>
                                                         </div>
 
@@ -99,7 +99,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control"
-                                                                    type="date" value="{{ $trademark->filing_date_litigation }}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->filing_date_litigation }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -158,7 +158,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_general" name="filing_date_general" class="form-control"
-                                                                    type="date" value="{{ $trademark->filing_date_general }}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->filing_date_general }}">
                                                             </div>
                                                         </div>
 
@@ -183,7 +183,7 @@
                                                             <label class="form-label">{{ __('messages.first_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="first_date" name="first_date" class="form-control"
-                                                                    type="date" value="{{ $trademark->first_date }}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->first_date }}">
                                                             </div>
                                                         </div>
 
@@ -201,7 +201,7 @@
                                                                 class="form-label">{{ __('messages.registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="registration_date" name="registration_date" class="form-control"
-                                                                    type="date" value="{{ $trademark->registration_date }}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->registration_date }}">
                                                             </div>
                                                         </div>
 
@@ -210,7 +210,7 @@
                                                                 class="form-label">{{ __('messages.int_registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="int_registration_date" name="int_registration_date" class="form-control"
-                                                                    type="date" value="{{ $trademark->int_registration_date }}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->int_registration_date }}">
                                                             </div>
                                                         </div>
 
@@ -219,7 +219,7 @@
                                                                 class="form-label">{{ __('messages.expiration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="expiration_date" name="expiration_date" class="form-control"
-                                                                    type="date" value="{{ $trademark->expiration_date }}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->expiration_date }}">
                                                             </div>
                                                         </div>
 
@@ -237,7 +237,7 @@
                                                                 class="form-label">{{ __('messages.publication_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="publication_date" name="publication_date" class="form-control"
-                                                                    type="date" value="{{ $trademark->publication_date }}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->publication_date }}">
                                                             </div>
                                                         </div>
 
@@ -274,7 +274,7 @@
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_declaration" name="last_declaration" class="form-control"
-                                                                    type="date" placeholder="Thompson" value="{{ $trademark->last_declaration }}">
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{ $trademark->last_declaration }}">
                                                             </div>
                                                         </div>
 
@@ -282,7 +282,7 @@
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_renewal" name="last_renewal" class="form-control"
-                                                                    type="date" placeholder="Thompson" value="{{$trademark->last_renewal}}">
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{$trademark->last_renewal}}">
                                                             </div>
                                                         </div>
 
@@ -290,7 +290,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_declaration" name="next_declaration" class="form-control"
-                                                                    type="date" placeholder="Thompson" value="{{$trademark->next_declaration}}">
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{$trademark->next_declaration}}">
                                                             </div>
                                                         </div>
 
@@ -298,7 +298,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_renewal" name="next_renewal" class="form-control"
-                                                                    type="date" placeholder="Thompson" value="{{$trademark->next_renewal}}">
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{$trademark->next_renewal}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -474,7 +474,7 @@
                                                                 class="form-label">{{ __('messages.priority_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="priority_date" name="priority_date" class="form-control"
-                                                                    type="date" value="{{$trademark->priority_date}}">
+                                                                type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{$trademark->priority_date}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -675,6 +675,23 @@
     </div>
 @endsection
 @section('js_custom')
+<script type="text/javascript">
+
+    var url = "{{ route('changeLang') }}";
+
+    $(".changeLang").change(function(){
+        window.location.href = url + "?lang="+ $(this).val();
+    });
+
+    $("input").on("change", function() {
+        this.setAttribute(
+            "data-date",
+            moment(this.value, "YYYY-MM-DD")
+            .format( this.getAttribute("data-date-format") )
+        )
+    }).trigger("change")
+
+</script>
 <script>
     $(document).ready(function() {
         $('.js-example-basic-single').select2();

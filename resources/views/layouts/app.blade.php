@@ -17,7 +17,6 @@
   <link href="{{ asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="{{ asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
   <!-- Select2  -->
@@ -27,6 +26,18 @@
   <link src="https://cdn.datatables.net/fixedheader/3.2.3/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+        input:before {
+            content: attr(data-date);
+            display: inline-block;
+            color: black;
+        }
+
+        input::-webkit-datetime-edit, input::-webkit-inner-spin-button, input::-webkit-clear-button {
+            display: none;
+        }
+
+    </style>
   @livewireStyles
 </head>
 
@@ -72,20 +83,13 @@
   <script src="{{ asset('assets/js/plugins/chartjs.min.js')}}"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
 
   @yield('js_custom')
-    <script type="text/javascript">
 
-        var url = "{{ route('changeLang') }}";
-
-        $(".changeLang").change(function(){
-            window.location.href = url + "?lang="+ $(this).val();
-        });
-
-    </script>
 
   <script>
             var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);

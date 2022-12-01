@@ -19,10 +19,10 @@
                         <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                             <h3 class="mb-3">{{ __('messages.new_trademark') }}</h3>
                             <a class="btn" href="javascript: history.go(-1)"
-                                style="background: {{ $configuracion->color_boton_close }}; color: #ffff;width: 110px;width: 110px;"> {{ __('messages.back') }}</a>|
+                                style="background: {{ $configuracion->color_boton_close }}; color: #ffff"> {{ __('messages.back') }}</a>
                             @includeif('partials.errors')
                             <button type="submit" class="btn"
-                            style="border: 2px solid #F82018; color: #F82018;width: 110px;width: 110px;">{{ __('messages.save') }}</button>
+                            style="border: 2px solid #F82018; color: #F82018;">{{ __('messages.save') }}</button>
                         </div>
 
                         <div class="card-body">
@@ -41,7 +41,7 @@
                                                         <div class="col-12">
                                                             <label class="form-label">{{ __('messages.note') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
+                                                                <textarea class="form-control" id="notes" name="notes" rows="1"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -93,9 +93,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.filing_date') }}"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
 
@@ -113,9 +111,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.filing_date') }}"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -178,9 +174,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_general" name="filing_date_general" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.filing_date') }}"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
 
@@ -204,9 +198,7 @@
                                                             <label class="form-label">{{ __('messages.first_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="first_date" name="first_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.first_date') }}"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
 
@@ -216,8 +208,7 @@
                                                             <div class="input-group">
                                                                 <input id="int_registration_no" name="int_registration_no" class="form-control"
                                                                     type="text"
-                                                                    placeholder="{{ __('messages.int_registration_no') }}"
-                                                                    >
+                                                                    placeholder="{{ __('messages.int_registration_no') }}">
                                                             </div>
                                                         </div>
 
@@ -226,9 +217,7 @@
                                                                 class="form-label">{{ __('messages.registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="registration_date" name="registration_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.registration_date') }}"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
 
@@ -237,9 +226,7 @@
                                                                 class="form-label">{{ __('messages.int_registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="int_registration_date" name="int_registration_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.int_registration_date') }}"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
 
@@ -248,9 +235,7 @@
                                                                 class="form-label">{{ __('messages.expiration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="expiration_date" name="expiration_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.expiration_date') }}"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
 
@@ -260,8 +245,7 @@
                                                             <div class="input-group">
                                                                 <input id="contracting_organization" name="contracting_organization" class="form-control"
                                                                     type="text"
-                                                                    placeholder="{{ __('messages.contracting_organization') }}"
-                                                                    >
+                                                                    placeholder="{{ __('messages.contracting_organization') }}">
                                                             </div>
                                                         </div>
 
@@ -270,9 +254,7 @@
                                                                 class="form-label">{{ __('messages.publication_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="publication_date" name="publication_date" class="form-control"
-                                                                    type="date"
-                                                                    placeholder="{{ __('messages.publication_date') }}"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
 
@@ -282,8 +264,7 @@
                                                             <div class="input-group">
                                                                 <input id="designated_countries" name="designated_countries" class="form-control"
                                                                     type="text"
-                                                                    placeholder="{{ __('messages.designated_countries') }}"
-                                                                    >
+                                                                    placeholder="{{ __('messages.designated_countries') }}">
                                                             </div>
                                                         </div>
 
@@ -312,8 +293,8 @@
                                                         <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
-                                                                <input id="last_declaration" name="last_declaration" class="form-control"
-                                                                    type="date" placeholder="Thompson" value="{{$fcha}}">
+                                                                <input class="form-control" id="last_declaration" name="last_declaration" type="date"
+                                                                data-date="" data-date-format="YYYY MMMM DD" value="{{$fcha}}">
                                                             </div>
                                                         </div>
 
@@ -321,7 +302,7 @@
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="last_renewal" name="last_renewal" class="form-control"
-                                                                    type="date" placeholder="Thompson" value="{{$fcha}}">
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{$fcha}}">
                                                             </div>
                                                         </div>
 
@@ -329,7 +310,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_declaration" name="next_declaration" class="form-control"
-                                                                    type="date" placeholder="Thompson" value="{{$fecha}}">
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{$fecha}}">
                                                             </div>
                                                         </div>
 
@@ -337,7 +318,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="next_renewal" name="next_renewal" class="form-control"
-                                                                    type="date" placeholder="Thompson" value="{{$fecha}}">
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD" value="{{$fecha}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -353,7 +334,9 @@
 
                                                         <div class="col-6">
                                                             <div class="row">
-
+                                                                <div class="col-12 ">
+                                                                    <label class="form-label" style="opacity: 0">sin_espacio</label>
+                                                                </div>
                                                                 <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.trademark') }}</label>
@@ -418,7 +401,9 @@
 
                                                         <div class="col-6 ">
                                                             <div class="row">
-
+                                                                <div class="col-12 ">
+                                                                    <label class="form-label" style="opacity: 0">sin_espacio</label>
+                                                                </div>
                                                                 <div class="col-12 p-2">
                                                                     <label
                                                                         class="form-label">{{ __('messages.disclaimer') }}</label>
@@ -437,7 +422,7 @@
                                                                 </div>
                                                                 <div class="col-12 mt-2" style="">
                                                                     <div class="input-group">
-                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}" alt="Imagen" style="width: 345px; height: 320px;"/>
+                                                                         <img id="blah" src="{{asset('design/no-image.jpg') }}" alt="Imagen" style="width: 300px; height: 300px;"/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -469,14 +454,14 @@
                                                         <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.description') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="description_good" name="description_good" rows="5"></textarea>
+                                                                <textarea class="form-control" id="description_good" name="description_good" rows="2"></textarea>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.translation') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="translation_good" name="translation_good" rows="5"></textarea>
+                                                                <textarea class="form-control" id="translation_good" name="translation_good" rows="2"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -515,8 +500,7 @@
                                                                 class="form-label">{{ __('messages.priority_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="priority_date" name="priority_date" class="form-control"
-                                                                    type="date" placeholder="Thompson"
-                                                                    >
+                                                                    type="date" data-date="" data-date-format="YYYY MMMM DD">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -552,6 +536,14 @@
 
                                                         <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.address') }}</label>
+                                                            <div class="input-group">
+                                                                <select class="form-control" name="id_address" id="id_address">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 p-2">
+                                                            <label class="form-label">{{ __('messages.billing_address') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="id_address" id="id_address">
                                                                 </select>
@@ -801,5 +793,22 @@
 $("#design").change(function() { //Cuando el input cambie (se cargue un nuevo archivo) se va a ejecutar de nuevo el cambio de imagen y se verá reflejado.
   readURL(this);
 });
+</script>
+<script type="text/javascript">
+
+    var url = "{{ route('changeLang') }}";
+
+    $(".changeLang").change(function(){
+        window.location.href = url + "?lang="+ $(this).val();
+    });
+
+    $("input").on("change", function() {
+        this.setAttribute(
+            "data-date",
+            moment(this.value, "YYYY-MM-DD")
+            .format( this.getAttribute("data-date-format") )
+        )
+    }).trigger("change")
+
 </script>
 @endsection

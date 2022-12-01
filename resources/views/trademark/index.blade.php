@@ -63,7 +63,7 @@
                             <tr style="font-size: 12px;">
                              <td class="text-center ">
                                 <div class="form-check" style="">
-                                    <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" >
+                                    <input class="form-check-input" type="checkbox"  >
                                 </div>
                             </td>
                             <td class="text-center">{{ $trademark->our_ref }}</td>
