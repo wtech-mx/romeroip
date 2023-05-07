@@ -93,7 +93,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control"
-                                                                    type="date">
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -111,7 +111,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control"
-                                                                    type="date">
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -174,7 +174,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_general" name="filing_date_general" class="form-control"
-                                                                    type="date">
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -198,7 +198,7 @@
                                                             <label class="form-label">{{ __('messages.first_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="first_date" name="first_date" class="form-control"
-                                                                    type="date">
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -217,7 +217,7 @@
                                                                 class="form-label">{{ __('messages.registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="registrationDate" name="registration_date" class="form-control"
-                                                                    type="text">
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -226,7 +226,7 @@
                                                                 class="form-label">{{ __('messages.int_registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="int_registration_date" name="int_registration_date" class="form-control"
-                                                                    type="date">
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -235,7 +235,7 @@
                                                                 class="form-label">{{ __('messages.expiration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="expirationDate" name="expiration_date" class="form-control"
-                                                                    type="text" disabled>
+                                                                    type="text" disabled placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -254,7 +254,7 @@
                                                                 class="form-label">{{ __('messages.publication_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="publication_date" name="publication_date" class="form-control"
-                                                                    type="date">
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -293,16 +293,16 @@
                                                         <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
-                                                                <input class="form-control" id="last_declaration" name="last_declaration" type="date"
-                                                                >
+                                                                <input id="lastDeclarationDate" name="last_declaration" class="form-control"
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
                                                         <div class="col-6 p-2">
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
-                                                                <input id="last_renewal" name="last_renewal" class="form-control"
-                                                                    type="date" >
+                                                                <input id="lastRenewalsDate" name="last_renewal" class="form-control"
+                                                                    type="text" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -310,7 +310,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="declarationOfUseDate" name="next_declaration" class="form-control"
-                                                                    type="text" disabled>
+                                                                    type="text" disabled placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -318,7 +318,7 @@
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
                                                                 <input id="renewalDate" name="next_renewal" class="form-control"
-                                                                    type="text" disabled>
+                                                                    type="text" disabled placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -674,7 +674,7 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div>declarationOfUseDate
     </div>
 @endsection
 @section('js_custom')
@@ -802,6 +802,21 @@ $("#design").change(function() { //Cuando el input cambie (se cargue un nuevo ar
             var expirationDate = registrationDate.clone().add(10, 'years').format('MM DD YYYY');
             var declarationOfUseDate = registrationDate.clone().add(3, 'years').format('MM DD YYYY');
             var renewalDate = expirationDate;
+
+            $('#expirationDate').val(expirationDate);
+            $('#declarationOfUseDate').val(declarationOfUseDate);
+            $('#renewalDate').val(renewalDate);
+        });
+
+        $('#lastDeclarationDate').on('change', function() {
+            var renewalDate = $('#renewalDate').val();
+            $('#declarationOfUseDate').val(renewalDate);
+        });
+
+        $('#lastRenewalsDate').on('change', function() {
+            var expirationDate = moment($('#expirationDate').val(), 'MM DD YYYY').add(10, 'years').format('MM DD YYYY');
+            var declarationOfUseDate = moment($('#declarationOfUseDate').val(), 'MM DD YYYY').add(10, 'years').format('MM DD YYYY');
+            var renewalDate = moment($('#renewalDate').val(), 'MM DD YYYY').add(10, 'years').format('MM DD YYYY');
 
             $('#expirationDate').val(expirationDate);
             $('#declarationOfUseDate').val(declarationOfUseDate);
