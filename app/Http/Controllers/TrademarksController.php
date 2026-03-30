@@ -12,6 +12,9 @@ use Session;
 use DB;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
+use Illuminate\Support\Facades\File;
+use Illuminate\Validation\Rule;
+
 class TrademarksController extends Controller
 {
     /**
@@ -114,6 +117,127 @@ class TrademarksController extends Controller
         echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
     }
 
+private function trademarkRules(?int $id = null): array
+{
+    return [
+        'notes'                   => 'nullable|string',
+        'our_ref'                 => ['required', 'integer', 'min:1', Rule::unique('trademark', 'our_ref')->ignore($id)],
+        'client_ref'              => 'nullable|string|max:100',
+        'opposition_no'           => 'nullable|string|max:100',
+        'filing_date_opposition'  => 'nullable|date',
+        'litigation_no'           => 'nullable|string|max:100',
+        'filing_date_litigation'  => 'nullable|date',
+        'application_no'          => 'nullable|string|max:100',
+        'origin'                  => 'nullable|string|max:50',
+        'registration_no'         => 'nullable|string|max:100',
+        'country'                 => 'nullable|string|max:150',
+        'filing_date_general'     => 'nullable|date',
+        'status'                  => 'required|string|max:50',
+        'first_date'              => 'nullable|date',
+        'int_registration_no'     => 'nullable|string|max:100',
+        'registration_date'       => 'nullable|date',
+        'int_registration_date'   => 'nullable|date',
+        'expiration_date'         => 'nullable|date',
+        'contracting_organization'=> 'nullable|string|max:255',
+        'publication_date'        => 'nullable|date',
+        'designated_countries'    => 'nullable|string|max:255',
+        'last_declaration'        => 'nullable|date',
+        'last_renewal'            => 'nullable|date',
+        'next_declaration'        => 'nullable|date',
+        'next_renewal'            => 'nullable|date',
+        'trademark'               => 'required|string|max:255',
+        'description_trademark'   => 'nullable|string',
+        'type_application'        => 'nullable|string|max:100',
+        'type_mark'               => 'nullable|string|max:100',
+        'translation'             => 'nullable|string',
+        'transliteration_trademark'=> 'nullable|string',
+        'disclaimer'              => 'nullable|string',
+        'class'                   => 'nullable|integer|min:1|max:45',
+        'translation_good'        => 'nullable|string',
+        'description_good'        => 'nullable|string',
+        'priority_no'             => 'nullable|string|max:100',
+        'country_office'          => 'nullable|string|max:150',
+        'priority_date'           => 'nullable|date',
+
+        'id_client'               => 'required|exists:clients,id',
+        'id_contact'              => 'nullable|exists:contact_clients,id',
+        'id_address'              => 'nullable|exists:adress_clients,id',
+        'id_holder'               => 'required|exists:holder,id',
+        'address_holder'          => 'nullable|exists:address_holder,id',
+        'industrial_address'      => 'nullable|string|max:255',
+
+        'design'                  => 'nullable|file|mimes:jpg,jpeg,png,webp|max:4096',
+    ];
+}
+
+    private function fillTrademarkFromRequest(Trademarks $trademark, array $data, Request $request): void
+    {
+        $fields = [
+            'client_ref',
+            'notes',
+            'our_ref',
+            'opposition_no',
+            'filing_date_opposition',
+            'litigation_no',
+            'filing_date_litigation',
+            'application_no',
+            'origin',
+            'registration_no',
+            'country',
+            'filing_date_general',
+            'status',
+            'first_date',
+            'int_registration_no',
+            'registration_date',
+            'int_registration_date',
+            'expiration_date',
+            'contracting_organization',
+            'publication_date',
+            'designated_countries',
+            'last_declaration',
+            'last_renewal',
+            'next_declaration',
+            'next_renewal',
+            'trademark',
+            'description_trademark',
+            'type_application',
+            'type_mark',
+            'translation',
+            'transliteration_trademark',
+            'disclaimer',
+            'class',
+            'translation_good',
+            'description_good',
+            'priority_no',
+            'country_office',
+            'priority_date',
+            'id_client',
+            'id_contact',
+            'id_address',
+            'id_holder',
+            'address_holder',
+            'industrial_address',
+        ];
+
+        foreach ($fields as $field) {
+            $trademark->{$field} = $data[$field] ?? null;
+        }
+
+        if ($request->hasFile('design')) {
+            $file = $request->file('design');
+            $path = public_path('design');
+
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0755, true);
+            }
+
+            $fileName = uniqid('trademark_') . '.' . $file->getClientOriginalExtension();
+            $file->move($path, $fileName);
+
+            $trademark->design = $fileName;
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -134,66 +258,15 @@ class TrademarksController extends Controller
 
     public function store(Request $request)
     {
-        $trademark = new Trademarks;
-        $trademark->client_ref = $request->get('client_ref');
-        $trademark->notes = $request->get('notes');
-        $trademark->our_ref = $request->get('our_ref');
-        $trademark->opposition_no = $request->get('opposition_no');
-        $trademark->filing_date_opposition = $request->get('filing_date_opposition');
-        $trademark->litigation_no = $request->get('litigation_no');
-        $trademark->filing_date_litigation = $request->get('filing_date_litigation');
-        $trademark->application_no = $request->get('application_no');
-        $trademark->origin = $request->get('origin');
-        $trademark->registration_no = $request->get('registration_no');
-        $trademark->country = $request->get('country');
-        $trademark->filing_date_general = $request->get('filing_date_general');
-        $trademark->status = $request->get('status');
-        $trademark->first_date = $request->get('first_date');
-        $trademark->int_registration_no = $request->get('int_registration_no');
-        $trademark->registration_date = $request->get('registration_date');
-        $trademark->int_registration_date = $request->get('int_registration_date');
-        $trademark->expiration_date = $request->get('expiration_date');
-        $trademark->contracting_organization = $request->get('contracting_organization');
-        $trademark->publication_date = $request->get('publication_date');
-        $trademark->designated_countries = $request->get('designated_countries');
-        $trademark->last_declaration = $request->get('last_declaration');
-        $trademark->last_renewal = $request->get('last_renewal');
-        $trademark->next_declaration = $request->get('next_declaration');
-        $trademark->next_renewal = $request->get('next_renewal');
-        $trademark->trademark = $request->get('trademark');
+        $data = $request->validate($this->trademarkRules());
 
-        if ($request->hasFile("design")) {
-            $file = $request->file('design');
-            $path = public_path() . '/design';
-            $fileName = uniqid() . $file->getClientOriginalName();
-            $file->move($path, $fileName);
-
-            $trademark->design = $fileName;
-        }
-
-        $trademark->description_trademark = $request->get('description_trademark');
-        $trademark->type_application = $request->get('type_application');
-        $trademark->type_mark = $request->get('type_mark');
-        $trademark->translation = $request->get('translation');
-        $trademark->transliteration_trademark = $request->get('transliteration_trademark');
-        $trademark->disclaimer = $request->get('disclaimer');
-        $trademark->class = $request->get('class');
-        $trademark->translation_good = $request->get('translation_good');
-        $trademark->description_good = $request->get('description_good');
-        $trademark->priority_no = $request->get('priority_no');
-        $trademark->country_office = $request->get('country_office');
-        $trademark->priority_date = $request->get('priority_date');
-        $trademark->id_client = $request->get('id_client');
-        $trademark->id_contact = $request->get('id_contact');
-        $trademark->id_address = $request->get('id_address');
-        $trademark->id_holder = $request->get('id_holder');
-        $trademark->address_holder = $request->get('address_holder');
-        $trademark->industrial_address = $request->get('industrial_address');
+        $trademark = new Trademarks();
+        $this->fillTrademarkFromRequest($trademark, $data, $request);
         $trademark->save();
 
         Session::flash('success', 'Se ha guardado sus datos con exito');
         return redirect()->route('index.trademarks')
-            ->with('success', 'holder created successfully.');
+            ->with('success', 'Trademark created successfully.');
     }
 
     public function edit($id)
@@ -209,62 +282,14 @@ class TrademarksController extends Controller
     public function update(Request $request, $id)
     {
         $trademark = Trademarks::findOrFail($id);
-        $trademark->client_ref = $request->get('client_ref');
-        $trademark->notes = $request->get('notes');
-        $trademark->our_ref = $request->get('our_ref');
-        $trademark->opposition_no = $request->get('opposition_no');
-        $trademark->filing_date_opposition = $request->get('filing_date_opposition');
-        $trademark->litigation_no = $request->get('litigation_no');
-        $trademark->filing_date_litigation = $request->get('filing_date_litigation');
-        $trademark->application_no = $request->get('application_no');
-        $trademark->origin = $request->get('origin');
-        $trademark->registration_no = $request->get('registration_no');
-        $trademark->country = $request->get('country');
-        $trademark->filing_date_general = $request->get('filing_date_general');
-        $trademark->status = $request->get('status');
-        $trademark->first_date = $request->get('first_date');
-        $trademark->int_registration_no = $request->get('int_registration_no');
-        $trademark->registration_date = $request->get('registration_date');
-        $trademark->int_registration_date = $request->get('int_registration_date');
-        $trademark->expiration_date = $request->get('expiration_date');
-        $trademark->contracting_organization = $request->get('contracting_organization');
-        $trademark->publication_date = $request->get('publication_date');
-        $trademark->designated_countries = $request->get('designated_countries');
-        $trademark->last_declaration = $request->get('last_declaration');
-        $trademark->last_renewal = $request->get('last_renewal');
-        $trademark->next_declaration = $request->get('next_declaration');
-        $trademark->next_renewal = $request->get('next_renewal');
-        $trademark->trademark = $request->get('trademark');
-        if ($request->hasFile("design")) {
-            $file = $request->file('design');
-            $path = public_path() . '/design';
-            $fileName = uniqid() . $file->getClientOriginalName();
-            $file->move($path, $fileName);
 
-            $trademark->design = $fileName;
-        }
-        $trademark->description_trademark = $request->get('description_trademark');
-        $trademark->type_application = $request->get('type_application');
-        $trademark->type_mark = $request->get('type_mark');
-        $trademark->translation = $request->get('translation');
-        $trademark->transliteration_trademark = $request->get('transliteration_trademark');
-        $trademark->disclaimer = $request->get('disclaimer');
-        $trademark->class = $request->get('class');
-        $trademark->translation_good = $request->get('translation_good');
-        $trademark->description_good = $request->get('description_good');
-        $trademark->priority_no = $request->get('priority_no');
-        $trademark->country_office = $request->get('country_office');
-        $trademark->priority_date = $request->get('priority_date');
-        $trademark->id_client = $request->get('id_client');
-        $trademark->id_contact = $request->get('id_contact');
-        $trademark->id_address = $request->get('id_address');
-        $trademark->id_holder = $request->get('id_holder');
-        $trademark->address_holder = $request->get('address_holder');
-        $trademark->industrial_address = $request->get('industrial_address');
-        $trademark->update();
+        $data = $request->validate($this->trademarkRules($trademark->id));
+
+        $this->fillTrademarkFromRequest($trademark, $data, $request);
+        $trademark->save();
 
         Session::flash('success', 'Se ha guardado sus datos con exito');
         return redirect()->route('index.trademarks')
-            ->with('success', 'holder created successfully.');
+            ->with('success', 'Trademark updated successfully.');
     }
 }

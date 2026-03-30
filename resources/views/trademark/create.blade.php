@@ -3,18 +3,14 @@
 @section('template_title')
     {{ __('messages.new_trademark') }}
 @endsection
-<head>
-    <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
             <div class="col">
                 <div class="card">
                     <!-- Card header -->
-                    <form method="POST" action="{{ route('store.trademarks') }}" enctype="multipart/form-data" role="form">
+                    <form method="POST" action="{{ route('store.trademarks') }}" enctype="multipart/form-data" role="form" id="trademarkForm" novalidate>
                         @csrf
                         <div style="padding-top: 1.5rem; padding-left: 1.5rem;">
                             <h3 class="mb-3">{{ __('messages.new_trademark') }}</h3>
@@ -41,7 +37,7 @@
                                                         <div class="col-12">
                                                             <label class="form-label">{{ __('messages.note') }}</label>
                                                             <div class="input-group">
-                                                                <textarea class="form-control" id="notes" name="notes" rows="1"></textarea>
+                                                                <textarea class="form-control" id="notes_text" name="notes" rows="1"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -66,7 +62,7 @@
                                                                 @endphp
 
                                                                 <input id="our_ref" name="our_ref" class="form-control"
-                                                                    type="text" value="{{ $suma }}">
+                                                                    type="number" min="1" step="1" value="{{ $suma }}" required>
 
                                                             </div>
                                                         </div>
@@ -93,7 +89,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -111,7 +107,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -139,7 +135,7 @@
                                                             <label class="form-label">{{ __('messages.origin') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="origin" id="origin">
-                                                                    <option selected>{{ __('messages.select') }}</option>
+                                                                    <option value="" selected>{{ __('messages.select') }}</option>
                                                                     <option value="{{ __('messages.national') }}">
                                                                         {{ __('messages.national') }}</option>
                                                                     <option value="{{ __('messages.international') }}">
@@ -164,7 +160,7 @@
                                                             <label class="form-label">{{ __('messages.country') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control js-example-basic-single" name="country" id="country">
-                                                                    <option selected>{{ __('messages.select') }}</option>
+                                                                    <option value="" selected>{{ __('messages.select') }}</option>
                                                                     @include('client.paises')
                                                                 </select>
                                                             </div>
@@ -174,7 +170,7 @@
                                                             <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="filing_date_general" name="filing_date_general" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -198,7 +194,7 @@
                                                             <label class="form-label">{{ __('messages.first_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="first_date" name="first_date" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -217,7 +213,7 @@
                                                                 class="form-label">{{ __('messages.registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="registrationDate" name="registration_date" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -226,7 +222,7 @@
                                                                 class="form-label">{{ __('messages.int_registration_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="int_registration_date" name="int_registration_date" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -234,8 +230,8 @@
                                                             <label
                                                                 class="form-label">{{ __('messages.expiration_date') }}</label>
                                                             <div class="input-group">
-                                                                <input id="expirationDate" name="expiration_date" class="form-control"
-                                                                    type="text" disabled placeholder="MM DD YYYY">
+                                                                <input id="expirationDate" name="expiration_date" class="form-control" type="date" readonly>
+
                                                             </div>
                                                         </div>
 
@@ -254,7 +250,7 @@
                                                                 class="form-label">{{ __('messages.publication_date') }}</label>
                                                             <div class="input-group">
                                                                 <input id="publication_date" name="publication_date" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -294,7 +290,7 @@
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="lastDeclarationDate" name="last_declaration" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
@@ -302,23 +298,23 @@
                                                             <label class="form-label">{{ __('messages.last') }}</label>
                                                             <div class="input-group">
                                                                 <input id="lastRenewalsDate" name="last_renewal" class="form-control"
-                                                                    type="text" placeholder="MM DD YYYY">
+                                                                    type="date" placeholder="MM DD YYYY">
                                                             </div>
                                                         </div>
 
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
-                                                                <input id="declarationOfUseDate" name="next_declaration" class="form-control"
-                                                                    type="text" disabled placeholder="MM DD YYYY">
+                                                                <input id="declarationOfUseDate" name="next_declaration" class="form-control" type="date" readonly>
+
                                                             </div>
                                                         </div>
 
                                                         <div class="col-6">
                                                             <label class="form-label">{{ __('messages.next') }}</label>
                                                             <div class="input-group">
-                                                                <input id="renewalDate" name="next_renewal" class="form-control"
-                                                                    type="text" disabled placeholder="MM DD YYYY">
+                                                                <input id="renewalDate" name="next_renewal" class="form-control" type="date" readonly>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -415,9 +411,10 @@
                                                                     <label
                                                                         class="form-label">{{ __('messages.design') }}</label>
                                                                     <div class="input-group">
+
                                                                         <input id="design" name="design"
                                                                             class="form-control" type="file"
-                                                                            placeholder="Thompson" >
+                                                                            accept=".jpg,.jpeg,.png,.webp,image/*">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mt-2" style="">
@@ -442,11 +439,11 @@
                                                             <label class="form-label">{{ __('messages.class') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" id="class" name="class">
-                                                                    <option selected>{{ __('messages.select') }}</option>
-                                                                    @for ($i = 0; $i <= 45; $i++)
-                                                                        <option value="{{ $i }}">
-                                                                            {{ $i }}</option>
+                                                                    <option value="" selected>{{ __('messages.select') }}</option>
+                                                                    @for ($i = 1; $i <= 45; $i++)
+                                                                        <option value="{{ $i }}">{{ $i }}</option>
                                                                     @endfor
+
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -488,7 +485,7 @@
                                                             <label class="form-label">{{ __('messages.country_office') }}</label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="country_office" id="country_office">
-                                                                    <option selected>{{ __('messages.select') }}</option>
+                                                                    <option value="" selected>{{ __('messages.select') }}</option>
                                                                     @include('client.paises')
                                                                 </select>
                                                             </div>
@@ -545,7 +542,8 @@
                                                         <div class="col-12 p-2">
                                                             <label class="form-label">{{ __('messages.billing_address') }}</label>
                                                             <div class="input-group">
-                                                                <select class="form-control" name="id_address" id="id_address">
+                                                                <select class="form-control" id="billing_address_preview" disabled>
+
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -674,7 +672,7 @@
                     </form>
                 </div>
             </div>
-        </div>declarationOfUseDate
+        </div>
     </div>
 @endsection
 @section('js_custom')
@@ -683,6 +681,7 @@
         $('.js-example-basic-single').select2();
     });
 </script>
+
 <script>
             $(document).ready(function () {
                 $('#id_client').on('change', function () {
@@ -692,7 +691,7 @@
                     $('#id_contact').append(`<option value="" disabled selected>Procesando..</option>`);
                     $.ajax({
                         type: 'GET',
-                        url: 'crear/' + id,
+                        url: '{{ url("/trademarks/crear") }}/' + id,
                         success: function (response) {
                             var response = JSON.parse(response);
                             console.log(response);
@@ -710,26 +709,29 @@
             $(document).ready(function () {
                 $('#id_client').on('change', function () {
                     let id = $(this).val();
-                    //id_client no esta en la tabla de automovil
-                    $('#id_address').empty();
-                    $('#id_address').append(`<option value="" disabled selected>Procesando..</option>`);
+
+                    $('#id_address').empty().append(`<option value="" selected>Procesando..</option>`);
+                    $('#billing_address_preview').empty().append(`<option value="" selected>Procesando..</option>`);
+
                     $.ajax({
                         type: 'GET',
-                        url: 'address/' + id,
+                        url: '{{ url("/trademarks/address") }}/' + id,
                         success: function (response) {
-                            var response = JSON.parse(response);
-                            console.log(response);
-                            //trae los automoviles relacionados con el id_client
-                            $('#id_address').empty();
-                            // $('#id_address').append(`<option value="" disabled selected>Seleccione Address</option>`);
+                            response = JSON.parse(response);
+
+                            $('#id_address').empty().append(`<option value="" selected>{{ __('messages.select') }}</option>`);
+                            $('#billing_address_preview').empty().append(`<option value="" selected>{{ __('messages.select') }}</option>`);
+
                             response.forEach(element => {
-                                $('#id_address').append(`<option value="${element['id']}">${element['address']}</option>`);
+                                $('#id_address').append(`<option value="${element['id']}">${element['address'] ?? ''}</option>`);
+                                $('#billing_address_preview').append(`<option value="${element['id']}">${element['billing_address'] ?? ''}</option>`);
                             });
                         }
                     });
                 });
             });
 </script>
+
 <script>
     $(document).ready(function () {
         $('#id_holder').on('change', function () {
@@ -739,7 +741,7 @@
             $('#address_holder').append(`<option value="" disabled selected>Procesando..</option>`);
             $.ajax({
                 type: 'GET',
-                url: 'holder/' + id,
+                url: '{{ url("/trademarks/holder") }}/' + id,
                 success: function (response) {
                     var response = JSON.parse(response);
                     console.log(response);
@@ -762,7 +764,7 @@
             $('#industrial_address').append(`<option value="" disabled selected>Procesando..</option>`);
             $.ajax({
                 type: 'GET',
-                url: 'holder/industrial/' + id,
+                url: '{{ url("/trademarks/holder/industrial") }}/' + id,
                 success: function (response) {
                     var response = JSON.parse(response);
                     console.log(response);
@@ -777,51 +779,167 @@
         });
     });
 </script>
-<script>
-    function readURL(input) {
-  if (input.files && input.files[0]) { //Revisamos que el input tenga contenido
-    var reader = new FileReader(); //Leemos el contenido
 
-    reader.onload = function(e) { //Al cargar el contenido lo pasamos como atributo de la imagen de arriba
-      $('#blah').attr('src', e.target.result);
+<script>
+(function () {
+    function readURL(input) {
+        if (!input.files || !input.files[0]) return;
+
+        const file = input.files[0];
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
     }
 
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-$("#design").change(function() { //Cuando el input cambie (se cargue un nuevo archivo) se va a ejecutar de nuevo el cambio de imagen y se verá reflejado.
-  readURL(this);
-});
+    $("#design").on('change', function () {
+        readURL(this);
+    });
+})();
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('#registrationDate').on('change', function() {
-            var registrationDate = moment($(this).val(), 'MM DD YYYY');
-            var expirationDate = registrationDate.clone().add(10, 'years').format('MM DD YYYY');
-            var declarationOfUseDate = registrationDate.clone().add(3, 'years').format('MM DD YYYY');
-            var renewalDate = expirationDate;
+(function () {
+    function formatDateLocal(date) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
 
-            $('#expirationDate').val(expirationDate);
-            $('#declarationOfUseDate').val(declarationOfUseDate);
-            $('#renewalDate').val(renewalDate);
-        });
+    function addYears(isoDate, years) {
+        if (!isoDate) return '';
+        const date = new Date(isoDate + 'T00:00:00');
+        date.setFullYear(date.getFullYear() + years);
+        return formatDateLocal(date);
+    }
 
-        $('#lastDeclarationDate').on('change', function() {
-            var renewalDate = $('#renewalDate').val();
-            $('#declarationOfUseDate').val(renewalDate);
-        });
+    const registrationDate = document.getElementById('registrationDate');
+    const expirationDate = document.getElementById('expirationDate');
+    const declarationOfUseDate = document.getElementById('declarationOfUseDate');
+    const renewalDate = document.getElementById('renewalDate');
+    const lastDeclarationDate = document.getElementById('lastDeclarationDate');
+    const lastRenewalsDate = document.getElementById('lastRenewalsDate');
 
-        $('#lastRenewalsDate').on('change', function() {
-            var expirationDate = moment($('#expirationDate').val(), 'MM DD YYYY').add(10, 'years').format('MM DD YYYY');
-            var declarationOfUseDate = moment($('#declarationOfUseDate').val(), 'MM DD YYYY').add(10, 'years').format('MM DD YYYY');
-            var renewalDate = moment($('#renewalDate').val(), 'MM DD YYYY').add(10, 'years').format('MM DD YYYY');
+    registrationDate?.addEventListener('change', function () {
+        if (!this.value) return;
 
-            $('#expirationDate').val(expirationDate);
-            $('#declarationOfUseDate').val(declarationOfUseDate);
-            $('#renewalDate').val(renewalDate);
-        });
+        const expiration = addYears(this.value, 10);
+        const declaration = addYears(this.value, 3);
+
+        expirationDate.value = expiration;
+        declarationOfUseDate.value = declaration;
+        renewalDate.value = expiration;
     });
-    </script>
+
+    lastDeclarationDate?.addEventListener('change', function () {
+        if (!this.value) return;
+        declarationOfUseDate.value = renewalDate.value || addYears(this.value, 3);
+    });
+
+    lastRenewalsDate?.addEventListener('change', function () {
+        if (!this.value) return;
+
+        expirationDate.value = addYears(this.value, 10);
+        declarationOfUseDate.value = addYears(this.value, 10);
+        renewalDate.value = addYears(this.value, 10);
+    });
+})();
+</script>
+
+<script>
+    (function () {
+        const form = document.getElementById('trademarkForm');
+        if (!form) return;
+
+        const requiredFields = [
+            { id: 'our_ref', label: 'Our Ref.' },
+            { id: 'trademark', label: 'Trademark' },
+            { id: 'status', label: 'Status' },
+            { id: 'id_client', label: 'Client' },
+            { id: 'id_holder', label: 'Holder' },
+        ];
+
+        function clearInvalid(el) {
+            if (!el) return;
+            el.classList.remove('is-invalid');
+
+            const wrapper = el.closest('.input-group') || el.parentElement;
+            const feedback = wrapper?.querySelector('.invalid-feedback.dynamic-feedback');
+            if (feedback) feedback.remove();
+        }
+
+        function markInvalid(el, message) {
+            if (!el) return;
+            el.classList.add('is-invalid');
+
+            const wrapper = el.closest('.input-group') || el.parentElement;
+            if (!wrapper) return;
+
+            let feedback = wrapper.querySelector('.invalid-feedback.dynamic-feedback');
+            if (!feedback) {
+                feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback dynamic-feedback d-block';
+                wrapper.appendChild(feedback);
+            }
+
+            feedback.innerHTML = `<i class="bi bi-exclamation-circle me-1"></i>${message}`;
+        }
+
+        function isEmpty(el) {
+            if (!el) return true;
+            return String(el.value || '').trim() === '';
+        }
+
+        form.addEventListener('submit', function (e) {
+            let errors = [];
+
+            requiredFields.forEach(field => {
+                const el = document.getElementById(field.id);
+                clearInvalid(el);
+
+                if (isEmpty(el)) {
+                    markInvalid(el, `${field.label} is required.`);
+                    errors.push(field.label);
+                }
+            });
+
+            const regDate = document.getElementById('registrationDate');
+            const expDate = document.getElementById('expirationDate');
+
+            clearInvalid(regDate);
+            clearInvalid(expDate);
+
+            if (regDate && expDate && regDate.value && expDate.value && expDate.value < regDate.value) {
+                markInvalid(expDate, 'Expiration Date cannot be earlier than Registration Date.');
+                errors.push('Expiration Date');
+            }
+
+            if (errors.length) {
+                e.preventDefault();
+
+                if (window.Swal) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Please review the form',
+                        html: `
+                            <div class="text-start">
+                                ${errors.map(item => `<div><i class="bi bi-exclamation-triangle text-danger me-2"></i>${item}</div>`).join('')}
+                            </div>
+                        `
+                    });
+                }
+            }
+        });
+
+        form.querySelectorAll('input, select, textarea').forEach(el => {
+            el.addEventListener('input', () => clearInvalid(el));
+            el.addEventListener('change', () => clearInvalid(el));
+        });
+    })();
+</script>
+
 @endsection
