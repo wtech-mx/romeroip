@@ -27,7 +27,7 @@
 
     .tm-sticky-topbar{
         position: sticky;
-        top: var(--tm-nav-offset);
+        top: 0%;
         z-index: 1040;
         background: #fff;
         border: 1px solid rgba(0,0,0,.08);
@@ -53,8 +53,8 @@
     }
 
     .tm-sticky-side{
-        position: sticky;
-        top: calc(var(--tm-nav-offset) + 125px);
+        position: fixed;
+        top: 30%;
         z-index: 1030;
     }
 
