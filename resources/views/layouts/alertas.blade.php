@@ -39,3 +39,28 @@
 
 </script>
 @endif
+@if(session('swal_error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'error',
+            title: 'Search error',
+            text: @json(session('swal_error')),
+            confirmButtonColor: '#FF7F11'
+        });
+    });
+</script>
+@endif
+
+@if(session('info'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'info',
+            title: 'No results',
+            text: @json(session('info')),
+            confirmButtonColor: '#FF7F11'
+        });
+    });
+</script>
+@endif

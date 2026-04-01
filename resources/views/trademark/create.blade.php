@@ -105,6 +105,7 @@
         }
     }
 </style>
+
 <style>
     .main-content,
     .container-fluid,
@@ -113,6 +114,48 @@
     .card,
     .card-body{
         overflow: visible !important;
+    }
+
+    .autocomplete-box{
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        z-index: 1055;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(0,0,0,.08);
+        max-height: 260px;
+        overflow-y: auto;
+        padding: 6px;
+    }
+
+    .autocomplete-item{
+        padding: 10px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: .15s ease;
+    }
+
+    .autocomplete-item:hover{
+        background: rgba(255,127,17,.10);
+    }
+
+    .autocomplete-title{
+        font-weight: 700;
+        color: #262626;
+        display: block;
+    }
+
+    .autocomplete-subtitle{
+        font-size: .85rem;
+        color: #6b7280;
+        display: block;
+    }
+
+    .d-none{
+        display: none !important;
     }
 </style>
 @endsection
@@ -127,8 +170,7 @@
                       action="{{ route('store.trademarks') }}"
                       enctype="multipart/form-data"
                       role="form"
-                      id="trademarkForm"
-                      novalidate>
+                      id="trademarkForm">
                     @csrf
 
                     <div class="tm-sticky-topbar">
@@ -138,9 +180,6 @@
                                     <i class="bi bi-patch-check-fill text-danger"></i>
                                     {{ __('messages.new_trademark') }}
                                 </h3>
-                                <div class="text-muted small">
-                                    Completa la información y guarda cuando estés listo.
-                                </div>
                             </div>
 
                             <div class="tm-toolbar tm-top-actions">
@@ -1165,8 +1204,6 @@ $(document).ready(function () {
         { id: 'our_ref', label: 'Our Ref.' },
         { id: 'trademark', label: 'Trademark' },
         { id: 'status', label: 'Status' },
-        { id: 'id_client', label: 'Client' },
-        { id: 'id_holder', label: 'Holder' },
     ];
 
     function clearInvalid(el) {
@@ -1238,7 +1275,11 @@ $(document).ready(function () {
                         </div>
                     `
                 });
+            } else {
+                alert('Please review the required fields: ' + errors.join(', '));
             }
+
+            return;
         }
     });
 

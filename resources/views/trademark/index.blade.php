@@ -92,7 +92,7 @@
                             <td class="text-center">{{ $trademark->status }}</td>
                             <td class="text-sm">
                                 <a href="{{ route('edit.trademarks', $trademark->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                                <i class="fas fa-user-edit text-secondary"></i>
+                                    edit
                                 </a>
                                 {{-- <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
                                 <i class="fas fa-trash text-secondary"></i>
@@ -112,4 +112,227 @@
       </div>
 </div>
 
+@endsection
+
+@section('js_custom')
+    <script>
+    (function () {
+        function debounce(fn, delay = 300) {
+            let timer;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, args), delay);
+            };
+        }
+
+        function setupAutocomplete({
+            inputSelector,
+            boxSelector,
+            url,
+            hiddenSelector = null,
+            minLength = 2,
+            onSelect = null
+        }) {
+            const input = document.querySelector(inputSelector);
+            const box = document.querySelector(boxSelector);
+            const hidden = hiddenSelector ? document.querySelector(hiddenSelector) : null;
+
+            if (!input || !box) return;
+
+            const hideBox = () => {
+                box.innerHTML = '';
+                box.classList.add('d-none');
+            };
+
+            const renderItems = (items) => {
+                if (!items.length) {
+                    hideBox();
+                    return;
+                }
+
+                box.innerHTML = items.map(item => `
+                    <div class="autocomplete-item"
+                        data-id="${item.id ?? ''}"
+                        data-value="${(item.value ?? '').replace(/"/g, '&quot;')}">
+                        <span class="autocomplete-title">${item.title ?? ''}</span>
+                        <span class="autocomplete-subtitle">${item.subtitle ?? ''}</span>
+                    </div>
+                `).join('');
+
+                box.classList.remove('d-none');
+
+                box.querySelectorAll('.autocomplete-item').forEach(el => {
+                    el.addEventListener('click', function () {
+                        const value = this.dataset.value || '';
+                        const id = this.dataset.id || '';
+
+                        input.value = value;
+
+                        if (hidden) {
+                            hidden.value = id;
+                        }
+
+                        hideBox();
+
+                        if (typeof onSelect === 'function') {
+                            onSelect({ id, value });
+                        }
+                    });
+                });
+            };
+
+            const fetchResults = debounce(async function () {
+                const q = input.value.trim();
+
+                if (hidden && !q) {
+                    hidden.value = '';
+                }
+
+                if (q.length < minLength) {
+                    hideBox();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${url}?q=${encodeURIComponent(q)}`, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    const data = await response.json();
+                    renderItems(data);
+                } catch (error) {
+                    hideBox();
+                }
+            }, 250);
+
+            input.addEventListener('input', function () {
+                if (hidden) {
+                    hidden.value = '';
+                }
+                fetchResults();
+            });
+
+            input.addEventListener('focus', function () {
+                if (input.value.trim().length >= minLength) {
+                    fetchResults();
+                }
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!box.contains(e.target) && e.target !== input) {
+                    hideBox();
+                }
+            });
+        }
+
+        setupAutocomplete({
+            inputSelector: '#client_ref',
+            boxSelector: '#client_ref_suggestions',
+            url: '{{ route('ajax.trademarks.client_ref') }}'
+        });
+
+        setupAutocomplete({
+            inputSelector: '#trademark',
+            boxSelector: '#trademark_suggestions',
+            url: '{{ route('ajax.trademarks.name') }}'
+        });
+
+        setupAutocomplete({
+            inputSelector: '#client_search',
+            boxSelector: '#client_search_suggestions',
+            url: '{{ route('ajax.clients.autocomplete') }}',
+            hiddenSelector: '#id_client',
+            onSelect: function (item) {
+                if (!item.id) return;
+
+                loadClientContacts(item.id);
+                loadClientAddresses(item.id);
+            }
+        });
+
+        setupAutocomplete({
+            inputSelector: '#holder_search',
+            boxSelector: '#holder_search_suggestions',
+            url: '{{ route('ajax.holders.autocomplete') }}',
+            hiddenSelector: '#id_holder',
+            onSelect: function (item) {
+                if (!item.id) return;
+
+                loadHolderAddresses(item.id);
+                loadHolderIndustrialAddresses(item.id);
+            }
+        });
+
+        function loadClientContacts(id) {
+            $('#id_contact').empty().append(`<option value="" disabled selected>Procesando..</option>`);
+
+            $.ajax({
+                type: 'GET',
+                url: 'crear/' + id,
+                success: function (response) {
+                    response = JSON.parse(response);
+                    $('#id_contact').empty().append(`<option value="" disabled selected>Seleccione Cliente</option>`);
+                    response.forEach(element => {
+                        $('#id_contact').append(`<option value="${element['id']}">${element['name']}</option>`);
+                    });
+                }
+            });
+        }
+
+        function loadClientAddresses(id) {
+            $('#id_address').empty().append(`<option value="" selected>Procesando..</option>`);
+            $('#billing_address_preview').empty().append(`<option value="" selected>Procesando..</option>`);
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ url("/trademarks/address") }}/' + id,
+                success: function (response) {
+                    response = JSON.parse(response);
+
+                    $('#id_address').empty().append(`<option value="" selected>{{ __('messages.select') }}</option>`);
+                    $('#billing_address_preview').empty().append(`<option value="" selected>{{ __('messages.select') }}</option>`);
+
+                    response.forEach(element => {
+                        $('#id_address').append(`<option value="${element['id']}">${element['address'] ?? ''}</option>`);
+                        $('#billing_address_preview').append(`<option value="${element['id']}">${element['billing_address'] ?? ''}</option>`);
+                    });
+                }
+            });
+        }
+
+        function loadHolderAddresses(id) {
+            $('#address_holder').empty().append(`<option value="" disabled selected>Procesando..</option>`);
+
+            $.ajax({
+                type: 'GET',
+                url: 'holder/' + id,
+                success: function (response) {
+                    response = JSON.parse(response);
+                    $('#address_holder').empty().append(`<option value="" disabled selected>Seleccione Address</option>`);
+                    response.forEach(element => {
+                        $('#address_holder').append(`<option value="${element['id']}">${element['address']}</option>`);
+                    });
+                }
+            });
+        }
+
+        function loadHolderIndustrialAddresses(id) {
+            $('#industrial_address').empty().append(`<option value="" disabled selected>Procesando..</option>`);
+
+            $.ajax({
+                type: 'GET',
+                url: 'holder/industrial/' + id,
+                success: function (response) {
+                    response = JSON.parse(response);
+                    $('#industrial_address').empty().append(`<option value="" disabled selected>Seleccione Industrial/Commercial Address</option>`);
+                    response.forEach(element => {
+                        $('#industrial_address').append(`<option value="${element['commercial_address']}">${element['commercial_address']}</option>`);
+                    });
+                }
+            });
+        }
+    })();
+    </script>
 @endsection
