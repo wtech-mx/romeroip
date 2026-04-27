@@ -214,35 +214,38 @@ class TrademarksController extends Controller
         echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
     }
 
-    private function trademarkRules(?int $id = null): array
+    private function trademarkRules(?int $id = null, bool $requireCoreFields = true): array
     {
+        $ourRefRules = [$requireCoreFields ? 'required' : 'nullable', 'integer', 'min:1', Rule::unique('trademark', 'our_ref')->ignore($id)];
+        $dateRule = $requireCoreFields ? 'nullable|date' : 'nullable';
+
         return [
             'notes'                   => 'nullable|string',
-            'our_ref'                 => ['required', 'integer', 'min:1', Rule::unique('trademark', 'our_ref')->ignore($id)],
+            'our_ref'                 => $ourRefRules,
             'client_ref'              => 'nullable|string|max:100',
             'opposition_no'           => 'nullable|string|max:100',
-            'filing_date_opposition'  => 'nullable|date',
+            'filing_date_opposition'  => $dateRule,
             'litigation_no'           => 'nullable|string|max:100',
-            'filing_date_litigation'  => 'nullable|date',
+            'filing_date_litigation'  => $dateRule,
             'application_no'          => 'nullable|string|max:100',
             'origin'                  => 'nullable|string|max:50',
             'registration_no'         => 'nullable|string|max:100',
             'country'                 => 'nullable|string|max:150',
-            'filing_date_general'     => 'nullable|date',
-            'status'                  => 'required|string|max:50',
-            'first_date'              => 'nullable|date',
+            'filing_date_general'     => $dateRule,
+            'status'                  => ($requireCoreFields ? 'required' : 'nullable') . '|string|max:50',
+            'first_date'              => $dateRule,
             'int_registration_no'     => 'nullable|string|max:100',
-            'registration_date'       => 'nullable|date',
-            'int_registration_date'   => 'nullable|date',
-            'expiration_date'         => 'nullable|date',
+            'registration_date'       => $dateRule,
+            'int_registration_date'   => $dateRule,
+            'expiration_date'         => $dateRule,
             'contracting_organization'=> 'nullable|string|max:255',
-            'publication_date'        => 'nullable|date',
+            'publication_date'        => $dateRule,
             'designated_countries'    => 'nullable|string|max:255',
-            'last_declaration'        => 'nullable|date',
-            'last_renewal'            => 'nullable|date',
-            'next_declaration'        => 'nullable|date',
-            'next_renewal'            => 'nullable|date',
-            'trademark'               => 'required|string|max:255',
+            'last_declaration'        => $dateRule,
+            'last_renewal'            => $dateRule,
+            'next_declaration'        => $dateRule,
+            'next_renewal'            => $dateRule,
+            'trademark'               => 'nullable|string|max:255',
             'description_trademark'   => 'nullable|string',
             'type_application'        => 'nullable|string|max:100',
             'type_mark'               => 'nullable|string|max:100',
@@ -254,13 +257,13 @@ class TrademarksController extends Controller
             'description_good'        => 'nullable|string',
             'priority_no'             => 'nullable|string|max:100',
             'country_office'          => 'nullable|string|max:150',
-            'priority_date'           => 'nullable|date',
+            'priority_date'           => $dateRule,
 
-            'id_client'               => 'nullable|exists:clients,id',
-            'id_contact'              => 'nullable|exists:contact_clients,id',
-            'id_address'              => 'nullable|exists:adress_clients,id',
-            'id_holder'               => 'nullable|exists:holder,id',
-            'address_holder'          => 'nullable|exists:address_holder,id',
+            'id_client'               => $requireCoreFields ? 'nullable|exists:clients,id' : 'nullable',
+            'id_contact'              => $requireCoreFields ? 'nullable|exists:contact_clients,id' : 'nullable',
+            'id_address'              => $requireCoreFields ? 'nullable|exists:adress_clients,id' : 'nullable',
+            'id_holder'               => $requireCoreFields ? 'nullable|exists:holder,id' : 'nullable',
+            'address_holder'          => $requireCoreFields ? 'nullable|exists:address_holder,id' : 'nullable',
             'industrial_address'      => 'nullable|string|max:255',
 
             'design'                  => 'nullable|file|mimes:jpg,jpeg,png,webp|max:4096',
@@ -269,6 +272,22 @@ class TrademarksController extends Controller
 
     private function fillTrademarkFromRequest(Trademarks $trademark, array $data, Request $request): void
     {
+        $dateFields = [
+            'filing_date_opposition',
+            'filing_date_litigation',
+            'filing_date_general',
+            'first_date',
+            'registration_date',
+            'int_registration_date',
+            'expiration_date',
+            'publication_date',
+            'last_declaration',
+            'last_renewal',
+            'next_declaration',
+            'next_renewal',
+            'priority_date',
+        ];
+
         $fields = [
             'client_ref',
             'notes',
@@ -317,7 +336,13 @@ class TrademarksController extends Controller
         ];
 
         foreach ($fields as $field) {
-            $trademark->{$field} = $data[$field] ?? null;
+            $value = $data[$field] ?? null;
+
+            if (in_array($field, $dateFields, true)) {
+                $value = $this->normalizeTrademarkDate($value);
+            }
+
+            $trademark->{$field} = $value;
         }
 
         if ($request->hasFile('design')) {
@@ -332,6 +357,19 @@ class TrademarksController extends Controller
             $file->move($path, $fileName);
 
             $trademark->design = $fileName;
+        }
+    }
+
+    private function normalizeTrademarkDate($value): ?string
+    {
+        if (!filled($value)) {
+            return null;
+        }
+
+        try {
+            return \Carbon\Carbon::parse($value)->format('Y-m-d');
+        } catch (\Throwable $e) {
+            return null;
         }
     }
 
@@ -379,12 +417,25 @@ class TrademarksController extends Controller
         return view('trademark.edit', compact('trademark'));
     }
 
+    public function show($id)
+    {
+        $trademark = Trademarks::with([
+            'Client:id,company_name',
+            'Holder:id,company_name',
+            'ContactClient:id,name',
+            'AddressContact:id,address,billing_address',
+            'AddressHolder:id,address',
+        ])->findOrFail($id);
+
+        return view('trademark.show', compact('trademark'));
+    }
+
     public function update(Request $request, $id)
     {
         try {
             $trademark = Trademarks::findOrFail($id);
 
-            $data = $request->validate($this->trademarkRules($trademark->id));
+            $data = $request->validate($this->trademarkRules($trademark->id, false));
 
             $this->fillTrademarkFromRequest($trademark, $data, $request);
             $trademark->save();
@@ -393,6 +444,11 @@ class TrademarksController extends Controller
                 ->route('index.trademarks')
                 ->with('success', 'Trademark updated successfully.');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::warning('Trademark update validation failed', [
+                'trademark_id' => $id,
+                'errors' => $e->errors(),
+            ]);
+
             throw $e;
         } catch (\Throwable $e) {
             \Log::error('Trademark update failed', [

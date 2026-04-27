@@ -27,6 +27,117 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+      .legal-shell{
+        background: #F4F1EA !important;
+        color: #1F2328;
+      }
+
+      .legal-shell-bg{
+        display: none !important;
+      }
+
+      .legal-shell .main-content{
+        background: #F4F1EA;
+        min-height: 100vh;
+      }
+
+      .legal-shell .container-fluid.py-4{
+        padding-top: 1.25rem !important;
+      }
+
+      .legal-sidenav{
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border-right: 1px solid #D8D2C6 !important;
+        background: #FBFAF6 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        margin-left: 0 !important;
+        height: 100vh;
+      }
+
+      .legal-sidenav .sidenav-header{
+        height: auto;
+        padding: 1.35rem 1.5rem 1.15rem;
+      }
+
+      .legal-sidenav .navbar-brand{
+        padding: 0;
+      }
+
+      .legal-sidenav .navbar-brand-img{
+        max-height: 36px;
+      }
+
+      .legal-sidenav .horizontal{
+        margin: 0 1.5rem 1rem !important;
+        background-color: #D8D2C6;
+      }
+
+      .legal-sidenav .navbar-nav{
+        padding: 0 1rem;
+      }
+
+      .legal-sidenav .nav-link{
+        border-radius: 0 !important;
+        margin: 0;
+        padding: .85rem .35rem !important;
+        color: #5E625E !important;
+        font-weight: 600;
+        border-bottom: 1px solid transparent;
+        box-shadow: none !important;
+      }
+
+      .legal-sidenav .nav-link.active{
+        background: transparent !important;
+        color: #1F2328 !important;
+        border-bottom-color: #8A6F3E;
+      }
+
+      .legal-sidenav .nav-link:hover{
+        color: #1F2328 !important;
+      }
+
+      .legal-sidenav .nav-link-text{
+        margin-left: 0 !important;
+      }
+
+      .legal-sidenav h6{
+        padding-left: .35rem !important;
+        margin-left: 0 !important;
+        margin-top: 1.4rem;
+        margin-bottom: .35rem;
+        letter-spacing: .14em;
+        color: #8B857C !important;
+      }
+
+      .legal-navbar{
+        margin-top: 0 !important;
+        padding-top: .75rem !important;
+        padding-bottom: .75rem !important;
+        background: transparent !important;
+      }
+
+      .legal-breadcrumb a,
+      .legal-breadcrumb .breadcrumb-item,
+      .legal-breadcrumb .breadcrumb-item.active{
+        color: #6F6A62 !important;
+        font-weight: 600;
+      }
+
+      .legal-navbar .sidenav-toggler-line{
+        background: #1F2328 !important;
+      }
+
+      .legal-user-menu{
+        border: 1px solid #BFB7A8 !important;
+        color: #1F2328 !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        font-weight: 700;
+      }
+    </style>
     @yield('css')
   {{-- <style>
         input:before {
@@ -45,8 +156,8 @@
 
 </head>
 
-<body class="g-sidenav-show   bg-gray-100">
-  <div class="min-height-300  position-absolute w-100" style="background-color: {{$configuracion->color_principal}}!important;"></div>
+<body class="g-sidenav-show bg-gray-100 legal-shell">
+  <div class="min-height-300 position-absolute w-100 legal-shell-bg"></div>
 
    <!-- Sidenav -->
     @include('layouts.sidebar')
@@ -95,12 +206,6 @@
 
 
   <script>
-            var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
-
-            gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
-            gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
-            gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
-
             if (document.getElementById('edit-deschiption')) {
             var quill = new Quill('#edit-deschiption', {
                 theme: 'snow' // Specify theme in configuration

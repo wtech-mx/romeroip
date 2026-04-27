@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/trademarks/advance', [App\Http\Controllers\TrademarksController::class, 'advance'])->name('advance_search');
     Route::get('/trademarks/create', [App\Http\Controllers\TrademarksController::class, 'create'])->name('create.trademarks');
     Route::post('/trademarks/store', [App\Http\Controllers\TrademarksController::class, 'store'])->name('store.trademarks');
+    Route::get('/trademarks/show/{id}', [App\Http\Controllers\TrademarksController::class, 'show'])->name('show.trademarks');
     Route::get('/trademarks/edit/{id}', [App\Http\Controllers\TrademarksController::class, 'edit'])->name('edit.trademarks');
     Route::patch('/trademarks/update/{id}', [App\Http\Controllers\TrademarksController::class, 'update'])->name('update.trademarks');
 

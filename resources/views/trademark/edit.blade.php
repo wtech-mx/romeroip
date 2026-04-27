@@ -7,14 +7,14 @@
 @section('css')
 <style>
     :root{
-        --tm-primary: #FF7F11;
-        --tm-secondary: #ACBFA4;
-        --tm-soft: #E2E8CE;
-        --tm-dark: #262626;
-        --tm-border: #E5E7EB;
-        --tm-bg: #F7F7F2;
+        --tm-primary: #8A6F3E;
+        --tm-dark: #1F2328;
+        --tm-ink: #3F444A;
+        --tm-border: #D8D2C6;
+        --tm-border-soft: #EEE9DF;
+        --tm-bg: #F8F6F1;
         --tm-white: #FFFFFF;
-        --tm-muted: #6B7280;
+        --tm-muted: #76716A;
         --tm-top-offset: 90px;
     }
 
@@ -27,7 +27,10 @@
     }
 
     .tm-page{
-        padding-bottom: 3rem;
+        max-width: 1260px;
+        padding-bottom: 4rem;
+        margin-left: 0;
+        margin-right: auto;
     }
 
     /* IMPORTANTE para sticky */
@@ -41,200 +44,270 @@
         overflow: visible !important;
     }
 
-    /* ===== TOP CARD ===== */
+    /* ===== LEGAL FILE HEADER ===== */
     .tm-top-card{
-        position: sticky;
-        top: var(--tm-top-offset);
-        z-index: 1030;
-        margin-bottom: 1.25rem;
-        background-color: #fff;
-        border: 1px solid rgba(38,38,38,.08);
-        border-radius: 22px;
-        box-shadow: 0 12px 30px rgba(38,38,38,.08);
-        padding: 1.2rem 1.4rem;
-    }
-
-    .tm-top-card-inner{
-        background: linear-gradient(135deg, rgba(226,232,206,.95) 0%, rgba(172,191,164,.30) 100%);
-        border: 1px solid rgba(38,38,38,.08);
-        border-radius: 22px;
-        box-shadow: 0 12px 30px rgba(38,38,38,.08);
-        padding: 1.2rem 1.4rem;
+        position: static;
+        margin-bottom: 1rem;
+        background-color: #FBFAF6;
+        border: 1px solid var(--tm-border);
+        padding: 2rem 2.15rem 1.5rem;
     }
 
     .tm-kicker{
-        font-size: .78rem;
-        font-weight: 800;
-        letter-spacing: .10em;
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .14em;
         text-transform: uppercase;
-        color: var(--tm-primary);
+        color: var(--tm-muted);
     }
 
     .tm-title{
-        margin: .15rem 0 0;
-        font-size: 2rem;
-        font-weight: 800;
+        margin: .28rem 0 0;
+        font-size: clamp(1.85rem, 3vw, 3rem);
+        line-height: 1.05;
+        font-weight: 700;
         color: var(--tm-dark);
+        letter-spacing: 0;
     }
 
     .tm-subtitle{
-        margin: .3rem 0 0;
+        margin: .55rem 0 0;
         color: var(--tm-muted);
-        font-size: .96rem;
+        font-size: .98rem;
+    }
+
+    .tm-auto-header{
+        margin-top: 1.15rem;
+        color: var(--tm-dark);
+        font-size: 1rem;
+        line-height: 1.65;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .tm-auto-header-line{
+        margin: 0;
+    }
+
+    .tm-auto-header-main{
+        font-size: 1.06rem;
+        font-weight: 700;
+    }
+
+    .tm-auto-header-oref{
+        font-weight: 800;
+    }
+
+    .tm-auto-header-muted{
+        color: var(--tm-muted);
+        font-weight: 600;
     }
 
     .tm-toolbar{
         display: flex;
-        gap: .75rem;
+        gap: .65rem;
         flex-wrap: wrap;
         justify-content: flex-end;
         align-items: center;
+        margin-top: 1rem;
     }
 
     .tm-btn{
-        min-height: 46px;
-        padding: 0 1.15rem;
-        border-radius: 14px;
-        font-weight: 800;
-        border: 0;
+        min-height: 40px;
+        padding: 0 .95rem;
+        border-radius: 3px;
+        font-weight: 700;
+        border: 1px solid var(--tm-dark);
         display: inline-flex;
         align-items: center;
-        gap: .45rem;
         text-decoration: none;
-        transition: .18s ease;
-    }
-
-    .tm-btn:hover{
-        transform: translateY(-1px);
+        transition: background-color .15s ease, color .15s ease, border-color .15s ease;
     }
 
     .tm-btn-back{
-        background: var(--tm-secondary);
+        background: transparent;
         color: var(--tm-dark);
-        box-shadow: 0 10px 18px rgba(38,38,38,.10);
     }
 
     .tm-btn-save{
-        background: linear-gradient(135deg, var(--tm-primary) 0%, #E76E08 100%);
+        background: var(--tm-dark);
         color: var(--tm-white);
-        box-shadow: 0 10px 18px rgba(255,127,17,.24);
+    }
+
+    .tm-btn:hover{
+        border-color: var(--tm-primary);
+        color: var(--tm-primary);
+        background: transparent;
     }
 
     /* ===== LAYOUT ===== */
     .tm-layout{
         align-items: flex-start;
+        background: #FBFAF6;
+        border: 1px solid var(--tm-border);
+        padding: 0 2.15rem 1rem;
     }
 
-    /* ===== MAIN SECTION CARDS ===== */
+    .tm-file-content{
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 260px;
+        gap: 2.5rem;
+        align-items: start;
+    }
+
+    .tm-file-tabs{
+        position: sticky;
+        top: 1.25rem;
+        padding-left: 1.25rem;
+        border-left: 1px solid var(--tm-border);
+    }
+
+    .tm-tabs-label{
+        margin: 0 0 .85rem;
+        color: var(--tm-muted);
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+    }
+
+    .tm-file-tabs button{
+        display: block;
+        width: 100%;
+        padding: .78rem 0 .78rem .95rem;
+        border-left: 2px solid transparent;
+        border-top: 0;
+        border-right: 0;
+        border-bottom: 0;
+        background: transparent;
+        color: var(--tm-muted);
+        font-size: .9rem;
+        font-weight: 700;
+        line-height: 1.25;
+        text-align: left;
+        text-decoration: none;
+        transform: translateX(-1px);
+        transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+    }
+
+    .tm-file-tabs button:hover,
+    .tm-file-tabs button.is-active{
+        border-left-color: var(--tm-primary);
+        background: rgba(138,111,62,.06);
+        color: var(--tm-dark);
+    }
+
+    /* ===== DOCUMENT SECTIONS ===== */
     .tm-section-card{
-        background: var(--tm-white);
-        border: 1px solid rgba(38,38,38,.08);
-        border-radius: 22px;
-        box-shadow: 0 10px 28px rgba(38,38,38,.05);
-        overflow: hidden;
-        margin-bottom: 1.25rem;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid var(--tm-border);
+        margin-bottom: 3.15rem;
+        padding-top: 1.45rem;
         scroll-margin-top: calc(var(--tm-top-offset) + 100px);
     }
 
+    .tm-section-card:not(.is-active){
+        display: none;
+    }
+
+    .tm-section-card.is-active{
+        display: block;
+    }
+
     .tm-section-head{
-        padding: 1.1rem 1.25rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        background: linear-gradient(135deg, rgba(226,232,206,.55) 0%, rgba(172,191,164,.18) 100%);
-        border-bottom: 1px solid rgba(38,38,38,.06);
+        padding: 0 0 1.15rem;
     }
 
     .tm-section-title{
         margin: 0;
-        font-size: 1.08rem;
-        font-weight: 800;
-        color: var(--tm-dark);
-        display: flex;
-        align-items: center;
-        gap: .7rem;
-    }
-
-    .tm-section-icon{
-        width: 38px;
-        height: 38px;
-        border-radius: 12px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255,127,17,.14);
-        color: var(--tm-primary);
         font-size: 1rem;
-        flex: 0 0 auto;
+        font-weight: 700;
+        color: var(--tm-dark);
+        letter-spacing: .04em;
+        text-transform: uppercase;
     }
 
     .tm-section-sub{
-        margin: .2rem 0 0;
+        margin: .35rem 0 0;
         font-size: .89rem;
         color: var(--tm-muted);
     }
 
-    .tm-section-badge{
-        width: 38px;
-        height: 38px;
-        border-radius: 999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        background: linear-gradient(135deg, var(--tm-primary), #E76E08);
-        color: #fff;
-        box-shadow: 0 8px 18px rgba(255,127,17,.22);
-        flex: 0 0 auto;
-    }
-
     .tm-section-body{
-        padding: 1.2rem 1.25rem 1.3rem;
+        padding: 0;
     }
 
-    /* ===== INPUTS ===== */
+    /* ===== DOCUMENT FIELDS ===== */
     .tm-label{
         display: inline-block;
-        margin-bottom: .45rem;
+        margin-bottom: .28rem;
         font-weight: 700;
-        color: var(--tm-dark);
-        font-size: .9rem;
+        color: var(--tm-muted);
+        font-size: .7rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
     }
 
     .tm-input,
     .tm-select{
-        min-height: 50px;
-        border-radius: 14px;
-        border: 1px solid var(--tm-border);
-        background: #fff;
+        width: 100%;
+        min-height: 52px;
+        border-radius: 0;
+        border: 0;
+        border-bottom: 1px solid var(--tm-border-soft);
+        background: transparent;
         color: var(--tm-dark);
+        font-weight: 600;
+        padding: .72rem .2rem .7rem 0;
         box-shadow: none !important;
+        cursor: text;
+    }
+
+    select.tm-select{
+        cursor: pointer;
     }
 
     .tm-input:focus,
     .tm-select:focus{
         border-color: var(--tm-primary);
-        box-shadow: 0 0 0 .2rem rgba(255,127,17,.12) !important;
+        background: rgba(255,255,255,.55);
+        box-shadow: none !important;
+    }
+
+    .tm-input[type="file"]{
+        padding-top: .45rem;
+    }
+
+    .tm-input[type="file"]::file-selector-button{
+        border: 1px solid var(--tm-dark);
+        background: transparent;
+        color: var(--tm-dark);
+        border-radius: 0;
+        padding: .45rem .75rem;
+        margin-right: .75rem;
+        font-weight: 700;
     }
 
     textarea.tm-input{
-        min-height: auto;
-        padding-top: .8rem;
-        padding-bottom: .8rem;
+        min-height: 78px;
+        padding-top: .72rem;
+        padding-bottom: .7rem;
+        line-height: 1.6;
     }
 
     .tm-readonly{
-        background: rgba(226,232,206,.35);
+        background: transparent;
         font-weight: 700;
+        color: var(--tm-ink);
     }
 
     /* ===== IMAGE PREVIEW ===== */
     .tm-preview-wrap{
-        min-height: 360px;
-        border-radius: 18px;
-        border: 1px dashed rgba(172,191,164,.95);
-        background: linear-gradient(180deg, #fff 0%, rgba(226,232,206,.35) 100%);
+        min-height: 320px;
+        border-radius: 0;
+        border: 1px solid var(--tm-border);
+        background: rgba(255,255,255,.42);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -247,66 +320,7 @@
         max-width: 340px;
         max-height: 340px;
         object-fit: contain;
-        border-radius: 14px;
-    }
-
-    /* ===== SIDE MENU ===== */
-    .tm-aside{
-        position: sticky;
-        top: calc(var(--tm-top-offset) + 110px);
-        z-index: 1020;
-    }
-
-    .tm-menu-card{
-        background: var(--tm-white);
-        border: 1px solid rgba(38,38,38,.08);
-        border-radius: 22px;
-        box-shadow: 0 10px 28px rgba(38,38,38,.05);
-        overflow: hidden;
-    }
-
-    .tm-menu-head{
-        padding: 1rem 1.1rem;
-        border-bottom: 1px solid rgba(38,38,38,.06);
-        background: linear-gradient(135deg, rgba(226,232,206,.55) 0%, rgba(172,191,164,.18) 100%);
-    }
-
-    .tm-menu-head h5{
-        margin: 0;
-        font-weight: 800;
-        color: var(--tm-dark);
-    }
-
-    .tm-menu-head p{
-        margin: .25rem 0 0;
-        color: var(--tm-muted);
-        font-size: .88rem;
-    }
-
-    .tm-menu-body{
-        padding: .9rem;
-    }
-
-    .tm-menu-link{
-        display: flex;
-        align-items: center;
-        gap: .65rem;
-        padding: .8rem .9rem;
-        border-radius: 14px;
-        color: var(--tm-dark);
-        text-decoration: none;
-        font-weight: 700;
-        transition: .18s ease;
-    }
-
-    .tm-menu-link:hover{
-        background: rgba(255,127,17,.08);
-        color: var(--tm-primary);
-    }
-
-    .tm-menu-link i{
-        width: 18px;
-        text-align: center;
+        border-radius: 0;
     }
 
     /* ===== AUTOCOMPLETE ===== */
@@ -322,7 +336,7 @@
         z-index: 1055;
         background: #fff;
         border: 1px solid var(--tm-border);
-        border-radius: 14px;
+        border-radius: 3px;
         box-shadow: 0 12px 30px rgba(0,0,0,.08);
         max-height: 260px;
         overflow-y: auto;
@@ -331,13 +345,13 @@
 
     .autocomplete-item{
         padding: 10px 12px;
-        border-radius: 10px;
+        border-radius: 2px;
         cursor: pointer;
         transition: .15s ease;
     }
 
     .autocomplete-item:hover{
-        background: rgba(255,127,17,.10);
+        background: rgba(138,111,62,.10);
     }
 
     .autocomplete-title{
@@ -362,20 +376,77 @@
         }
 
         .tm-top-card,
-        .tm-aside{
+        .tm-layout{
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+
+        .tm-file-content{
+            display: block;
+        }
+
+        .tm-file-tabs{
             position: static;
-            top: auto;
+            display: flex;
+            gap: 0;
+            margin: 0 -1.25rem 2.25rem;
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+            border-left: 0;
+            border-top: 1px solid var(--tm-border);
+            border-bottom: 1px solid var(--tm-border);
+            background: #F7F4ED;
+            overflow-x: auto;
+        }
+
+        .tm-tabs-label{
+            display: none;
+        }
+
+        .tm-file-tabs button{
+            display: inline-flex;
+            align-items: center;
+            width: auto;
+            min-height: 48px;
+            padding: 0 .95rem;
+            border-left: 0;
+            border-right: 1px solid var(--tm-border-soft);
+            white-space: nowrap;
+            transform: none;
+            font-size: .78rem;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+
+        .tm-file-tabs button:hover,
+        .tm-file-tabs button.is-active{
+            background: #FBFAF6;
+            color: var(--tm-dark);
         }
 
         .tm-toolbar{
             justify-content: flex-start;
         }
     }
+
 </style>
 @endsection
 
 @section('content')
 <div class="container-fluid mt-3 tm-page">
+    @php
+        $headerCountry = filled($trademark->country) ? $trademark->country : null;
+        $headerRegistration = filled($trademark->registration_no)
+            ? 'Reg. No. ' . $trademark->registration_no
+            : (filled($trademark->application_no) ? 'Appl. No. ' . $trademark->application_no : null);
+        $headerTrademark = filled($trademark->trademark) ? $trademark->trademark : null;
+        $headerClass = filled($trademark->class) ? 'Clase ' . $trademark->class : null;
+        $headerCountryRegistration = collect([$headerCountry, $headerRegistration])->filter()->implode(' | ');
+        $headerMainParts = array_filter([$headerCountryRegistration, $headerTrademark, $headerClass]);
+        $headerClient = optional($trademark->Client)->company_name;
+        $headerOwner = optional($trademark->Holder)->company_name;
+    @endphp
+
     <form method="POST"
           action="{{ route('update.trademarks', $trademark->id) }}"
           enctype="multipart/form-data"
@@ -387,25 +458,59 @@
         {{-- Top card --}}
         <div class="tm-top-card">
             <div class="tm-top-card-body">
-                <div class="row g-3 align-items-center">
-                    <div class="col-lg-7">
-                        <div class="tm-kicker">Trademark File</div>
-                        <h1 class="tm-title">{{ __('messages.edit_trademark') }}</h1>
+                <div class="row g-3">
+                    <div class="col-lg-9">
+                        <div class="tm-kicker">Legal trademark file</div>
+                        <h1 class="tm-title">{{ $trademark->trademark ?: __('messages.edit_trademark') }}</h1>
                         <p class="tm-subtitle">
-                            Update the trademark record and save the changes when you are ready.
+                            {{ __('messages.edit_trademark') }}
                         </p>
+
+                        <div class="tm-auto-header" aria-label="Automatic file header">
+                            @if(count($headerMainParts))
+                                <p class="tm-auto-header-line tm-auto-header-main">
+                                    {{ implode(' — ', $headerMainParts) }}
+                                </p>
+                            @endif
+
+                            @if(filled($trademark->int_registration_no))
+                                <p class="tm-auto-header-line">
+                                    INT'L REG. {{ $trademark->int_registration_no }}
+                                </p>
+                            @endif
+
+                            @if(filled($trademark->our_ref) || filled($trademark->client_ref))
+                                <p class="tm-auto-header-line">
+                                    @if(filled($trademark->our_ref))
+                                        <span class="tm-auto-header-oref">O/Ref. {{ $trademark->our_ref }}</span>
+                                    @endif
+                                    @if(filled($trademark->our_ref) && filled($trademark->client_ref))
+                                        <span class="tm-auto-header-muted"> — </span>
+                                    @endif
+                                    @if(filled($trademark->client_ref))
+                                        <span>C/Ref. {{ $trademark->client_ref }}</span>
+                                    @endif
+                                </p>
+                            @endif
+
+                            @if(filled($headerClient))
+                                <p class="tm-auto-header-line">Client: {{ $headerClient }}</p>
+                            @endif
+
+                            @if(filled($headerOwner))
+                                <p class="tm-auto-header-line">Owner: {{ $headerOwner }}</p>
+                            @endif
+                        </div>
                     </div>
 
-                    <div class="col-lg-5">
+                    <div class="col-lg-3">
                         <div class="tm-toolbar">
                             <a class="tm-btn tm-btn-back"
                                href="javascript:history.back()">
-                                <i class="bi bi-arrow-left-circle"></i>
                                 {{ __('messages.back') }}
                             </a>
 
                             <button type="submit" class="tm-btn tm-btn-save">
-                                <i class="bi bi-floppy"></i>
                                 {{ __('messages.update') }}
                             </button>
                         </div>
@@ -419,19 +524,18 @@
         </div>
 
         <div class="row tm-layout">
-            <div class="col-xl-9 col-lg-8">
-
-                {{-- Notes --}}
+            <div class="col-12">
+                <div class="tm-file-content">
+                    <div class="tm-file-main">
+                        {{-- Notes --}}
                 <div class="tm-section-card" id="notes">
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-journal-text"></i></span>
                                 {{ __('messages.note_important') }}
                             </h5>
                             <p class="tm-section-sub">Internal notes or relevant file context.</p>
                         </div>
-                        <span class="tm-section-badge">01</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -445,16 +549,14 @@
                 </div>
 
                 {{-- Reference Numbers --}}
-                <div class="tm-section-card" id="profile">
+                <div class="tm-section-card  is-active" id="profile">
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-hash"></i></span>
                                 {{ __('messages.reference_numbers') }}
                             </h5>
                             <p class="tm-section-sub">Internal control, client reference and case numbers.</p>
                         </div>
-                        <span class="tm-section-badge">02</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -511,12 +613,10 @@
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-info-circle"></i></span>
                                 {{ __('messages.general_information') }}
                             </h5>
                             <p class="tm-section-sub">Main filing data, country, status and key dates.</p>
                         </div>
-                        <span class="tm-section-badge">03</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -648,12 +748,10 @@
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-calendar3"></i></span>
                                 {{ __('messages.important_dates') }}
                             </h5>
                             <p class="tm-section-sub">Declaration of use and renewal timeline.</p>
                         </div>
-                        <span class="tm-section-badge">04</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -701,12 +799,10 @@
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-patch-check"></i></span>
                                 {{ __('messages.trademark_information') }}
                             </h5>
                             <p class="tm-section-sub">Trademark name, description, type and image.</p>
                         </div>
-                        <span class="tm-section-badge">05</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -794,12 +890,10 @@
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-box-seam"></i></span>
                                 {{ __('messages.goods_services') }}
                             </h5>
                             <p class="tm-section-sub">Nice class and goods/services description.</p>
                         </div>
-                        <span class="tm-section-badge">06</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -832,12 +926,10 @@
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-flag"></i></span>
                                 {{ __('messages.priority_information') }}
                             </h5>
                             <p class="tm-section-sub">Priority number, office and priority date.</p>
                         </div>
-                        <span class="tm-section-badge">07</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -872,12 +964,10 @@
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-building"></i></span>
                                 {{ __('messages.client_info') }}
                             </h5>
                             <p class="tm-section-sub">Client, contact, main address and billing preview.</p>
                         </div>
-                        <span class="tm-section-badge">08</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -931,16 +1021,14 @@
                 </div>
 
                 {{-- Holder Information --}}
-                <div class="tm-section-card" id="holder">
+                        <div class="tm-section-card" id="holder">
                     <div class="tm-section-head">
                         <div>
                             <h5 class="tm-section-title">
-                                <span class="tm-section-icon"><i class="bi bi-person-badge"></i></span>
                                 {{ __('messages.holder_info') }}
                             </h5>
                             <p class="tm-section-sub">Holder and related addresses.</p>
                         </div>
-                        <span class="tm-section-badge">09</span>
                     </div>
 
                     <div class="tm-section-body">
@@ -982,33 +1070,25 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-            </div>
-
-            {{-- Side menu --}}
-            <div class="col-xl-3 col-lg-4 mt-4 mt-lg-0">
-                <div class="tm-aside">
-                    <div class="tm-menu-card">
-                        <div class="tm-menu-head">
-                            <h5>Sections</h5>
-                            <p>Quick navigation through the trademark file.</p>
-                        </div>
-
-                        <div class="tm-menu-body">
-                            <a class="tm-menu-link" href="#notes"><i class="bi bi-journal-text"></i> {{ __('messages.note_important') }}</a>
-                            <a class="tm-menu-link" href="#profile"><i class="bi bi-hash"></i> {{ __('messages.reference_numbers') }}</a>
-                            <a class="tm-menu-link" href="#basic-info"><i class="bi bi-info-circle"></i> {{ __('messages.general_information') }}</a>
-                            <a class="tm-menu-link" href="#password"><i class="bi bi-calendar3"></i> {{ __('messages.important_dates') }}</a>
-                            <a class="tm-menu-link" href="#trademark-section"><i class="bi bi-patch-check"></i> {{ __('messages.trademark_information') }}</a>
-                            <a class="tm-menu-link" href="#accounts"><i class="bi bi-box-seam"></i> {{ __('messages.goods_services') }}</a>
-                            <a class="tm-menu-link" href="#notifications"><i class="bi bi-flag"></i> {{ __('messages.priority_information') }}</a>
-                            <a class="tm-menu-link" href="#sessions"><i class="bi bi-building"></i> {{ __('messages.client_info') }}</a>
-                            <a class="tm-menu-link" href="#holder"><i class="bi bi-person-badge"></i> {{ __('messages.holder_info') }}</a>
                         </div>
                     </div>
+
+                    <nav class="tm-file-tabs" aria-label="Trademark file navigation">
+                        <p class="tm-tabs-label mt-3">Sections</p>
+                        <button class="is-active" type="button" data-tab-target="profile">01 {{ __('messages.reference_numbers') }}</button>
+                        <button type="button" data-tab-target="basic-info">02 {{ __('messages.general_information') }}</button>
+                        <button type="button" data-tab-target="password">03 {{ __('messages.important_dates') }}</button>
+                        <button type="button" data-tab-target="trademark-section">04 {{ __('messages.trademark_information') }}</button>
+                        <button type="button" data-tab-target="accounts">05 {{ __('messages.goods_services') }}</button>
+                        <button type="button" data-tab-target="sessions">06 {{ __('messages.client_info') }}</button>
+                        <button type="button" data-tab-target="holder">07 {{ __('messages.holder_info') }}</button>
+                        <button type="button" data-tab-target="notifications">08 {{ __('messages.priority_information') }}</button>
+                        <button type="button" data-tab-target="notes">09 {{ __('messages.note_important') }}</button>
+                    </nav>
                 </div>
+
             </div>
+
         </div>
     </form>
 </div>
@@ -1036,6 +1116,34 @@
 
 <script>
 (function () {
+    const tabButtons = Array.from(document.querySelectorAll('.tm-file-tabs button[data-tab-target]'));
+    const sections = Array.from(document.querySelectorAll('.tm-section-card'));
+
+    function setActiveTab(id, updateHash = true) {
+        tabButtons.forEach(button => {
+            button.classList.toggle('is-active', button.dataset.tabTarget === id);
+        });
+
+        sections.forEach(section => {
+            section.classList.toggle('is-active', section.id === id);
+        });
+
+        if (updateHash && window.history) {
+            window.history.replaceState(null, '', '#' + id);
+        }
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            setActiveTab(this.dataset.tabTarget);
+        });
+    });
+
+    const initialTab = window.location.hash ? window.location.hash.replace('#', '') : 'profile';
+    if (document.getElementById(initialTab)) {
+        setActiveTab(initialTab, false);
+    }
+
     document.querySelectorAll('.date-mask').forEach(input => {
         input.addEventListener('input', function () {
             let value = this.value.replace(/\D/g, '').substring(0, 8);
@@ -1360,12 +1468,7 @@
     const form = document.getElementById('trademarkEditForm');
     if (!form) return;
 
-    const requiredFields = [
-        { id: 'our_ref', label: 'Our Ref.' },
-        { id: 'trademark', label: 'Trademark' },
-        { id: 'status', label: 'Status' },
-        { id: 'id_client', label: 'Client' },
-    ];
+    const requiredFields = [];
 
     function clearInvalid(el) {
         if (!el) return;

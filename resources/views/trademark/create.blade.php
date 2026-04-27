@@ -158,13 +158,395 @@
         display: none !important;
     }
 </style>
+
+<style>
+    :root{
+        --tm-primary: #8A6F3E;
+        --tm-dark: #1F2328;
+        --tm-border: #D8D2C6;
+        --tm-border-soft: #EEE9DF;
+        --tm-bg: #F8F6F1;
+        --tm-muted: #76716A;
+    }
+
+    body{
+        background: var(--tm-bg);
+    }
+
+    .tm-page{
+        max-width: 1260px;
+        margin-left: 0;
+        margin-right: auto;
+        padding-bottom: 4rem;
+    }
+
+    .tm-file-shell{
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .tm-sticky-topbar{
+        position: static;
+        top: auto;
+        z-index: auto;
+        margin-bottom: 1rem;
+        padding: 2rem 2.15rem 1.5rem;
+        background: #FBFAF6;
+        border: 1px solid var(--tm-border);
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .tm-sticky-topbar h3{
+        margin: 0;
+        color: var(--tm-dark);
+        font-size: clamp(1.85rem, 3vw, 3rem);
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: 0;
+    }
+
+    .tm-sticky-topbar h3:before{
+        content: "Legal trademark file";
+        display: block;
+        margin-bottom: .45rem;
+        color: var(--tm-muted);
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+    }
+
+    .tm-sticky-topbar h3:after{
+        content: "{{ __('messages.new_trademark') }}";
+        display: block;
+        margin-top: .55rem;
+        color: var(--tm-muted);
+        font-size: .98rem;
+        font-weight: 400;
+    }
+
+    .tm-sticky-topbar i,
+    .tm-section-title i,
+    .form-label i,
+    .tm-menu i{
+        display: none !important;
+    }
+
+    .tm-toolbar{
+        justify-content: flex-end;
+    }
+
+    .tm-toolbar .btn{
+        min-height: 40px;
+        padding: 0 .95rem;
+        border-radius: 3px !important;
+        font-weight: 700;
+        border: 1px solid var(--tm-dark) !important;
+        background: transparent !important;
+        color: var(--tm-dark) !important;
+        box-shadow: none !important;
+    }
+
+    .tm-toolbar button[type="submit"]{
+        background: var(--tm-dark) !important;
+        color: #fff !important;
+    }
+
+    .tm-file-body{
+        background: #FBFAF6;
+        border: 1px solid var(--tm-border);
+        padding: 0 2.15rem 1rem;
+    }
+
+    .tm-file-content{
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 260px;
+        gap: 2.5rem;
+        align-items: start;
+    }
+
+    .tm-layout-row{
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 260px;
+        gap: 2.5rem;
+        margin: 0 !important;
+        align-items: start;
+    }
+
+    .tm-layout-row > .col-lg-9,
+    .tm-layout-row > .col-lg-3{
+        width: auto;
+        max-width: none;
+        padding: 0 !important;
+    }
+
+    .tm-card-head{
+        padding: 0 0 1.15rem;
+    }
+
+    .tm-section-title{
+        margin: 0;
+        color: var(--tm-dark);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .tm-section-icon{
+        display: none !important;
+    }
+
+    .tm-anchor-sub{
+        margin-top: .35rem;
+        color: var(--tm-muted);
+        font-size: .89rem;
+    }
+
+    .tm-section-card{
+        display: none;
+        margin: 0 0 3.15rem !important;
+        padding-top: 1.45rem;
+        background: transparent !important;
+        border: 0 !important;
+        border-top: 1px solid var(--tm-border) !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .tm-section-card.is-active{
+        display: block;
+    }
+
+    .tm-section-card .card-body{
+        padding: 0 !important;
+    }
+
+    .tm-section-card .row{
+        margin-left: -.75rem;
+        margin-right: -.75rem;
+    }
+
+    .tm-section-card [class*="col-"]{
+        padding: .75rem !important;
+    }
+
+    .form-label{
+        margin-bottom: .28rem;
+        color: var(--tm-muted);
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .input-group{
+        display: flex;
+        width: 100%;
+    }
+
+    .input-group > .form-control,
+    .input-group > select.form-control,
+    .input-group > textarea.form-control{
+        flex: 1 1 100%;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .form-control,
+    .select2-container--default .select2-selection--single{
+        width: 100%;
+        min-height: 52px;
+        border: 0 !important;
+        border-bottom: 1px solid var(--tm-border-soft) !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        color: var(--tm-dark);
+        font-weight: 600;
+        padding: .72rem .2rem .7rem 0;
+        box-shadow: none !important;
+        cursor: text;
+    }
+
+    select.form-control,
+    .select2-container--default .select2-selection--single{
+        cursor: pointer;
+    }
+
+    .select2-container{
+        width: 100% !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-left: 0;
+        padding-right: 1.5rem;
+        color: var(--tm-dark);
+        line-height: 34px;
+        font-weight: 600;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 50px;
+    }
+
+    textarea.form-control{
+        min-height: 78px;
+        padding-top: .72rem;
+        padding-bottom: .7rem;
+        line-height: 1.6;
+    }
+
+    .form-control[type="file"]{
+        padding-top: .45rem;
+    }
+
+    .form-control[type="file"]::file-selector-button{
+        border: 1px solid var(--tm-dark);
+        background: transparent;
+        color: var(--tm-dark);
+        border-radius: 0;
+        padding: .45rem .75rem;
+        margin-right: .75rem;
+        font-weight: 700;
+    }
+
+    .tm-preview-img{
+        max-height: 340px;
+        object-fit: contain;
+        border: 1px solid var(--tm-border);
+        background: rgba(255,255,255,.42);
+        padding: 1rem;
+    }
+
+    .tm-sticky-side{
+        position: sticky;
+        top: 1.25rem;
+    }
+
+    .tm-menu{
+        max-height: none;
+        overflow: visible;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent !important;
+        border: 0 !important;
+    }
+
+    .tm-tabs-label{
+        margin: 0 0 .85rem;
+        color: var(--tm-muted);
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+    }
+
+    .tm-menu .nav{
+        padding: 0 0 0 1.25rem !important;
+        background: transparent !important;
+        border-left: 1px solid var(--tm-border);
+        border-radius: 0 !important;
+    }
+
+    .tm-menu .nav-link,
+    .tm-menu button{
+        display: block;
+        width: 100%;
+        padding: .78rem 0 .78rem .95rem !important;
+        border: 0;
+        border-left: 2px solid transparent;
+        background: transparent;
+        color: var(--tm-muted) !important;
+        font-size: .9rem;
+        font-weight: 700;
+        line-height: 1.25;
+        text-align: left;
+        text-decoration: none;
+        transform: translateX(-1px);
+        transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+    }
+
+    .tm-menu button:hover,
+    .tm-menu button.is-active{
+        border-left-color: var(--tm-primary);
+        background: rgba(138,111,62,.06);
+        color: var(--tm-dark) !important;
+    }
+
+    @media (max-width: 991.98px){
+        .tm-sticky-topbar,
+        .tm-file-body{
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+
+        .tm-file-content{
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 0;
+        }
+
+        .tm-layout-row{
+            display: flex !important;
+            flex-direction: column-reverse;
+            gap: 0;
+        }
+
+        .tm-sticky-side{
+            position: static;
+        }
+
+        .tm-menu{
+            margin: 0 -1.25rem 2.25rem;
+            border-top: 1px solid var(--tm-border) !important;
+            border-bottom: 1px solid var(--tm-border) !important;
+            background: #F7F4ED !important;
+            overflow-x: auto;
+        }
+
+        .tm-tabs-label{
+            display: none;
+        }
+
+        .tm-menu .nav{
+            display: flex;
+            flex-direction: row !important;
+            flex-wrap: nowrap;
+            min-width: max-content;
+            padding: 0 1.25rem !important;
+            border-left: 0;
+        }
+
+        .tm-menu .nav-item{
+            padding-top: 0 !important;
+        }
+
+        .tm-menu button{
+            display: inline-flex;
+            align-items: center;
+            width: auto;
+            min-height: 48px;
+            padding: 0 .95rem !important;
+            border-left: 0;
+            border-right: 1px solid var(--tm-border-soft);
+            white-space: nowrap;
+            transform: none;
+            font-size: .78rem;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+    }
+</style>
 @endsection
 
 @section('content')
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-3 tm-page">
     <div class="row">
         <div class="col">
-            <div class="card">
+            <div class="card tm-file-shell">
 
                 <form method="POST"
                       action="{{ route('store.trademarks') }}"
@@ -199,7 +581,7 @@
                         @includeif('partials.errors')
                     </div>
 
-                    <div class="card-body">
+                    <div class="card-body tm-file-body">
                         <div class="tm-form-wrap">
                             <div class="container-fluid px-0">
                                 <div class="row mb-5 tm-layout-row">
@@ -207,7 +589,7 @@
                                     <div class="col-lg-9 mt-lg-0 mt-4">
 
                                         {{-- ===================== NOTES ===================== --}}
-                                        <div class="card" id="notes">
+                                        <div class="tm-section-card is-active" id="notes">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -234,7 +616,7 @@
                                         </div>
 
                                         {{-- ===================== REFERENCES ===================== --}}
-                                        <div class="card mt-4" id="profile">
+                                        <div class="tm-section-card" id="profile">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -325,7 +707,7 @@
                                         </div>
 
                                         {{-- ===================== GENERAL INFO ===================== --}}
-                                        <div class="card mt-4" id="basic-info">
+                                        <div class="tm-section-card" id="basic-info">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -506,7 +888,7 @@
                                         </div>
 
                                         {{-- ===================== IMPORTANT DATES ===================== --}}
-                                        <div class="card mt-4" id="password">
+                                        <div class="tm-section-card" id="password">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -581,7 +963,7 @@
                                         </div>
 
                                         {{-- ===================== TRADEMARK INFO ===================== --}}
-                                        <div class="card mt-4" id="2fa">
+                                        <div class="tm-section-card" id="2fa">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -724,7 +1106,7 @@
                                         </div>
 
                                         {{-- ===================== GOODS / SERVICES ===================== --}}
-                                        <div class="card mt-4" id="accounts">
+                                        <div class="tm-section-card" id="accounts">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -776,7 +1158,7 @@
                                         </div>
 
                                         {{-- ===================== PRIORITY ===================== --}}
-                                        <div class="card mt-4" id="notifications">
+                                        <div class="tm-section-card" id="notifications">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -828,7 +1210,7 @@
                                         </div>
 
                                         {{-- ===================== CLIENT ===================== --}}
-                                        <div class="card mt-4" id="sessions">
+                                        <div class="tm-section-card" id="sessions">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -892,7 +1274,7 @@
                                         </div>
 
                                         {{-- ===================== HOLDER ===================== --}}
-                                        <div class="card mt-4 mb-5" id="holder">
+                                        <div class="tm-section-card" id="holder">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -952,68 +1334,62 @@
                                         <div class="tm-sticky-side">
                                             <div class="card tm-menu">
                                                 <ul class="nav flex-column bg-white border-radius-lg p-2">
+                                                <li class="nav-item">
+                                                    <p class="tm-tabs-label">Sections</p>
+                                                </li>
 
                                                 <li class="nav-item pt-2">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#notes">
-                                                        <i class="bi bi-journal-text me-2 text-dark opacity-6"></i>
+                                                    <button class="is-active" type="button" data-tab-target="notes">
                                                         <span class="text-sm">{{ __('messages.note_important') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#profile">
-                                                        <i class="bi bi-hash me-2 text-dark opacity-6"></i>
+                                                    <button type="button" data-tab-target="profile">
                                                         <span class="text-sm">{{ __('messages.reference_numbers') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li class="nav-item pt-2">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#basic-info">
-                                                        <i class="bi bi-info-circle me-2 text-dark opacity-6"></i>
+                                                    <button type="button" data-tab-target="basic-info">
                                                         <span class="text-sm">{{ __('messages.general_information') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li class="nav-item pt-2">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#password">
-                                                        <i class="bi bi-calendar3 me-2 text-dark opacity-6"></i>
+                                                    <button type="button" data-tab-target="password">
                                                         <span class="text-sm">{{ __('messages.important_dates') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li class="nav-item pt-2">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#2fa">
-                                                        <i class="bi bi-patch-check me-2 text-dark opacity-6"></i>
+                                                    <button type="button" data-tab-target="2fa">
                                                         <span class="text-sm">{{ __('messages.trademark_information') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li class="nav-item pt-2">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#accounts">
-                                                        <i class="bi bi-box-seam me-2 text-dark opacity-6"></i>
+                                                    <button type="button" data-tab-target="accounts">
                                                         <span class="text-sm">{{ __('messages.goods_services') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li class="nav-item pt-2">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#notifications">
-                                                        <i class="bi bi-flag me-2 text-dark opacity-6"></i>
+                                                    <button type="button" data-tab-target="notifications">
                                                         <span class="text-sm">{{ __('messages.priority_information') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li class="nav-item pt-2">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#sessions">
-                                                        <i class="bi bi-building me-2 text-dark opacity-6"></i>
+                                                    <button type="button" data-tab-target="sessions">
                                                         <span class="text-sm">{{ __('messages.client_info') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li class="nav-item pt-2">
-                                                    <a class="nav-link text-body d-flex align-items-center" href="#holder">
-                                                        <i class="bi bi-person-badge me-2 text-dark opacity-6"></i>
+                                                    <button type="button" data-tab-target="holder">
                                                         <span class="text-sm">{{ __('messages.holder_info') }}</span>
-                                                    </a>
+                                                    </button>
                                                 </li>
                                             </ul>
                                             </div>
@@ -1033,6 +1409,38 @@
 @endsection
 
 @section('js_custom')
+<script>
+(function () {
+    const tabButtons = Array.from(document.querySelectorAll('.tm-menu button[data-tab-target]'));
+    const sections = Array.from(document.querySelectorAll('.tm-section-card'));
+
+    function setActiveTab(id, updateHash = true) {
+        tabButtons.forEach(button => {
+            button.classList.toggle('is-active', button.dataset.tabTarget === id);
+        });
+
+        sections.forEach(section => {
+            section.classList.toggle('is-active', section.id === id);
+        });
+
+        if (updateHash && window.history) {
+            window.history.replaceState(null, '', '#' + id);
+        }
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            setActiveTab(this.dataset.tabTarget);
+        });
+    });
+
+    const initialTab = window.location.hash ? window.location.hash.replace('#', '') : 'notes';
+    if (document.getElementById(initialTab)) {
+        setActiveTab(initialTab, false);
+    }
+})();
+</script>
+
 <script>
     $(document).ready(function() {
         $('.js-example-basic-single').select2();

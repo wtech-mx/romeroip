@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <div class="card">
+            <div class="card tm-search-panel">
                 <form action="{{ route('advance_search') }}" method="GET" >
 
                     <div class="card-header pb-0">
@@ -11,11 +11,11 @@
 
                             <div class="ms-auto my-auto mt-lg-0 mt-4">
                                 <div class="ms-auto my-auto">
-                                    <a class="btn btn-sm mb-0 mt-sm-0 mt-1" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="border: 2px solid #F82018; color: #F82018;">
+                                    <a class="btn btn-sm mb-0 mt-sm-0 mt-1" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                                         {{ __('messages.advanced_search') }}
                                     </a>
 
-                                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" type="submit" style="background-color: #F82018; color: #ffffff;">{{ __('messages.search') }}</button>
+                                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" type="submit">{{ __('messages.search') }}</button>
                                     {{-- @if(Route::currentRouteName() != 'index.trademarks')
                                     <a class="btn btn-sm mb-0 mt-sm-0 mt-1" href="{{ route('index.trademarks') }}" style="border: 2px solid #F82018; color: #F82018;"><i class="fa fa-refresh"></i></a>
                                     @endif --}}
@@ -24,7 +24,7 @@
                         </div>
                     </div>
 
-                    <div class="card-body" style="padding-left: 1.5rem; padding-top: 1rem;">
+                    <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
                                     <label class="form-label">{{ __('messages.client_ref') }}</label>

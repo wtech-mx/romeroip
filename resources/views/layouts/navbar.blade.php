@@ -1,25 +1,20 @@
-<nav class="navbar navbar-main navbar-expand-lg  px-0 mx-4 shadow-none border-radius-xl z-index-sticky " id="navbarBlur" data-scroll="false">
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none z-index-sticky legal-navbar" id="navbarBlur" data-scroll="false">
       <div class="container-fluid py-1 px-3">
 
         <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none px-3" style="margin-right: 30px;">
             <a href="javascript:;" class="nav-link p-0">
               <div class="sidenav-toggler-inner">
-                <i class="sidenav-toggler-line bg-white"></i>
-                <i class="sidenav-toggler-line bg-white"></i>
-                <i class="sidenav-toggler-line bg-white"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
               </div>
             </a>
           </div>
 
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm">
-              <a class="text-white" href="javascript:;">
-                <i class="ni ni-box-2"></i>
-              </a>
-            </li>
-            <li class="breadcrumb-item text-sm text-white"><a class="opacity-5 text-white" href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">@yield('page_actuality')</li>
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5 legal-breadcrumb">
+            <li class="breadcrumb-item text-sm"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item text-sm active" aria-current="page">@yield('page_actuality')</li>
           </ol>
         </nav>
 
@@ -28,7 +23,7 @@
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
 
             <div class="dropdown">
-                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="border: 2px solid #fff; color: #fff;">
+                <button class="btn dropdown-toggle legal-user-menu" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     {{Auth::user()->name;}}
                 </button>
 
@@ -37,10 +32,6 @@
 
                   <li>
                     <a class="dropdown-item" href="#" style="display: flex;">
-                        <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center" style="display: inline-block!important;">
-                         <i class="fa fa-arrow-right text-dark" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
-                        </div>
-
                         <select class="form-control changeLang" style="border: solid 1px transparent;">
                             <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
                             <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>Español</option>
@@ -51,9 +42,6 @@
                   <li class="">
 
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                      <div class="icon icon-shape icon-sm text-center  me-2 d-flex align-items-center justify-content-center" style="display: inline-block!important;">
-                       <i class="fa fa-arrow-right text-dark" style="color: {{$configuracion->color_iconos_sidebar}}"></i>
-                      </div>
                       <span class="ms-1 text-dark">{{ __('messages.logout') }}</span>
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -73,11 +61,11 @@
           <ul class="navbar-nav  justify-content-end">
 
             <li class="nav-item d-xl-none px-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+              <a href="javascript:;" class="nav-link p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line bg-white"></i>
-                  <i class="sidenav-toggler-line bg-white"></i>
-                  <i class="sidenav-toggler-line bg-white"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
                 </div>
               </a>
             </li>
@@ -89,7 +77,7 @@
               </a>
             </li> --}}
 
-            <li class="nav-item dropdown px-3 d-flex align-items-center">
+            <li class="nav-item dropdown px-3 d-none align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell cursor-pointer"></i>
               </a>
