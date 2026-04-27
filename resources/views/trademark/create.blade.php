@@ -559,7 +559,6 @@
                         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <div>
                                 <h3 class="mb-1 d-flex align-items-center gap-2">
-                                    <i class="bi bi-patch-check-fill text-danger"></i>
                                     {{ __('messages.new_trademark') }}
                                 </h3>
                             </div>
@@ -589,7 +588,7 @@
                                     <div class="col-lg-9 mt-lg-0 mt-4">
 
                                         {{-- ===================== NOTES ===================== --}}
-                                        <div class="tm-section-card is-active" id="notes">
+                                        <div class="tm-section-card" id="notes">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -616,7 +615,7 @@
                                         </div>
 
                                         {{-- ===================== REFERENCES ===================== --}}
-                                        <div class="tm-section-card" id="profile">
+                                        <div class="tm-section-card is-active" id="profile">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
                                                     <span class="tm-section-icon">
@@ -847,7 +846,7 @@
                                                         </label>
                                                         <div class="input-group">
                                                             <input id="expirationDate" name="expiration_date" class="form-control"
-                                                                   type="date" readonly>
+                                                                   type="date">
                                                         </div>
                                                     </div>
 
@@ -944,7 +943,7 @@
                                                         </label>
                                                         <div class="input-group">
                                                             <input id="declarationOfUseDate" name="next_declaration" class="form-control"
-                                                                   type="date" readonly>
+                                                                   type="date">
                                                         </div>
                                                     </div>
 
@@ -955,7 +954,7 @@
                                                         </label>
                                                         <div class="input-group">
                                                             <input id="renewalDate" name="next_renewal" class="form-control"
-                                                                   type="date" readonly>
+                                                                   type="date">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1333,62 +1332,62 @@
                                     <div class="col-lg-3">
                                         <div class="tm-sticky-side">
                                             <div class="card tm-menu">
-                                                <ul class="nav flex-column bg-white border-radius-lg p-2">
+                                                <ul class="nav flex-column bg-white border-radius-lg">
                                                 <li class="nav-item">
                                                     <p class="tm-tabs-label">Sections</p>
                                                 </li>
 
-                                                <li class="nav-item pt-2">
-                                                    <button class="is-active" type="button" data-tab-target="notes">
-                                                        <span class="text-sm">{{ __('messages.note_important') }}</span>
+                                                <li class="nav-item">
+                                                    <button class="is-active" type="button" data-tab-target="profile">
+                                                        <span class="text-sm">01 {{ __('messages.reference_numbers') }}</span>
                                                     </button>
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <button type="button" data-tab-target="profile">
-                                                        <span class="text-sm">{{ __('messages.reference_numbers') }}</span>
-                                                    </button>
-                                                </li>
-
-                                                <li class="nav-item pt-2">
                                                     <button type="button" data-tab-target="basic-info">
-                                                        <span class="text-sm">{{ __('messages.general_information') }}</span>
+                                                        <span class="text-sm">02 {{ __('messages.general_information') }}</span>
                                                     </button>
                                                 </li>
 
-                                                <li class="nav-item pt-2">
+                                                <li class="nav-item">
                                                     <button type="button" data-tab-target="password">
-                                                        <span class="text-sm">{{ __('messages.important_dates') }}</span>
+                                                        <span class="text-sm">03 {{ __('messages.important_dates') }}</span>
                                                     </button>
                                                 </li>
 
-                                                <li class="nav-item pt-2">
+                                                <li class="nav-item">
                                                     <button type="button" data-tab-target="2fa">
-                                                        <span class="text-sm">{{ __('messages.trademark_information') }}</span>
+                                                        <span class="text-sm">04 {{ __('messages.trademark_information') }}</span>
                                                     </button>
                                                 </li>
 
-                                                <li class="nav-item pt-2">
+                                                <li class="nav-item">
                                                     <button type="button" data-tab-target="accounts">
-                                                        <span class="text-sm">{{ __('messages.goods_services') }}</span>
+                                                        <span class="text-sm">05 {{ __('messages.goods_services') }}</span>
                                                     </button>
                                                 </li>
 
-                                                <li class="nav-item pt-2">
-                                                    <button type="button" data-tab-target="notifications">
-                                                        <span class="text-sm">{{ __('messages.priority_information') }}</span>
-                                                    </button>
-                                                </li>
-
-                                                <li class="nav-item pt-2">
+                                                <li class="nav-item">
                                                     <button type="button" data-tab-target="sessions">
-                                                        <span class="text-sm">{{ __('messages.client_info') }}</span>
+                                                        <span class="text-sm">06 {{ __('messages.client_info') }}</span>
                                                     </button>
                                                 </li>
 
-                                                <li class="nav-item pt-2">
+                                                <li class="nav-item">
                                                     <button type="button" data-tab-target="holder">
-                                                        <span class="text-sm">{{ __('messages.holder_info') }}</span>
+                                                        <span class="text-sm">07 {{ __('messages.holder_info') }}</span>
+                                                    </button>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <button type="button" data-tab-target="notifications">
+                                                        <span class="text-sm">08 {{ __('messages.priority_information') }}</span>
+                                                    </button>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <button type="button" data-tab-target="notes">
+                                                        <span class="text-sm">09 {{ __('messages.note_important') }}</span>
                                                     </button>
                                                 </li>
                                             </ul>
@@ -1434,7 +1433,7 @@
         });
     });
 
-    const initialTab = window.location.hash ? window.location.hash.replace('#', '') : 'notes';
+    const initialTab = window.location.hash ? window.location.hash.replace('#', '') : 'profile';
     if (document.getElementById(initialTab)) {
         setActiveTab(initialTab, false);
     }
@@ -1550,55 +1549,6 @@ $(document).ready(function () {
 
     $("#design").on('change', function () {
         readURL(this);
-    });
-})();
-</script>
-
-<script>
-(function () {
-    function formatDateLocal(date) {
-        const y = date.getFullYear();
-        const m = String(date.getMonth() + 1).padStart(2, '0');
-        const d = String(date.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d}`;
-    }
-
-    function addYears(isoDate, years) {
-        if (!isoDate) return '';
-        const date = new Date(isoDate + 'T00:00:00');
-        date.setFullYear(date.getFullYear() + years);
-        return formatDateLocal(date);
-    }
-
-    const registrationDate = document.getElementById('registrationDate');
-    const expirationDate = document.getElementById('expirationDate');
-    const declarationOfUseDate = document.getElementById('declarationOfUseDate');
-    const renewalDate = document.getElementById('renewalDate');
-    const lastDeclarationDate = document.getElementById('lastDeclarationDate');
-    const lastRenewalsDate = document.getElementById('lastRenewalsDate');
-
-    registrationDate?.addEventListener('change', function () {
-        if (!this.value) return;
-
-        const expiration = addYears(this.value, 10);
-        const declaration = addYears(this.value, 3);
-
-        expirationDate.value = expiration;
-        declarationOfUseDate.value = declaration;
-        renewalDate.value = expiration;
-    });
-
-    lastDeclarationDate?.addEventListener('change', function () {
-        if (!this.value) return;
-        declarationOfUseDate.value = renewalDate.value || addYears(this.value, 3);
-    });
-
-    lastRenewalsDate?.addEventListener('change', function () {
-        if (!this.value) return;
-
-        expirationDate.value = addYears(this.value, 10);
-        declarationOfUseDate.value = addYears(this.value, 10);
-        renewalDate.value = addYears(this.value, 10);
     });
 })();
 </script>

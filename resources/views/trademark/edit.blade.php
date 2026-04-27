@@ -714,8 +714,8 @@
 
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.expiration_date') }}</label>
-                                <input id="expirationDate" name="expiration_date" class="form-control tm-input tm-readonly date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY" readonly
+                                <input id="expirationDate" name="expiration_date" class="form-control tm-input date-mask"
+                                    type="text" maxlength="10" placeholder="MM DD YYYY"
                                     value="{{ old('expiration_date', filled($trademark->expiration_date) ? \Carbon\Carbon::parse($trademark->expiration_date)->format('m d Y') : '') }}">
                             </div>
 
@@ -779,15 +779,15 @@
 
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.next') }}</label>
-                                <input id="declarationOfUseDate" name="next_declaration" class="form-control tm-input tm-readonly date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY" readonly
+                                <input id="declarationOfUseDate" name="next_declaration" class="form-control tm-input date-mask"
+                                    type="text" maxlength="10" placeholder="MM DD YYYY"
                                     value="{{ old('next_declaration', filled($trademark->next_declaration) ? \Carbon\Carbon::parse($trademark->next_declaration)->format('m d Y') : '') }}">
                             </div>
 
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.next') }}</label>
-                                <input id="renewalDate" name="next_renewal" class="form-control tm-input tm-readonly date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY" readonly
+                                <input id="renewalDate" name="next_renewal" class="form-control tm-input date-mask"
+                                    type="text" maxlength="10" placeholder="MM DD YYYY"
                                     value="{{ old('next_renewal', filled($trademark->next_renewal) ? \Carbon\Carbon::parse($trademark->next_renewal)->format('m d Y') : '') }}">
                             </div>
                         </div>
@@ -1160,76 +1160,6 @@
         });
     });
 
-    function parseCustomDate(value) {
-        if (!value) return null;
-        const parts = value.trim().split(' ');
-        if (parts.length !== 3) return null;
-
-        const month = parseInt(parts[0], 10) - 1;
-        const day = parseInt(parts[1], 10);
-        const year = parseInt(parts[2], 10);
-
-        const date = new Date(year, month, day);
-        if (
-            date.getFullYear() !== year ||
-            date.getMonth() !== month ||
-            date.getDate() !== day
-        ) return null;
-
-        return date;
-    }
-
-    function formatCustomDate(date) {
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${month} ${day} ${year}`;
-    }
-
-    const registrationDate = document.getElementById('registrationDate');
-    const expirationDate = document.getElementById('expirationDate');
-    const declarationOfUseDate = document.getElementById('declarationOfUseDate');
-    const renewalDate = document.getElementById('renewalDate');
-    const lastDeclarationDate = document.getElementById('lastDeclarationDate');
-    const lastRenewalsDate = document.getElementById('lastRenewalsDate');
-
-    registrationDate?.addEventListener('change', function() {
-        const reg = parseCustomDate(this.value);
-        if (!reg) return;
-
-        const exp = new Date(reg);
-        exp.setFullYear(exp.getFullYear() + 10);
-
-        const dec = new Date(reg);
-        dec.setFullYear(dec.getFullYear() + 3);
-
-        expirationDate.value = formatCustomDate(exp);
-        declarationOfUseDate.value = formatCustomDate(dec);
-        renewalDate.value = formatCustomDate(exp);
-    });
-
-    lastDeclarationDate?.addEventListener('change', function() {
-        if (renewalDate.value) {
-            declarationOfUseDate.value = renewalDate.value;
-        } else {
-            const date = parseCustomDate(this.value);
-            if (!date) return;
-            date.setFullYear(date.getFullYear() + 3);
-            declarationOfUseDate.value = formatCustomDate(date);
-        }
-    });
-
-    lastRenewalsDate?.addEventListener('change', function() {
-        const date = parseCustomDate(this.value);
-        if (!date) return;
-
-        const next = new Date(date);
-        next.setFullYear(next.getFullYear() + 10);
-
-        expirationDate.value = formatCustomDate(next);
-        declarationOfUseDate.value = formatCustomDate(next);
-        renewalDate.value = formatCustomDate(next);
-    });
 })();
 </script>
 
