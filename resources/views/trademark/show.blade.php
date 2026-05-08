@@ -181,6 +181,19 @@
         text-transform: uppercase;
     }
 
+    .tm-use-info{
+        margin-top: 2rem;
+    }
+
+    .tm-use-title{
+        margin: 0 0 1rem;
+        color: var(--tm-dark);
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
     .tm-doc-grid{
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -291,11 +304,12 @@
         return filled($value) ? \Carbon\Carbon::parse($value)->format('m d Y') : null;
     };
 
-    $field = function ($label, $value, $full = false) {
+    $field = function ($label, $value, $full = false, $always = false) {
         return [
             'label' => $label,
-            'value' => filled($value) ? $value : null,
+            'value' => filled($value) ? $value : ($always ? '—' : null),
             'full' => $full,
+            'always' => $always,
         ];
     };
 
@@ -303,8 +317,8 @@
         'profile' => [
             'title' => '01 ' . __('messages.reference_numbers'),
             'items' => [
-                $field(__('messages.our_ref'), $trademark->our_ref),
-                $field(__('messages.client_ref'), $trademark->client_ref),
+                $field(__('messages.our_ref'), $trademark->our_ref, false, true),
+                $field(__('messages.client_ref'), $trademark->client_ref, false, true),
                 $field(__('messages.opposition_no'), $trademark->opposition_no),
                 $field(__('messages.filing_date'), $formatDate($trademark->filing_date_opposition)),
                 $field(__('messages.litigation_no'), $trademark->litigation_no),
@@ -313,21 +327,14 @@
         ],
         'basic-info' => [
             'title' => '02 ' . __('messages.general_information'),
+            'use_info' => $formatDate($trademark->first_date),
             'items' => [
-                $field(__('messages.application_no'), $trademark->application_no),
-                $field(__('messages.origin'), $trademark->origin),
-                $field(__('messages.registration_no'), $trademark->registration_no),
-                $field(__('messages.country'), $trademark->country),
-                $field(__('messages.filing_date'), $formatDate($trademark->filing_date_general)),
-                $field(__('messages.status'), $trademark->status),
-                $field(__('messages.first_date'), $formatDate($trademark->first_date)),
-                $field(__('messages.int_registration_no'), $trademark->int_registration_no),
-                $field(__('messages.registration_date'), $formatDate($trademark->registration_date)),
-                $field(__('messages.int_registration_date'), $formatDate($trademark->int_registration_date)),
-                $field(__('messages.expiration_date'), $formatDate($trademark->expiration_date)),
-                $field(__('messages.contracting_organization'), $trademark->contracting_organization),
-                $field(__('messages.publication_date'), $formatDate($trademark->publication_date)),
-                $field(__('messages.designated_countries'), $trademark->designated_countries),
+                $field(__('messages.application_no'), $trademark->application_no, false, true),
+                $field(__('messages.registration_no'), $trademark->registration_no, false, true),
+                $field(__('messages.status'), $trademark->status, false, true),
+                $field(__('messages.filing_date'), $formatDate($trademark->filing_date_general), false, true),
+                $field(__('messages.registration_date'), $formatDate($trademark->registration_date), false, true),
+                $field(__('messages.expiration_date'), $formatDate($trademark->expiration_date), false, true),
             ],
         ],
         'password' => [
@@ -430,7 +437,7 @@
 
                 <div class="tm-auto-header" aria-label="Automatic file header">
                     @if(count($headerMainParts))
-                        <p class="tm-auto-header-line tm-auto-header-main">{{ implode(' — ', $headerMainParts) }}</p>
+                        <p class="tm-auto-header-line tm-auto-header-main">{{ implode(' Ã¢â‚¬â€ ', $headerMainParts) }}</p>
                     @endif
 
                     @if(filled($trademark->int_registration_no))
@@ -443,7 +450,7 @@
                                 <span class="tm-auto-header-oref">O/Ref. {{ $trademark->our_ref }}</span>
                             @endif
                             @if(filled($trademark->our_ref) && filled($trademark->client_ref))
-                                <span> — </span>
+                                <span> Ã¢â‚¬â€ </span>
                             @endif
                             @if(filled($trademark->client_ref))
                                 <span>C/Ref. {{ $trademark->client_ref }}</span>
@@ -488,6 +495,18 @@
                                     </div>
                                 @endforeach
                             </div>
+
+                            @if($section['id'] === 'basic-info' && filled($section['use_info'] ?? null))
+                                <div class="tm-use-info">
+                                    <h3 class="tm-use-title">Use Information</h3>
+                                    <div class="tm-doc-grid">
+                                        <div class="tm-doc-field">
+                                            <span class="tm-doc-label">{{ __('messages.first_date') }}</span>
+                                            <p class="tm-doc-value">{{ $section['use_info'] }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         @endif
                     </section>
                 @endforeach

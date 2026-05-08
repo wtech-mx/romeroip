@@ -564,14 +564,15 @@
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.our_ref') }}</label>
                                 <input id="our_ref" name="our_ref" class="form-control tm-input"
-                                    type="number" min="1" step="1"
-                                    value="{{ old('our_ref', $trademark->our_ref) }}" readonly>
+                                    type="text" inputmode="numeric" maxlength="5"
+                                    pattern="[1-9][0-9]{4}"
+                                    value="{{ old('our_ref', $trademark->our_ref) }}">
                             </div>
 
                             <div class="col-md-6 autocomplete-wrap">
                                 <label class="tm-label">{{ __('messages.client_ref') }}</label>
                                 <input id="client_ref" name="client_ref" class="form-control tm-input"
-                                    type="text"
+                                    type="text" maxlength="20"
                                     autocomplete="off"
                                     value="{{ old('client_ref', $trademark->client_ref) }}">
                                 <div id="client_ref_suggestions" class="autocomplete-box d-none"></div>
@@ -615,55 +616,27 @@
                             <h5 class="tm-section-title">
                                 {{ __('messages.general_information') }}
                             </h5>
-                            <p class="tm-section-sub">Main filing data, country, status and key dates.</p>
+                            <p class="tm-section-sub">Structural filing data for the trademark record.</p>
                         </div>
                     </div>
 
                     <div class="tm-section-body">
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.application_no') }}</label>
                                 <input id="application_no" name="application_no" class="form-control tm-input"
                                     type="text"
                                     value="{{ old('application_no', $trademark->application_no) }}">
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.origin') }}</label>
-                                <select class="form-control tm-select" name="origin" id="origin">
-                                    <option value="">{{ __('messages.select') }}</option>
-                                    <option value="{{ __('messages.national') }}" {{ old('origin', $trademark->origin) == __('messages.national') ? 'selected' : '' }}>
-                                        {{ __('messages.national') }}
-                                    </option>
-                                    <option value="{{ __('messages.international') }}" {{ old('origin', $trademark->origin) == __('messages.international') ? 'selected' : '' }}>
-                                        {{ __('messages.international') }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.registration_no') }}</label>
                                 <input id="registration_no" name="registration_no" class="form-control tm-input"
                                     type="text"
                                     value="{{ old('registration_no', $trademark->registration_no) }}">
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.country') }}</label>
-                                <select class="form-control tm-select" name="country" id="country">
-                                    <option value="">{{ __('messages.select') }}</option>
-                                    @include('client.paises')
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.filing_date') }}</label>
-                                <input id="filing_date_general" name="filing_date_general" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('filing_date_general', filled($trademark->filing_date_general) ? \Carbon\Carbon::parse($trademark->filing_date_general)->format('m d Y') : '') }}">
-                            </div>
-
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.status') }}</label>
                                 <select class="form-control tm-select" id="status" name="status">
                                     <option value="{{ __('messages.registered') }}" {{ old('status', $trademark->status) == __('messages.registered') ? 'selected' : '' }}>
@@ -684,60 +657,36 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.first_date') }}</label>
-                                <input id="first_date" name="first_date" class="form-control tm-input date-mask"
+                            <div class="col-md-4">
+                                <label class="tm-label">{{ __('messages.filing_date') }}</label>
+                                <input id="filing_date_general" name="filing_date_general" class="form-control tm-input date-mask"
                                     type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('first_date', filled($trademark->first_date) ? \Carbon\Carbon::parse($trademark->first_date)->format('m d Y') : '') }}">
+                                    value="{{ old('filing_date_general', filled($trademark->filing_date_general) ? \Carbon\Carbon::parse($trademark->filing_date_general)->format('m d Y') : '') }}">
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.int_registration_no') }}</label>
-                                <input id="int_registration_no" name="int_registration_no" class="form-control tm-input"
-                                    type="text"
-                                    value="{{ old('int_registration_no', $trademark->int_registration_no) }}">
-                            </div>
-
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.registration_date') }}</label>
                                 <input id="registrationDate" name="registration_date" class="form-control tm-input date-mask"
                                     type="text" maxlength="10" placeholder="MM DD YYYY"
                                     value="{{ old('registration_date', filled($trademark->registration_date) ? \Carbon\Carbon::parse($trademark->registration_date)->format('m d Y') : '') }}">
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.int_registration_date') }}</label>
-                                <input id="int_registration_date" name="int_registration_date" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('int_registration_date', filled($trademark->int_registration_date) ? \Carbon\Carbon::parse($trademark->int_registration_date)->format('m d Y') : '') }}">
-                            </div>
-
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.expiration_date') }}</label>
                                 <input id="expirationDate" name="expiration_date" class="form-control tm-input date-mask"
                                     type="text" maxlength="10" placeholder="MM DD YYYY"
                                     value="{{ old('expiration_date', filled($trademark->expiration_date) ? \Carbon\Carbon::parse($trademark->expiration_date)->format('m d Y') : '') }}">
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.contracting_organization') }}</label>
-                                <input id="contracting_organization" name="contracting_organization" class="form-control tm-input"
-                                    type="text"
-                                    value="{{ old('contracting_organization', $trademark->contracting_organization) }}">
+                            <div class="col-12 mt-3">
+                                <h6 class="tm-section-title">Use Information</h6>
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.publication_date') }}</label>
-                                <input id="publication_date" name="publication_date" class="form-control tm-input date-mask"
+                            <div class="col-md-4">
+                                <label class="tm-label">{{ __('messages.first_date') }}</label>
+                                <input id="first_date" name="first_date" class="form-control tm-input date-mask"
                                     type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('publication_date', filled($trademark->publication_date) ? \Carbon\Carbon::parse($trademark->publication_date)->format('m d Y') : '') }}">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.designated_countries') }}</label>
-                                <input id="designated_countries" name="designated_countries" class="form-control tm-input"
-                                    type="text"
-                                    value="{{ old('designated_countries', $trademark->designated_countries) }}">
+                                    value="{{ old('first_date', filled($trademark->first_date) ? \Carbon\Carbon::parse($trademark->first_date)->format('m d Y') : '') }}">
                             </div>
                         </div>
                     </div>
@@ -1430,6 +1379,34 @@
         return String(el.value || '').trim() === '';
     }
 
+    function validateReferenceFields(errors) {
+        const ourRef = document.getElementById('our_ref');
+        const clientRef = document.getElementById('client_ref');
+        const ourRefValue = String(ourRef?.value || '').trim();
+        const clientRefValue = String(clientRef?.value || '').trim();
+
+        clearInvalid(ourRef);
+        clearInvalid(clientRef);
+
+        if (!/^[1-9][0-9]{4}$/.test(ourRefValue)) {
+            markInvalid(ourRef, 'O/Ref. must have exactly 5 digits and cannot start with 0.');
+            errors.push('O/Ref.');
+        }
+
+        if (clientRefValue && !/^[A-Za-z0-9 ]{1,20}$/.test(clientRefValue)) {
+            markInvalid(clientRef, 'C/Ref. only allows letters, numbers and spaces, up to 20 characters.');
+            errors.push('C/Ref.');
+        }
+    }
+
+    document.getElementById('our_ref')?.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').slice(0, 5);
+    });
+
+    document.getElementById('client_ref')?.addEventListener('input', function () {
+        this.value = this.value.replace(/[^A-Za-z0-9 ]/g, '').slice(0, 20);
+    });
+
     form.addEventListener('submit', function (e) {
         const errors = [];
 
@@ -1442,6 +1419,8 @@
                 errors.push(field.label);
             }
         });
+
+        validateReferenceFields(errors);
 
         if (errors.length) {
             e.preventDefault();

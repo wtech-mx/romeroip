@@ -628,7 +628,7 @@
 
                                             <div class="card-body pt-0">
                                                 <div class="row">
-                                                    <div class="col-6 p-2">
+                                                    <div class="col-md-4 p-2">
                                                         <label class="form-label">
                                                             <i class="bi bi-123 me-1 text-secondary"></i>
                                                             {{ __('messages.our_ref') }}
@@ -636,14 +636,15 @@
                                                         <div class="input-group">
                                                             @php
                                                                 if($trademark == null){
-                                                                    $suma= '1001';
+                                                                    $suma= '10000';
                                                                 }else{
-                                                                    $suma= $trademark->our_ref + 1;
+                                                                    $suma= max(10000, ((int) $trademark->our_ref) + 1);
                                                                 }
                                                             @endphp
 
                                                             <input id="our_ref" name="our_ref" class="form-control"
-                                                                   type="number" min="1" step="1" value="{{ $suma }}" required>
+                                                                   type="text" inputmode="numeric" maxlength="5"
+                                                                   pattern="[1-9][0-9]{4}" value="{{ $suma }}" required>
                                                         </div>
                                                     </div>
 
@@ -654,7 +655,7 @@
                                                         </label>
                                                         <div class="input-group">
                                                             <input id="client_ref" name="client_ref" class="form-control"
-                                                                   type="text" placeholder="{{ __('messages.client_ref') }}">
+                                                                   type="text" maxlength="20" placeholder="{{ __('messages.client_ref') }}">
                                                         </div>
                                                     </div>
 
@@ -709,83 +710,31 @@
                                         <div class="tm-section-card" id="basic-info">
                                             <div class="tm-card-head">
                                                 <h5 class="tm-section-title">
-                                                    <span class="tm-section-icon">
-                                                        <i class="bi bi-info-circle"></i>
-                                                    </span>
                                                     {{ __('messages.general_information') }}
                                                 </h5>
-                                                <div class="tm-anchor-sub">Datos base del trámite, país, estatus y fechas principales.</div>
+                                                <div class="tm-anchor-sub">Structural filing data for the trademark record.</div>
                                             </div>
 
                                             <div class="card-body pt-0">
                                                 <div class="row">
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-file-earmark-text me-1 text-secondary"></i>
-                                                            {{ __('messages.application_no') }}
-                                                        </label>
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">{{ __('messages.application_no') }}</label>
                                                         <div class="input-group">
                                                             <input id="application_no" name="application_no" class="form-control"
                                                                    type="text" placeholder="{{ __('messages.application_no') }}">
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-globe-americas me-1 text-secondary"></i>
-                                                            {{ __('messages.origin') }}
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <select class="form-control" name="origin" id="origin">
-                                                                <option value="" selected>{{ __('messages.select') }}</option>
-                                                                <option value="{{ __('messages.national') }}">{{ __('messages.national') }}</option>
-                                                                <option value="{{ __('messages.international') }}">{{ __('messages.international') }}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-award me-1 text-secondary"></i>
-                                                            {{ __('messages.registration_no') }}
-                                                        </label>
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">{{ __('messages.registration_no') }}</label>
                                                         <div class="input-group">
                                                             <input id="registration_no" name="registration_no" class="form-control"
                                                                    type="text" placeholder="{{ __('messages.registration_no') }}">
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-geo-alt me-1 text-secondary"></i>
-                                                            {{ __('messages.country') }}
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <select class="form-control js-example-basic-single" name="country" id="country">
-                                                                <option value="" selected>{{ __('messages.select') }}</option>
-                                                                @include('client.paises')
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-calendar-plus me-1 text-secondary"></i>
-                                                            {{ __('messages.filing_date') }}
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input id="filing_date_general" name="filing_date_general" class="form-control"
-                                                                   type="date">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-activity me-1 text-secondary"></i>
-                                                            {{ __('messages.status') }}
-                                                        </label>
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">{{ __('messages.status') }}</label>
                                                         <select class="form-control" id="status" name="status">
                                                             <option selected value="{{ __('messages.registered') }}">{{ __('messages.registered') }}</option>
                                                             <option value="{{ __('messages.pending') }}">{{ __('messages.pending') }}</option>
@@ -794,92 +743,44 @@
                                                             <option value="{{ __('messages.inactive') }}">{{ __('messages.inactive') }}</option>
                                                         </select>
                                                     </div>
+                                                </div>
 
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-calendar-heart me-1 text-secondary"></i>
-                                                            {{ __('messages.first_date') }}
-                                                        </label>
+                                                <div class="row">
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">{{ __('messages.filing_date') }}</label>
                                                         <div class="input-group">
-                                                            <input id="first_date" name="first_date" class="form-control"
+                                                            <input id="filing_date_general" name="filing_date_general" class="form-control"
                                                                    type="date">
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-diagram-3 me-1 text-secondary"></i>
-                                                            {{ __('messages.int_registration_no') }}
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input id="int_registration_no" name="int_registration_no" class="form-control"
-                                                                   type="text" placeholder="{{ __('messages.int_registration_no') }}">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-calendar-check me-1 text-secondary"></i>
-                                                            {{ __('messages.registration_date') }}
-                                                        </label>
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">{{ __('messages.registration_date') }}</label>
                                                         <div class="input-group">
                                                             <input id="registrationDate" name="registration_date" class="form-control"
                                                                    type="date">
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-calendar2-check me-1 text-secondary"></i>
-                                                            {{ __('messages.int_registration_date') }}
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input id="int_registration_date" name="int_registration_date" class="form-control"
-                                                                   type="date">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-calendar-x me-1 text-secondary"></i>
-                                                            {{ __('messages.expiration_date') }}
-                                                        </label>
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">{{ __('messages.expiration_date') }}</label>
                                                         <div class="input-group">
                                                             <input id="expirationDate" name="expiration_date" class="form-control"
                                                                    type="date">
                                                         </div>
                                                     </div>
+                                                </div>
 
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-buildings me-1 text-secondary"></i>
-                                                            {{ __('messages.contracting_organization') }}
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input id="contracting_organization" name="contracting_organization" class="form-control"
-                                                                   type="text" placeholder="{{ __('messages.contracting_organization') }}">
-                                                        </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-12">
+                                                        <h6 class="tm-section-title">Use Information</h6>
                                                     </div>
 
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-megaphone me-1 text-secondary"></i>
-                                                            {{ __('messages.publication_date') }}
-                                                        </label>
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">{{ __('messages.first_date') }}</label>
                                                         <div class="input-group">
-                                                            <input id="publication_date" name="publication_date" class="form-control"
+                                                            <input id="first_date" name="first_date" class="form-control"
                                                                    type="date">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-6 p-2">
-                                                        <label class="form-label">
-                                                            <i class="bi bi-globe2 me-1 text-secondary"></i>
-                                                            {{ __('messages.designated_countries') }}
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input id="designated_countries" name="designated_countries" class="form-control"
-                                                                   type="text" placeholder="{{ __('messages.designated_countries') }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1559,7 +1460,6 @@ $(document).ready(function () {
     if (!form) return;
 
     const requiredFields = [
-        { id: 'our_ref', label: 'Our Ref.' },
         { id: 'trademark', label: 'Trademark' },
         { id: 'status', label: 'Status' },
     ];
@@ -1596,6 +1496,34 @@ $(document).ready(function () {
         return String(el.value || '').trim() === '';
     }
 
+    function validateReferenceFields(errors) {
+        const ourRef = document.getElementById('our_ref');
+        const clientRef = document.getElementById('client_ref');
+        const ourRefValue = String(ourRef?.value || '').trim();
+        const clientRefValue = String(clientRef?.value || '').trim();
+
+        clearInvalid(ourRef);
+        clearInvalid(clientRef);
+
+        if (!/^[1-9][0-9]{4}$/.test(ourRefValue)) {
+            markInvalid(ourRef, 'O/Ref. must have exactly 5 digits and cannot start with 0.');
+            errors.push('O/Ref.');
+        }
+
+        if (clientRefValue && !/^[A-Za-z0-9 ]{1,20}$/.test(clientRefValue)) {
+            markInvalid(clientRef, 'C/Ref. only allows letters, numbers and spaces, up to 20 characters.');
+            errors.push('C/Ref.');
+        }
+    }
+
+    document.getElementById('our_ref')?.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').slice(0, 5);
+    });
+
+    document.getElementById('client_ref')?.addEventListener('input', function () {
+        this.value = this.value.replace(/[^A-Za-z0-9 ]/g, '').slice(0, 20);
+    });
+
     form.addEventListener('submit', function (e) {
         let errors = [];
 
@@ -1608,6 +1536,8 @@ $(document).ready(function () {
                 errors.push(field.label);
             }
         });
+
+        validateReferenceFields(errors);
 
         const regDate = document.getElementById('registrationDate');
         const expDate = document.getElementById('expirationDate');

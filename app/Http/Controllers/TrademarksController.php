@@ -216,13 +216,13 @@ class TrademarksController extends Controller
 
     private function trademarkRules(?int $id = null, bool $requireCoreFields = true): array
     {
-        $ourRefRules = [$requireCoreFields ? 'required' : 'nullable', 'integer', 'min:1', Rule::unique('trademark', 'our_ref')->ignore($id)];
+        $ourRefRules = ['required', 'regex:/^[1-9][0-9]{4}$/', Rule::unique('trademark', 'our_ref')->ignore($id)];
         $dateRule = $requireCoreFields ? 'nullable|date' : 'nullable';
 
         return [
             'notes'                   => 'nullable|string',
             'our_ref'                 => $ourRefRules,
-            'client_ref'              => 'nullable|string|max:100',
+            'client_ref'              => ['nullable', 'string', 'max:20', 'regex:/^[A-Za-z0-9 ]+$/'],
             'opposition_no'           => 'nullable|string|max:100',
             'filing_date_opposition'  => $dateRule,
             'litigation_no'           => 'nullable|string|max:100',
@@ -336,6 +336,10 @@ class TrademarksController extends Controller
         ];
 
         foreach ($fields as $field) {
+            if (!array_key_exists($field, $data)) {
+                continue;
+            }
+
             $value = $data[$field] ?? null;
 
             if (in_array($field, $dateFields, true)) {
