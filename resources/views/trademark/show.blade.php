@@ -110,6 +110,8 @@
 
     .tm-show-body{
         padding: 0 2.15rem 1rem;
+        background: transparent;
+        border: 0;
     }
 
     .tm-file-content{
@@ -159,30 +161,72 @@
     }
 
     .tm-section{
-        margin-bottom: 3rem;
-        padding-top: 1.45rem;
-        border-top: 1px solid var(--tm-border);
+        margin-bottom: 1.25rem;
+        padding: 2.35rem 2.45rem 2.15rem;
+        background: #fff;
+        border: 1px solid rgba(216,210,198,.72);
+        border-radius: 8px;
+        box-shadow: 0 18px 45px rgba(24,31,43,.07);
     }
 
-    .tm-section:not(.is-active){
+    .tm-section,
+    .tm-section:not(.is-active),
+    .tm-section.is-active{
+        display: grid;
+        grid-template-columns: 108px minmax(0, 1fr);
+        column-gap: 2rem;
+    }
+
+    .tm-section::before,
+    .tm-section.is-active::before{
+        content: attr(data-section-number);
+        grid-row: 1 / span 2;
+        color: #f04b19;
+        font-size: 2.55rem;
+        line-height: 1;
+        font-weight: 500;
+        letter-spacing: 0;
+    }
+
+    .tm-section.is-collapsed .tm-doc-grid,
+    .tm-section.is-collapsed .tm-use-info,
+    .tm-section.is-collapsed .tm-design-image{
         display: none;
     }
 
-    .tm-section.is-active{
-        display: block;
+    .tm-file-tabs button{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .85rem;
+    }
+
+    .tm-collapse-symbol{
+        flex: 0 0 auto;
+        color: #06264a;
+        font-size: 1.05rem;
+        font-weight: 800;
+        line-height: 1;
     }
 
     .tm-section-title{
-        margin: 0 0 1.35rem;
-        color: var(--tm-dark);
-        font-size: 1rem;
+        margin: 0 0 1.75rem;
+        padding: .1rem 0 0 2rem;
+        border-left: 2px solid #1f6eb7;
+        color: #06264a;
+        font-size: 1.45rem;
         font-weight: 700;
-        letter-spacing: .04em;
+        letter-spacing: .02em;
         text-transform: uppercase;
     }
 
     .tm-use-info{
+        grid-column: 2;
         margin-top: 2rem;
+        padding: 1.35rem 1.5rem;
+        background: #f7f8fb;
+        border: 1px solid rgba(216,210,198,.58);
+        border-radius: 6px;
     }
 
     .tm-use-title{
@@ -195,9 +239,10 @@
     }
 
     .tm-doc-grid{
+        grid-column: 2;
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.35rem 2.5rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.35rem 0;
     }
 
     .tm-doc-field.full{
@@ -206,24 +251,36 @@
 
     .tm-doc-label{
         display: block;
-        margin-bottom: .25rem;
+        margin-bottom: .5rem;
         color: var(--tm-muted);
-        font-size: .7rem;
+        font-size: .92rem;
         font-weight: 700;
-        letter-spacing: .08em;
-        text-transform: uppercase;
+        letter-spacing: 0;
+        text-transform: none;
     }
 
     .tm-doc-value{
         margin: 0;
-        color: var(--tm-dark);
-        font-size: .98rem;
+        color: #06264a;
+        font-size: 1.15rem;
         line-height: 1.6;
         font-weight: 600;
         white-space: pre-line;
     }
 
+    .tm-doc-field{
+        min-height: 80px;
+        padding: .15rem 1.4rem .8rem;
+        border-left: 1px solid rgba(216,210,198,.6);
+    }
+
+    .tm-doc-field:nth-child(3n + 1){
+        border-left: 0;
+        padding-left: 0;
+    }
+
     .tm-design-image{
+        grid-column: 2;
         width: 100%;
         max-width: 360px;
         max-height: 340px;
@@ -246,6 +303,30 @@
 
         .tm-doc-grid{
             grid-template-columns: 1fr;
+        }
+
+        .tm-section,
+        .tm-section:not(.is-active),
+        .tm-section.is-active{
+            display: block;
+            padding: 1.45rem 1.25rem 1.35rem;
+        }
+
+        .tm-section::before,
+        .tm-section.is-active::before{
+            display: block;
+            margin-bottom: .75rem;
+        }
+
+        .tm-section-title{
+            padding-left: 1rem;
+        }
+
+        .tm-doc-field,
+        .tm-doc-field:nth-child(3n + 1){
+            border-left: 0;
+            padding-left: 0;
+            padding-right: 0;
         }
 
         .tm-file-content{
@@ -437,7 +518,7 @@
 
                 <div class="tm-auto-header" aria-label="Automatic file header">
                     @if(count($headerMainParts))
-                        <p class="tm-auto-header-line tm-auto-header-main">{{ implode(' Ã¢â‚¬â€ ', $headerMainParts) }}</p>
+                        <p class="tm-auto-header-line tm-auto-header-main">{{ implode(' — ', $headerMainParts) }}</p>
                     @endif
 
                     @if(filled($trademark->int_registration_no))
@@ -450,7 +531,7 @@
                                 <span class="tm-auto-header-oref">O/Ref. {{ $trademark->our_ref }}</span>
                             @endif
                             @if(filled($trademark->our_ref) && filled($trademark->client_ref))
-                                <span> Ã¢â‚¬â€ </span>
+                                <span> — </span>
                             @endif
                             @if(filled($trademark->client_ref))
                                 <span>C/Ref. {{ $trademark->client_ref }}</span>
@@ -531,30 +612,53 @@
     const tabButtons = Array.from(document.querySelectorAll('.tm-file-tabs button[data-tab-target]'));
     const sections = Array.from(document.querySelectorAll('.tm-section'));
 
-    function setActiveTab(id, updateHash = true) {
-        tabButtons.forEach(button => {
-            button.classList.toggle('is-active', button.dataset.tabTarget === id);
-        });
-
-        sections.forEach(section => {
-            section.classList.toggle('is-active', section.id === id);
-        });
-
-        if (updateHash && window.history) {
-            window.history.replaceState(null, '', '#' + id);
+    tabButtons.forEach((button, index) => {
+        const section = document.getElementById(button.dataset.tabTarget);
+        if (section) {
+            section.dataset.sectionNumber = String(index + 1).padStart(2, '0');
+            const title = section.querySelector('.tm-section-title');
+            if (title) {
+                title.textContent = title.textContent.replace(/^\s*\d{2}\s+/, '');
+            }
         }
+    });
+
+    function syncCollapseButton(button) {
+        const section = document.getElementById(button.dataset.tabTarget);
+        if (!section) return;
+
+        let symbol = button.querySelector('.tm-collapse-symbol');
+        if (!symbol) {
+            symbol = document.createElement('span');
+            symbol.className = 'tm-collapse-symbol';
+            button.appendChild(symbol);
+        }
+
+        const isCollapsed = section.classList.contains('is-collapsed');
+        symbol.textContent = isCollapsed ? '+' : '-';
+        button.classList.toggle('is-collapsed', isCollapsed);
+        button.setAttribute('aria-expanded', String(!isCollapsed));
     }
 
     tabButtons.forEach(button => {
+        button.classList.remove('is-active');
+        syncCollapseButton(button);
+
         button.addEventListener('click', function () {
-            setActiveTab(this.dataset.tabTarget);
+            const section = document.getElementById(this.dataset.tabTarget);
+            if (!section) return;
+
+            section.classList.toggle('is-collapsed');
+            syncCollapseButton(this);
+
+            if (window.history) {
+                window.history.replaceState(null, '', '#' + section.id);
+            }
         });
     });
 
-    const initialTab = window.location.hash ? window.location.hash.replace('#', '') : @json($firstSectionId);
-    if (initialTab && document.getElementById(initialTab)) {
-        setActiveTab(initialTab, false);
-    }
+    const initialSection = window.location.hash ? document.getElementById(window.location.hash.replace('#', '')) : null;
+    initialSection?.scrollIntoView({ block: 'start' });
 })();
 </script>
 @endsection

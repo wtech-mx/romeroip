@@ -199,11 +199,12 @@
 
     /* ===== DOCUMENT SECTIONS ===== */
     .tm-section-card{
-        background: transparent;
-        border: 0;
-        border-top: 1px solid var(--tm-border);
-        margin-bottom: 3.15rem;
-        padding-top: 1.45rem;
+        background: #fff;
+        border: 1px solid rgba(216,210,198,.72);
+        border-radius: 8px;
+        box-shadow: 0 18px 45px rgba(24,31,43,.07);
+        margin-bottom: 1.25rem;
+        padding: 2.35rem 2.45rem 2.15rem;
         scroll-margin-top: calc(var(--tm-top-offset) + 100px);
     }
 
@@ -212,30 +213,55 @@
     }
 
     .tm-section-card.is-active{
-        display: block;
+        display: grid;
+        grid-template-columns: 108px minmax(0, 1fr);
+        column-gap: 2rem;
+    }
+
+    .tm-section-card.is-active::before{
+        content: attr(data-section-number);
+        grid-row: 1 / span 2;
+        color: #f04b19;
+        font-size: 2.55rem;
+        line-height: 1;
+        font-weight: 500;
+        letter-spacing: 0;
     }
 
     .tm-section-head{
-        padding: 0 0 1.15rem;
+        position: relative;
+        padding: .1rem 0 1.75rem 2rem;
+        border-left: 2px solid #1f6eb7;
     }
 
     .tm-section-title{
         margin: 0;
-        font-size: 1rem;
+        font-size: 1.45rem;
         font-weight: 700;
-        color: var(--tm-dark);
-        letter-spacing: .04em;
+        color: #06264a;
+        letter-spacing: .02em;
         text-transform: uppercase;
     }
 
     .tm-section-sub{
-        margin: .35rem 0 0;
-        font-size: .89rem;
+        margin: .85rem 0 0;
+        font-size: .94rem;
         color: var(--tm-muted);
+        font-family: Georgia, "Times New Roman", serif;
+        font-style: italic;
     }
 
     .tm-section-body{
+        grid-column: 2;
         padding: 0;
+    }
+
+    .tm-section-body .tm-section-title{
+        margin: 0 0 .35rem;
+        color: #06264a;
+        font-size: .78rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
     }
 
     /* ===== DOCUMENT FIELDS ===== */
@@ -244,9 +270,9 @@
         margin-bottom: .28rem;
         font-weight: 700;
         color: var(--tm-muted);
-        font-size: .7rem;
-        letter-spacing: .08em;
-        text-transform: uppercase;
+        font-size: .92rem;
+        letter-spacing: 0;
+        text-transform: none;
     }
 
     .tm-input,
@@ -257,11 +283,22 @@
         border: 0;
         border-bottom: 1px solid var(--tm-border-soft);
         background: transparent;
-        color: var(--tm-dark);
+        color: #06264a;
         font-weight: 600;
+        font-size: 1.05rem;
         padding: .72rem .2rem .7rem 0;
         box-shadow: none !important;
         cursor: text;
+    }
+
+    .tm-section-body .row > [class*="col-"]{
+        border-left: 1px solid rgba(216,210,198,.6);
+        padding-left: 1.35rem;
+    }
+
+    .tm-section-body .row > [class*="col-"]:first-child{
+        border-left: 0;
+        padding-left: calc(var(--bs-gutter-x) * .5);
     }
 
     select.tm-select{
@@ -370,6 +407,54 @@
         display: none !important;
     }
 
+    /* ===== OPEN FILE / COLLAPSE MODE ===== */
+    .tm-layout{
+        background: transparent;
+        border: 0;
+        padding-top: 0;
+    }
+
+    .tm-section-card,
+    .tm-section-card:not(.is-active),
+    .tm-section-card.is-active{
+        display: grid;
+        grid-template-columns: 108px minmax(0, 1fr);
+        column-gap: 2rem;
+    }
+
+    .tm-section-card::before{
+        content: attr(data-section-number);
+        grid-row: 1 / span 2;
+        color: #f04b19;
+        font-size: 2.55rem;
+        line-height: 1;
+        font-weight: 500;
+        letter-spacing: 0;
+    }
+
+    .tm-section-card.is-collapsed .tm-section-body{
+        display: none;
+    }
+
+    .tm-section-card.is-collapsed .tm-section-head{
+        padding-bottom: 0;
+    }
+
+    .tm-file-tabs button{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .85rem;
+    }
+
+    .tm-collapse-symbol{
+        flex: 0 0 auto;
+        color: #06264a;
+        font-size: 1.05rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+
     @media (max-width: 991.98px){
         :root{
             --tm-top-offset: 76px;
@@ -422,6 +507,28 @@
         .tm-file-tabs button.is-active{
             background: #FBFAF6;
             color: var(--tm-dark);
+        }
+
+        .tm-section-card,
+        .tm-section-card:not(.is-active),
+        .tm-section-card.is-active{
+            display: block;
+            padding: 1.45rem 1.25rem 1.35rem;
+        }
+
+        .tm-section-card::before,
+        .tm-section-card.is-active::before{
+            display: block;
+            margin-bottom: .75rem;
+        }
+
+        .tm-section-head{
+            padding-left: 1rem;
+        }
+
+        .tm-section-body .row > [class*="col-"]{
+            border-left: 0;
+            padding-left: calc(var(--bs-gutter-x) * .5);
         }
 
         .tm-toolbar{
@@ -527,28 +634,7 @@
             <div class="col-12">
                 <div class="tm-file-content">
                     <div class="tm-file-main">
-                        {{-- Notes --}}
-                <div class="tm-section-card" id="notes">
-                    <div class="tm-section-head">
-                        <div>
-                            <h5 class="tm-section-title">
-                                {{ __('messages.note_important') }}
-                            </h5>
-                            <p class="tm-section-sub">Internal notes or relevant file context.</p>
-                        </div>
-                    </div>
-
-                    <div class="tm-section-body">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label class="tm-label">{{ __('messages.note') }}</label>
-                                <textarea class="form-control tm-input" id="notes_text" name="notes" rows="3">{{ old('notes', $trademark->notes) }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Reference Numbers --}}
+                        {{-- Reference Numbers --}}
                 <div class="tm-section-card  is-active" id="profile">
                     <div class="tm-section-head">
                         <div>
@@ -870,44 +956,6 @@
                     </div>
                 </div>
 
-                {{-- Priority Information --}}
-                <div class="tm-section-card" id="notifications">
-                    <div class="tm-section-head">
-                        <div>
-                            <h5 class="tm-section-title">
-                                {{ __('messages.priority_information') }}
-                            </h5>
-                            <p class="tm-section-sub">Priority number, office and priority date.</p>
-                        </div>
-                    </div>
-
-                    <div class="tm-section-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.priority_no') }}</label>
-                                <input id="priority_no" name="priority_no" class="form-control tm-input"
-                                    type="text"
-                                    value="{{ old('priority_no', $trademark->priority_no) }}">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.country_office') }}</label>
-                                <select class="form-control tm-select" name="country_office" id="country_office">
-                                    <option value="">{{ __('messages.select') }}</option>
-                                    @include('client.paises')
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="tm-label">{{ __('messages.priority_date') }}</label>
-                                <input id="priority_date" name="priority_date" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('priority_date', filled($trademark->priority_date) ? \Carbon\Carbon::parse($trademark->priority_date)->format('m d Y') : '') }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {{-- Client Information --}}
                 <div class="tm-section-card" id="sessions">
                     <div class="tm-section-head">
@@ -1020,6 +1068,66 @@
                         </div>
                     </div>
                         </div>
+
+                {{-- Priority Information --}}
+                <div class="tm-section-card" id="notifications">
+                    <div class="tm-section-head">
+                        <div>
+                            <h5 class="tm-section-title">
+                                {{ __('messages.priority_information') }}
+                            </h5>
+                            <p class="tm-section-sub">Priority number, office and priority date.</p>
+                        </div>
+                    </div>
+
+                    <div class="tm-section-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.priority_no') }}</label>
+                                <input id="priority_no" name="priority_no" class="form-control tm-input"
+                                    type="text"
+                                    value="{{ old('priority_no', $trademark->priority_no) }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.country_office') }}</label>
+                                <select class="form-control tm-select" name="country_office" id="country_office">
+                                    <option value="">{{ __('messages.select') }}</option>
+                                    @include('client.paises')
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.priority_date') }}</label>
+                                <input id="priority_date" name="priority_date" class="form-control tm-input date-mask"
+                                    type="text" maxlength="10" placeholder="MM DD YYYY"
+                                    value="{{ old('priority_date', filled($trademark->priority_date) ? \Carbon\Carbon::parse($trademark->priority_date)->format('m d Y') : '') }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Notes --}}
+                <div class="tm-section-card" id="notes">
+                    <div class="tm-section-head">
+                        <div>
+                            <h5 class="tm-section-title">
+                                {{ __('messages.note_important') }}
+                            </h5>
+                            <p class="tm-section-sub">Internal notes or relevant file context.</p>
+                        </div>
+                    </div>
+
+                    <div class="tm-section-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="tm-label">{{ __('messages.note') }}</label>
+                                <textarea class="form-control tm-input" id="notes_text" name="notes" rows="3">{{ old('notes', $trademark->notes) }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                     </div>
 
                     <nav class="tm-file-tabs" aria-label="Trademark file navigation">
@@ -1068,30 +1176,49 @@
     const tabButtons = Array.from(document.querySelectorAll('.tm-file-tabs button[data-tab-target]'));
     const sections = Array.from(document.querySelectorAll('.tm-section-card'));
 
-    function setActiveTab(id, updateHash = true) {
-        tabButtons.forEach(button => {
-            button.classList.toggle('is-active', button.dataset.tabTarget === id);
-        });
-
-        sections.forEach(section => {
-            section.classList.toggle('is-active', section.id === id);
-        });
-
-        if (updateHash && window.history) {
-            window.history.replaceState(null, '', '#' + id);
+    tabButtons.forEach((button, index) => {
+        const section = document.getElementById(button.dataset.tabTarget);
+        if (section) {
+            section.dataset.sectionNumber = String(index + 1).padStart(2, '0');
         }
+    });
+
+    function syncCollapseButton(button) {
+        const section = document.getElementById(button.dataset.tabTarget);
+        if (!section) return;
+
+        let symbol = button.querySelector('.tm-collapse-symbol');
+        if (!symbol) {
+            symbol = document.createElement('span');
+            symbol.className = 'tm-collapse-symbol';
+            button.appendChild(symbol);
+        }
+
+        const isCollapsed = section.classList.contains('is-collapsed');
+        symbol.textContent = isCollapsed ? '+' : '-';
+        button.classList.toggle('is-collapsed', isCollapsed);
+        button.setAttribute('aria-expanded', String(!isCollapsed));
     }
 
     tabButtons.forEach(button => {
+        button.classList.remove('is-active');
+        syncCollapseButton(button);
+
         button.addEventListener('click', function () {
-            setActiveTab(this.dataset.tabTarget);
+            const section = document.getElementById(this.dataset.tabTarget);
+            if (!section) return;
+
+            section.classList.toggle('is-collapsed');
+            syncCollapseButton(this);
+
+            if (window.history) {
+                window.history.replaceState(null, '', '#' + section.id);
+            }
         });
     });
 
-    const initialTab = window.location.hash ? window.location.hash.replace('#', '') : 'profile';
-    if (document.getElementById(initialTab)) {
-        setActiveTab(initialTab, false);
-    }
+    const initialSection = window.location.hash ? document.getElementById(window.location.hash.replace('#', '')) : null;
+    initialSection?.scrollIntoView({ block: 'start' });
 
     document.querySelectorAll('.date-mask').forEach(input => {
         input.addEventListener('input', function () {
