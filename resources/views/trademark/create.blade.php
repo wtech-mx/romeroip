@@ -337,7 +337,7 @@
     }
 
     .tm-section-card .card-body{
-        grid-column: 2;
+        grid-column: 1 / -1;
         padding: 0 !important;
     }
 

@@ -221,7 +221,7 @@
     }
 
     .tm-use-info{
-        grid-column: 2;
+        grid-column: 1 / -1;
         margin-top: 2rem;
         padding: 1.35rem 1.5rem;
         background: #f7f8fb;
@@ -239,7 +239,7 @@
     }
 
     .tm-doc-grid{
-        grid-column: 2;
+        grid-column: 1 / -1;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1.35rem 0;
@@ -280,7 +280,7 @@
     }
 
     .tm-design-image{
-        grid-column: 2;
+        grid-column: 1 / -1;
         width: 100%;
         max-width: 360px;
         max-height: 340px;
