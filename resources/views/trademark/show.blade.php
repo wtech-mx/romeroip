@@ -400,10 +400,12 @@
             'items' => [
                 $field(__('messages.our_ref'), $trademark->our_ref, false, true),
                 $field(__('messages.client_ref'), $trademark->client_ref, false, true),
+                /*
                 $field(__('messages.opposition_no'), $trademark->opposition_no),
                 $field(__('messages.filing_date'), $formatDate($trademark->filing_date_opposition)),
                 $field(__('messages.litigation_no'), $trademark->litigation_no),
                 $field(__('messages.filing_date'), $formatDate($trademark->filing_date_litigation)),
+                */
             ],
         ],
         'basic-info' => [

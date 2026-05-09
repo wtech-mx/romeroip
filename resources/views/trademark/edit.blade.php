@@ -664,6 +664,7 @@
                                 <div id="client_ref_suggestions" class="autocomplete-box d-none"></div>
                             </div>
 
+                            {{-- Reserved for a future section.
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.opposition_no') }}</label>
                                 <input id="opposition_no" name="opposition_no" class="form-control tm-input"
@@ -691,6 +692,7 @@
                                     type="text" maxlength="10" placeholder="MM DD YYYY"
                                     value="{{ old('filing_date_litigation', filled($trademark->filing_date_litigation) ? \Carbon\Carbon::parse($trademark->filing_date_litigation)->format('m d Y') : '') }}">
                             </div>
+                            --}}
                         </div>
                     </div>
                 </div>
@@ -711,14 +713,14 @@
                             <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.application_no') }}</label>
                                 <input id="application_no" name="application_no" class="form-control tm-input"
-                                    type="text"
+                                    type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}"
                                     value="{{ old('application_no', $trademark->application_no) }}">
                             </div>
 
                             <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.registration_no') }}</label>
                                 <input id="registration_no" name="registration_no" class="form-control tm-input"
-                                    type="text"
+                                    type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}"
                                     value="{{ old('registration_no', $trademark->registration_no) }}">
                             </div>
 
@@ -1526,6 +1528,28 @@
         }
     }
 
+    function validateStructuralNumberFields(errors) {
+        [
+            { id: 'application_no', label: 'Application No.' },
+            { id: 'registration_no', label: 'Registration No.' }
+        ].forEach(field => {
+            const el = document.getElementById(field.id);
+            const value = String(el?.value || '').trim();
+            clearInvalid(el);
+
+            if (value && !/^[1-9][0-9]{0,9}$/.test(value)) {
+                markInvalid(el, `${field.label} allows up to 10 digits and cannot start with 0.`);
+                errors.push(field.label);
+            }
+        });
+    }
+
+    ['application_no', 'registration_no'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').replace(/^0+/, '').slice(0, 10);
+        });
+    });
+
     document.getElementById('our_ref')?.addEventListener('input', function () {
         this.value = this.value.replace(/\D/g, '').slice(0, 5);
     });
@@ -1548,6 +1572,7 @@
         });
 
         validateReferenceFields(errors);
+        validateStructuralNumberFields(errors);
 
         if (errors.length) {
             e.preventDefault();

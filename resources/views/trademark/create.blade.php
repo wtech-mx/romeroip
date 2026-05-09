@@ -735,6 +735,7 @@
                                                         </div>
                                                     </div>
 
+                                                    {{-- Reserved for a future section.
                                                     <div class="col-6 p-2">
                                                         <label class="form-label">
                                                             <i class="bi bi-shield-exclamation me-1 text-secondary"></i>
@@ -778,6 +779,7 @@
                                                                    type="date">
                                                         </div>
                                                     </div>
+                                                    --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -797,7 +799,7 @@
                                                         <label class="form-label">{{ __('messages.application_no') }}</label>
                                                         <div class="input-group">
                                                             <input id="application_no" name="application_no" class="form-control"
-                                                                   type="text" placeholder="{{ __('messages.application_no') }}">
+                                                                   type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}" placeholder="{{ __('messages.application_no') }}">
                                                         </div>
                                                     </div>
 
@@ -805,7 +807,7 @@
                                                         <label class="form-label">{{ __('messages.registration_no') }}</label>
                                                         <div class="input-group">
                                                             <input id="registration_no" name="registration_no" class="form-control"
-                                                                   type="text" placeholder="{{ __('messages.registration_no') }}">
+                                                                   type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}" placeholder="{{ __('messages.registration_no') }}">
                                                         </div>
                                                     </div>
 
@@ -1639,6 +1641,28 @@ $(document).ready(function () {
         }
     }
 
+    function validateStructuralNumberFields(errors) {
+        [
+            { id: 'application_no', label: 'Application No.' },
+            { id: 'registration_no', label: 'Registration No.' }
+        ].forEach(field => {
+            const el = document.getElementById(field.id);
+            const value = String(el?.value || '').trim();
+            clearInvalid(el);
+
+            if (value && !/^[1-9][0-9]{0,9}$/.test(value)) {
+                markInvalid(el, `${field.label} allows up to 10 digits and cannot start with 0.`);
+                errors.push(field.label);
+            }
+        });
+    }
+
+    ['application_no', 'registration_no'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').replace(/^0+/, '').slice(0, 10);
+        });
+    });
+
     document.getElementById('our_ref')?.addEventListener('input', function () {
         this.value = this.value.replace(/\D/g, '').slice(0, 5);
     });
@@ -1661,6 +1685,7 @@ $(document).ready(function () {
         });
 
         validateReferenceFields(errors);
+        validateStructuralNumberFields(errors);
 
         const regDate = document.getElementById('registrationDate');
         const expDate = document.getElementById('expirationDate');
