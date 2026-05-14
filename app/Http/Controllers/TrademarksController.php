@@ -245,7 +245,7 @@ class TrademarksController extends Controller
             'last_renewal'            => $dateRule,
             'next_declaration'        => $dateRule,
             'next_renewal'            => $dateRule,
-            'trademark'               => 'nullable|string|max:255',
+            'trademark'               => 'nullable|string|max:250',
             'description_trademark'   => 'nullable|string',
             'type_application'        => 'nullable|string|max:100',
             'type_mark'               => 'nullable|string|max:100',

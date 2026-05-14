@@ -766,6 +766,23 @@
                                     value="{{ old('expiration_date', filled($trademark->expiration_date) ? \Carbon\Carbon::parse($trademark->expiration_date)->format('m d Y') : '') }}">
                             </div>
 
+                            <div class="col-md-4">
+                                <label class="tm-label">Country</label>
+                                <select class="form-control tm-select js-example-basic-single" name="country" id="country">
+                                    <option value="MEXICO" {{ old('country', $trademark->country ?: 'MEXICO') == 'MEXICO' ? 'selected' : '' }}>MEXICO</option>
+                                    @include('client.paises')
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="tm-label">Origin</label>
+                                <select class="form-control tm-select" name="origin" id="origin">
+                                    <option value="-" {{ old('origin', $trademark->origin ?: '-') == '-' ? 'selected' : '' }}>-</option>
+                                    <option value="Nacional" {{ old('origin', $trademark->origin) == 'Nacional' ? 'selected' : '' }}>Nacional</option>
+                                    <option value="Extranjero" {{ old('origin', $trademark->origin) == 'Extranjero' ? 'selected' : '' }}>Extranjero</option>
+                                </select>
+                            </div>
+
                             <div class="col-12 mt-3">
                                 <h6 class="tm-section-title">Use Information</h6>
                             </div>
@@ -843,80 +860,77 @@
                     </div>
 
                     <div class="tm-section-body">
-                        <div class="row g-4">
-                            <div class="col-lg-7">
-                                <div class="row g-3">
-                                    <div class="col-12 autocomplete-wrap">
-                                        <label class="tm-label">{{ __('messages.trademark') }}</label>
-                                        <input id="trademark" name="trademark" class="form-control tm-input"
-                                            type="text" autocomplete="off"
-                                            value="{{ old('trademark', $trademark->trademark) }}">
-                                        <div id="trademark_suggestions" class="autocomplete-box d-none"></div>
-                                    </div>
+                        <div class="row g-3">
+                            <div class="col-12 autocomplete-wrap">
+                                <label class="tm-label">{{ __('messages.trademark') }}</label>
+                                <input id="trademark" name="trademark" class="form-control tm-input"
+                                    type="text" autocomplete="off" maxlength="250"
+                                    value="{{ old('trademark', $trademark->trademark) }}">
+                                <div id="trademark_suggestions" class="autocomplete-box d-none"></div>
+                            </div>
 
-                                    <div class="col-12">
-                                        <label class="tm-label">{{ __('messages.description') }}</label>
-                                        <textarea class="form-control tm-input" id="description_trademark" name="description_trademark" rows="3">{{ old('description_trademark', $trademark->description_trademark) }}</textarea>
-                                    </div>
+                            <div class="col-12" id="representationLogoField">
+                                <label class="tm-label">Representation / Logo</label>
+                                <input id="design" name="design" class="form-control tm-input"
+                                    type="file" accept=".jpg,.jpeg,.png,.webp,image/*">
+                            </div>
 
-                                    <div class="col-md-6">
-                                        <label class="tm-label">{{ __('messages.type_application') }}</label>
-                                        <select class="form-control tm-select" id="type_application" name="type_application">
-                                            <option value="">{{ __('messages.select') }}</option>
-                                            <option value="Trademark" {{ old('type_application', $trademark->type_application) == 'Trademark' ? 'selected' : '' }}>Trademark</option>
-                                            <option value="Trade Name" {{ old('type_application', $trademark->type_application) == 'Trade Name' ? 'selected' : '' }}>Trade Name</option>
-                                            <option value="Slogan" {{ old('type_application', $trademark->type_application) == 'Slogan' ? 'selected' : '' }}>Slogan</option>
-                                            <option value="Collective Mark" {{ old('type_application', $trademark->type_application) == 'Collective Mark' ? 'selected' : '' }}>Collective Mark</option>
-                                            <option value="Certification Mark" {{ old('type_application', $trademark->type_application) == 'Certification Mark' ? 'selected' : '' }}>Certification Mark</option>
-                                            <option value="Nontraditional" {{ old('type_application', $trademark->type_application) == 'Nontraditional' ? 'selected' : '' }}>Nontraditional</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="tm-label">{{ __('messages.type_mark') }}</label>
-                                        <select class="form-control tm-select" id="type_mark" name="type_mark">
-                                            <option value="">{{ __('messages.select') }}</option>
-                                            <option value="Word Marks" {{ old('type_mark', $trademark->type_mark) == 'Word Marks' ? 'selected' : '' }}>Word Marks</option>
-                                            <option value="Design Marks" {{ old('type_mark', $trademark->type_mark) == 'Design Marks' ? 'selected' : '' }}>Design Marks</option>
-                                            <option value="Combined Marks" {{ old('type_mark', $trademark->type_mark) == 'Combined Marks' ? 'selected' : '' }}>Combined Marks</option>
-                                            <option value="Tridimensional Marks" {{ old('type_mark', $trademark->type_mark) == 'Tridimensional Marks' ? 'selected' : '' }}>Tridimensional Marks</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="tm-label">{{ __('messages.translation') }}</label>
-                                        <textarea class="form-control tm-input" id="translation" name="translation" rows="2">{{ old('translation', $trademark->translation) }}</textarea>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="tm-label">{{ __('messages.transliteration') }}</label>
-                                        <textarea class="form-control tm-input" id="transliteration_trademark" name="transliteration_trademark" rows="2">{{ old('transliteration_trademark', $trademark->transliteration_trademark) }}</textarea>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label class="tm-label">{{ __('messages.disclaimer') }}</label>
-                                        <textarea class="form-control tm-input" id="disclaimer" name="disclaimer" rows="2">{{ old('disclaimer', $trademark->disclaimer) }}</textarea>
-                                    </div>
+                            <div class="col-12" id="representationLogoPreview">
+                                <div class="tm-preview-wrap">
+                                    <img id="blah"
+                                        class="tm-preview-image"
+                                        src="{{ $trademark->design ? asset('design/'.$trademark->design) : asset('design/no-image.jpg') }}"
+                                        alt="Trademark design preview">
                                 </div>
                             </div>
 
-                            <div class="col-lg-5">
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <label class="tm-label">{{ __('messages.design') }}</label>
-                                        <input id="design" name="design" class="form-control tm-input"
-                                            type="file" accept=".jpg,.jpeg,.png,.webp,image/*">
-                                    </div>
+                            <div class="col-md-6">
+                                <label class="tm-label">Type of Application</label>
+                                <select class="form-control tm-select" id="type_application" name="type_application">
+                                    <option value="">{{ __('messages.select') }}</option>
+                                    <option value="Trademark" {{ old('type_application', $trademark->type_application) == 'Trademark' ? 'selected' : '' }}>Trademark</option>
+                                    <option value="Commercial Name" {{ old('type_application', $trademark->type_application) == 'Commercial Name' ? 'selected' : '' }}>Commercial Name</option>
+                                    <option value="Slogan" {{ old('type_application', $trademark->type_application) == 'Slogan' ? 'selected' : '' }}>Slogan</option>
+                                    <option value="Collective Mark" {{ old('type_application', $trademark->type_application) == 'Collective Mark' ? 'selected' : '' }}>Collective Mark</option>
+                                    <option value="Certification Mark" {{ old('type_application', $trademark->type_application) == 'Certification Mark' ? 'selected' : '' }}>Certification Mark</option>
+                                    <option value="Trade Dress" {{ old('type_application', $trademark->type_application) == 'Trade Dress' ? 'selected' : '' }}>Trade Dress</option>
+                                </select>
+                            </div>
 
-                                    <div class="col-12">
-                                        <div class="tm-preview-wrap">
-                                            <img id="blah"
-                                                class="tm-preview-image"
-                                                src="{{ $trademark->design ? asset('design/'.$trademark->design) : asset('design/no-image.jpg') }}"
-                                                alt="Trademark design preview">
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-md-6">
+                                <label class="tm-label">Type of Mark</label>
+                                <select class="form-control tm-select" id="type_mark" name="type_mark">
+                                    <option value="">{{ __('messages.select') }}</option>
+                                    <option value="Word Mark" {{ old('type_mark', $trademark->type_mark) == 'Word Mark' ? 'selected' : '' }}>Word Mark</option>
+                                    <option value="Design Mark" {{ old('type_mark', $trademark->type_mark) == 'Design Mark' ? 'selected' : '' }}>Design Mark</option>
+                                    <option value="Mixed Mark" {{ old('type_mark', $trademark->type_mark) == 'Mixed Mark' ? 'selected' : '' }}>Mixed Mark</option>
+                                    <option value="Three-Dimensional Mark" {{ old('type_mark', $trademark->type_mark) == 'Three-Dimensional Mark' ? 'selected' : '' }}>Three-Dimensional Mark</option>
+                                    <option value="Holographic Mark" {{ old('type_mark', $trademark->type_mark) == 'Holographic Mark' ? 'selected' : '' }}>Holographic Mark</option>
+                                    <option value="Sound Mark" {{ old('type_mark', $trademark->type_mark) == 'Sound Mark' ? 'selected' : '' }}>Sound Mark</option>
+                                    <option value="Scent Mark" {{ old('type_mark', $trademark->type_mark) == 'Scent Mark' ? 'selected' : '' }}>Scent Mark</option>
+                                    <option value="Trade Dress" {{ old('type_mark', $trademark->type_mark) == 'Trade Dress' ? 'selected' : '' }}>Trade Dress</option>
+                                    <option value="Other" {{ old('type_mark', $trademark->type_mark) == 'Other' ? 'selected' : '' }}>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12" id="descriptionMarkField">
+                                <label class="tm-label">Description of the Mark</label>
+                                <textarea class="form-control tm-input" id="description_trademark" name="description_trademark" rows="3">{{ old('description_trademark', $trademark->description_trademark) }}</textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="tm-label">Disclaimer / Elements not Protected</label>
+                                <textarea class="form-control tm-input" id="disclaimer" name="disclaimer" rows="2">{{ old('disclaimer', $trademark->disclaimer) }}</textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.transliteration') }}</label>
+                                <textarea class="form-control tm-input" id="transliteration_trademark" name="transliteration_trademark" rows="2">{{ old('transliteration_trademark', $trademark->transliteration_trademark) }}</textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.translation') }}</label>
+                                <textarea class="form-control tm-input" id="translation" name="translation" rows="2">{{ old('translation', $trademark->translation) }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -1109,6 +1123,89 @@
                     </div>
                 </div>
 
+                {{-- International Registration --}}
+                <div class="tm-section-card" id="international-registration">
+                    <div class="tm-section-head">
+                        <div>
+                            <h5 class="tm-section-title">International Registration</h5>
+                            <p class="tm-section-sub">Madrid System international registration details.</p>
+                        </div>
+                    </div>
+
+                    <div class="tm-section-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="tm-label">Int'l Reg. No.</label>
+                                <input id="int_registration_no" name="int_registration_no" class="form-control tm-input"
+                                    type="text"
+                                    value="{{ old('int_registration_no', $trademark->int_registration_no) }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">Int'l Registration Date</label>
+                                <input id="int_registration_date" name="int_registration_date" class="form-control tm-input date-mask"
+                                    type="text" maxlength="10" placeholder="MM DD YYYY"
+                                    value="{{ old('int_registration_date', filled($trademark->int_registration_date) ? \Carbon\Carbon::parse($trademark->int_registration_date)->format('m d Y') : '') }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">Contracting State or Organization</label>
+                                <select class="form-control tm-select js-example-basic-single" name="contracting_organization" id="contracting_organization">
+                                    <option value="">{{ __('messages.select') }}</option>
+                                    @include('client.paises')
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="tm-label">Designated Countries</label>
+                                <textarea class="form-control tm-input" id="designated_countries" name="designated_countries" rows="3">{{ old('designated_countries', $trademark->designated_countries) }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Proceedings --}}
+                <div class="tm-section-card" id="proceedings">
+                    <div class="tm-section-head">
+                        <div>
+                            <h5 class="tm-section-title">Proceedings</h5>
+                            <p class="tm-section-sub">Opposition and litigation references.</p>
+                        </div>
+                    </div>
+
+                    <div class="tm-section-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.opposition_no') }}</label>
+                                <input id="opposition_no" name="opposition_no" class="form-control tm-input"
+                                    type="text"
+                                    value="{{ old('opposition_no', $trademark->opposition_no) }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.filing_date') }}</label>
+                                <input id="filing_date_opposition" name="filing_date_opposition" class="form-control tm-input date-mask"
+                                    type="text" maxlength="10" placeholder="MM DD YYYY"
+                                    value="{{ old('filing_date_opposition', filled($trademark->filing_date_opposition) ? \Carbon\Carbon::parse($trademark->filing_date_opposition)->format('m d Y') : '') }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.litigation_no') }}</label>
+                                <input id="litigation_no" name="litigation_no" class="form-control tm-input"
+                                    type="text"
+                                    value="{{ old('litigation_no', $trademark->litigation_no) }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tm-label">{{ __('messages.filing_date') }}</label>
+                                <input id="filing_date_litigation" name="filing_date_litigation" class="form-control tm-input date-mask"
+                                    type="text" maxlength="10" placeholder="MM DD YYYY"
+                                    value="{{ old('filing_date_litigation', filled($trademark->filing_date_litigation) ? \Carbon\Carbon::parse($trademark->filing_date_litigation)->format('m d Y') : '') }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- Notes --}}
                 <div class="tm-section-card" id="notes">
                     <div class="tm-section-head">
@@ -1134,15 +1231,17 @@
 
                     <nav class="tm-file-tabs" aria-label="Trademark file navigation">
                         <p class="tm-tabs-label mt-3">Sections</p>
-                        <button class="is-active" type="button" data-tab-target="profile">01 {{ __('messages.reference_numbers') }}</button>
-                        <button type="button" data-tab-target="basic-info">02 {{ __('messages.general_information') }}</button>
-                        <button type="button" data-tab-target="password">03 {{ __('messages.important_dates') }}</button>
-                        <button type="button" data-tab-target="trademark-section">04 {{ __('messages.trademark_information') }}</button>
-                        <button type="button" data-tab-target="accounts">05 {{ __('messages.goods_services') }}</button>
-                        <button type="button" data-tab-target="sessions">06 {{ __('messages.client_info') }}</button>
-                        <button type="button" data-tab-target="holder">07 {{ __('messages.holder_info') }}</button>
-                        <button type="button" data-tab-target="notifications">08 {{ __('messages.priority_information') }}</button>
-                        <button type="button" data-tab-target="notes">09 {{ __('messages.note_important') }}</button>
+                        <button class="is-active" type="button" data-tab-target="profile">01 REFERENCE NUMBERS</button>
+                        <button type="button" data-tab-target="basic-info">02 GENERAL INFORMATION</button>
+                        <button type="button" data-tab-target="trademark-section">03 TRADEMARK INFORMATION</button>
+                        <button type="button" data-tab-target="accounts">04 GOODS / SERVICES</button>
+                        <button type="button" data-tab-target="notifications">05 PRIORITY INFORMATION</button>
+                        <button type="button" data-tab-target="international-registration">06 INTERNATIONAL REGISTRATION</button>
+                        <button type="button" data-tab-target="sessions">07 CLIENT</button>
+                        <button type="button" data-tab-target="holder">08 OWNER</button>
+                        <button type="button" data-tab-target="password">09 IMPORTANT DATES</button>
+                        <button type="button" data-tab-target="proceedings">10 PROCEEDINGS</button>
+                        <button type="button" data-tab-target="notes">11 NOTES</button>
                     </nav>
                 </div>
 
@@ -1170,6 +1269,7 @@
 
     setSelectedOptionIfExists('country', @json(old('country', $trademark->country)));
     setSelectedOptionIfExists('country_office', @json(old('country_office', $trademark->country_office)));
+    setSelectedOptionIfExists('contracting_organization', @json(old('contracting_organization', $trademark->contracting_organization)));
 })();
 </script>
 
@@ -1177,6 +1277,16 @@
 (function () {
     const tabButtons = Array.from(document.querySelectorAll('.tm-file-tabs button[data-tab-target]'));
     const sections = Array.from(document.querySelectorAll('.tm-section-card'));
+    const mainColumn = sections[0]?.parentElement;
+
+    if (mainColumn) {
+        tabButtons.forEach(button => {
+            const section = document.getElementById(button.dataset.tabTarget);
+            if (section) {
+                mainColumn.appendChild(section);
+            }
+        });
+    }
 
     tabButtons.forEach((button, index) => {
         const section = document.getElementById(button.dataset.tabTarget);
@@ -1238,6 +1348,36 @@
         });
     });
 
+})();
+</script>
+
+<script>
+(function () {
+    const typeMark = document.getElementById('type_mark');
+    const logoField = document.getElementById('representationLogoField');
+    const logoPreview = document.getElementById('blah')?.closest('.col-12');
+    const descriptionField = document.getElementById('descriptionMarkField');
+    const hasExistingLogo = @json(filled($trademark->design));
+    const hasExistingDescription = @json(filled($trademark->description_trademark));
+    const logoTypes = new Set(['Design Mark', 'Mixed Mark', 'Three-Dimensional Mark', 'Holographic Mark', 'Trade Dress', 'Other']);
+    const descriptionTypes = new Set(['Holographic Mark', 'Sound Mark', 'Scent Mark', 'Trade Dress', 'Other']);
+
+    function syncTrademarkConditionalFields() {
+        const value = typeMark?.value || '';
+        const showLogo = logoTypes.has(value) || (hasExistingLogo && !value);
+        const showDescription = descriptionTypes.has(value) || (hasExistingDescription && !value);
+
+        [logoField, logoPreview].forEach(el => {
+            if (el) el.classList.toggle('d-none', !showLogo);
+        });
+
+        if (descriptionField) {
+            descriptionField.classList.toggle('d-none', !showDescription);
+        }
+    }
+
+    typeMark?.addEventListener('change', syncTrademarkConditionalFields);
+    syncTrademarkConditionalFields();
 })();
 </script>
 

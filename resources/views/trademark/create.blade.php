@@ -861,6 +861,27 @@
                                                                    type="date">
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">Country</label>
+                                                        <div class="input-group">
+                                                            <select class="form-control js-example-basic-single" name="country" id="country">
+                                                                <option value="MEXICO" selected>MEXICO</option>
+                                                                @include('client.paises')
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 p-2">
+                                                        <label class="form-label">Origin</label>
+                                                        <div class="input-group">
+                                                            <select class="form-control" name="origin" id="origin">
+                                                                <option value="-" selected>-</option>
+                                                                <option value="Nacional">Nacional</option>
+                                                                <option value="Extranjero">Extranjero</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -954,131 +975,95 @@
 
                                             <div class="card-body pt-0">
                                                 <div class="row">
-
-                                                    <div class="col-6">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <label class="form-label" style="opacity: 0">sin_espacio</label>
-                                                            </div>
-
-                                                            <div class="col-12 p-2">
-                                                                <label class="form-label">
-                                                                    <i class="bi bi-bookmark-check me-1 text-secondary"></i>
-                                                                    {{ __('messages.trademark') }}
-                                                                </label>
-                                                                <div class="input-group">
-                                                                    <input id="trademark" name="trademark"
-                                                                           class="form-control" type="text"
-                                                                           placeholder="{{ __('messages.trademark') }}">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 p-2">
-                                                                <label class="form-label">
-                                                                    <i class="bi bi-card-text me-1 text-secondary"></i>
-                                                                    {{ __('messages.description') }}
-                                                                </label>
-                                                                <div class="input-group">
-                                                                    <textarea class="form-control" id="description_trademark" name="description_trademark" rows="1"></textarea>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 p-2">
-                                                                <label class="form-label">
-                                                                    <i class="bi bi-diagram-2 me-1 text-secondary"></i>
-                                                                    {{ __('messages.type_application') }}
-                                                                </label>
-                                                                <div class="input-group">
-                                                                    <select class="form-control" id="type_application" name="type_application">
-                                                                        <option value="" selected>{{ __('messages.select') }}</option>
-                                                                        <option value="Trademark">{{ __('messages.trademark') }}</option>
-                                                                        <option value="Trade Name">{{ __('messages.trademark_name') }}</option>
-                                                                        <option value="Slogan">{{ __('messages.slogan') }}</option>
-                                                                        <option value="Collective Mark">{{ __('messages.collective_mark') }}</option>
-                                                                        <option value="Certification Mark">{{ __('messages.certification_mark') }}</option>
-                                                                        <option value="Nontraditional">{{ __('messages.nontraditional') }}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 p-2">
-                                                                <label class="form-label">
-                                                                    <i class="bi bi-tags me-1 text-secondary"></i>
-                                                                    {{ __('messages.type_mark') }}
-                                                                </label>
-                                                                <div class="input-group">
-                                                                    <select class="form-control" id="type_mark" name="type_mark">
-                                                                        <option value="" selected>{{ __('messages.select') }}</option>
-                                                                        <option value="Word Marks">{{ __('messages.word_marks') }}</option>
-                                                                        <option value="Design Marks">{{ __('messages.design_marks') }}</option>
-                                                                        <option value="Combined Marks">{{ __('messages.combined_marks') }}</option>
-                                                                        <option value="Tridimensional Marks">{{ __('messages.tridimensional_marks') }}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 p-2">
-                                                                <label class="form-label">
-                                                                    <i class="bi bi-translate me-1 text-secondary"></i>
-                                                                    {{ __('messages.translation') }}
-                                                                </label>
-                                                                <div class="input-group">
-                                                                    <textarea class="form-control" id="translation" name="translation" rows="1"></textarea>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 p-2">
-                                                                <label class="form-label">
-                                                                    <i class="bi bi-fonts me-1 text-secondary"></i>
-                                                                    {{ __('messages.transliteration') }}
-                                                                </label>
-                                                                <div class="input-group">
-                                                                    <textarea class="form-control" id="transliteration_trademark" name="transliteration_trademark" rows="1"></textarea>
-                                                                </div>
-                                                            </div>
+                                                    <div class="col-12 p-2">
+                                                        <label class="form-label">{{ __('messages.trademark') }}</label>
+                                                        <div class="input-group">
+                                                            <input id="trademark" name="trademark"
+                                                                   class="form-control" type="text"
+                                                                   maxlength="250"
+                                                                   placeholder="{{ __('messages.trademark') }}">
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-6">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <label class="form-label" style="opacity: 0">sin_espacio</label>
-                                                            </div>
-
-                                                            <div class="col-12 p-2">
-                                                                <label class="form-label">
-                                                                    <i class="bi bi-exclamation-diamond me-1 text-secondary"></i>
-                                                                    {{ __('messages.disclaimer') }}
-                                                                </label>
-                                                                <div class="input-group">
-                                                                    <textarea class="form-control" id="disclaimer" name="disclaimer" rows="1"></textarea>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 p-2">
-                                                                <label class="form-label">
-                                                                    <i class="bi bi-image me-1 text-secondary"></i>
-                                                                    {{ __('messages.design') }}
-                                                                </label>
-                                                                <div class="input-group">
-                                                                    <input id="design" name="design"
-                                                                           class="form-control" type="file"
-                                                                           accept=".jpg,.jpeg,.png,.webp,image/*">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 mt-2">
-                                                                <div class="input-group">
-                                                                    <img id="blah"
-                                                                         src="{{ asset('design/no-image.jpg') }}"
-                                                                         alt="Imagen"
-                                                                         style="width: 100%"
-                                                                         class="tm-preview-img"/>
-                                                                </div>
-                                                            </div>
+                                                    <div class="col-12 p-2" id="representationLogoField">
+                                                        <label class="form-label">Representation / Logo</label>
+                                                        <div class="input-group">
+                                                            <input id="design" name="design"
+                                                                   class="form-control" type="file"
+                                                                   accept=".jpg,.jpeg,.png,.webp,image/*">
                                                         </div>
                                                     </div>
 
+                                                    <div class="col-12 mt-2" id="representationLogoPreview">
+                                                        <div class="input-group">
+                                                            <img id="blah"
+                                                                 src="{{ asset('design/no-image.jpg') }}"
+                                                                 alt="Trademark design preview"
+                                                                 style="width: 100%"
+                                                                 class="tm-preview-img"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">Type of Application</label>
+                                                        <div class="input-group">
+                                                            <select class="form-control" id="type_application" name="type_application">
+                                                                <option value="" selected>{{ __('messages.select') }}</option>
+                                                                <option value="Trademark">Trademark</option>
+                                                                <option value="Commercial Name">Commercial Name</option>
+                                                                <option value="Slogan">Slogan</option>
+                                                                <option value="Collective Mark">Collective Mark</option>
+                                                                <option value="Certification Mark">Certification Mark</option>
+                                                                <option value="Trade Dress">Trade Dress</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">Type of Mark</label>
+                                                        <div class="input-group">
+                                                            <select class="form-control" id="type_mark" name="type_mark">
+                                                                <option value="" selected>{{ __('messages.select') }}</option>
+                                                                <option value="Word Mark">Word Mark</option>
+                                                                <option value="Design Mark">Design Mark</option>
+                                                                <option value="Mixed Mark">Mixed Mark</option>
+                                                                <option value="Three-Dimensional Mark">Three-Dimensional Mark</option>
+                                                                <option value="Holographic Mark">Holographic Mark</option>
+                                                                <option value="Sound Mark">Sound Mark</option>
+                                                                <option value="Scent Mark">Scent Mark</option>
+                                                                <option value="Trade Dress">Trade Dress</option>
+                                                                <option value="Other">Other</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12 p-2" id="descriptionMarkField">
+                                                        <label class="form-label">Description of the Mark</label>
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" id="description_trademark" name="description_trademark" rows="1"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12 p-2">
+                                                        <label class="form-label">Disclaimer / Elements not Protected</label>
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" id="disclaimer" name="disclaimer" rows="1"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">{{ __('messages.transliteration') }}</label>
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" id="transliteration_trademark" name="transliteration_trademark" rows="1"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">{{ __('messages.translation') }}</label>
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" id="translation" name="translation" rows="1"></textarea>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1305,6 +1290,89 @@
                                             </div>
                                         </div>
 
+                                        {{-- ===================== INTERNATIONAL REGISTRATION ===================== --}}
+                                        <div class="tm-section-card" id="international-registration">
+                                            <div class="tm-card-head">
+                                                <h5 class="tm-section-title">International Registration</h5>
+                                                <div class="tm-anchor-sub">Madrid System international registration details.</div>
+                                            </div>
+
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">Int'l Reg. No.</label>
+                                                        <div class="input-group">
+                                                            <input id="int_registration_no" name="int_registration_no" class="form-control" type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">Int'l Registration Date</label>
+                                                        <div class="input-group">
+                                                            <input id="int_registration_date" name="int_registration_date" class="form-control" type="date">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">Contracting State or Organization</label>
+                                                        <div class="input-group">
+                                                            <select class="form-control js-example-basic-single" name="contracting_organization" id="contracting_organization">
+                                                                <option value="">{{ __('messages.select') }}</option>
+                                                                @include('client.paises')
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12 p-2">
+                                                        <label class="form-label">Designated Countries</label>
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" id="designated_countries" name="designated_countries" rows="2"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- ===================== PROCEEDINGS ===================== --}}
+                                        <div class="tm-section-card" id="proceedings">
+                                            <div class="tm-card-head">
+                                                <h5 class="tm-section-title">Proceedings</h5>
+                                                <div class="tm-anchor-sub">Opposition and litigation references.</div>
+                                            </div>
+
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">{{ __('messages.opposition_no') }}</label>
+                                                        <div class="input-group">
+                                                            <input id="opposition_no" name="opposition_no" class="form-control" type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">{{ __('messages.filing_date') }}</label>
+                                                        <div class="input-group">
+                                                            <input id="filing_date_opposition" name="filing_date_opposition" class="form-control" type="date">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">{{ __('messages.litigation_no') }}</label>
+                                                        <div class="input-group">
+                                                            <input id="litigation_no" name="litigation_no" class="form-control" type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 p-2">
+                                                        <label class="form-label">{{ __('messages.filing_date') }}</label>
+                                                        <div class="input-group">
+                                                            <input id="filing_date_litigation" name="filing_date_litigation" class="form-control" type="date">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         {{-- ===================== NOTES ===================== --}}
                                         <div class="tm-section-card" id="notes">
                                             <div class="tm-card-head">
@@ -1346,55 +1414,67 @@
 
                                                 <li class="nav-item">
                                                     <button class="is-active" type="button" data-tab-target="profile">
-                                                        <span class="text-sm">01 {{ __('messages.reference_numbers') }}</span>
+                                                        <span class="text-sm">01 REFERENCE NUMBERS</span>
                                                     </button>
                                                 </li>
 
                                                 <li class="nav-item">
                                                     <button type="button" data-tab-target="basic-info">
-                                                        <span class="text-sm">02 {{ __('messages.general_information') }}</span>
-                                                    </button>
-                                                </li>
-
-                                                <li class="nav-item">
-                                                    <button type="button" data-tab-target="password">
-                                                        <span class="text-sm">03 {{ __('messages.important_dates') }}</span>
+                                                        <span class="text-sm">02 GENERAL INFORMATION</span>
                                                     </button>
                                                 </li>
 
                                                 <li class="nav-item">
                                                     <button type="button" data-tab-target="2fa">
-                                                        <span class="text-sm">04 {{ __('messages.trademark_information') }}</span>
+                                                        <span class="text-sm">03 TRADEMARK INFORMATION</span>
                                                     </button>
                                                 </li>
 
                                                 <li class="nav-item">
                                                     <button type="button" data-tab-target="accounts">
-                                                        <span class="text-sm">05 {{ __('messages.goods_services') }}</span>
-                                                    </button>
-                                                </li>
-
-                                                <li class="nav-item">
-                                                    <button type="button" data-tab-target="sessions">
-                                                        <span class="text-sm">06 {{ __('messages.client_info') }}</span>
-                                                    </button>
-                                                </li>
-
-                                                <li class="nav-item">
-                                                    <button type="button" data-tab-target="holder">
-                                                        <span class="text-sm">07 {{ __('messages.holder_info') }}</span>
+                                                        <span class="text-sm">04 GOODS / SERVICES</span>
                                                     </button>
                                                 </li>
 
                                                 <li class="nav-item">
                                                     <button type="button" data-tab-target="notifications">
-                                                        <span class="text-sm">08 {{ __('messages.priority_information') }}</span>
+                                                        <span class="text-sm">05 PRIORITY INFORMATION</span>
+                                                    </button>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <button type="button" data-tab-target="international-registration">
+                                                        <span class="text-sm">06 INTERNATIONAL REGISTRATION</span>
+                                                    </button>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <button type="button" data-tab-target="sessions">
+                                                        <span class="text-sm">07 CLIENT</span>
+                                                    </button>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <button type="button" data-tab-target="holder">
+                                                        <span class="text-sm">08 OWNER</span>
+                                                    </button>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <button type="button" data-tab-target="password">
+                                                        <span class="text-sm">09 IMPORTANT DATES</span>
+                                                    </button>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <button type="button" data-tab-target="proceedings">
+                                                        <span class="text-sm">10 PROCEEDINGS</span>
                                                     </button>
                                                 </li>
 
                                                 <li class="nav-item">
                                                     <button type="button" data-tab-target="notes">
-                                                        <span class="text-sm">09 {{ __('messages.note_important') }}</span>
+                                                        <span class="text-sm">11 NOTES</span>
                                                     </button>
                                                 </li>
                                             </ul>
@@ -1419,6 +1499,16 @@
 (function () {
     const tabButtons = Array.from(document.querySelectorAll('.tm-menu button[data-tab-target]'));
     const sections = Array.from(document.querySelectorAll('.tm-section-card'));
+    const mainColumn = sections[0]?.parentElement;
+
+    if (mainColumn) {
+        tabButtons.forEach(button => {
+            const section = document.getElementById(button.dataset.tabTarget);
+            if (section) {
+                mainColumn.appendChild(section);
+            }
+        });
+    }
 
     tabButtons.forEach((button, index) => {
         const section = document.getElementById(button.dataset.tabTarget);
@@ -1463,6 +1553,49 @@
 
     const initialSection = window.location.hash ? document.getElementById(window.location.hash.replace('#', '')) : null;
     initialSection?.scrollIntoView({ block: 'start' });
+})();
+</script>
+
+<script>
+(function () {
+    const typeMark = document.getElementById('type_mark');
+    const logoField = document.getElementById('representationLogoField');
+    const logoPreview = document.getElementById('blah')?.closest('.col-12');
+    const descriptionField = document.getElementById('descriptionMarkField');
+
+    const logoTypes = new Set([
+        'Design Mark',
+        'Mixed Mark',
+        'Three-Dimensional Mark',
+        'Holographic Mark',
+        'Trade Dress',
+        'Other'
+    ]);
+
+    const descriptionTypes = new Set([
+        'Holographic Mark',
+        'Sound Mark',
+        'Scent Mark',
+        'Trade Dress',
+        'Other'
+    ]);
+
+    function syncTrademarkConditionalFields() {
+        const value = typeMark?.value || '';
+        const showLogo = logoTypes.has(value);
+        const showDescription = descriptionTypes.has(value);
+
+        [logoField, logoPreview].forEach(el => {
+            if (el) el.classList.toggle('d-none', !showLogo);
+        });
+
+        if (descriptionField) {
+            descriptionField.classList.toggle('d-none', !showDescription);
+        }
+    }
+
+    typeMark?.addEventListener('change', syncTrademarkConditionalFields);
+    syncTrademarkConditionalFields();
 })();
 </script>
 

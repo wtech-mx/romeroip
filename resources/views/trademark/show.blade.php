@@ -190,6 +190,7 @@
 
     .tm-section.is-collapsed .tm-doc-grid,
     .tm-section.is-collapsed .tm-use-info,
+    .tm-section.is-collapsed > .tm-doc-field,
     .tm-section.is-collapsed .tm-design-image{
         display: none;
     }
@@ -396,7 +397,7 @@
 
     $sections = [
         'profile' => [
-            'title' => '01 ' . __('messages.reference_numbers'),
+            'title' => '01 REFERENCE NUMBERS',
             'items' => [
                 $field(__('messages.our_ref'), $trademark->our_ref, false, true),
                 $field(__('messages.client_ref'), $trademark->client_ref, false, true),
@@ -409,48 +410,59 @@
             ],
         ],
         'basic-info' => [
-            'title' => '02 ' . __('messages.general_information'),
+            'title' => '02 GENERAL INFORMATION',
             'use_info' => $formatDate($trademark->first_date),
             'items' => [
                 $field(__('messages.application_no'), $trademark->application_no, false, true),
                 $field(__('messages.registration_no'), $trademark->registration_no, false, true),
-                $field(__('messages.status'), $trademark->status, false, true),
                 $field(__('messages.filing_date'), $formatDate($trademark->filing_date_general), false, true),
                 $field(__('messages.registration_date'), $formatDate($trademark->registration_date), false, true),
                 $field(__('messages.expiration_date'), $formatDate($trademark->expiration_date), false, true),
-            ],
-        ],
-        'password' => [
-            'title' => '03 ' . __('messages.important_dates'),
-            'items' => [
-                $field(__('messages.declarations_use') . ' - ' . __('messages.last'), $formatDate($trademark->last_declaration)),
-                $field(__('messages.renewals') . ' - ' . __('messages.last'), $formatDate($trademark->last_renewal)),
-                $field(__('messages.declarations_use') . ' - ' . __('messages.next'), $formatDate($trademark->next_declaration)),
-                $field(__('messages.renewals') . ' - ' . __('messages.next'), $formatDate($trademark->next_renewal)),
+                $field(__('messages.status'), $trademark->status, false, true),
+                $field('Country', $trademark->country ?: 'MEXICO', false, true),
+                $field('Origin', $trademark->origin ?: '-', false, true),
             ],
         ],
         'trademark-section' => [
-            'title' => '04 ' . __('messages.trademark_information'),
+            'title' => '03 TRADEMARK INFORMATION',
+            'has_design' => filled($trademark->design),
             'items' => [
-                $field(__('messages.trademark'), $trademark->trademark),
-                $field(__('messages.description'), $trademark->description_trademark, true),
-                $field(__('messages.type_application'), $trademark->type_application),
-                $field(__('messages.type_mark'), $trademark->type_mark),
-                $field(__('messages.translation'), $trademark->translation, true),
-                $field(__('messages.transliteration'), $trademark->transliteration_trademark, true),
-                $field(__('messages.disclaimer'), $trademark->disclaimer, true),
+                $field('Trademark', $trademark->trademark),
+                $field('Type of Application', $trademark->type_application),
+                $field('Type of Mark', $trademark->type_mark),
+                $field('Description of the Mark', $trademark->description_trademark, true),
+                $field('Disclaimer / Elements not Protected', $trademark->disclaimer, true),
+                $field('Transliteration', $trademark->transliteration_trademark, true),
+                $field('Translation', $trademark->translation, true),
             ],
         ],
         'accounts' => [
-            'title' => '05 ' . __('messages.goods_services'),
+            'title' => '04 GOODS / SERVICES',
             'items' => [
                 $field(__('messages.class'), $trademark->class),
-                $field(__('messages.description'), $trademark->description_good, true),
+                $field('Original Description', $trademark->description_good, true),
                 $field(__('messages.translation'), $trademark->translation_good, true),
             ],
         ],
+        'notifications' => [
+            'title' => '05 PRIORITY INFORMATION',
+            'items' => [
+                $field('Priority Country', $trademark->country_office),
+                $field(__('messages.priority_date'), $formatDate($trademark->priority_date)),
+                $field(__('messages.priority_no'), $trademark->priority_no),
+            ],
+        ],
+        'international-registration' => [
+            'title' => '06 INTERNATIONAL REGISTRATION',
+            'items' => [
+                $field("Int'l Reg. No.", $trademark->int_registration_no),
+                $field("Int'l Registration Date", $formatDate($trademark->int_registration_date)),
+                $field('Contracting State or Organization', $trademark->contracting_organization),
+                $field('Designated Countries', $trademark->designated_countries, true),
+            ],
+        ],
         'sessions' => [
-            'title' => '06 ' . __('messages.client_info'),
+            'title' => '07 CLIENT',
             'items' => [
                 $field(__('messages.client'), optional($trademark->Client)->company_name),
                 $field(__('messages.contact'), optional($trademark->ContactClient)->name),
@@ -459,23 +471,33 @@
             ],
         ],
         'holder' => [
-            'title' => '07 ' . __('messages.holder_info'),
+            'title' => '08 OWNER',
             'items' => [
                 $field(__('messages.holder'), optional($trademark->Holder)->company_name),
                 $field(__('messages.address'), optional($trademark->AddressHolder)->address, true),
                 $field(__('messages.industrial_address'), $trademark->industrial_address, true),
             ],
         ],
-        'notifications' => [
-            'title' => '08 ' . __('messages.priority_information'),
+        'password' => [
+            'title' => '09 IMPORTANT DATES',
             'items' => [
-                $field(__('messages.priority_no'), $trademark->priority_no),
-                $field(__('messages.country_office'), $trademark->country_office),
-                $field(__('messages.priority_date'), $formatDate($trademark->priority_date)),
+                $field(__('messages.declarations_use') . ' - ' . __('messages.last'), $formatDate($trademark->last_declaration)),
+                $field(__('messages.renewals') . ' - ' . __('messages.last'), $formatDate($trademark->last_renewal)),
+                $field(__('messages.declarations_use') . ' - ' . __('messages.next'), $formatDate($trademark->next_declaration)),
+                $field(__('messages.renewals') . ' - ' . __('messages.next'), $formatDate($trademark->next_renewal)),
+            ],
+        ],
+        'proceedings' => [
+            'title' => '10 PROCEEDINGS',
+            'items' => [
+                $field(__('messages.opposition_no'), $trademark->opposition_no),
+                $field(__('messages.filing_date'), $formatDate($trademark->filing_date_opposition)),
+                $field(__('messages.litigation_no'), $trademark->litigation_no),
+                $field(__('messages.filing_date'), $formatDate($trademark->filing_date_litigation)),
             ],
         ],
         'notes' => [
-            'title' => '09 ' . __('messages.note_important'),
+            'title' => '11 NOTES',
             'items' => [
             $field(__('messages.note'), $trademark->notes, true),
             ],
@@ -488,16 +510,7 @@
             $section['items'] = collect($section['items'])->filter(fn ($item) => filled($item['value']));
             return $section;
         })
-        ->filter(fn ($section) => $section['items']->isNotEmpty());
-
-    if (filled($trademark->design)) {
-        $visibleSections->put('design', [
-            'id' => 'design',
-            'title' => __('messages.design'),
-            'items' => collect(),
-            'has_design' => true,
-        ]);
-    }
+        ->filter(fn ($section) => $section['items']->isNotEmpty() || !empty($section['has_design']));
 
     $firstSectionId = optional($visibleSections->first())['id'];
 
@@ -567,8 +580,29 @@
                     <section class="tm-section {{ $section['id'] === $firstSectionId ? 'is-active' : '' }}" id="{{ $section['id'] }}">
                         <h2 class="tm-section-title">{{ $section['title'] }}</h2>
 
-                        @if(!empty($section['has_design']))
-                            <img class="tm-design-image" src="{{ asset('design/'.$trademark->design) }}" alt="Trademark design">
+                        @if($section['id'] === 'trademark-section')
+                            <div class="tm-doc-grid">
+                                @foreach($section['items'] as $item)
+                                    <div class="tm-doc-field {{ $item['full'] ? 'full' : '' }}">
+                                        <span class="tm-doc-label">{{ $item['label'] }}</span>
+                                        <p class="tm-doc-value">{{ $item['value'] }}</p>
+                                    </div>
+
+                                    @if($loop->first && !empty($section['has_design']))
+                                        <div class="tm-doc-field full">
+                                            <span class="tm-doc-label">Representation / Logo</span>
+                                            <img class="tm-design-image" src="{{ asset('design/'.$trademark->design) }}" alt="Trademark design">
+                                        </div>
+                                    @endif
+                                @endforeach
+
+                                @if($section['items']->isEmpty() && !empty($section['has_design']))
+                                    <div class="tm-doc-field full">
+                                        <span class="tm-doc-label">Representation / Logo</span>
+                                        <img class="tm-design-image" src="{{ asset('design/'.$trademark->design) }}" alt="Trademark design">
+                                    </div>
+                                @endif
+                            </div>
                         @else
                             <div class="tm-doc-grid">
                                 @foreach($section['items'] as $item)
@@ -578,18 +612,18 @@
                                     </div>
                                 @endforeach
                             </div>
+                        @endif
 
-                            @if($section['id'] === 'basic-info' && filled($section['use_info'] ?? null))
-                                <div class="tm-use-info">
-                                    <h3 class="tm-use-title">Use Information</h3>
-                                    <div class="tm-doc-grid">
-                                        <div class="tm-doc-field">
-                                            <span class="tm-doc-label">{{ __('messages.first_date') }}</span>
-                                            <p class="tm-doc-value">{{ $section['use_info'] }}</p>
-                                        </div>
+                        @if($section['id'] === 'basic-info' && filled($section['use_info'] ?? null))
+                            <div class="tm-use-info">
+                                <h3 class="tm-use-title">Use Information</h3>
+                                <div class="tm-doc-grid">
+                                    <div class="tm-doc-field">
+                                        <span class="tm-doc-label">{{ __('messages.first_date') }}</span>
+                                        <p class="tm-doc-value">{{ $section['use_info'] }}</p>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
                         @endif
                     </section>
                 @endforeach
