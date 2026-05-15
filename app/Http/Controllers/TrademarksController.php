@@ -397,15 +397,28 @@ class TrademarksController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate($this->trademarkRules());
+        try {
+            $data = $request->validate($this->trademarkRules());
 
-        $trademark = new Trademarks();
-        $this->fillTrademarkFromRequest($trademark, $data, $request);
-        $trademark->save();
+            $trademark = new Trademarks();
+            $this->fillTrademarkFromRequest($trademark, $data, $request);
+            $trademark->save();
 
-        Session::flash('success', 'Se ha guardado sus datos con exito');
-        return redirect()->route('index.trademarks')
-            ->with('success', 'Trademark created successfully.');
+            return redirect()
+                ->route('index.trademarks')
+                ->with('success', 'Trademark created successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            \Log::error('Trademark creation failed', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('swal_error', 'An unexpected error occurred while creating the trademark.');
+        }
     }
 
     public function edit($id)

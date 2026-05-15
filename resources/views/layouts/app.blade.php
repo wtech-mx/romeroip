@@ -201,6 +201,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
+  <script src="{{ asset('assets/js/plugins/sweetalert.min.js') }}"></script>
+
+  @include('layouts.alertas')
 
   @yield('js_custom')
 

@@ -1,66 +1,79 @@
-@if (Session::has('success'))
-<script>
-    Swal.fire({
-        title: 'Exito!!',
-        html: 'Se ha <b>agragado</b> </br> ',
-        imageUrl: '{{ asset('img/icon/checked.png') }}',
-        background: '#fff',
-        imageWidth: 150,
-        imageHeight: 150,
-    })
+@php
+    $validationMessages = collect($errors->all())->values();
+@endphp
 
-</script>
-@endif
-
-@if (Session::has('edit'))
-<script>
-    Swal.fire({
-        title: 'Exito!!',
-        html: 'Se ha <b>editado</b> </br>',
-        imageUrl: '{{ asset('img/icon/edit.png') }}',
-        background: '#fff',
-        imageWidth: 150,
-        imageHeight: 150,
-    })
-
-</script>
-@endif
-
-@if (Session::has('delete'))
-<script>
-    Swal.fire({
-        title: 'Exito!!',
-        html: 'Se ha <b>eliminado</b> </br>',
-        imageUrl: '{{ asset('img/icon/delete.png') }}',
-        background: '#fff',
-        imageWidth: 150,
-        imageHeight: 150,
-    })
-
-</script>
-@endif
-@if(session('swal_error'))
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Search error',
-            text: @json(session('swal_error')),
-            confirmButtonColor: '#FF7F11'
-        });
-    });
-</script>
-@endif
+        if (!window.Swal) {
+            return;
+        }
 
-@if(session('info'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'info',
-            title: 'No results',
-            text: @json(session('info')),
-            confirmButtonColor: '#FF7F11'
-        });
+        const alertConfig = {
+            confirmButtonColor: '#FF7F11',
+            background: '#fff',
+        };
+
+        @if (session('success'))
+            Swal.fire({
+                ...alertConfig,
+                icon: 'success',
+                title: 'Saved successfully',
+                text: @json(session('success')),
+            });
+        @endif
+
+        @if (session('edit'))
+            Swal.fire({
+                ...alertConfig,
+                icon: 'success',
+                title: 'Updated successfully',
+                text: @json(session('edit')),
+            });
+        @endif
+
+        @if (session('delete'))
+            Swal.fire({
+                ...alertConfig,
+                icon: 'success',
+                title: 'Deleted successfully',
+                text: @json(session('delete')),
+            });
+        @endif
+
+        @if (session('swal_error'))
+            Swal.fire({
+                ...alertConfig,
+                icon: 'error',
+                title: 'Something went wrong',
+                text: @json(session('swal_error')),
+            });
+        @endif
+
+        @if (session('info'))
+            Swal.fire({
+                ...alertConfig,
+                icon: 'info',
+                title: 'Notice',
+                text: @json(session('info')),
+            });
+        @endif
+
+        @if ($validationMessages->isNotEmpty())
+            Swal.fire({
+                ...alertConfig,
+                icon: 'warning',
+                title: 'Please review the form',
+                html: `
+                    <div class="text-start">
+                        @foreach ($validationMessages as $message)
+                            <div class="mb-2">
+                                <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                                {{ $message }}
+                            </div>
+                        @endforeach
+                    </div>
+                `,
+            });
+        @endif
     });
 </script>
-@endif
