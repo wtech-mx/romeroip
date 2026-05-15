@@ -651,7 +651,7 @@
                                 <label class="tm-label">{{ __('messages.our_ref') }}</label>
                                 <input id="our_ref" name="our_ref" class="form-control tm-input"
                                     type="text" inputmode="numeric" maxlength="5"
-                                    pattern="[1-9][0-9]{4}"
+                                    pattern="[1-9][0-9]{0,4}"
                                     value="{{ old('our_ref', $trademark->our_ref) }}">
                             </div>
 
@@ -1657,8 +1657,8 @@
         clearInvalid(ourRef);
         clearInvalid(clientRef);
 
-        if (!/^[1-9][0-9]{4}$/.test(ourRefValue)) {
-            markInvalid(ourRef, 'O/Ref. must have exactly 5 digits and cannot start with 0.');
+        if (!/^[1-9][0-9]{0,4}$/.test(ourRefValue)) {
+            markInvalid(ourRef, 'O/Ref. allows up to 5 digits and cannot start with 0.');
             errors.push('O/Ref.');
         }
 

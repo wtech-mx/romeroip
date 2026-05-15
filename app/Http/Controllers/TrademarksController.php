@@ -216,7 +216,7 @@ class TrademarksController extends Controller
 
     private function trademarkRules(?int $id = null, bool $requireCoreFields = true): array
     {
-        $ourRefRules = ['required', 'regex:/^[1-9][0-9]{4}$/', Rule::unique('trademark', 'our_ref')->ignore($id)];
+        $ourRefRules = ['required', 'regex:/^[1-9][0-9]{0,4}$/', Rule::unique('trademark', 'our_ref')->ignore($id)];
         $dateRule = $requireCoreFields ? 'nullable|date' : 'nullable';
 
         return [
