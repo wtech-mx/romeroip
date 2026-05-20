@@ -13,6 +13,7 @@ use DB;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class TrademarksController extends Controller
@@ -23,15 +24,18 @@ class TrademarksController extends Controller
      * @return \Illuminate\Http\Response
      */
      public function index() {
-
-
-      return view('trademark.index');
+        return redirect()->route('advance_search', [
+            'origin' => 'Foreign',
+            'status' => 'all_except_abandoned',
+        ]);
      }
 
     public function advance(Request $request)
     {
         try {
             $filters = $request->validate([
+                'q'                   => ['nullable', 'string', 'max:255'],
+                'our_ref'             => ['nullable', 'string', 'max:100'],
                 'client_ref'          => ['nullable', 'string', 'max:100'],
                 'application_no'      => ['nullable', 'string', 'max:100'],
                 'registration_no'     => ['nullable', 'string', 'max:100'],
@@ -45,7 +49,10 @@ class TrademarksController extends Controller
                 'litigation_no'       => ['nullable', 'string', 'max:100'],
                 'class'               => ['nullable', 'string', 'max:10'],
                 'country'             => ['nullable', 'string', 'max:100'],
-                'national'            => ['nullable', 'string', 'max:100'],
+                'filing_from'         => ['nullable', 'date'],
+                'filing_to'           => ['nullable', 'date'],
+                'registration_from'   => ['nullable', 'date'],
+                'registration_to'     => ['nullable', 'date'],
                 'last_declaration'    => ['nullable', 'date'],
                 'next_declaration'    => ['nullable', 'date'],
                 'last_renewal'        => ['nullable', 'date'],
@@ -59,6 +66,29 @@ class TrademarksController extends Controller
                     'Client:id,company_name',
                     'Holder:id,company_name',
                 ])
+
+                ->when(!empty($filters['our_ref']), fn ($query) =>
+                    $query->where('our_ref', 'like', '%' . trim($filters['our_ref']) . '%')
+                )
+
+                ->when(!empty($filters['q']), function ($query) use ($filters) {
+                    $value = trim($filters['q']);
+
+                    $query->where(function ($q) use ($value) {
+                        $q->where('our_ref', 'like', "%{$value}%")
+                            ->orWhere('client_ref', 'like', "%{$value}%")
+                            ->orWhere('trademark', 'like', "%{$value}%")
+                            ->orWhere('application_no', 'like', "%{$value}%")
+                            ->orWhere('registration_no', 'like', "%{$value}%")
+                            ->orWhere('int_registration_no', 'like', "%{$value}%")
+                            ->orWhereHas('Client', function (Builder $client) use ($value) {
+                                $client->where('company_name', 'like', "%{$value}%");
+                            })
+                            ->orWhereHas('Holder', function (Builder $holder) use ($value) {
+                                $holder->where('company_name', 'like', "%{$value}%");
+                            });
+                    });
+                })
 
                 ->when(!empty($filters['client_ref']), function ($query) use ($filters) {
                     $value = trim($filters['client_ref']);
@@ -81,9 +111,15 @@ class TrademarksController extends Controller
                     $query->where('int_registration_no', 'like', '%' . trim($filters['int_registration_no']) . '%')
                 )
 
-                ->when(!empty($filters['origin']), fn ($query) =>
-                    $query->where('origin', $filters['origin'])
-                )
+                ->when(!empty($filters['origin']), function ($query) use ($filters) {
+                    if ($filters['origin'] === 'Foreign') {
+                        $query->whereIn('origin', ['Foreign', 'International', __('messages.international')]);
+
+                        return;
+                    }
+
+                    $query->where('origin', $filters['origin']);
+                })
 
                 ->when(!empty($filters['id_client']), function ($query) use ($filters) {
                     $value = trim($filters['id_client']);
@@ -105,9 +141,19 @@ class TrademarksController extends Controller
                     $query->where('trademark', 'like', '%' . trim($filters['trademark']) . '%')
                 )
 
-                ->when(!empty($filters['status']), fn ($query) =>
-                    $query->where('status', $filters['status'])
-                )
+                ->when(!empty($filters['status']), function ($query) use ($filters) {
+                    if ($filters['status'] === 'all_except_abandoned') {
+                        $query->where(function ($q) {
+                            $q->whereNull('status')
+                                ->orWhere('status', '')
+                                ->orWhere('status', '!=', 'Abandoned');
+                        });
+
+                        return;
+                    }
+
+                    $query->where('status', $filters['status']);
+                })
 
                 ->when(!empty($filters['opposition_no']), fn ($query) =>
                     $query->where('opposition_no', 'like', '%' . trim($filters['opposition_no']) . '%')
@@ -125,8 +171,22 @@ class TrademarksController extends Controller
                     $query->where('country', $filters['country'])
                 )
 
-                ->when(!empty($filters['national']), fn ($query) =>
-                    $query->where('national', $filters['national'])
+                ->when(
+                    !empty($filters['filing_from']) && !empty($filters['filing_to']),
+                    fn ($query) =>
+                        $query->whereBetween('filing_date_general', [
+                            $filters['filing_from'],
+                            $filters['filing_to']
+                        ])
+                )
+
+                ->when(
+                    !empty($filters['registration_from']) && !empty($filters['registration_to']),
+                    fn ($query) =>
+                        $query->whereBetween('registration_date', [
+                            $filters['registration_from'],
+                            $filters['registration_to']
+                        ])
                 )
 
                 ->when(
