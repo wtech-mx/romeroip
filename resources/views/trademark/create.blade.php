@@ -720,7 +720,7 @@
 
                                                             <input id="our_ref" name="our_ref" class="form-control"
                                                                    type="text" inputmode="numeric" maxlength="5"
-                                                                   pattern="[1-9][0-9]{0,4}" value="{{ $suma }}" required>
+                                                                   pattern="[1-9][0-9]{0,4}" value="{{ $suma }}">
                                                         </div>
                                                     </div>
 
@@ -1717,10 +1717,7 @@ $(document).ready(function () {
     const form = document.getElementById('trademarkForm');
     if (!form) return;
 
-    const requiredFields = [
-        { id: 'trademark', label: 'Trademark' },
-        { id: 'status', label: 'Status' },
-    ];
+    const requiredFields = [];
 
     function clearInvalid(el) {
         if (!el) return;
@@ -1763,7 +1760,7 @@ $(document).ready(function () {
         clearInvalid(ourRef);
         clearInvalid(clientRef);
 
-        if (!/^[1-9][0-9]{0,4}$/.test(ourRefValue)) {
+        if (ourRefValue && !/^[1-9][0-9]{0,4}$/.test(ourRefValue)) {
             markInvalid(ourRef, 'O/Ref. allows up to 5 digits and cannot start with 0.');
             errors.push('O/Ref.');
         }
