@@ -990,7 +990,7 @@
                                                         <div class="input-group">
                                                             <input id="design" name="design"
                                                                    class="form-control" type="file"
-                                                                   accept=".jpg,.jpeg,.png,.webp,image/*">
+                                                                   accept=".jpg,.jpeg,.png,.webp,.gif,image/*">
                                                         </div>
                                                     </div>
 
@@ -1014,7 +1014,6 @@
                                                                 <option value="Slogan">Slogan</option>
                                                                 <option value="Collective Mark">Collective Mark</option>
                                                                 <option value="Certification Mark">Certification Mark</option>
-                                                                <option value="Trade Dress">Trade Dress</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1558,19 +1557,9 @@
 
 <script>
 (function () {
+    const typeApplication = document.getElementById('type_application');
     const typeMark = document.getElementById('type_mark');
-    const logoField = document.getElementById('representationLogoField');
-    const logoPreview = document.getElementById('blah')?.closest('.col-12');
     const descriptionField = document.getElementById('descriptionMarkField');
-
-    const logoTypes = new Set([
-        'Design Mark',
-        'Mixed Mark',
-        'Three-Dimensional Mark',
-        'Holographic Mark',
-        'Trade Dress',
-        'Other'
-    ]);
 
     const descriptionTypes = new Set([
         'Holographic Mark',
@@ -1582,19 +1571,25 @@
 
     function syncTrademarkConditionalFields() {
         const value = typeMark?.value || '';
-        const showLogo = logoTypes.has(value);
         const showDescription = descriptionTypes.has(value);
-
-        [logoField, logoPreview].forEach(el => {
-            if (el) el.classList.toggle('d-none', !showLogo);
-        });
 
         if (descriptionField) {
             descriptionField.classList.toggle('d-none', !showDescription);
         }
     }
 
+    function syncTypeApplicationMark() {
+        if (!typeApplication || !typeMark) return;
+
+        if (['Commercial Name', 'Slogan'].includes(typeApplication.value)) {
+            typeMark.value = 'Word Mark';
+            typeMark.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    }
+
+    typeApplication?.addEventListener('change', syncTypeApplicationMark);
     typeMark?.addEventListener('change', syncTrademarkConditionalFields);
+    syncTypeApplicationMark();
     syncTrademarkConditionalFields();
 })();
 </script>

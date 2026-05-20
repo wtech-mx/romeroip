@@ -872,7 +872,7 @@
                             <div class="col-12" id="representationLogoField">
                                 <label class="tm-label">Representation / Logo</label>
                                 <input id="design" name="design" class="form-control tm-input"
-                                    type="file" accept=".jpg,.jpeg,.png,.webp,image/*">
+                                    type="file" accept=".jpg,.jpeg,.png,.webp,.gif,image/*">
                             </div>
 
                             <div class="col-12" id="representationLogoPreview">
@@ -893,7 +893,6 @@
                                     <option value="Slogan" {{ old('type_application', $trademark->type_application) == 'Slogan' ? 'selected' : '' }}>Slogan</option>
                                     <option value="Collective Mark" {{ old('type_application', $trademark->type_application) == 'Collective Mark' ? 'selected' : '' }}>Collective Mark</option>
                                     <option value="Certification Mark" {{ old('type_application', $trademark->type_application) == 'Certification Mark' ? 'selected' : '' }}>Certification Mark</option>
-                                    <option value="Trade Dress" {{ old('type_application', $trademark->type_application) == 'Trade Dress' ? 'selected' : '' }}>Trade Dress</option>
                                 </select>
                             </div>
 
@@ -1353,30 +1352,33 @@
 
 <script>
 (function () {
+    const typeApplication = document.getElementById('type_application');
     const typeMark = document.getElementById('type_mark');
-    const logoField = document.getElementById('representationLogoField');
-    const logoPreview = document.getElementById('blah')?.closest('.col-12');
     const descriptionField = document.getElementById('descriptionMarkField');
-    const hasExistingLogo = @json(filled($trademark->design));
     const hasExistingDescription = @json(filled($trademark->description_trademark));
-    const logoTypes = new Set(['Design Mark', 'Mixed Mark', 'Three-Dimensional Mark', 'Holographic Mark', 'Trade Dress', 'Other']);
     const descriptionTypes = new Set(['Holographic Mark', 'Sound Mark', 'Scent Mark', 'Trade Dress', 'Other']);
 
     function syncTrademarkConditionalFields() {
         const value = typeMark?.value || '';
-        const showLogo = logoTypes.has(value) || (hasExistingLogo && !value);
         const showDescription = descriptionTypes.has(value) || (hasExistingDescription && !value);
-
-        [logoField, logoPreview].forEach(el => {
-            if (el) el.classList.toggle('d-none', !showLogo);
-        });
 
         if (descriptionField) {
             descriptionField.classList.toggle('d-none', !showDescription);
         }
     }
 
+    function syncTypeApplicationMark() {
+        if (!typeApplication || !typeMark) return;
+
+        if (['Commercial Name', 'Slogan'].includes(typeApplication.value)) {
+            typeMark.value = 'Word Mark';
+            typeMark.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    }
+
+    typeApplication?.addEventListener('change', syncTypeApplicationMark);
     typeMark?.addEventListener('change', syncTrademarkConditionalFields);
+    syncTypeApplicationMark();
     syncTrademarkConditionalFields();
 })();
 </script>

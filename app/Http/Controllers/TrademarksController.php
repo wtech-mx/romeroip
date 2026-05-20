@@ -266,7 +266,7 @@ class TrademarksController extends Controller
             'address_holder'          => $requireCoreFields ? 'nullable|exists:address_holder,id' : 'nullable',
             'industrial_address'      => 'nullable|string|max:255',
 
-            'design'                  => 'nullable|file|mimes:jpg,jpeg,png,webp|max:4096',
+            'design'                  => 'nullable|file|mimes:jpg,jpeg,png,webp,gif|max:4096',
         ];
     }
 
