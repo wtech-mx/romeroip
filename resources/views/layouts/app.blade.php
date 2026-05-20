@@ -55,6 +55,13 @@
         margin-bottom: 0 !important;
         margin-left: 0 !important;
         height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .legal-sidenav #sidenav-collapse-main{
+        flex: 1 1 auto;
+        overflow-y: auto;
       }
 
       .legal-sidenav .sidenav-header{
@@ -110,6 +117,24 @@
         margin-bottom: .35rem;
         letter-spacing: .14em;
         color: #8B857C !important;
+      }
+
+      .legal-sidebar-profile{
+        border-top: 1px solid #D8D2C6;
+        color: #1F2328;
+      }
+
+      .legal-sidebar-name{
+        font-size: .92rem;
+        font-weight: 700;
+      }
+
+      .legal-sidebar-role{
+        margin-top: .15rem;
+        color: #7A746C;
+        font-size: .78rem;
+        font-weight: 600;
+        line-height: 1.35;
       }
 
       .legal-navbar{
