@@ -212,11 +212,7 @@
             <div class="card-header pb-0">
               <div class="d-lg-flex">
                 <div>
-                    @if(Route::currentRouteName() != 'index.trademarks')
-                    <h5 class="mb-0">{{ __('messages.all_trademark') }}: {{ $trademarks->count() }}</h5>
-                    @else
-                    <h5 class="mb-0">{{ __('messages.all_trademark') }}: 0</h5>
-                    @endif
+                    <h5 class="mb-0">{{ __('messages.all_trademark') }}: {{ isset($trademarks) ? $trademarks->total() : 0 }}</h5>
                   <p class="text-sm mb-0">
 
                   </p>
@@ -256,8 +252,8 @@
                   </thead>
 
                   <tbody>
-                   @if(Route::currentRouteName() != 'index.trademarks')
-                        @foreach ($trademarks as $trademark)
+                   @if(isset($trademarks))
+                        @forelse ($trademarks as $trademark)
                             <tr>
                              <td>
                                 <div class="form-check">
@@ -300,7 +296,19 @@
                                 </a> --}}
                             </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="15" class="text-center py-4">
+                                    No records were found with the selected filters.
+                                </td>
+                            </tr>
+                        @endforelse
+                    @else
+                        <tr>
+                            <td colspan="15" class="text-center py-4">
+                                Use the filters to search trademarks.
+                            </td>
+                        </tr>
                     @endif
                   </tbody>
 

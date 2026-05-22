@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <form action="{{ route('advance_search.clients') }}" method="GET" >
+                <form id="client-search-form" action="{{ route('advance_search.clients') }}" method="GET" >
 
                     <div class="card-header pb-0">
                         <div class="d-lg-flex">
@@ -27,28 +27,32 @@
                                     <label class="form-label">{{ __('messages.company_name') }}</label>
                                     <div class="input-group">
                                         <input name="company_name" class="form-control"
-                                            type="search" placeholder="{{ __('messages.company_name') }}">
+                                            type="search" placeholder="{{ __('messages.company_name') }}"
+                                            value="{{ request('company_name') }}">
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <label class="form-label">{{ __('messages.email') }}</label>
                                     <div class="input-group">
                                         <input name="email" class="form-control"
-                                            type="text" placeholder="{{ __('messages.email') }}">
+                                            type="text" placeholder="{{ __('messages.email') }}"
+                                            value="{{ request('email') }}">
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <label class="form-label">{{ __('messages.vat_no') }}.</label>
                                     <div class="input-group">
                                         <input name="vat_no" class="form-control"
-                                            type="text" placeholder="{{ __('messages.vat_no') }}">
+                                            type="text" placeholder="{{ __('messages.vat_no') }}"
+                                            value="{{ request('vat_no') }}">
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <label class="form-label">{{ __('messages.country') }}</label>
                                     <div class="input-group">
                                         <input name="country" class="form-control"
-                                            type="text" placeholder="{{ __('messages.country') }}">
+                                            type="text" placeholder="{{ __('messages.country') }}"
+                                            value="{{ request('country') }}">
                                     </div>
                                 </div>
                             </div>

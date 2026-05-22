@@ -28,22 +28,28 @@ class ClientController extends Controller
     }
 
     public function advance(Request $request) {
-        $clients = DB::table('clients');
-        if( $request->company_name){
-                $clients = $clients->where('company_name', 'LIKE', "%" . $request->company_name . "%");
-        }
-        if( $request->email){
-            $clients = $clients->where('email', 'LIKE', "%" . $request->email . "%");
-        }
-        if( $request->vat_no){
-            $clients = $clients->where('vat_no', 'LIKE', "%" . $request->vat_no . "%");
-        }
-        if( $request->country){
-            $clients = $clients->where('country', 'LIKE', "%" . $request->country . "%");
-        }
-        $clients = $clients->paginate(10);
+        $clients = DB::table('clients')
+            ->when($request->filled('company_name'), function ($query) use ($request) {
+                $query->where('company_name', 'LIKE', '%' . trim($request->company_name) . '%');
+            })
+            ->when($request->filled('email'), function ($query) use ($request) {
+                $query->where('email', 'LIKE', '%' . trim($request->email) . '%');
+            })
+            ->when($request->filled('vat_no'), function ($query) use ($request) {
+                $query->where('vat_no', 'LIKE', '%' . trim($request->vat_no) . '%');
+            })
+            ->when($request->filled('country'), function ($query) use ($request) {
+                $query->where('country', 'LIKE', '%' . trim($request->country) . '%');
+            })
+            ->orderBy('company_name')
+            ->paginate(10)
+            ->withQueryString();
 
-      return view('client.index', compact('clients'));
+        if ($request->ajax()) {
+            return view('client._results', compact('clients'));
+        }
+
+        return view('client.index', compact('clients'));
      }
 
     /**

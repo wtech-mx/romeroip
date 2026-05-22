@@ -24,10 +24,7 @@ class TrademarksController extends Controller
      * @return \Illuminate\Http\Response
      */
      public function index() {
-        return redirect()->route('advance_search', [
-            'origin' => 'Foreign',
-            'status' => 'all_except_abandoned',
-        ]);
+        return view('trademark.index');
      }
 
     public function advance(Request $request)

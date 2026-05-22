@@ -1,5 +1,5 @@
 @php
-    $selectedOrigin = request()->has('origin') ? request('origin') : 'Foreign';
+    $selectedOrigin = request()->has('origin') ? request('origin') : '';
     $selectedStatus = request()->has('status') ? request('status') : 'all_except_abandoned';
 @endphp
 
