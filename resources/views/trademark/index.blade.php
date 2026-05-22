@@ -207,115 +207,8 @@
 <div class="container-fluid py-0">
       <div class="row">
         <div class="col-12">
-          <div class="card tm-results-panel">
-            <!-- Card header -->
-            <div class="card-header pb-0">
-              <div class="d-lg-flex">
-                <div>
-                    <h5 class="mb-0">{{ __('messages.all_trademark') }}: {{ isset($trademarks) ? $trademarks->total() : 0 }}</h5>
-                  <p class="text-sm mb-0">
-
-                  </p>
-                </div>
-
-                <div class="ms-auto my-auto mt-lg-0 mt-4">
-                  <div class="ms-auto my-auto">
-                    <a href="{{ route('create.trademarks') }}" class="btn btn-sm mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.new_trademark') }}</a>
-                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="card-body px-0 pb-0">
-              <div class="table-responsive tm-table-wrap">
-                <table class="table table-flush tm-results-table" id="products-list">
-                  <thead class="thead-light">
-                    <tr>
-                      <th>#</th>
-                      <th>{{ __('messages.our_ref') }}</th>
-                      <th>{{ __('messages.trademark') }}</th>
-                      <th>{{ __('messages.class') }}</th>
-                      <th>{{ __('messages.application_no') }}</th>
-                      <th>{{ __('messages.registration_no') }}</th>
-                      <th>{{ __('messages.registration_date') }}</th>
-                      <th>{{ __('messages.declaration_use') }}</th>
-                      <th>{{ __('messages.renewal') }}</th>
-                      <th>{{ __('messages.holder') }}</th>
-                      <th>{{ __('messages.client') }}</th>
-                      <th>{{ __('messages.client_ref') }}</th>
-                      <th>{{ __('messages.origin') }}</th>
-                      <th>{{ __('messages.status') }}</th>
-                      <th>{{ __('messages.action') }}</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                   @if(isset($trademarks))
-                        @forelse ($trademarks as $trademark)
-                            <tr>
-                             <td>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox"  >
-                                </div>
-                            </td>
-                            <td>{{ $trademark->our_ref }}</td>
-                            <td>{{ $trademark->trademark }}</td>
-                            <td>{{ $trademark->class }}</td>
-                            <td>{{ $trademark->application_no }}</td>
-                            <td>{{ $trademark->registration_no }}</td>
-                            <td>{{ $trademark->registration_date }}</td>
-                            <td>{{ $trademark->last_declaration }}</td>
-                            <td>{{ $trademark->last_renewal }}</td>
-                                @if ($trademark->id_holder == NULL)
-                                    <td></td>
-                                @else
-                                <td></td>
-                                    {{-- <td class="text-center">{{$trademark->Holder->company_name}}</td> --}}
-                                @endif
-
-                                @if ($trademark->id_client == NULL)
-                                    <td></td>
-                                @else
-                                <td></td>
-                                    {{-- <td class="text-center">{{$trademark->Client->company_name}}</td> --}}
-                                @endif
-                            <td>{{ $trademark->client_ref }}</td>
-                            <td>{{ $trademark->origin }}</td>
-                            <td>{{ $trademark->status }}</td>
-                            <td class="text-sm">
-                                <a href="{{ route('show.trademarks', $trademark->id) }}" class="tm-edit-link" data-bs-toggle="tooltip" data-bs-original-title="View trademark">
-                                    view
-                                </a>
-                                <a href="{{ route('edit.trademarks', $trademark->id) }}" class="tm-edit-link" data-bs-toggle="tooltip" data-bs-original-title="Edit trademark">
-                                    edit
-                                </a>
-                                {{-- <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                                <i class="fas fa-trash text-secondary"></i>
-                                </a> --}}
-                            </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="15" class="text-center py-4">
-                                    No records were found with the selected filters.
-                                </td>
-                            </tr>
-                        @endforelse
-                    @else
-                        <tr>
-                            <td colspan="15" class="text-center py-4">
-                                Use the filters to search trademarks.
-                            </td>
-                        </tr>
-                    @endif
-                  </tbody>
-
-                </table>
-
-              </div>
-            </div>
+          <div id="trademark-results">
+            @include('trademark._results')
           </div>
         </div>
       </div>
@@ -327,6 +220,61 @@
 @section('js_custom')
     <script>
     (function () {
+        const trademarkForm = document.getElementById('trademark-search-form');
+        const trademarkResults = document.getElementById('trademark-results');
+
+        async function loadTrademarkResults(url, data = null) {
+            if (!trademarkResults) return;
+
+            const submitButton = trademarkForm ? trademarkForm.querySelector('[type="submit"]') : null;
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+
+            trademarkResults.style.opacity = '0.55';
+
+            try {
+                const requestUrl = data ? `${url}?${data.toString()}` : url;
+                const response = await fetch(requestUrl, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Search request failed.');
+                }
+
+                trademarkResults.innerHTML = await response.text();
+            } catch (error) {
+                alert('No se pudo realizar la busqueda. Intenta nuevamente.');
+            } finally {
+                trademarkResults.style.opacity = '1';
+
+                if (submitButton) {
+                    submitButton.disabled = false;
+                }
+            }
+        }
+
+        if (trademarkForm) {
+            trademarkForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                loadTrademarkResults(trademarkForm.action, new URLSearchParams(new FormData(trademarkForm)));
+            });
+        }
+
+        if (trademarkResults) {
+            trademarkResults.addEventListener('click', function (event) {
+                const link = event.target.closest('.pagination a');
+
+                if (!link) return;
+
+                event.preventDefault();
+                loadTrademarkResults(link.href);
+            });
+        }
+
         function debounce(fn, delay = 300) {
             let timer;
             return function (...args) {

@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card tm-search-panel">
-                <form action="{{ route('advance_search') }}" method="GET">
+                <form id="trademark-search-form" action="{{ route('advance_search') }}" method="GET">
                     <div class="card-header pb-0">
                         <div class="d-lg-flex align-items-center">
                             <div>

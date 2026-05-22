@@ -220,6 +220,10 @@ class TrademarksController extends Controller
                 ->paginate(10)
                 ->appends($request->query());
 
+            if ($request->ajax()) {
+                return view('trademark._results', compact('trademarks'));
+            }
+
             if ($trademarks->isEmpty()) {
                 return view('trademark.index', compact('trademarks'))
                     ->with('info', 'No records were found with the selected filters.');
