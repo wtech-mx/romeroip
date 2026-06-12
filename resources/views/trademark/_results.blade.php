@@ -8,7 +8,6 @@
 
             <div class="ms-auto my-auto mt-lg-0 mt-4">
                 <div class="ms-auto my-auto">
-                    <a href="{{ route('create.trademarks') }}" class="btn btn-sm mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.new_trademark') }}</a>
                     <button class="btn btn-sm mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
                 </div>
             </div>
@@ -20,7 +19,10 @@
             <table class="table table-flush tm-results-table" id="products-list">
                 <thead class="thead-light">
                     <tr>
-                        <th>#</th>
+                        <th class="tm-select-col">
+                            <input class="form-check-input js-select-all-trademarks" type="checkbox" aria-label="Select all search results">
+                        </th>
+                        <th>{{ __('messages.action') }}</th>
                         <th>{{ __('messages.our_ref') }}</th>
                         <th>{{ __('messages.trademark') }}</th>
                         <th>{{ __('messages.class') }}</th>
@@ -34,7 +36,6 @@
                         <th>{{ __('messages.client_ref') }}</th>
                         <th>{{ __('messages.origin') }}</th>
                         <th>{{ __('messages.status') }}</th>
-                        <th>{{ __('messages.action') }}</th>
                     </tr>
                 </thead>
 
@@ -44,8 +45,16 @@
                             <tr>
                                 <td>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
+                                        <input class="form-check-input js-select-trademark" type="checkbox" value="{{ $trademark->id }}" aria-label="Select trademark {{ $trademark->our_ref }}">
                                     </div>
+                                </td>
+                                <td class="text-sm tm-actions-cell">
+                                    <a href="{{ route('show.trademarks', $trademark->id) }}" class="tm-edit-link" data-bs-toggle="tooltip" data-bs-original-title="View trademark">
+                                        view
+                                    </a>
+                                    <a href="{{ route('edit.trademarks', $trademark->id) }}" class="tm-edit-link" data-bs-toggle="tooltip" data-bs-original-title="Edit trademark">
+                                        edit
+                                    </a>
                                 </td>
                                 <td>{{ $trademark->our_ref }}</td>
                                 <td>{{ $trademark->trademark }}</td>
@@ -60,14 +69,6 @@
                                 <td>{{ $trademark->client_ref }}</td>
                                 <td>{{ $trademark->origin }}</td>
                                 <td>{{ $trademark->status }}</td>
-                                <td class="text-sm">
-                                    <a href="{{ route('show.trademarks', $trademark->id) }}" class="tm-edit-link" data-bs-toggle="tooltip" data-bs-original-title="View trademark">
-                                        view
-                                    </a>
-                                    <a href="{{ route('edit.trademarks', $trademark->id) }}" class="tm-edit-link" data-bs-toggle="tooltip" data-bs-original-title="Edit trademark">
-                                        edit
-                                    </a>
-                                </td>
                             </tr>
                         @empty
                             <tr>

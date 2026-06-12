@@ -50,6 +50,7 @@
         margin-bottom: 1rem;
         background-color: #FBFAF6;
         border: 1px solid var(--tm-border);
+        border-radius: 12px;
         padding: 2rem 2.15rem 1.5rem;
     }
 
@@ -201,7 +202,7 @@
     .tm-section-card{
         background: #fff;
         border: 1px solid rgba(216,210,198,.72);
-        border-radius: 8px;
+        border-radius: 12px;
         box-shadow: 0 18px 45px rgba(24,31,43,.07);
         margin-bottom: 1.25rem;
         padding: 2.35rem 2.45rem 2.15rem;
@@ -675,8 +676,8 @@
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.filing_date') }}</label>
                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('filing_date_opposition', optional($trademark->filing_date_opposition)->format ? $trademark->filing_date_opposition->format('m d Y') : (filled($trademark->filing_date_opposition) ? \Carbon\Carbon::parse($trademark->filing_date_opposition)->format('m d Y') : '') ) }}">
+                                    type="date"
+                                    value="{{ old('filing_date_opposition', optional($trademark->filing_date_opposition)->format ? $trademark->filing_date_opposition->format('Y-m-d') : (filled($trademark->filing_date_opposition) ? \Carbon\Carbon::parse($trademark->filing_date_opposition)->format('Y-m-d') : '') ) }}">
                             </div>
 
                             <div class="col-md-6">
@@ -689,8 +690,8 @@
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.filing_date') }}</label>
                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('filing_date_litigation', filled($trademark->filing_date_litigation) ? \Carbon\Carbon::parse($trademark->filing_date_litigation)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('filing_date_litigation', filled($trademark->filing_date_litigation) ? \Carbon\Carbon::parse($trademark->filing_date_litigation)->format('Y-m-d') : '') }}">
                             </div>
                             --}}
                         </div>
@@ -748,22 +749,22 @@
                             <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.filing_date') }}</label>
                                 <input id="filing_date_general" name="filing_date_general" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('filing_date_general', filled($trademark->filing_date_general) ? \Carbon\Carbon::parse($trademark->filing_date_general)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('filing_date_general', filled($trademark->filing_date_general) ? \Carbon\Carbon::parse($trademark->filing_date_general)->format('Y-m-d') : '') }}">
                             </div>
 
                             <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.registration_date') }}</label>
                                 <input id="registrationDate" name="registration_date" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('registration_date', filled($trademark->registration_date) ? \Carbon\Carbon::parse($trademark->registration_date)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('registration_date', filled($trademark->registration_date) ? \Carbon\Carbon::parse($trademark->registration_date)->format('Y-m-d') : '') }}">
                             </div>
 
                             <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.expiration_date') }}</label>
                                 <input id="expirationDate" name="expiration_date" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('expiration_date', filled($trademark->expiration_date) ? \Carbon\Carbon::parse($trademark->expiration_date)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('expiration_date', filled($trademark->expiration_date) ? \Carbon\Carbon::parse($trademark->expiration_date)->format('Y-m-d') : '') }}">
                             </div>
 
                             <div class="col-md-4">
@@ -790,8 +791,8 @@
                             <div class="col-md-4">
                                 <label class="tm-label">{{ __('messages.first_date') }}</label>
                                 <input id="first_date" name="first_date" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('first_date', filled($trademark->first_date) ? \Carbon\Carbon::parse($trademark->first_date)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('first_date', filled($trademark->first_date) ? \Carbon\Carbon::parse($trademark->first_date)->format('Y-m-d') : '') }}">
                             </div>
                         </div>
                     </div>
@@ -820,29 +821,29 @@
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.last') }}</label>
                                 <input id="lastDeclarationDate" name="last_declaration" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('last_declaration', filled($trademark->last_declaration) ? \Carbon\Carbon::parse($trademark->last_declaration)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('last_declaration', filled($trademark->last_declaration) ? \Carbon\Carbon::parse($trademark->last_declaration)->format('Y-m-d') : '') }}">
                             </div>
 
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.last') }}</label>
                                 <input id="lastRenewalsDate" name="last_renewal" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('last_renewal', filled($trademark->last_renewal) ? \Carbon\Carbon::parse($trademark->last_renewal)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('last_renewal', filled($trademark->last_renewal) ? \Carbon\Carbon::parse($trademark->last_renewal)->format('Y-m-d') : '') }}">
                             </div>
 
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.next') }}</label>
                                 <input id="declarationOfUseDate" name="next_declaration" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('next_declaration', filled($trademark->next_declaration) ? \Carbon\Carbon::parse($trademark->next_declaration)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('next_declaration', filled($trademark->next_declaration) ? \Carbon\Carbon::parse($trademark->next_declaration)->format('Y-m-d') : '') }}">
                             </div>
 
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.next') }}</label>
                                 <input id="renewalDate" name="next_renewal" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('next_renewal', filled($trademark->next_renewal) ? \Carbon\Carbon::parse($trademark->next_renewal)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('next_renewal', filled($trademark->next_renewal) ? \Carbon\Carbon::parse($trademark->next_renewal)->format('Y-m-d') : '') }}">
                             </div>
                         </div>
                     </div>
@@ -953,7 +954,12 @@
                                 <select class="form-control tm-select" id="class" name="class">
                                     <option value="">{{ __('messages.select') }}</option>
                                     @for ($i = 1; $i <= 45; $i++)
-                                        <option value="{{ $i }}" {{ old('class', $trademark->class) == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                        @php
+                                            $classValue = str_pad($i, 2, '0', STR_PAD_LEFT);
+                                            $selectedClass = old('class', $trademark->class);
+                                            $isSelectedClass = (string) $selectedClass === $classValue || (string) $selectedClass === (string) $i;
+                                        @endphp
+                                        <option value="{{ $classValue }}" {{ $isSelectedClass ? 'selected' : '' }}>{{ $classValue }}</option>
                                     @endfor
                                 </select>
                             </div>
@@ -1115,8 +1121,8 @@
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.priority_date') }}</label>
                                 <input id="priority_date" name="priority_date" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('priority_date', filled($trademark->priority_date) ? \Carbon\Carbon::parse($trademark->priority_date)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('priority_date', filled($trademark->priority_date) ? \Carbon\Carbon::parse($trademark->priority_date)->format('Y-m-d') : '') }}">
                             </div>
                         </div>
                     </div>
@@ -1143,8 +1149,8 @@
                             <div class="col-md-6">
                                 <label class="tm-label">Int'l Registration Date</label>
                                 <input id="int_registration_date" name="int_registration_date" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('int_registration_date', filled($trademark->int_registration_date) ? \Carbon\Carbon::parse($trademark->int_registration_date)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('int_registration_date', filled($trademark->int_registration_date) ? \Carbon\Carbon::parse($trademark->int_registration_date)->format('Y-m-d') : '') }}">
                             </div>
 
                             <div class="col-md-6">
@@ -1184,8 +1190,8 @@
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.filing_date') }}</label>
                                 <input id="filing_date_opposition" name="filing_date_opposition" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('filing_date_opposition', filled($trademark->filing_date_opposition) ? \Carbon\Carbon::parse($trademark->filing_date_opposition)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('filing_date_opposition', filled($trademark->filing_date_opposition) ? \Carbon\Carbon::parse($trademark->filing_date_opposition)->format('Y-m-d') : '') }}">
                             </div>
 
                             <div class="col-md-6">
@@ -1198,8 +1204,8 @@
                             <div class="col-md-6">
                                 <label class="tm-label">{{ __('messages.filing_date') }}</label>
                                 <input id="filing_date_litigation" name="filing_date_litigation" class="form-control tm-input date-mask"
-                                    type="text" maxlength="10" placeholder="MM DD YYYY"
-                                    value="{{ old('filing_date_litigation', filled($trademark->filing_date_litigation) ? \Carbon\Carbon::parse($trademark->filing_date_litigation)->format('m d Y') : '') }}">
+                                    type="date"
+                                    value="{{ old('filing_date_litigation', filled($trademark->filing_date_litigation) ? \Carbon\Carbon::parse($trademark->filing_date_litigation)->format('Y-m-d') : '') }}">
                             </div>
                         </div>
                     </div>
@@ -1332,6 +1338,10 @@
     initialSection?.scrollIntoView({ block: 'start' });
 
     document.querySelectorAll('.date-mask').forEach(input => {
+        if (input.type === 'date') {
+            return;
+        }
+
         input.addEventListener('input', function () {
             let value = this.value.replace(/\D/g, '').substring(0, 8);
 

@@ -160,9 +160,12 @@ class TrademarksController extends Controller
                     $query->where('litigation_no', 'like', '%' . trim($filters['litigation_no']) . '%')
                 )
 
-                ->when(!empty($filters['class']), fn ($query) =>
-                    $query->where('class', $filters['class'])
-                )
+                ->when(!empty($filters['class']), function ($query) use ($filters) {
+                    $class = $filters['class'];
+                    $legacyClass = ltrim($class, '0') ?: $class;
+
+                    $query->whereIn('class', array_unique([$class, $legacyClass]));
+                })
 
                 ->when(!empty($filters['country']), fn ($query) =>
                     $query->where('country', $filters['country'])
@@ -313,7 +316,7 @@ class TrademarksController extends Controller
             'translation'             => 'nullable|string',
             'transliteration_trademark'=> 'nullable|string',
             'disclaimer'              => 'nullable|string',
-            'class'                   => 'nullable|integer|min:1|max:45',
+            'class'                   => ['nullable', Rule::in(array_map(fn ($class) => str_pad($class, 2, '0', STR_PAD_LEFT), range(1, 45)))],
             'translation_good'        => 'nullable|string',
             'description_good'        => 'nullable|string',
             'priority_no'             => 'nullable|string|max:100',
@@ -519,7 +522,7 @@ class TrademarksController extends Controller
             $trademark->save();
 
             return redirect()
-                ->route('index.trademarks')
+                ->route('edit.trademarks', $trademark->id)
                 ->with('success', 'Trademark updated successfully.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::warning('Trademark update validation failed', [

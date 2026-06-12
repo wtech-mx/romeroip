@@ -11,10 +11,19 @@
             </a>
           </div>
 
+        @php
+          $isTrademarkSection = Request::is('trademarks*');
+          $breadcrumbRootLabel = $isTrademarkSection ? 'Trademarks' : 'Dashboard';
+          $breadcrumbRootRoute = $isTrademarkSection ? route('index.trademarks') : route('dashboard');
+          $breadcrumbCurrent = trim($__env->yieldContent('page_actuality'));
+        @endphp
+
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5 legal-breadcrumb">
-            <li class="breadcrumb-item text-sm"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item text-sm active" aria-current="page">@yield('page_actuality')</li>
+            <li class="breadcrumb-item text-sm"><a href="{{ $breadcrumbRootRoute }}">{{ $breadcrumbRootLabel }}</a></li>
+            @if($breadcrumbCurrent !== '')
+              <li class="breadcrumb-item text-sm active" aria-current="page">{{ $breadcrumbCurrent }}</li>
+            @endif
           </ol>
         </nav>
 

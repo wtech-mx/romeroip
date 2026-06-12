@@ -28,7 +28,7 @@
     .tm-results-panel{
         background: #FBFAF6 !important;
         border: 1px solid var(--tm-border) !important;
-        border-radius: 0 !important;
+        border-radius: 12px !important;
         box-shadow: none !important;
     }
 
@@ -99,31 +99,43 @@
     }
 
     .tm-search-panel .btn,
-    .tm-results-panel .btn{
+    .tm-results-panel .btn,
+    .tm-index-actions .btn{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         min-height: 40px;
         padding: 0 .95rem;
-        border-radius: 3px !important;
+        border-radius: 6px !important;
         font-weight: 700;
         border: 1px solid var(--tm-dark) !important;
         background: transparent !important;
         color: var(--tm-dark) !important;
         box-shadow: none !important;
+        text-align: center;
     }
 
     .tm-search-panel button[type="submit"],
-    .tm-results-panel button{
+    .tm-results-panel button,
+    .tm-index-actions .tm-primary-action{
         background: var(--tm-dark) !important;
         color: #fff !important;
     }
 
+    .tm-index-actions{
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+    }
+
     .autocomplete-box{
         border-color: var(--tm-border);
-        border-radius: 3px;
+        border-radius: 8px;
         box-shadow: 0 10px 22px rgba(31,35,40,.08);
     }
 
     .autocomplete-item{
-        border-radius: 2px;
+        border-radius: 6px;
     }
 
     .autocomplete-item:hover{
@@ -167,6 +179,16 @@
         background: rgba(138,111,62,.05);
     }
 
+    .tm-select-col{
+        width: 48px;
+        min-width: 48px;
+    }
+
+    .tm-actions-cell{
+        white-space: nowrap;
+        min-width: 86px;
+    }
+
     .tm-edit-link{
         color: var(--tm-dark);
         font-weight: 700;
@@ -202,6 +224,14 @@
 @section('content')
 
 <div class="tm-index-page">
+  <div class="container-fluid">
+      <div class="tm-index-actions">
+          <a href="{{ route('create.trademarks') }}" class="btn btn-sm tm-primary-action">
+              {{ __('messages.new_trademark') }}
+          </a>
+      </div>
+  </div>
+
   @include('filtros')
 
 <div class="container-fluid py-0">
@@ -266,12 +296,35 @@
 
         if (trademarkResults) {
             trademarkResults.addEventListener('click', function (event) {
+                const selectAll = event.target.closest('.js-select-all-trademarks');
+
+                if (selectAll) {
+                    trademarkResults.querySelectorAll('.js-select-trademark').forEach(checkbox => {
+                        checkbox.checked = selectAll.checked;
+                    });
+
+                    return;
+                }
+
                 const link = event.target.closest('.pagination a');
 
                 if (!link) return;
 
                 event.preventDefault();
                 loadTrademarkResults(link.href);
+            });
+
+            trademarkResults.addEventListener('change', function (event) {
+                if (!event.target.matches('.js-select-trademark')) return;
+
+                const rowChecks = Array.from(trademarkResults.querySelectorAll('.js-select-trademark'));
+                const selectAll = trademarkResults.querySelector('.js-select-all-trademarks');
+
+                if (!selectAll || !rowChecks.length) return;
+
+                const checkedCount = rowChecks.filter(checkbox => checkbox.checked).length;
+                selectAll.checked = checkedCount === rowChecks.length;
+                selectAll.indeterminate = checkedCount > 0 && checkedCount < rowChecks.length;
             });
         }
 

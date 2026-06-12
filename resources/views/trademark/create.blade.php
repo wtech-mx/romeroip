@@ -195,7 +195,7 @@
         padding: 2rem 2.15rem 1.5rem;
         background: #FBFAF6;
         border: 1px solid var(--tm-border);
-        border-radius: 0;
+        border-radius: 12px;
         box-shadow: none;
     }
 
@@ -316,7 +316,7 @@
         padding: 2.35rem 2.45rem 2.15rem !important;
         background: #fff !important;
         border: 1px solid rgba(216,210,198,.72) !important;
-        border-radius: 8px !important;
+        border-radius: 12px !important;
         box-shadow: 0 18px 45px rgba(24,31,43,.07) !important;
     }
 
@@ -442,7 +442,7 @@
         border: 1px solid var(--tm-dark);
         background: transparent;
         color: var(--tm-dark);
-        border-radius: 0;
+        border-radius: 3px;
         padding: .45rem .75rem;
         margin-right: .75rem;
         font-weight: 700;
@@ -1090,7 +1090,8 @@
                                                             <select class="form-control" id="class" name="class">
                                                                 <option value="" selected>{{ __('messages.select') }}</option>
                                                                 @for ($i = 1; $i <= 45; $i++)
-                                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                                    @php($classValue = str_pad($i, 2, '0', STR_PAD_LEFT))
+                                                                    <option value="{{ $classValue }}" {{ old('class') === $classValue ? 'selected' : '' }}>{{ $classValue }}</option>
                                                                 @endfor
                                                             </select>
                                                         </div>

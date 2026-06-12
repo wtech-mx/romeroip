@@ -73,7 +73,8 @@
                                 <select class="form-control" name="class">
                                     <option value="" {{ request('class') == '' ? 'selected' : '' }}>{{ __('messages.all') }}</option>
                                     @for($i = 1; $i <= 45; $i++)
-                                        <option value="{{ $i }}" {{ request('class') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                        @php($classValue = str_pad($i, 2, '0', STR_PAD_LEFT))
+                                        <option value="{{ $classValue }}" {{ request('class') == $classValue || request('class') == $i ? 'selected' : '' }}>{{ $classValue }}</option>
                                     @endfor
                                 </select>
                             </div>
