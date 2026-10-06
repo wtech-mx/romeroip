@@ -490,8 +490,8 @@ class TrademarksController extends Controller
         $trademark = Trademarks::with([
             'Client:id,company_name',
             'Holder:id,company_name',
-            'ContactClient:id,name',
-            'AddressContact:id,address',
+            'ContactClient:id,name,email',
+            'AddressContact:id,address,billing_address',
             'AddressHolder:id,address',
         ])->findOrFail($id);
 
@@ -503,7 +503,7 @@ class TrademarksController extends Controller
         $trademark = Trademarks::with([
             'Client:id,company_name',
             'Holder:id,company_name',
-            'ContactClient:id,name',
+            'ContactClient:id,name,email',
             'AddressContact:id,address,billing_address',
             'AddressHolder:id,address',
         ])->findOrFail($id);
