@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
   <meta charset="utf-8" />
@@ -11,7 +11,7 @@
     @yield('template_title') - {{$configuracion->nombre_sistema}}
   </title>
   <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Nucleo Icons -->
   <link href="{{ asset('assets/css/nucleo-icons.css')}}" rel="stylesheet" />
   <link href="{{ asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
@@ -25,181 +25,9 @@
     <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/fixedheader/3.2.3/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-      .legal-shell{
-        background: #F4F1EA !important;
-        color: #1F2328;
-      }
-
-      .legal-shell-bg{
-        display: none !important;
-      }
-
-      .legal-shell .main-content{
-        background: #F4F1EA;
-        min-height: 100vh;
-      }
-
-      .legal-shell .container-fluid.py-4{
-        padding-top: 1.25rem !important;
-      }
-
-      .legal-sidenav{
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        border-right: 1px solid #D8D2C6 !important;
-        background: #FBFAF6 !important;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        margin-left: 0 !important;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .legal-sidenav #sidenav-collapse-main{
-        flex: 1 1 auto;
-        overflow-y: auto;
-      }
-
-      .legal-sidenav .sidenav-header{
-        height: auto;
-        padding: 1.35rem 1.5rem 1.15rem;
-      }
-
-      .legal-sidenav .navbar-brand{
-        padding: 0;
-      }
-
-      .legal-sidenav .navbar-brand-img{
-        max-height: 36px;
-      }
-
-      .legal-sidenav .horizontal{
-        margin: 0 1.5rem 1rem !important;
-        background-color: #D8D2C6;
-      }
-
-      .legal-sidenav .navbar-nav{
-        padding: 0 1rem;
-      }
-
-      .legal-sidenav .nav-link{
-        border-radius: 0 !important;
-        margin: 0;
-        padding: .85rem .35rem !important;
-        color: #5E625E !important;
-        font-weight: 600;
-        border-bottom: 1px solid transparent;
-        box-shadow: none !important;
-      }
-
-      .legal-sidenav .nav-link.active{
-        background: transparent !important;
-        color: #1F2328 !important;
-        border-bottom-color: #8A6F3E;
-      }
-
-      .legal-sidenav .nav-link:hover{
-        color: #1F2328 !important;
-      }
-
-      .legal-sidenav .nav-link-text{
-        margin-left: 0 !important;
-      }
-
-      .legal-sidenav .legal-submenu{
-        margin: .1rem 0 .45rem .35rem;
-        padding-left: .85rem;
-        border-left: 1px solid #D8D2C6;
-      }
-
-      .legal-sidenav .legal-submenu .nav-link{
-        padding: .42rem .25rem !important;
-        font-size: .82rem;
-        line-height: 1.25;
-        border-bottom: 0;
-      }
-
-      .legal-sidenav .legal-submenu-title{
-        color: #343A40 !important;
-        font-weight: 700;
-      }
-
-      .legal-sidenav .legal-submenu-items{
-        margin: .05rem 0 .45rem .45rem;
-        padding-left: .65rem;
-        border-left: 1px solid #E7E0D4;
-      }
-
-      .legal-sidenav .legal-submenu-items .nav-link{
-        color: #77716A !important;
-        font-size: .76rem;
-        font-weight: 600;
-        padding-top: .32rem !important;
-        padding-bottom: .32rem !important;
-      }
-
-      .legal-sidenav .legal-submenu-items .nav-link:hover{
-        color: #1F2328 !important;
-      }
-
-      .legal-sidenav h6{
-        padding-left: .35rem !important;
-        margin-left: 0 !important;
-        margin-top: 1.4rem;
-        margin-bottom: .35rem;
-        letter-spacing: .14em;
-        color: #8B857C !important;
-      }
-
-      .legal-sidebar-profile{
-        border-top: 1px solid #D8D2C6;
-        color: #1F2328;
-      }
-
-      .legal-sidebar-name{
-        font-size: .92rem;
-        font-weight: 700;
-      }
-
-      .legal-sidebar-role{
-        margin-top: .15rem;
-        color: #7A746C;
-        font-size: .78rem;
-        font-weight: 600;
-        line-height: 1.35;
-      }
-
-      .legal-navbar{
-        margin-top: 0 !important;
-        padding-top: .75rem !important;
-        padding-bottom: .75rem !important;
-        background: transparent !important;
-      }
-
-      .legal-breadcrumb a,
-      .legal-breadcrumb .breadcrumb-item,
-      .legal-breadcrumb .breadcrumb-item.active{
-        color: #6F6A62 !important;
-        font-weight: 600;
-      }
-
-      .legal-navbar .sidenav-toggler-line{
-        background: #1F2328 !important;
-      }
-
-      .legal-user-menu{
-        border: 1px solid #BFB7A8 !important;
-        color: #1F2328 !important;
-        background: transparent !important;
-        border-radius: 0 !important;
-        font-weight: 700;
-      }
-    </style>
     @yield('css')
+    <link href="{{ asset('assets/css/romero-ui.css') }}?v={{ filemtime(public_path('assets/css/romero-ui.css')) }}" rel="stylesheet" />
   {{-- <style>
         input:before {
             content: attr(data-date);

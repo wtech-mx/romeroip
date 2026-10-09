@@ -10,7 +10,7 @@
     RomeroIp
   </title>
   <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Nucleo Icons -->
   <link href="{{ asset('assets/css/nucleo-icons.css')}}" rel="stylesheet" />
   <link href="{{ asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
@@ -19,9 +19,10 @@
   <link href="{{ asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
+<link href="{{ asset('assets/css/romero-ui.css') }}?v={{ filemtime(public_path('assets/css/romero-ui.css')) }}" rel="stylesheet" />
 </head>
 
-<body class="">
+<body class="ui-auth">
 
   <main class="main-content main-content-bg mt-0">
     <div class="page-header min-vh-100" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-basic.jpg');">
@@ -31,7 +32,7 @@
           <div class="col-lg-4 col-md-7">
             <div class="card border-0 mb-0">
               <div class="card-header bg-transparent">
-                <h5 class="text-dark text-center mt-2 mb-3">Welcome!</h5>
+                <div class="text-center text-muted text-sm mb-3">ROMERO IP</div><h5 class="text-dark text-center mt-2 mb-3">Welcome back</h5>
               </div>
               <div class="card-body px-lg-5 pt-0">
                 <div class="text-center text-muted mb-4">
@@ -42,7 +43,7 @@
                   @csrf
 
                   <div class="mb-3">
-                    <input id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <input aria-label="Email" id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -51,7 +52,7 @@
                   </div>
 
                   <div class="mb-3">
-                    <input id="password" type="password" placeholder="*****" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                    <input aria-label="Password" id="password" type="password" placeholder="*****" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                     @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -60,8 +61,8 @@
                   </div>
 
                   <div class="form-check form-switch">
-                    <input class="form-check-input" id=" customCheckLogin" type="checkbox" name="remember" id="remember"{{ old('remember') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="rememberMe">{{ __('Remember Me') }}</label>
+                    <input class="form-check-input" id="remember" type="checkbox" name="remember"{{ old('remember') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="remember">{{ __('Remember Me') }}</label>
                   </div>
 
                   <div class="text-center">
