@@ -313,17 +313,6 @@
             }
         };
 
-        $headerRegistration = filled($trademark->registration_no)
-            ? 'Registro No. ' . $trademark->registration_no
-            : (filled($trademark->application_no) ? 'Solicitud No. ' . $trademark->application_no : null);
-        $headerClass = filled($trademark->class) ? 'Clase ' . $trademark->class : null;
-        $headerClient = optional($trademark->Client)->company_name;
-        $headerOwner = optional($trademark->Holder)->company_name;
-        $headerRefs = collect([
-            filled($trademark->our_ref) ? 'O/Ref. ' . $trademark->our_ref : null,
-            filled($trademark->client_ref) ? 'C/Ref. ' . $trademark->client_ref : null,
-        ])->filter()->implode(' - ');
-        $headerStatus = old('status', $trademark->status);
     @endphp
 
     <form method="POST"
@@ -334,37 +323,12 @@
         @csrf
         @method('PATCH')
 
+        <div class="tm-toolbar tm-page-actions" aria-label="File actions">
+            <a class="tm-btn" href="{{ route('index.trademarks') }}">{{ __('messages.back') }}</a>
+            <button type="submit" class="tm-btn tm-btn-save">{{ __('messages.update') }}</button>
+        </div>
         <div class="tm-file-shell">
-            <header class="tm-header">
-                <div>
-                    <div class="tm-title-line">
-                        <h1 class="tm-title">{{ $trademark->trademark ?: __('messages.edit_trademark') }}</h1>
-                        @if(filled($headerStatus))
-                            <span class="tm-status-pill">{{ $headerStatus }}</span>
-                        @endif
-                    </div>
-
-                    <div class="tm-header-meta">
-                        @if(filled($headerRegistration) || filled($headerClass))
-                            <strong>{{ collect([$headerRegistration, $headerClass])->filter()->implode(' - ') }}</strong>
-                        @endif
-                        @if(filled($headerOwner))
-                            <span>{{ $headerOwner }}</span>
-                        @endif
-                        @if(filled($headerClient))
-                            <span>{{ $headerClient }}</span>
-                        @endif
-                        @if(filled($headerRefs))
-                            <span class="tm-header-muted">{{ $headerRefs }}</span>
-                        @endif
-                    </div>
-                </div>
-
-                <div class="tm-toolbar">
-                    <a class="tm-btn" href="javascript:history.back()">{{ __('messages.back') }}</a>
-                    <button type="submit" class="tm-btn tm-btn-save">{{ __('messages.update') }}</button>
-                </div>
-            </header>
+            @include('trademark._header', ['isNewFile' => false])
 
             <div class="mt-3">
                 @includeIf('partials.errors')
@@ -487,11 +451,7 @@
                         <label class="tm-label" for="status">{{ __('messages.status') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" id="status" name="status">
-                                <option value="{{ __('messages.registered') }}" {{ old('status', $trademark->status) == __('messages.registered') ? 'selected' : '' }}>{{ __('messages.registered') }}</option>
-                                <option value="{{ __('messages.pending') }}" {{ old('status', $trademark->status) == __('messages.pending') ? 'selected' : '' }}>{{ __('messages.pending') }}</option>
-                                <option value="{{ __('messages.abandoned') }}" {{ old('status', $trademark->status) == __('messages.abandoned') ? 'selected' : '' }}>{{ __('messages.abandoned') }}</option>
-                                <option value="{{ __('messages.lapsed') }}" {{ old('status', $trademark->status) == __('messages.lapsed') ? 'selected' : '' }}>{{ __('messages.lapsed') }}</option>
-                                <option value="{{ __('messages.inactive') }}" {{ old('status', $trademark->status) == __('messages.inactive') ? 'selected' : '' }}>{{ __('messages.inactive') }}</option>
+                                @include('trademark._status-options', ['currentStatus' => old('status', $trademark->status)])
                             </select>
                         </div>
                     </div>
@@ -833,6 +793,7 @@
 @endsection
 
 @section('js_custom')
+<script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
 <script>
 (function () {
     function setSelectedOptionIfExists(selectId, value) {
@@ -1153,7 +1114,7 @@ $(document).ready(function() {
         let value = $(this).val();
         if (!value) return;
 
-        let registrationDate = new Date(value);
+        let registrationDate = new Date(value + 'T00:00:00');
         if (isNaN(registrationDate.getTime())) return;
 
         let expirationDate = new Date(registrationDate);
@@ -1162,26 +1123,26 @@ $(document).ready(function() {
         let declarationOfUseDate = new Date(registrationDate);
         declarationOfUseDate.setFullYear(declarationOfUseDate.getFullYear() + 3);
 
-        $('#expirationDate').val(formatDate(expirationDate));
-        $('#declarationOfUseDate').val(formatDate(declarationOfUseDate));
-        $('#renewalDate').val(formatDate(expirationDate));
+        $('#expirationDate').val(formatDate(expirationDate)).trigger('change');
+        $('#declarationOfUseDate').val(formatDate(declarationOfUseDate)).trigger('change');
+        $('#renewalDate').val(formatDate(expirationDate)).trigger('change');
     });
 
     $('#lastDeclarationDate').on('change', function() {
         let renewalDate = $('#renewalDate').val();
-        $('#declarationOfUseDate').val(renewalDate);
+        $('#declarationOfUseDate').val(renewalDate).trigger('change');
     });
 
     $('#lastRenewalsDate').on('change', function() {
         let expirationDate = $('#expirationDate').val();
         if (!expirationDate) return;
 
-        let d = new Date(expirationDate);
+        let d = new Date(expirationDate + 'T00:00:00');
         d.setFullYear(d.getFullYear() + 10);
 
-        $('#expirationDate').val(formatDate(d));
-        $('#declarationOfUseDate').val(formatDate(d));
-        $('#renewalDate').val(formatDate(d));
+        $('#expirationDate').val(formatDate(d)).trigger('change');
+        $('#declarationOfUseDate').val(formatDate(d)).trigger('change');
+        $('#renewalDate').val(formatDate(d)).trigger('change');
     });
 });
 </script>

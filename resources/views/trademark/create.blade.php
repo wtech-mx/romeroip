@@ -279,19 +279,12 @@
           novalidate>
         @csrf
 
+        <div class="tm-toolbar tm-page-actions" aria-label="File actions">
+            <a class="tm-btn" href="{{ route('index.trademarks') }}">{{ __('messages.back') }}</a>
+            <button type="submit" class="tm-btn tm-btn-save">{{ __('messages.save') }}</button>
+        </div>
         <div class="tm-file-shell">
-            <header class="tm-header">
-                <div>
-                    <div class="tm-kicker">Legal trademark file</div>
-                    <h1 class="tm-title">{{ __('messages.new_trademark') }}</h1>
-                    <p class="tm-subtitle">{{ __('messages.new_trademark') }}</p>
-                </div>
-
-                <div class="tm-toolbar">
-                    <a class="tm-btn" href="javascript:history.back()">{{ __('messages.back') }}</a>
-                    <button type="submit" class="tm-btn tm-btn-save">{{ __('messages.save') }}</button>
-                </div>
-            </header>
+            @include('trademark._header', ['isNewFile' => true])
 
             <div class="mt-3">
                 @includeif('partials.errors')
@@ -413,11 +406,7 @@
                         <label class="tm-label" for="status">{{ __('messages.status') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" id="status" name="status">
-                                <option value="{{ __('messages.registered') }}" {{ $oldSelected('status', __('messages.registered'), __('messages.registered')) }}>{{ __('messages.registered') }}</option>
-                                <option value="{{ __('messages.pending') }}" {{ $oldSelected('status', __('messages.pending')) }}>{{ __('messages.pending') }}</option>
-                                <option value="{{ __('messages.abandoned') }}" {{ $oldSelected('status', __('messages.abandoned')) }}>{{ __('messages.abandoned') }}</option>
-                                <option value="{{ __('messages.lapsed') }}" {{ $oldSelected('status', __('messages.lapsed')) }}>{{ __('messages.lapsed') }}</option>
-                                <option value="{{ __('messages.inactive') }}" {{ $oldSelected('status', __('messages.inactive')) }}>{{ __('messages.inactive') }}</option>
+                                @include('trademark._status-options', ['currentStatus' => old('status', __('messages.registered'))])
                             </select>
                         </div>
                     </div>
@@ -744,6 +733,7 @@
 @endsection
 
 @section('js_custom')
+<script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
 <script>
 (function () {
     function setSelectedOptionIfExists(selectId, value) {
@@ -963,7 +953,7 @@ $(document).ready(function() {
         let value = $(this).val();
         if (!value) return;
 
-        let registrationDate = new Date(value);
+        let registrationDate = new Date(value + 'T00:00:00');
         if (isNaN(registrationDate.getTime())) return;
 
         let expirationDate = new Date(registrationDate);
@@ -972,26 +962,26 @@ $(document).ready(function() {
         let declarationOfUseDate = new Date(registrationDate);
         declarationOfUseDate.setFullYear(declarationOfUseDate.getFullYear() + 3);
 
-        $('#expirationDate').val(formatDate(expirationDate));
-        $('#declarationOfUseDate').val(formatDate(declarationOfUseDate));
-        $('#renewalDate').val(formatDate(expirationDate));
+        $('#expirationDate').val(formatDate(expirationDate)).trigger('change');
+        $('#declarationOfUseDate').val(formatDate(declarationOfUseDate)).trigger('change');
+        $('#renewalDate').val(formatDate(expirationDate)).trigger('change');
     });
 
     $('#lastDeclarationDate').on('change', function() {
         let renewalDate = $('#renewalDate').val();
-        $('#declarationOfUseDate').val(renewalDate);
+        $('#declarationOfUseDate').val(renewalDate).trigger('change');
     });
 
     $('#lastRenewalsDate').on('change', function() {
         let expirationDate = $('#expirationDate').val();
         if (!expirationDate) return;
 
-        let d = new Date(expirationDate);
+        let d = new Date(expirationDate + 'T00:00:00');
         d.setFullYear(d.getFullYear() + 10);
 
-        $('#expirationDate').val(formatDate(d));
-        $('#declarationOfUseDate').val(formatDate(d));
-        $('#renewalDate').val(formatDate(d));
+        $('#expirationDate').val(formatDate(d)).trigger('change');
+        $('#declarationOfUseDate').val(formatDate(d)).trigger('change');
+        $('#renewalDate').val(formatDate(d)).trigger('change');
     });
 });
 </script>

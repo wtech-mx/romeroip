@@ -281,7 +281,7 @@ class TrademarksController extends Controller
     private function trademarkRules(?int $id = null, bool $requireCoreFields = true): array
     {
         $ourRefRules = ['nullable', 'regex:/^[1-9][0-9]{0,4}$/', Rule::unique('trademark', 'our_ref')->ignore($id)];
-        $dateRule = $requireCoreFields ? 'nullable|date' : 'nullable';
+        $dateRule = 'nullable|date_format:Y-m-d';
 
         return [
             'notes'                   => 'nullable|string',
@@ -469,8 +469,8 @@ class TrademarksController extends Controller
             $trademark->save();
 
             return redirect()
-                ->route('index.trademarks')
-                ->with('success', 'Trademark created successfully.');
+                ->route('show.trademarks', $trademark->id)
+                ->with('trademark_saved', true);
         } catch (\Illuminate\Validation\ValidationException $e) {
             throw $e;
         } catch (\Throwable $e) {
@@ -522,8 +522,8 @@ class TrademarksController extends Controller
             $trademark->save();
 
             return redirect()
-                ->route('edit.trademarks', $trademark->id)
-                ->with('success', 'Trademark updated successfully.');
+                ->route('show.trademarks', $trademark->id)
+                ->with('trademark_saved', true);
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::warning('Trademark update validation failed', [
                 'trademark_id' => $id,

@@ -222,7 +222,7 @@
         }
 
         try {
-            return \Carbon\Carbon::parse($value)->format('m d Y');
+            return \Carbon\Carbon::parse($value)->format('d M Y');
         } catch (\Throwable $e) {
             return $value;
         }
@@ -258,10 +258,10 @@
                 $field(__('messages.registration_date'), $formatDate($trademark->registration_date)),
                 $field('Designated Countries', $trademark->designated_countries, false, true),
                 $field(__('messages.expiration_date'), $formatDate($trademark->expiration_date)),
-                $field('Priority Country', $trademark->country_office),
+                $field(__('messages.country_office'), $trademark->country_office),
                 $field(__('messages.first_date'), $formatDate($trademark->first_date)),
                 $field(__('messages.priority_date'), $formatDate($trademark->priority_date)),
-                $field(__('messages.status'), $trademark->status),
+                $field(__('messages.status'), \App\Support\TrademarkStatus::label($trademark->status)),
                 $field(__('messages.priority_no'), $trademark->priority_no),
                 $field('Country', $trademark->country),
                 $field('Origin', $trademark->origin),
@@ -332,62 +332,31 @@
     ];
 
     $visibleSections = collect($sections)
-        ->map(function ($section) {
-            $section['items'] = collect($section['items'])->filter(fn ($item) => filled($item['value']));
+        ->map(function ($section, $index) {
+            $section['number'] = $index + 1;
+            $section['items'] = collect($section['items']);
+            if ($section['title'] !== 'General') {
+                $section['items'] = $section['items']->filter(fn ($item) => filled($item['value']));
+            }
             return $section;
         })
         ->filter(fn ($section) => $section['items']->isNotEmpty())
         ->values();
 
-    $headerRegistration = filled($trademark->registration_no)
-        ? 'Registro No. ' . $trademark->registration_no
-        : (filled($trademark->application_no) ? 'Solicitud No. ' . $trademark->application_no : null);
-    $headerClass = filled($trademark->class) ? 'Clase ' . $trademark->class : null;
-    $headerClient = optional($trademark->Client)->company_name;
-    $headerOwner = optional($trademark->Holder)->company_name;
-    $headerRefs = collect([
-        filled($trademark->our_ref) ? 'O/Ref. ' . $trademark->our_ref : null,
-        filled($trademark->client_ref) ? 'C/Ref. ' . $trademark->client_ref : null,
-    ])->filter()->implode(' - ');
 @endphp
 
 <div class="container-fluid mt-3 tm-show-page">
+    <div class="tm-actions tm-page-actions" aria-label="File actions">
+        <a class="tm-btn" href="{{ route('index.trademarks') }}">{{ __('messages.back') }}</a>
+        <a class="tm-btn tm-btn-primary" href="{{ route('edit.trademarks', $trademark->id) }}">Edit</a>
+    </div>
     <div class="tm-file-shell">
-        <header class="tm-header">
-            <div>
-                <div class="tm-title-line">
-                    <h1 class="tm-title">{{ $trademark->trademark ?: __('messages.trademark') }}</h1>
-                    @if(filled($trademark->status))
-                        <span class="tm-status-pill">{{ $trademark->status }}</span>
-                    @endif
-                </div>
-
-                <div class="tm-header-meta">
-                    @if(filled($headerRegistration) || filled($headerClass))
-                        <strong>{{ collect([$headerRegistration, $headerClass])->filter()->implode(' - ') }}</strong>
-                    @endif
-                    @if(filled($headerOwner))
-                        <span>{{ $headerOwner }}</span>
-                    @endif
-                    @if(filled($headerClient))
-                        <span>{{ $headerClient }}</span>
-                    @endif
-                    @if(filled($headerRefs))
-                        <span class="tm-header-muted">{{ $headerRefs }}</span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="tm-actions">
-                <a class="tm-btn" href="{{ route('index.trademarks') }}">{{ __('messages.back') }}</a>
-                <a class="tm-btn tm-btn-primary" href="{{ route('edit.trademarks', $trademark->id) }}">Edit</a>
-            </div>
-        </header>
+        @include('trademark._header', ['isNewFile' => false])
 
         @foreach($visibleSections as $sectionIndex => $section)
-            <section class="tm-section">
+            <section class="tm-section" id="{{ \Illuminate\Support\Str::slug($section['title']) }}">
                 <h2 class="tm-section-heading">
-                    <span>{{ str_pad($sectionIndex + 1, 2, '0', STR_PAD_LEFT) }} |</span> {{ $section['title'] }}
+                    <span>{{ str_pad($section['number'], 2, '0', STR_PAD_LEFT) }} |</span> {{ $section['title'] }}
                 </h2>
 
                 <div class="tm-field-grid {{ !empty($section['single']) ? 'is-single' : '' }}">
@@ -400,7 +369,7 @@
                                     <img class="tm-design-image" src="{{ asset('design/'.$item['value']) }}" alt="Trademark design">
                                 </div>
                             @else
-                                <p class="tm-value">{{ $item['value'] }}</p>
+                                <p class="tm-value">{{ $item['value'] ?? '—' }}</p>
                             @endif
                         </div>
                     @endforeach

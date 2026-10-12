@@ -13,6 +13,18 @@
             background: '#fff',
         };
 
+        @if (session('trademark_saved'))
+            Swal.fire({
+                background: '#fff',
+                icon: 'success',
+                title: 'Trademark record saved',
+                text: 'Review the saved information here. Choose Edit to make changes, or Back to return to Search.',
+                showConfirmButton: false,
+                timer: 4500,
+                timerProgressBar: true,
+            });
+        @endif
+
         @if (session('success'))
             Swal.fire({
                 ...alertConfig,

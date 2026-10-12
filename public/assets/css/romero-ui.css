@@ -83,6 +83,13 @@ body.legal-shell, body.ui-auth {
 .legal-shell .tm-search-panel h5, .legal-shell .tm-results-panel h5 { font-size: 21px; letter-spacing: -.035em; text-transform: none; font-weight: 500; }
 .legal-shell .tm-header { background: #f7f7fa; border: 0; border-radius: 20px; padding: 24px; }
 .legal-shell .tm-title { text-transform: none; font-weight: 400; letter-spacing: -.055em; line-height: 1.12; }
+.legal-shell .tm-record-header { grid-template-columns: minmax(0, 1fr); }
+.legal-shell .tm-record-header .tm-title { font-size: clamp(1.5rem, 3vw, 2.25rem); margin: 0; overflow-wrap: anywhere; }
+.legal-shell .tm-title-line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 8px; }
+.legal-shell .tm-header-meta { display: grid; gap: 4px; font-size: 14px; }
+.legal-shell .tm-page-actions { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.legal-shell .tm-status-pill.is-registered { background: #e2f2e8; color: #286441; font-weight: 600; }
+.legal-shell .tm-btn.tm-btn-primary { background: var(--ui-ink) !important; color: #fff !important; }
 .legal-shell .tm-section-heading { text-transform: none; font-weight: 500; font-size: 18px; }
 .legal-shell .tm-field { background: #f8f8fb; border: 1px solid var(--ui-line); border-radius: 14px; }
 .legal-shell .tm-label { border-right: 1px solid var(--ui-line); color: var(--ui-muted); font-size: 13px; font-weight: 400; align-items: center; }
@@ -94,6 +101,13 @@ body.legal-shell, body.ui-auth {
   border-radius: 14px !important; min-height: 44px; padding: 10px 14px; box-shadow: none !important; font-weight: 400;
 }
 .legal-shell .tm-input, .legal-shell .tm-select { border-radius: 0 14px 14px 0 !important; }
+.legal-shell .tm-date-control { align-items: center; flex-wrap: wrap; }
+.legal-shell .tm-date-display { width: 100%; padding-right: 40px !important; }
+.legal-shell .tm-date-native { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.legal-shell .tm-date-picker { position: absolute; right: 10px; top: 10px; border: 0; background: transparent; color: var(--ui-muted); padding: 2px 4px; }
+.legal-shell .tm-date-feedback { color: #a34039; font-size: 12px; padding: 4px 10px; }
+.legal-shell .tm-value { display: flex; align-items: center; min-height: 44px; }
+.legal-shell #general .tm-field.is-tall { min-height: 64px; }
 .legal-shell label, .legal-shell .form-label { color: #62636f; font-weight: 500; }
 .legal-shell .form-control:focus, .ui-auth .form-control:focus, .legal-shell .tm-field:focus-within { border-color: #a69c6c !important; box-shadow: 0 0 0 3px rgba(242,217,107,.2) !important; }
 .legal-shell .btn, .ui-auth .btn, .legal-shell .tm-btn,
