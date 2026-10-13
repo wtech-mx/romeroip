@@ -109,9 +109,14 @@ class TrademarksController extends Controller
                 )
 
                 ->when(!empty($filters['origin']), function ($query) use ($filters) {
-                    if ($filters['origin'] === 'Foreign') {
-                        $query->whereIn('origin', ['Foreign', 'International', __('messages.international')]);
+                    if (in_array($filters['origin'], ['Foreign', 'International'], true)) {
+                        $query->whereIn('origin', ['Foreign', 'International', 'Extranjero', 'Internacional']);
 
+                        return;
+                    }
+
+                    if ($filters['origin'] === 'National') {
+                        $query->whereIn('origin', ['National', 'Nacional']);
                         return;
                     }
 
@@ -286,7 +291,7 @@ class TrademarksController extends Controller
         return [
             'notes'                   => 'nullable|string',
             'our_ref'                 => $ourRefRules,
-            'client_ref'              => ['nullable', 'string', 'max:20', 'regex:/^[A-Za-z0-9 ]+$/'],
+            'client_ref'              => ['nullable', 'string', 'max:20', 'regex:~^[\p{L}\p{N} ./()\[\]-]+$~u'],
             'opposition_no'           => 'nullable|string|max:100',
             'filing_date_opposition'  => $dateRule,
             'litigation_no'           => 'nullable|string|max:100',

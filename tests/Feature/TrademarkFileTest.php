@@ -84,7 +84,7 @@ class TrademarkFileTest extends TestCase
             $back = $document->query('//*[contains(@class,"tm-page-actions")]/a')->item(0);
             $this->assertSame(route('index.trademarks'), $back->getAttribute('href'));
         }
-        $this->get(route('show.trademarks', $record->id))->assertSee('23 Feb 2023');
+        $this->get(route('show.trademarks', $record->id))->assertSee('Feb/23/2023');
     }
 
     public function test_general_keeps_field_order_and_number_when_values_are_empty(): void
@@ -138,7 +138,7 @@ class TrademarkFileTest extends TestCase
             $selected = $document->query('//select[@id="status"]/option[@selected]');
             $this->assertSame(1, $selected->length);
             $this->assertSame($status, $selected->item(0)->getAttribute('value'));
-            $this->assertSame(1, $document->query('//label[@for="country_office"][contains(.,"Country / Office")]')->length);
+            $this->assertSame(1, $document->query('//label[@for="country_office"][contains(.,"Country Office")]')->length);
         }
     }
 
@@ -147,6 +147,40 @@ class TrademarkFileTest extends TestCase
         $document = new \DOMDocument();
         @$document->loadHTML('<?xml encoding="UTF-8">' . $html);
         return new \DOMXPath($document);
+    }
+
+    public function test_small_form_defaults_options_order_and_single_line_countries(): void
+    {
+        $document = $this->document($this->get(route('create.trademarks'))->assertOk()->getContent());
+        $this->assertSame(['Select', 'Pending', 'Registered', 'Abandoned'], $this->texts($document->query('//select[@id="status"]/option')));
+        $this->assertSame('', $document->query('//select[@id="status"]/option[@selected]')->item(0)->getAttribute('value'));
+        $this->assertSame(['Select', 'National', 'International'], $this->texts($document->query('//select[@id="origin"]/option')));
+        $this->assertSame(1, $document->query('//input[@id="designated_countries"]')->length);
+        $labels = $this->texts($document->query('//section[@id="general"]//label'));
+        $this->assertSame('Priority No.', $labels[9]);
+        $this->assertSame('Priority Date', $labels[11]);
+        $this->assertSame('Country Office', $labels[13]);
+        $this->assertContains('Contracting Party', $labels);
+        $this->assertSame(1, $document->query('//select[@id="country"]/option[contains(.,"Mexico")]')->length);
+    }
+
+    public function test_client_reference_punctuation_survives_create_and_update(): void
+    {
+        $reference = 'MX-1.2/23 (A) [B]';
+        $this->post(route('store.trademarks'), ['trademark' => 'Punctuation Test', 'client_ref' => $reference])
+            ->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'client_ref' => $reference]);
+        $this->patch(route('update.trademarks', 1), ['client_ref' => '[MX]/(24)-1.2'])
+            ->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'client_ref' => '[MX]/(24)-1.2']);
+    }
+
+    public function test_saved_file_formats_legacy_country_and_origin_for_display(): void
+    {
+        $record = Trademarks::create(['trademark' => 'Legacy Test', 'country' => 'MEXICO', 'origin' => 'Extranjero']);
+        $this->get(route('show.trademarks', $record->id))->assertOk()->assertSee('Mexico')->assertSee('International');
+        $document = $this->document($this->get(route('edit.trademarks', $record->id))->assertOk()->getContent());
+        $this->assertSame('International', $document->query('//select[@id="origin"]/option[@selected]')->item(0)->getAttribute('value'));
     }
 
     private function texts(\DOMNodeList $nodes): array

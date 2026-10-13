@@ -51,6 +51,7 @@ body.legal-shell, body.ui-auth {
 .legal-sidenav .navbar-brand { padding: 0; }
 .legal-sidenav .navbar-brand-img { max-height: 42px; }
 .legal-sidenav #sidenav-collapse-main { flex: 1; overflow-y: auto; }
+.legal-shell .legal-sidenav, .legal-sidenav #sidenav-collapse-main { overflow-x: hidden; }
 .legal-sidenav .horizontal { margin: 6px 24px 12px !important; background: var(--ui-line); }
 .legal-sidenav .navbar-nav { padding: 0 16px; }
 .legal-sidenav .nav-link {
@@ -170,3 +171,40 @@ body.legal-shell, body.ui-auth {
   .legal-shell .fc .fc-toolbar { gap: 12px; flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) { .legal-shell *, .ui-auth * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* Compact editable table for the two sections approved in the preview. */
+.legal-shell .tm-compact-file { margin-top: 0 !important; }
+.legal-shell .tm-compact-file .tm-page-actions { margin-bottom: 10px; }
+.legal-shell .tm-compact-file .tm-page-actions .tm-btn { padding: 7px 13px; min-height: 34px; font-size: 12px; }
+.legal-shell .tm-compact-file .tm-file-shell { padding: 20px; }
+.legal-shell .tm-compact-file .tm-record-header { padding: 16px 20px; }
+.legal-shell .tm-compact-file .tm-record-header .tm-title { font-size: clamp(23px, 2.3vw, 28px); }
+.legal-shell .tm-compact-file .tm-header-meta { font-size: 12px; gap: 3px; }
+.legal-shell .tm-compact-file .tm-status-pill { padding: 2px 7px; font-size: 11px; font-weight: 500; line-height: 1.3; }
+.legal-shell .tm-status-pill.is-pending { background: #fff2d5; color: #8b6110; }
+.legal-shell .tm-status-pill.is-abandoned { background: #fbe8e6; color: #a33d35; }
+.legal-shell .tm-compact-file :is(#references, #general) { margin-top: 18px; }
+.legal-shell .tm-compact-file :is(#references, #general) .tm-section-heading,
+.legal-shell .tm-compact-file :is(#references, #general) .tm-section-heading span { font-weight: 600; font-size: 13px; margin-bottom: 9px; }
+.legal-shell .tm-compact-file :is(#references, #general) .tm-field-grid { gap: 0; border-top: 1px solid var(--ui-line); }
+.legal-shell .tm-compact-file :is(#references, #general) .tm-field { min-height: 32px; grid-template-columns: 43% minmax(0, 1fr); border: 0; border-bottom: 1px solid var(--ui-line); border-radius: 0; background: transparent; }
+.legal-shell .tm-compact-file :is(#references, #general) .tm-label { justify-content: flex-start; text-align: left; background: #f7f7fa; border: 0; padding: 5px 9px; font-size: 11px; line-height: 1.35; }
+.legal-shell .tm-compact-file :is(#references, #general) .tm-control { min-width: 0; }
+.legal-shell .tm-compact-file :is(#references, #general) :is(.tm-input, .tm-select, .tm-value) { min-height: 32px; font-size: 12px; line-height: 1.4; padding: 6px 9px; border: 0 !important; background: transparent !important; border-radius: 0 !important; }
+.legal-shell .tm-compact-file :is(#references, #general) :is(input.tm-input, select.tm-select) { height: 32px; }
+.legal-shell .tm-compact-file :is(#references, #general) .select2-container--default .select2-selection--single { min-height: 32px; height: 32px; padding: 3px 9px; border: 0 !important; border-radius: 0 !important; background: transparent !important; }
+.legal-shell .tm-compact-file :is(#references, #general) .select2-selection__rendered { line-height: 26px; font-size: 12px; }
+.legal-shell .tm-compact-file :is(#references, #general) .select2-selection__arrow { height: 32px; }
+.legal-shell .tm-compact-file :is(#references, #general) .tm-date-picker { top: 5px; right: 7px; font-size: 12px; }
+.legal-shell .tm-compact-file :is(#registrationDate-display, #expirationDate-display, .tm-emphasized) { font-weight: 600; }
+.legal-shell .tm-compact-file .tm-field:focus-within { box-shadow: none !important; border-color: var(--ui-line) !important; }
+.legal-shell .tm-compact-file :is(input, select, textarea):focus { box-shadow: none !important; border-color: #a7abb4 !important; outline: 1px solid #8a909b; outline-offset: -1px; background: transparent !important; }
+.legal-shell .tm-compact-file :is(input, select, textarea):focus-visible { outline: 1px solid #8a909b; outline-offset: -1px; }
+@media (min-width: 768px) {
+  .legal-shell .tm-compact-file :is(#references, #general) .tm-field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 575.98px) {
+  .legal-shell .tm-compact-file .tm-file-shell { padding: 12px; }
+  .legal-shell .tm-compact-file :is(#references, #general) :is(input.tm-input, select.tm-select, .select2-selection--single) { min-height: 40px; height: 40px; font-size: 16px; }
+  .legal-shell .tm-compact-file :is(#references, #general) .tm-date-picker { top: 9px; }
+}

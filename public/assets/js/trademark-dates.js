@@ -11,12 +11,12 @@
         if (match) {
             [, year, month, day] = match;
         } else {
-            match = text.match(/^(\d{1,2})[\s/.-]+([A-Za-z]+|\d{1,2})[\s/.-]+(\d{2}|\d{4})$/);
+            match = text.match(/^([A-Za-z]+|\d{1,2})[\s/.-]+(\d{1,2})[\s/.-]+(\d{2}|\d{4})$/);
             if (!match) {
                 match = text.match(/^(\d{2})(\d{2})(\d{2}|\d{4})$/);
             }
             if (!match) return null;
-            [, day, month, year] = match;
+            [, month, day, year] = match;
             if (/^[A-Za-z]+$/.test(month)) {
                 const index = months.findIndex(name => name.toLowerCase() === month.slice(0, 3).toLowerCase());
                 if (index < 0) return null;
@@ -35,7 +35,7 @@
         const iso = parse(value);
         if (!iso) return '';
         const [year, month, day] = iso.split('-');
-        return `${day} ${months[Number(month) - 1]} ${year}`;
+        return `${months[Number(month) - 1]}/${day}/${year}`;
     }
 
     root.TrademarkDates = { parse, format };
@@ -50,10 +50,10 @@
         display.type = 'text';
         display.id = `${native.id}-display`;
         display.className = 'form-control tm-input tm-date-display';
-        display.placeholder = 'DD Mon YYYY';
+        display.placeholder = 'mm dd yyyy';
         display.autocomplete = 'off';
         display.value = format(native.value);
-        display.title = 'Enter day/month/year or day month year. 23 becomes 2023. For dates before 2000, use four year digits.';
+        display.title = 'Enter month/day/year. 07/06/23 becomes Jul/06/2023. For dates before 2000, use four year digits.';
         const label = document.querySelector(`label[for="${native.id}"]`);
         if (label) label.htmlFor = display.id;
         native.className = 'tm-date-native';
@@ -86,7 +86,7 @@
         function commit() {
             const iso = parse(display.value);
             if (iso === null) {
-                const message = 'Enter a valid date, for example 23 Feb 2023 or 23/02/23.';
+                const message = 'Enter a valid date, for example Jul/06/2023 or 07/06/23.';
                 display.setCustomValidity(message);
                 display.setAttribute('aria-invalid', 'true');
                 display.classList.add('is-invalid');

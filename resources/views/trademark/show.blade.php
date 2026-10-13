@@ -222,7 +222,7 @@
         }
 
         try {
-            return \Carbon\Carbon::parse($value)->format('d M Y');
+            return \Carbon\Carbon::parse($value)->format('M/d/Y');
         } catch (\Throwable $e) {
             return $value;
         }
@@ -254,17 +254,17 @@
                 $field(__('messages.registration_no'), $trademark->registration_no),
                 $field("Int'l Registration Date", $formatDate($trademark->int_registration_date)),
                 $field(__('messages.filing_date'), $formatDate($trademark->filing_date_general)),
-                $field('Contracting State or Organization', $trademark->contracting_organization),
+                $field('Contracting Party', $trademark->contracting_organization),
                 $field(__('messages.registration_date'), $formatDate($trademark->registration_date)),
-                $field('Designated Countries', $trademark->designated_countries, false, true),
+                $field('Designated Countries', $trademark->designated_countries),
                 $field(__('messages.expiration_date'), $formatDate($trademark->expiration_date)),
-                $field(__('messages.country_office'), $trademark->country_office),
+                $field(__('messages.priority_no'), $trademark->priority_no),
                 $field(__('messages.first_date'), $formatDate($trademark->first_date)),
                 $field(__('messages.priority_date'), $formatDate($trademark->priority_date)),
                 $field(__('messages.status'), \App\Support\TrademarkStatus::label($trademark->status)),
-                $field(__('messages.priority_no'), $trademark->priority_no),
-                $field('Country', $trademark->country),
-                $field('Origin', $trademark->origin),
+                $field('Country Office', $trademark->country_office),
+                $field('Country', strcasecmp((string) $trademark->country, 'mexico') === 0 ? 'Mexico' : $trademark->country),
+                $field('Origin', \App\Support\TrademarkOrigin::label($trademark->origin)),
             ],
         ],
         [
@@ -345,7 +345,7 @@
 
 @endphp
 
-<div class="container-fluid mt-3 tm-show-page">
+<div class="container-fluid mt-3 tm-show-page tm-compact-file">
     <div class="tm-actions tm-page-actions" aria-label="File actions">
         <a class="tm-btn" href="{{ route('index.trademarks') }}">{{ __('messages.back') }}</a>
         <a class="tm-btn tm-btn-primary" href="{{ route('edit.trademarks', $trademark->id) }}">Edit</a>
@@ -369,7 +369,7 @@
                                     <img class="tm-design-image" src="{{ asset('design/'.$item['value']) }}" alt="Trademark design">
                                 </div>
                             @else
-                                <p class="tm-value">{{ $item['value'] ?? '—' }}</p>
+                                <p class="tm-value {{ $section['title'] === 'General' && in_array($item['label'], [__('messages.registration_date'), __('messages.expiration_date')], true) ? 'tm-emphasized' : '' }}">{{ $item['value'] ?? '—' }}</p>
                             @endif
                         </div>
                     @endforeach

@@ -270,7 +270,7 @@
     };
 @endphp
 
-<div class="container-fluid mt-3 tm-page">
+<div class="container-fluid mt-3 tm-page tm-compact-file">
     <form method="POST"
           action="{{ route('store.trademarks') }}"
           enctype="multipart/form-data"
@@ -348,11 +348,10 @@
                     </div>
 
                     <div class="tm-field">
-                        <label class="tm-label" for="contracting_organization">Contracting State or Organization</label>
+                        <label class="tm-label" for="contracting_organization">Contracting Party</label>
                         <div class="tm-control">
                             <select class="form-control tm-select js-example-basic-single" name="contracting_organization" id="contracting_organization">
-                                <option value="">{{ __('messages.select') }}</option>
-                                @include('client.paises')
+                                @include('trademark._country-options', ['currentCountry' => old('contracting_organization')])
                             </select>
                         </div>
                     </div>
@@ -367,7 +366,7 @@
                     <div class="tm-field">
                         <label class="tm-label" for="designated_countries">Designated Countries</label>
                         <div class="tm-control">
-                            <textarea class="form-control tm-input" id="designated_countries" name="designated_countries" rows="2">{{ old('designated_countries') }}</textarea>
+                            <input class="form-control tm-input" id="designated_countries" name="designated_countries" type="text" value="{{ old('designated_countries') }}">
                         </div>
                     </div>
 
@@ -379,12 +378,9 @@
                     </div>
 
                     <div class="tm-field">
-                        <label class="tm-label" for="country_office">{{ __('messages.country_office') }}</label>
+                        <label class="tm-label" for="priority_no">{{ __('messages.priority_no') }}</label>
                         <div class="tm-control">
-                            <select class="form-control tm-select" name="country_office" id="country_office">
-                                <option value="">{{ __('messages.select') }}</option>
-                                @include('client.paises')
-                            </select>
+                            <input id="priority_no" name="priority_no" class="form-control tm-input" type="text" value="{{ old('priority_no') }}">
                         </div>
                     </div>
 
@@ -406,15 +402,17 @@
                         <label class="tm-label" for="status">{{ __('messages.status') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" id="status" name="status">
-                                @include('trademark._status-options', ['currentStatus' => old('status', __('messages.registered'))])
+                                @include('trademark._status-options', ['currentStatus' => old('status')])
                             </select>
                         </div>
                     </div>
 
                     <div class="tm-field">
-                        <label class="tm-label" for="priority_no">{{ __('messages.priority_no') }}</label>
+                        <label class="tm-label" for="country_office">Country Office</label>
                         <div class="tm-control">
-                            <input id="priority_no" name="priority_no" class="form-control tm-input" type="text" value="{{ old('priority_no') }}">
+                            <select class="form-control tm-select" name="country_office" id="country_office">
+                                @include('trademark._country-options', ['currentCountry' => old('country_office')])
+                            </select>
                         </div>
                     </div>
 
@@ -422,8 +420,7 @@
                         <label class="tm-label" for="country">Country</label>
                         <div class="tm-control">
                             <select class="form-control tm-select js-example-basic-single" name="country" id="country">
-                                <option value="MEXICO" {{ $oldSelected('country', 'MEXICO', 'MEXICO') }}>MEXICO</option>
-                                @include('client.paises')
+                                @include('trademark._country-options', ['currentCountry' => old('country', 'Mexico')])
                             </select>
                         </div>
                     </div>
@@ -432,9 +429,7 @@
                         <label class="tm-label" for="origin">Origin</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" name="origin" id="origin">
-                                <option value="-" {{ $oldSelected('origin', '-', '-') }}>-</option>
-                                <option value="Nacional" {{ $oldSelected('origin', 'Nacional') }}>Nacional</option>
-                                <option value="Extranjero" {{ $oldSelected('origin', 'Extranjero') }}>Extranjero</option>
+                                @include('trademark._origin-options', ['currentOrigin' => old('origin')])
                             </select>
                         </div>
                     </div>
@@ -733,6 +728,7 @@
 @endsection
 
 @section('js_custom')
+<script src="{{ asset('assets/js/trademark-header.js') }}?v={{ filemtime(public_path('assets/js/trademark-header.js')) }}"></script>
 <script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
 <script>
 (function () {
@@ -1037,8 +1033,8 @@ $(document).ready(function() {
             errors.push('O/Ref.');
         }
 
-        if (clientRefValue && !/^[A-Za-z0-9 ]{1,20}$/.test(clientRefValue)) {
-            markInvalid(clientRef, 'C/Ref. only allows letters, numbers and spaces, up to 20 characters.');
+        if (clientRefValue && !/^[\p{L}\p{N} .\/()\[\]-]{1,20}$/u.test(clientRefValue)) {
+            markInvalid(clientRef, 'C/Ref. allows letters, numbers, spaces, - . / ( ) [ ], up to 20 characters.');
             errors.push('C/Ref.');
         }
     }
@@ -1070,7 +1066,7 @@ $(document).ready(function() {
     });
 
     document.getElementById('client_ref')?.addEventListener('input', function () {
-        this.value = this.value.replace(/[^A-Za-z0-9 ]/g, '').slice(0, 20);
+        this.value = this.value.replace(/[^\p{L}\p{N} .\/()\[\]-]/gu, '').slice(0, 20);
     });
 
     form.addEventListener('submit', function (e) {

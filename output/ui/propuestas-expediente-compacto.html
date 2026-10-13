@@ -1,0 +1,146 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<div id="romero-compact-proposals">
+  <div class="viz-carousel" aria-label="Propuestas compactas para Romero IP" data-previous-label="Anterior" data-next-label="Siguiente">
+    <section data-variant="Formulario compacto" aria-label="Formulario compacto"><div class="rip-window" data-layout="compact"></div></section>
+    <section data-variant="Ficha en cuadrícula" aria-label="Ficha en cuadrícula" hidden><div class="rip-window" data-layout="grid"></div></section>
+    <section data-variant="Tabla editable" aria-label="Tabla editable" hidden><div class="rip-window" data-layout="table"></div></section>
+  </div>
+</div>
+<style>
+#romero-compact-proposals { --rip-bg:#eeeef2; --rip-paper:#fff; --rip-soft:#f7f7fa; --rip-ink:#24252b; --rip-muted:#666873; --rip-line:#e5e5ec; font-family:Inter,'Segoe UI',sans-serif; color-scheme:light; }
+#romero-compact-proposals .rip-window { display:grid; grid-template-columns:148px minmax(0,1fr); min-height:700px; background:var(--rip-bg); color:var(--rip-ink); font-size:12px; line-height:1.4; border-radius:20px; overflow:clip; --rip-row:32px; --rip-gap:6px; }
+#romero-compact-proposals .rip-sidebar { padding:26px 12px; border-right:1px solid var(--rip-line); }
+#romero-compact-proposals .rip-brand { font-size:16px; font-weight:600; margin:0 8px 28px; letter-spacing:-.06em; }
+#romero-compact-proposals .rip-brand b { color:#d95148; }
+#romero-compact-proposals .rip-menu-title { font-size:11px; letter-spacing:.08em; color:var(--rip-muted); margin:20px 10px 8px; }
+#romero-compact-proposals .rip-nav-item { display:flex; align-items:center; gap:8px; padding:10px; color:var(--rip-muted); border-radius:24px; margin:3px 0; }
+#romero-compact-proposals .rip-nav-item.rip-active { background:var(--rip-paper); color:var(--rip-ink); }
+#romero-compact-proposals .rip-content { padding:18px 22px 22px; min-width:0; }
+#romero-compact-proposals .rip-top { display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:20px; color:var(--rip-muted); }
+#romero-compact-proposals .rip-actions { display:flex; justify-content:flex-end; gap:6px; margin-bottom:10px; }
+#romero-compact-proposals .rip-button { font:inherit; padding:7px 13px; border:1px solid var(--rip-line); border-radius:24px; background:var(--rip-paper); color:var(--rip-ink); }
+#romero-compact-proposals .rip-button.rip-main { background:var(--rip-ink); color:var(--rip-paper); border-color:var(--rip-ink); }
+#romero-compact-proposals .rip-file { background:var(--rip-paper); padding:18px; border-radius:20px; }
+#romero-compact-proposals .rip-header { padding:15px 18px; background:var(--rip-soft); border-radius:14px; margin-bottom:18px; }
+#romero-compact-proposals .rip-title-line { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:5px; }
+#romero-compact-proposals .rip-title { font-size:23px; font-weight:400; letter-spacing:-.05em; margin:0; overflow-wrap:anywhere; }
+#romero-compact-proposals .rip-badge { font-size:11px; line-height:1.3; padding:2px 7px; border-radius:20px; font-weight:500; }
+#romero-compact-proposals .rip-badge[data-status="Registered"] { background:#e5f3e9; color:#2d6740; }
+#romero-compact-proposals .rip-badge[data-status="Pending"] { background:#fff2d5; color:#8b6110; }
+#romero-compact-proposals .rip-badge[data-status="Abandoned"] { background:#fbe8e6; color:#a33d35; }
+#romero-compact-proposals .rip-header-number { font-weight:500; }
+#romero-compact-proposals .rip-header-owner, #romero-compact-proposals .rip-header-client { margin-top:3px; }
+#romero-compact-proposals .rip-header-refs { color:var(--rip-muted); margin-top:3px; }
+#romero-compact-proposals .rip-section-title { font-size:13px; font-weight:600; margin:16px 0 9px; }
+#romero-compact-proposals .rip-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--rip-gap) 12px; }
+#romero-compact-proposals .rip-field { min-width:0; display:grid; grid-template-columns:43% minmax(0,1fr); align-items:center; min-height:var(--rip-row); background:var(--rip-soft); border:1px solid var(--rip-line); border-radius:8px; }
+#romero-compact-proposals .rip-label { color:var(--rip-muted); padding:6px 9px; font-size:11px; }
+#romero-compact-proposals .rip-field input, #romero-compact-proposals .rip-field select { font:inherit; min-width:0; width:100%; height:var(--rip-row); padding:5px 9px; border:0; border-left:1px solid var(--rip-line); background:transparent; color:var(--rip-ink); box-sizing:border-box; border-radius:0 8px 8px 0; }
+#romero-compact-proposals .rip-field input::placeholder { color:#868993; }
+#romero-compact-proposals .rip-strong input { font-weight:600; }
+#romero-compact-proposals .rip-capture { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:15px; }
+#romero-compact-proposals .rip-capture label { display:block; color:var(--rip-muted); font-size:11px; margin-bottom:5px; }
+#romero-compact-proposals .rip-capture input { box-sizing:border-box; width:100%; min-width:0; font:inherit; padding:7px 9px; border:1px solid var(--rip-line); border-radius:8px; background:var(--rip-soft); color:var(--rip-ink); }
+#romero-compact-proposals .rip-footer { display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-top:14px; }
+#romero-compact-proposals .rip-caption { color:var(--rip-muted); font-size:11px; }
+#romero-compact-proposals [data-layout="grid"] .rip-fields { grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px 14px; }
+#romero-compact-proposals [data-layout="grid"] .rip-refs { grid-template-columns:repeat(2,minmax(0,1fr)); }
+#romero-compact-proposals [data-layout="grid"] .rip-field { display:flex; flex-direction:column; align-items:stretch; background:transparent; border:0; border-radius:0; }
+#romero-compact-proposals [data-layout="grid"] .rip-label { padding:0 0 4px; }
+#romero-compact-proposals [data-layout="grid"] .rip-field input, #romero-compact-proposals [data-layout="grid"] .rip-field select { background:var(--rip-soft); border:1px solid var(--rip-line); border-radius:7px; }
+#romero-compact-proposals [data-layout="table"] .rip-fields { gap:0; border-top:1px solid var(--rip-line); }
+#romero-compact-proposals [data-layout="table"] .rip-field { background:transparent; border:0; border-radius:0; border-bottom:1px solid var(--rip-line); }
+#romero-compact-proposals [data-layout="table"] .rip-label { background:var(--rip-soft); min-height:var(--rip-row); display:flex; align-items:center; box-sizing:border-box; }
+#romero-compact-proposals [data-layout="table"] .rip-field input, #romero-compact-proposals [data-layout="table"] .rip-field select { border:0; border-radius:0; }
+@media(max-width:760px) {
+ #romero-compact-proposals .rip-window { grid-template-columns:1fr; min-height:780px; }
+ #romero-compact-proposals .rip-sidebar { display:none; }
+ #romero-compact-proposals .rip-content { padding:14px; }
+}
+@media(max-width:480px) {
+ #romero-compact-proposals .rip-window { min-height:1350px; }
+ #romero-compact-proposals .rip-file { padding:12px; }
+ #romero-compact-proposals .rip-fields, #romero-compact-proposals [data-layout="grid"] .rip-fields { grid-template-columns:1fr; }
+ #romero-compact-proposals .rip-capture { grid-template-columns:1fr; }
+ #romero-compact-proposals .rip-field input, #romero-compact-proposals .rip-field select, #romero-compact-proposals .rip-capture input { font-size:16px; min-height:40px; }
+}
+</style>
+<script>
+(function () {
+ const root = document.getElementById('romero-compact-proposals');
+ const definitions = [
+  ['application','Application No.','2821138'], ['internationalNo',"Int’l Registration No.",''],
+  ['registration','Registration No.','2569443'], ['internationalDate',"Int’l Registration Date",'', 'date'],
+  ['filing','Filing Date','Jul/27/2022','date'], ['contracting','Contracting Party','', 'party'],
+  ['registeredDate','Registration Date','Jul/06/2023','date','strong'], ['designated','Designated Countries','MX'],
+  ['expiration','Expiration Date','Jul/06/2033','date','strong'], ['priorityNo','Priority No.',''],
+  ['firstUse','First Use Date','','date'], ['priorityDate','Priority Date','','date'],
+  ['status','Status','Registered','status'], ['office','Country Office','','office'],
+  ['country','Country','Mexico','country'], ['origin','Origin','International','origin']
+ ];
+ const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ const options = {status:['Select','Pending','Registered','Abandoned'],origin:['Select','National','International'],country:['Select','Mexico','United States','Canada'],party:['Select','Mexico','United States','European Union'],office:['Select','Mexico','United States','European Union']};
+ function makeField(id,label,value,type='',emphasis='') {
+  const wrap=document.createElement('div'); wrap.className='rip-field '+(emphasis==='strong'?'rip-strong':'');
+  const lab=document.createElement('label'); lab.className='rip-label'; lab.textContent=label; lab.htmlFor=id;
+  let control=document.createElement(options[type]?'select':'input'); control.id=id;
+  if(options[type]) options[type].forEach(text=>{let option=document.createElement('option');option.textContent=text;option.value=text==='Select'?'':text;control.append(option);});
+  else { control.type='text'; if(type==='date') {control.placeholder='mm dd yyyy';control.dataset.date='true';} }
+  control.value=value; control.dataset.key=id.split('-').pop();
+  wrap.append(lab,control); return wrap;
+ }
+ root.querySelectorAll('.rip-window').forEach((product,index)=>{
+  const prefix='rip'+index;
+  product.innerHTML=`<aside class="rip-sidebar"><div class="rip-brand"><b>◖</b> ROMERO IP</div><div class="rip-menu-title">MENU</div><div class="rip-nav-item"><i data-lucide="layout-grid" aria-hidden="true"></i>Home</div><div class="rip-nav-item rip-active"><i data-lucide="folder-open" aria-hidden="true"></i>Trademarks</div><div class="rip-nav-item">Patents</div><div class="rip-nav-item">Copyrights</div><div class="rip-menu-title">CONTACTS</div><div class="rip-nav-item">Clients</div><div class="rip-nav-item">Owners</div></aside>
+  <main class="rip-content"><div class="rip-top"><span>Trademarks / File</span><span>Administrator</span></div><div class="rip-actions"><button type="button" class="rip-button cursor-interaction" data-new>New file</button><button type="button" class="rip-button rip-main cursor-interaction" data-save>Save</button></div>
+  <div class="rip-file"><header class="rip-header"><div class="rip-title-line"><h1 class="rip-title">AOSOWING and Design</h1><span class="rip-badge" data-status="Registered">Registered</span></div><div class="rip-header-number">Registration No. 2569443 – Class 12</div><div class="rip-header-owner">Example Owner Ltd.</div><div class="rip-header-client">Example Client LLP</div><div class="rip-header-refs">O/Ref. 13750 – C/Ref. MX-75/23 [A].(1)</div></header>
+  <h2 class="rip-section-title">01 | References</h2><div class="rip-fields rip-refs"></div><h2 class="rip-section-title">02 | General</h2><div class="rip-fields rip-general"></div>
+  <div class="rip-capture"><div><label for="${prefix}-trademark">03 | Trademark</label><input id="${prefix}-trademark" data-key="trademark" value="AOSOWING and Design"></div><div><label for="${prefix}-markClass">04 | Class</label><input id="${prefix}-markClass" data-key="markClass" value="12"></div><div><label for="${prefix}-owner">05 | Owner</label><input id="${prefix}-owner" data-key="owner" value="Example Owner Ltd."></div><div><label for="${prefix}-client">06 | Client</label><input id="${prefix}-client" data-key="client" value="Example Client LLP"></div></div>
+  <div class="rip-footer"><span class="rip-caption" aria-live="polite" data-notice>Small size · 32 px</span><button class="rip-button rip-main cursor-interaction" type="button" data-choose>Elegir esta propuesta</button></div></div></main>`;
+  const refs=product.querySelector('.rip-refs');
+  refs.append(makeField(prefix+'-ourRef','Our Ref.','13750'),makeField(prefix+'-clientRef','Client Ref.','MX-75/23 [A].(1)'));
+  const general=product.querySelector('.rip-general');
+  definitions.forEach(d=>general.append(makeField(prefix+'-'+d[0],...d.slice(1))));
+  const read=key=>product.querySelector('[data-key="'+key+'"]')?.value.trim()||'';
+  function syncHeader(){
+   product.querySelector('.rip-title').textContent=read('trademark')||'Trademark';
+   const status=read('status'),badge=product.querySelector('.rip-badge');badge.hidden=!status;badge.dataset.status=status;badge.textContent=status;
+   const registered=status==='Registered'&&read('registration');
+   product.querySelector('.rip-header-number').textContent=(registered?'Registration No. '+read('registration'):'Application No.'+(read('application')?' '+read('application'):''))+' – Class'+(read('markClass')?' '+read('markClass'):'');
+   product.querySelector('.rip-header-owner').textContent=read('owner')||'Owner';
+   product.querySelector('.rip-header-client').textContent=read('client')||'Client';
+   product.querySelector('.rip-header-refs').textContent='O/Ref.'+(read('ourRef')?' '+read('ourRef'):'')+' – C/Ref.'+(read('clientRef')?' '+read('clientRef'):'');
+  }
+  product.addEventListener('input',syncHeader);product.addEventListener('change',syncHeader);
+  product.querySelectorAll('[data-date]').forEach(input=>input.addEventListener('blur',()=>{
+   const v=input.value.trim();if(!v){input.setCustomValidity('');return;}
+   let m=v.match(/^([A-Za-z]{3})\/(\d{1,2})\/(\d{2}|\d{4})$/),mo,day,year;
+   if(m){mo=months.findIndex(x=>x.toLowerCase()===m[1].toLowerCase())+1;day=+m[2];year=m[3];}
+   else{m=v.match(/^(\d{1,2})[ /.-]+(\d{1,2})[ /.-]+(\d{2}|\d{4})$/);if(m){mo=+m[1];day=+m[2];year=m[3];}}
+   if(!m){input.setCustomValidity('Use month/day/year, for example 07/06/23.');return;}
+   year=year.length===2?2000+Number(year):Number(year);const date=new Date(year,mo-1,day);
+   if(mo<1||mo>12||date.getMonth()!==mo-1||date.getDate()!==day){input.setCustomValidity('Enter a valid date.');return;}
+   input.setCustomValidity('');input.value=months[mo-1]+'/'+String(day).padStart(2,'0')+'/'+year;
+  }));
+  product.querySelector('[data-new]').addEventListener('click',()=>{
+   product.querySelectorAll('input,select').forEach(c=>{c.value='';c.setCustomValidity('');});
+   product.querySelector('[data-key="country"]').value='Mexico';syncHeader();
+   product.querySelector('[data-notice]').textContent='New file · Status: Select';
+  });
+  product.querySelector('[data-save]').addEventListener('click',()=>{
+   const notice=product.querySelector('[data-notice]');notice.textContent='Preview · No record saved';
+  });
+  product.querySelector('[data-choose]').addEventListener('click',async()=>{
+   const variant=product.parentElement.dataset.variant;
+   const prompt='Elijo la propuesta «'+variant+'». Implementa todos los ajustes de mi último mensaje: encabezado en vivo, etiqueta de estado pequeña y colores, SemiBold solo References y General y valores Registration/Expiration Date, foco neutro, Client Ref. con guion punto diagonal paréntesis y corchetes, fechas Mes/Día/Año como Jul/06/2023 y placeholder mm dd yyyy con año corto, Status Select/Pending/Registered/Abandoned predeterminado Select, Mexico, Contracting Party, Designated Countries de una línea, Origin Select/National/International y orden Priority No., Priority Date, Country Office. Usa el tamaño compacto de esta propuesta.';
+   if(window.openai?.sendFollowUpMessage) await window.openai.sendFollowUpMessage({prompt,title:'Implementar '+variant});
+   else product.querySelector('[data-notice]').textContent='Propuesta elegida: '+variant;
+  });
+  syncHeader();
+  const state={height:32,gap:6};
+  function renderSpacing(){product.style.setProperty('--rip-row',state.height+'px');product.style.setProperty('--rip-gap',state.gap+'px');}
+  if(globalThis.Tweak){const tweak=new Tweak({container:product,onChange:renderSpacing});tweak.addSlider(state,'height',{label:'Altura de campos',min:28,max:38,unit:'px'});tweak.addSlider(state,'gap',{label:'Separación entre filas',min:3,max:10,unit:'px'});}
+ });
+ if(globalThis.lucide)lucide.createIcons({attrs:{width:15,height:15}});
+})();
+</script>
