@@ -94,7 +94,7 @@ class TrademarkFileTest extends TestCase
         $show = $this->document($this->get(route('show.trademarks', $record->id))->assertOk()->getContent());
         $editLabels = $this->texts($edit->query('//section[@id="general"]//*[contains(@class,"tm-label")]'));
         $showLabels = $this->texts($show->query('//section[h2[contains(.,"General")]]//*[contains(@class,"tm-label")]'));
-        $this->assertCount(16, $showLabels);
+        $this->assertCount(15, $showLabels);
         $this->assertSame($editLabels, $showLabels);
         $this->assertStringContainsString('02 |', $show->query('//section[h2[contains(.,"General")]]/h2')->item(0)->textContent);
         $this->get(route('show.trademarks', $record->id))->assertSee('Application No. 12345 – Class 01');
@@ -138,7 +138,7 @@ class TrademarkFileTest extends TestCase
             $selected = $document->query('//select[@id="status"]/option[@selected]');
             $this->assertSame(1, $selected->length);
             $this->assertSame($status, $selected->item(0)->getAttribute('value'));
-            $this->assertSame(1, $document->query('//label[@for="country_office"][contains(.,"Country Office")]')->length);
+            $this->assertSame(1, $document->query('//label[@for="country_office"][contains(.,"Priority Country / Office")]')->length);
         }
     }
 
@@ -157,9 +157,9 @@ class TrademarkFileTest extends TestCase
         $this->assertSame(['Select', 'National', 'International'], $this->texts($document->query('//select[@id="origin"]/option')));
         $this->assertSame(1, $document->query('//input[@id="designated_countries"]')->length);
         $labels = $this->texts($document->query('//section[@id="general"]//label'));
-        $this->assertSame('Priority No.', $labels[9]);
-        $this->assertSame('Priority Date', $labels[11]);
-        $this->assertSame('Country Office', $labels[13]);
+        $this->assertSame('Priority Application No.', $labels[8]);
+        $this->assertSame('Priority Date', $labels[9]);
+        $this->assertSame('Priority Country / Office', $labels[10]);
         $this->assertContains('Contracting Party', $labels);
         $this->assertSame(1, $document->query('//select[@id="country"]/option[contains(.,"Mexico")]')->length);
     }
@@ -181,6 +181,22 @@ class TrademarkFileTest extends TestCase
         $this->get(route('show.trademarks', $record->id))->assertOk()->assertSee('Mexico')->assertSee('International');
         $document = $this->document($this->get(route('edit.trademarks', $record->id))->assertOk()->getContent());
         $this->assertSame('International', $document->query('//select[@id="origin"]/option[@selected]')->item(0)->getAttribute('value'));
+    }
+
+    public function test_references_and_general_have_independent_columns_and_department_in_header(): void
+    {
+        $record = Trademarks::create(['trademark' => 'Layout Test', 'our_ref' => '13788', 'client_ref' => '75.644', 'origin' => 'International']);
+        foreach (['edit.trademarks', 'show.trademarks'] as $route) {
+            $response = $this->get(route($route, $record->id))->assertOk();
+            $document = $this->document($response->getContent());
+            $this->assertStringContainsString('O/Ref. 13788 – C/Ref. 75.644 | International', $document->query('//header')->item(0)->textContent);
+            $this->assertSame([2, 1], array_map(fn ($column) => $document->query('.//*[contains(@class,"tm-label")]', $column)->length,
+                iterator_to_array($document->query('//section[@id="references"]//*[contains(@class,"tm-field-column")]'))));
+            $this->assertSame([8, 7], array_map(fn ($column) => $document->query('.//*[contains(@class,"tm-label")]', $column)->length,
+                iterator_to_array($document->query('//section[@id="general"]//*[contains(@class,"tm-field-column")]'))));
+            $this->assertSame(1, $document->query('//section[@id="references"]//*[contains(@class,"tm-label") and contains(.,"Department")]')->length);
+            $this->assertSame(1, $document->query('//section[@id="general"]//*[contains(@class,"tm-label") and normalize-space(.)="Country / Office"]')->length);
+        }
     }
 
     private function texts(\DOMNodeList $nodes): array

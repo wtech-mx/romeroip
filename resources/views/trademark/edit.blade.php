@@ -336,19 +336,31 @@
 
             <section class="tm-section" id="references">
                 <h2 class="tm-section-heading"><span>01 |</span> References</h2>
-                <div class="tm-field-grid">
-                    <div class="tm-field">
-                        <label class="tm-label" for="our_ref">{{ __('messages.our_ref') }}</label>
-                        <div class="tm-control">
-                            <input id="our_ref" name="our_ref" class="form-control tm-input" type="text" inputmode="numeric" maxlength="5" pattern="[1-9][0-9]{0,4}" value="{{ old('our_ref', $trademark->our_ref) }}">
+                <div class="tm-split-tables">
+                    <div class="tm-field-column">
+                        <div class="tm-field">
+                            <label class="tm-label" for="our_ref">{{ __('messages.our_ref') }}</label>
+                            <div class="tm-control">
+                                <input id="our_ref" name="our_ref" class="form-control tm-input" type="text" inputmode="numeric" maxlength="5" pattern="[1-9][0-9]{0,4}" value="{{ old('our_ref', $trademark->our_ref) }}">
+                            </div>
+                        </div>
+
+                        <div class="tm-field autocomplete-wrap">
+                            <label class="tm-label" for="client_ref">{{ __('messages.client_ref') }}</label>
+                            <div class="tm-control">
+                                <input id="client_ref" name="client_ref" class="form-control tm-input" type="text" maxlength="20" autocomplete="off" value="{{ old('client_ref', $trademark->client_ref) }}">
+                                <div id="client_ref_suggestions" class="autocomplete-box d-none"></div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="tm-field autocomplete-wrap">
-                        <label class="tm-label" for="client_ref">{{ __('messages.client_ref') }}</label>
-                        <div class="tm-control">
-                            <input id="client_ref" name="client_ref" class="form-control tm-input" type="text" maxlength="20" autocomplete="off" value="{{ old('client_ref', $trademark->client_ref) }}">
-                            <div id="client_ref_suggestions" class="autocomplete-box d-none"></div>
+                    <div class="tm-field-column">
+                        <div class="tm-field">
+                            <label class="tm-label" for="origin">Department</label>
+                            <div class="tm-control">
+                                <select class="form-control tm-select" name="origin" id="origin">
+                                    @include('trademark._origin-options', ['currentOrigin' => old('origin', $trademark->origin)])
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -356,127 +368,123 @@
 
             <section class="tm-section" id="general">
                 <h2 class="tm-section-heading"><span>02 |</span> General</h2>
-                <div class="tm-field-grid">
-                    <div class="tm-field">
-                        <label class="tm-label" for="application_no">{{ __('messages.application_no') }}</label>
-                        <div class="tm-control">
-                            <input id="application_no" name="application_no" class="form-control tm-input" type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}" value="{{ old('application_no', $trademark->application_no) }}">
+                <div class="tm-split-tables">
+                    <div class="tm-field-column">
+                        <div class="tm-field">
+                            <label class="tm-label" for="application_no">{{ __('messages.application_no') }}</label>
+                            <div class="tm-control">
+                                <input id="application_no" name="application_no" class="form-control tm-input" type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}" value="{{ old('application_no', $trademark->application_no) }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="int_registration_no">Int'l Registration No.</label>
-                        <div class="tm-control">
-                            <input id="int_registration_no" name="int_registration_no" class="form-control tm-input" type="text" value="{{ old('int_registration_no', $trademark->int_registration_no) }}">
+                        <div class="tm-field">
+                            <label class="tm-label" for="filing_date_general">{{ __('messages.filing_date') }}</label>
+                            <div class="tm-control">
+                                <input id="filing_date_general" name="filing_date_general" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('filing_date_general') }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="registration_no">{{ __('messages.registration_no') }}</label>
-                        <div class="tm-control">
-                            <input id="registration_no" name="registration_no" class="form-control tm-input" type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}" value="{{ old('registration_no', $trademark->registration_no) }}">
+                        <div class="tm-field">
+                            <label class="tm-label" for="registration_no">{{ __('messages.registration_no') }}</label>
+                            <div class="tm-control">
+                                <input id="registration_no" name="registration_no" class="form-control tm-input" type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}" value="{{ old('registration_no', $trademark->registration_no) }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="int_registration_date">Int'l Registration Date</label>
-                        <div class="tm-control">
-                            <input id="int_registration_date" name="int_registration_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('int_registration_date') }}">
+                        <div class="tm-field">
+                            <label class="tm-label" for="registrationDate">{{ __('messages.registration_date') }}</label>
+                            <div class="tm-control">
+                                <input id="registrationDate" name="registration_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('registration_date') }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="filing_date_general">{{ __('messages.filing_date') }}</label>
-                        <div class="tm-control">
-                            <input id="filing_date_general" name="filing_date_general" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('filing_date_general') }}">
+                        <div class="tm-field">
+                            <label class="tm-label" for="first_date">{{ __('messages.first_date') }}</label>
+                            <div class="tm-control">
+                                <input id="first_date" name="first_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('first_date') }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="contracting_organization">Contracting Party</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select js-example-basic-single" name="contracting_organization" id="contracting_organization">
-                                @include('trademark._country-options', ['currentCountry' => old('contracting_organization', $trademark->contracting_organization)])
-                            </select>
+                        <div class="tm-field">
+                            <label class="tm-label" for="expirationDate">{{ __('messages.expiration_date') }}</label>
+                            <div class="tm-control">
+                                <input id="expirationDate" name="expiration_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('expiration_date') }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="registrationDate">{{ __('messages.registration_date') }}</label>
-                        <div class="tm-control">
-                            <input id="registrationDate" name="registration_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('registration_date') }}">
+                        <div class="tm-field">
+                            <label class="tm-label" for="status">{{ __('messages.status') }}</label>
+                            <div class="tm-control">
+                                <select class="form-control tm-select" id="status" name="status">
+                                    @include('trademark._status-options', ['currentStatus' => old('status', $trademark->status)])
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="designated_countries">Designated Countries</label>
-                        <div class="tm-control">
-                            <input class="form-control tm-input" id="designated_countries" name="designated_countries" type="text" value="{{ old('designated_countries', $trademark->designated_countries) }}">
+                        <div class="tm-field">
+                            <label class="tm-label" for="country">Country / Office</label>
+                            <div class="tm-control">
+                                <select class="form-control tm-select js-example-basic-single" name="country" id="country">
+                                    @include('trademark._country-options', ['currentCountry' => old('country', $trademark->country ?: 'Mexico')])
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="expirationDate">{{ __('messages.expiration_date') }}</label>
-                        <div class="tm-control">
-                            <input id="expirationDate" name="expiration_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('expiration_date') }}">
-                        </div>
                     </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="priority_no">{{ __('messages.priority_no') }}</label>
-                        <div class="tm-control">
-                            <input id="priority_no" name="priority_no" class="form-control tm-input" type="text" value="{{ old('priority_no', $trademark->priority_no) }}">
+                    <div class="tm-field-column">
+                        <div class="tm-field">
+                            <label class="tm-label" for="priority_no">Priority Application No.</label>
+                            <div class="tm-control">
+                                <input id="priority_no" name="priority_no" class="form-control tm-input" type="text" value="{{ old('priority_no', $trademark->priority_no) }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="first_date">{{ __('messages.first_date') }}</label>
-                        <div class="tm-control">
-                            <input id="first_date" name="first_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('first_date') }}">
+                        <div class="tm-field">
+                            <label class="tm-label" for="priority_date">{{ __('messages.priority_date') }}</label>
+                            <div class="tm-control">
+                                <input id="priority_date" name="priority_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('priority_date') }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="priority_date">{{ __('messages.priority_date') }}</label>
-                        <div class="tm-control">
-                            <input id="priority_date" name="priority_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('priority_date') }}">
+                        <div class="tm-field">
+                            <label class="tm-label" for="country_office">Priority Country / Office</label>
+                            <div class="tm-control">
+                                <select class="form-control tm-select" name="country_office" id="country_office">
+                                    @include('trademark._country-options', ['currentCountry' => old('country_office', $trademark->country_office)])
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="status">{{ __('messages.status') }}</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" id="status" name="status">
-                                @include('trademark._status-options', ['currentStatus' => old('status', $trademark->status)])
-                            </select>
+                        <div class="tm-field">
+                            <label class="tm-label" for="int_registration_no">Int'l Registration No.</label>
+                            <div class="tm-control">
+                                <input id="int_registration_no" name="int_registration_no" class="form-control tm-input" type="text" value="{{ old('int_registration_no', $trademark->int_registration_no) }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="country_office">Country Office</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" name="country_office" id="country_office">
-                                @include('trademark._country-options', ['currentCountry' => old('country_office', $trademark->country_office)])
-                            </select>
+                        <div class="tm-field">
+                            <label class="tm-label" for="int_registration_date">Int'l Registration Date</label>
+                            <div class="tm-control">
+                                <input id="int_registration_date" name="int_registration_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('int_registration_date') }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="country">Country</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select js-example-basic-single" name="country" id="country">
-                                @include('trademark._country-options', ['currentCountry' => old('country', $trademark->country ?: 'Mexico')])
-                            </select>
+                        <div class="tm-field">
+                            <label class="tm-label" for="contracting_organization">Contracting Party</label>
+                            <div class="tm-control">
+                                <select class="form-control tm-select js-example-basic-single" name="contracting_organization" id="contracting_organization">
+                                    @include('trademark._country-options', ['currentCountry' => old('contracting_organization', $trademark->contracting_organization)])
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="origin">Origin</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" name="origin" id="origin">
-                                @include('trademark._origin-options', ['currentOrigin' => old('origin', $trademark->origin)])
-                            </select>
+                        <div class="tm-field">
+                            <label class="tm-label" for="designated_countries">Designated Countries</label>
+                            <div class="tm-control">
+                                <input class="form-control tm-input" id="designated_countries" name="designated_countries" type="text" value="{{ old('designated_countries', $trademark->designated_countries) }}">
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </section>

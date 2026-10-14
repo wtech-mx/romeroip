@@ -16,6 +16,10 @@
         filled($trademark->our_ref) ? 'O/Ref. ' . $trademark->our_ref : null,
         filled($trademark->client_ref) ? 'C/Ref. ' . $trademark->client_ref : null,
     ])->filter()->implode(' – ');
+    $fileDepartment = $isNewFile ? '' : \App\Support\TrademarkOrigin::label($trademark->origin);
+    if ($fileDepartment !== '') {
+        $fileRefs = ($fileRefs ?: 'O/Ref. – C/Ref.') . ' | ' . $fileDepartment;
+    }
     $fileStatus = \App\Support\TrademarkStatus::label($rawStatus);
 @endphp
 <header class="tm-header tm-record-header" data-trademark-header>

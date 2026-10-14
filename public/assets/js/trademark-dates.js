@@ -50,7 +50,7 @@
         display.type = 'text';
         display.id = `${native.id}-display`;
         display.className = 'form-control tm-input tm-date-display';
-        display.placeholder = 'mm dd yyyy';
+        display.placeholder = 'mm/dd/yyyy';
         display.autocomplete = 'off';
         display.value = format(native.value);
         display.title = 'Enter month/day/year. 07/06/23 becomes Jul/06/2023. For dates before 2000, use four year digits.';

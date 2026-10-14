@@ -23,7 +23,9 @@
         text('number', number + ' – Class' + (read('class') ? ' ' + read('class') : ''));
         text('owner', read('holder_search') || selectedName('id_holder') || 'Owner');
         text('client', read('client_search') || selectedName('id_client') || 'Client');
-        text('refs', 'O/Ref.' + (read('our_ref') ? ' ' + read('our_ref') : '') + ' – C/Ref.' + (read('client_ref') ? ' ' + read('client_ref') : ''));
+        const rawDepartment = read('origin');
+        const department = ({nacional:'National', national:'National', extranjero:'International', foreign:'International', international:'International', internacional:'International', '-':''})[rawDepartment.toLowerCase()] ?? rawDepartment;
+        text('refs', 'O/Ref.' + (read('our_ref') ? ' ' + read('our_ref') : '') + ' – C/Ref.' + (read('client_ref') ? ' ' + read('client_ref') : '') + (department ? ' | ' + department : ''));
     }
     ['input', 'change', 'trademark:selection'].forEach(event => form.addEventListener(event, sync));
     if (window.jQuery) window.jQuery(form).find('select').on('change', sync);

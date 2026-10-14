@@ -241,30 +241,32 @@
     $sections = [
         [
             'title' => 'References',
+            'columnBreak' => 2,
             'items' => [
                 $field(__('messages.our_ref'), $trademark->our_ref),
                 $field(__('messages.client_ref'), $trademark->client_ref),
+                $field('Department', \App\Support\TrademarkOrigin::label($trademark->origin)),
             ],
         ],
         [
             'title' => 'General',
+            'columnBreak' => 8,
             'items' => [
                 $field(__('messages.application_no'), $trademark->application_no),
-                $field("Int'l Registration No.", $trademark->int_registration_no),
-                $field(__('messages.registration_no'), $trademark->registration_no),
-                $field("Int'l Registration Date", $formatDate($trademark->int_registration_date)),
                 $field(__('messages.filing_date'), $formatDate($trademark->filing_date_general)),
-                $field('Contracting Party', $trademark->contracting_organization),
+                $field(__('messages.registration_no'), $trademark->registration_no),
                 $field(__('messages.registration_date'), $formatDate($trademark->registration_date)),
-                $field('Designated Countries', $trademark->designated_countries),
-                $field(__('messages.expiration_date'), $formatDate($trademark->expiration_date)),
-                $field(__('messages.priority_no'), $trademark->priority_no),
                 $field(__('messages.first_date'), $formatDate($trademark->first_date)),
-                $field(__('messages.priority_date'), $formatDate($trademark->priority_date)),
+                $field(__('messages.expiration_date'), $formatDate($trademark->expiration_date)),
                 $field(__('messages.status'), \App\Support\TrademarkStatus::label($trademark->status)),
-                $field('Country Office', $trademark->country_office),
-                $field('Country', strcasecmp((string) $trademark->country, 'mexico') === 0 ? 'Mexico' : $trademark->country),
-                $field('Origin', \App\Support\TrademarkOrigin::label($trademark->origin)),
+                $field('Country / Office', strcasecmp((string) $trademark->country, 'mexico') === 0 ? 'Mexico' : $trademark->country),
+                $field('Priority Application No.', $trademark->priority_no),
+                $field(__('messages.priority_date'), $formatDate($trademark->priority_date)),
+                $field('Priority Country / Office', $trademark->country_office),
+                $field("Int'l Registration No.", $trademark->int_registration_no),
+                $field("Int'l Registration Date", $formatDate($trademark->int_registration_date)),
+                $field('Contracting Party', $trademark->contracting_organization),
+                $field('Designated Countries', $trademark->designated_countries),
             ],
         ],
         [
@@ -335,7 +337,7 @@
         ->map(function ($section, $index) {
             $section['number'] = $index + 1;
             $section['items'] = collect($section['items']);
-            if ($section['title'] !== 'General') {
+            if (!isset($section['columnBreak'])) {
                 $section['items'] = $section['items']->filter(fn ($item) => filled($item['value']));
             }
             return $section;
@@ -359,21 +361,23 @@
                     <span>{{ str_pad($section['number'], 2, '0', STR_PAD_LEFT) }} |</span> {{ $section['title'] }}
                 </h2>
 
-                <div class="tm-field-grid {{ !empty($section['single']) ? 'is-single' : '' }}">
-                    @foreach($section['items'] as $item)
-                        <div class="tm-field {{ $item['full'] ? 'is-full' : '' }} {{ $item['tall'] ? 'is-tall' : '' }} {{ $item['logo'] ? 'is-logo' : '' }}">
-                            <span class="tm-label">{{ $item['label'] }}</span>
-
-                            @if($item['logo'])
-                                <div class="tm-logo-box">
-                                    <img class="tm-design-image" src="{{ asset('design/'.$item['value']) }}" alt="Trademark design">
-                                </div>
-                            @else
-                                <p class="tm-value {{ $section['title'] === 'General' && in_array($item['label'], [__('messages.registration_date'), __('messages.expiration_date')], true) ? 'tm-emphasized' : '' }}">{{ $item['value'] ?? '—' }}</p>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
+                @if(isset($section['columnBreak']))
+                    <div class="tm-split-tables">
+                        @foreach([$section['items']->take($section['columnBreak']), $section['items']->skip($section['columnBreak'])] as $column)
+                            <div class="tm-field-column">
+                                @foreach($column as $item)
+                                    @include('trademark._read-field')
+                                @endforeach
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="tm-field-grid {{ !empty($section['single']) ? 'is-single' : '' }}">
+                        @foreach($section['items'] as $item)
+                            @include('trademark._read-field')
+                        @endforeach
+                    </div>
+                @endif
             </section>
         @endforeach
     </div>
