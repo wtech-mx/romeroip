@@ -290,162 +290,10 @@
                 @includeif('partials.errors')
             </div>
 
-            <section class="tm-section" id="references">
-                <h2 class="tm-section-heading"><span>01 |</span> References</h2>
-                <div class="tm-split-tables">
-                    <div class="tm-field-column">
-                        <div class="tm-field">
-                            <label class="tm-label" for="our_ref">{{ __('messages.our_ref') }}</label>
-                            <div class="tm-control">
-                                <input id="our_ref" name="our_ref" class="form-control tm-input" type="text" inputmode="numeric" maxlength="5" pattern="[1-9][0-9]{0,4}" value="{{ old('our_ref', $nextOurRef) }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="client_ref">{{ __('messages.client_ref') }}</label>
-                            <div class="tm-control">
-                                <input id="client_ref" name="client_ref" class="form-control tm-input" type="text" maxlength="20" value="{{ old('client_ref') }}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tm-field-column">
-                        <div class="tm-field">
-                            <label class="tm-label" for="origin">Department</label>
-                            <div class="tm-control">
-                                <select class="form-control tm-select" name="origin" id="origin">
-                                    @include('trademark._origin-options', ['currentOrigin' => old('origin')])
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="tm-section" id="general">
-                <h2 class="tm-section-heading"><span>02 |</span> General</h2>
-                <div class="tm-split-tables">
-                    <div class="tm-field-column">
-                        <div class="tm-field">
-                            <label class="tm-label" for="application_no">{{ __('messages.application_no') }}</label>
-                            <div class="tm-control">
-                                <input id="application_no" name="application_no" class="form-control tm-input" type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}" value="{{ old('application_no') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="filing_date_general">{{ __('messages.filing_date') }}</label>
-                            <div class="tm-control">
-                                <input id="filing_date_general" name="filing_date_general" class="form-control tm-input date-mask" type="date" value="{{ old('filing_date_general') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="registration_no">{{ __('messages.registration_no') }}</label>
-                            <div class="tm-control">
-                                <input id="registration_no" name="registration_no" class="form-control tm-input" type="text" inputmode="numeric" maxlength="10" pattern="[1-9][0-9]{0,9}" value="{{ old('registration_no') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="registrationDate">{{ __('messages.registration_date') }}</label>
-                            <div class="tm-control">
-                                <input id="registrationDate" name="registration_date" class="form-control tm-input date-mask" type="date" value="{{ old('registration_date') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="first_date">{{ __('messages.first_date') }}</label>
-                            <div class="tm-control">
-                                <input id="first_date" name="first_date" class="form-control tm-input date-mask" type="date" value="{{ old('first_date') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="expirationDate">{{ __('messages.expiration_date') }}</label>
-                            <div class="tm-control">
-                                <input id="expirationDate" name="expiration_date" class="form-control tm-input date-mask" type="date" value="{{ old('expiration_date') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="status">{{ __('messages.status') }}</label>
-                            <div class="tm-control">
-                                <select class="form-control tm-select" id="status" name="status">
-                                    @include('trademark._status-options', ['currentStatus' => old('status')])
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="country">Country / Office</label>
-                            <div class="tm-control">
-                                <select class="form-control tm-select js-example-basic-single" name="country" id="country">
-                                    @include('trademark._country-options', ['currentCountry' => old('country', 'Mexico')])
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="tm-field-column">
-                        <div class="tm-field">
-                            <label class="tm-label" for="priority_no">Priority Application No.</label>
-                            <div class="tm-control">
-                                <input id="priority_no" name="priority_no" class="form-control tm-input" type="text" value="{{ old('priority_no') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="priority_date">{{ __('messages.priority_date') }}</label>
-                            <div class="tm-control">
-                                <input id="priority_date" name="priority_date" class="form-control tm-input date-mask" type="date" value="{{ old('priority_date') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="country_office">Priority Country / Office</label>
-                            <div class="tm-control">
-                                <select class="form-control tm-select" name="country_office" id="country_office">
-                                    @include('trademark._country-options', ['currentCountry' => old('country_office')])
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="int_registration_no">Int'l Registration No.</label>
-                            <div class="tm-control">
-                                <input id="int_registration_no" name="int_registration_no" class="form-control tm-input" type="text" value="{{ old('int_registration_no') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="int_registration_date">Int'l Registration Date</label>
-                            <div class="tm-control">
-                                <input id="int_registration_date" name="int_registration_date" class="form-control tm-input date-mask" type="date" value="{{ old('int_registration_date') }}">
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="contracting_organization">Contracting Party</label>
-                            <div class="tm-control">
-                                <select class="form-control tm-select js-example-basic-single" name="contracting_organization" id="contracting_organization">
-                                    @include('trademark._country-options', ['currentCountry' => old('contracting_organization')])
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="tm-field">
-                            <label class="tm-label" for="designated_countries">Designated Countries</label>
-                            <div class="tm-control">
-                                <input class="form-control tm-input" id="designated_countries" name="designated_countries" type="text" value="{{ old('designated_countries') }}">
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
+            @include('trademark._file-sections', ['readOnly' => false, 'newFile' => true])
 
             <section class="tm-section" id="trademark-section">
-                <h2 class="tm-section-heading"><span>03 |</span> Trademark</h2>
+                <h2 class="tm-section-heading"><span>04 |</span> Trademark</h2>
                 <div class="tm-field-grid">
                     <div class="tm-field">
                         <label class="tm-label" for="trademark">{{ __('messages.trademark') }}</label>
@@ -527,7 +375,7 @@
             </section>
 
             <section class="tm-section" id="accounts">
-                <h2 class="tm-section-heading"><span>04 |</span> Goods / Services</h2>
+                <h2 class="tm-section-heading"><span>05 |</span> Goods / Services</h2>
                 <div class="tm-field-grid is-single">
                     <div class="tm-field">
                         <label class="tm-label" for="class">{{ __('messages.class') }}</label>
@@ -559,7 +407,7 @@
             </section>
 
             <section class="tm-section" id="holder">
-                <h2 class="tm-section-heading"><span>05 |</span> Owner</h2>
+                <h2 class="tm-section-heading"><span>06 |</span> Owner</h2>
                 <div class="tm-field-grid">
                     <div class="tm-field">
                         <label class="tm-label" for="id_holder">{{ __('messages.holder') }}</label>
@@ -594,7 +442,7 @@
             </section>
 
             <section class="tm-section" id="sessions">
-                <h2 class="tm-section-heading"><span>06 |</span> Client</h2>
+                <h2 class="tm-section-heading"><span>07 |</span> Client</h2>
                 <div class="tm-field-grid">
                     <div class="tm-field">
                         <label class="tm-label" for="id_client">{{ __('messages.client') }}</label>
@@ -652,7 +500,7 @@
             </section>
 
             <section class="tm-section" id="dates-deadlines">
-                <h2 class="tm-section-heading"><span>07 |</span> Dates and Deadlines</h2>
+                <h2 class="tm-section-heading"><span>08 |</span> Dates and Deadlines</h2>
                 <div class="tm-field-grid">
                     <div class="tm-field">
                         <label class="tm-label" for="publication_date">{{ __('messages.publication_date') }}</label>
@@ -689,38 +537,14 @@
                         </div>
                     </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="lastDeclarationDate">{{ __('messages.declarations_use') }} - {{ __('messages.last') }}</label>
-                        <div class="tm-control">
-                            <input id="lastDeclarationDate" name="last_declaration" class="form-control tm-input date-mask" type="date" value="{{ old('last_declaration') }}">
-                        </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="declarationOfUseDate">{{ __('messages.declarations_use') }} - {{ __('messages.next') }}</label>
-                        <div class="tm-control">
-                            <input id="declarationOfUseDate" name="next_declaration" class="form-control tm-input date-mask" type="date" value="{{ old('next_declaration') }}">
-                        </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="lastRenewalsDate">{{ __('messages.renewals') }} - {{ __('messages.last') }}</label>
-                        <div class="tm-control">
-                            <input id="lastRenewalsDate" name="last_renewal" class="form-control tm-input date-mask" type="date" value="{{ old('last_renewal') }}">
-                        </div>
-                    </div>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="renewalDate">{{ __('messages.renewals') }} - {{ __('messages.next') }}</label>
-                        <div class="tm-control">
-                            <input id="renewalDate" name="next_renewal" class="form-control tm-input date-mask" type="date" value="{{ old('next_renewal') }}">
-                        </div>
                     </div>
-                </div>
             </section>
 
             <section class="tm-section" id="notes">
-                <h2 class="tm-section-heading"><span>08 |</span> Notes</h2>
+                <h2 class="tm-section-heading"><span>09 |</span> Notes</h2>
                 <div class="tm-field-grid is-single">
                     <div class="tm-field is-tall">
                         <label class="tm-label" for="notes_text">{{ __('messages.note') }}</label>
@@ -738,6 +562,7 @@
 @section('js_custom')
 <script src="{{ asset('assets/js/trademark-header.js') }}?v={{ filemtime(public_path('assets/js/trademark-header.js')) }}"></script>
 <script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
+<script src="{{ asset('assets/js/trademark-field-controls.js') }}?v={{ filemtime(public_path('assets/js/trademark-field-controls.js')) }}"></script>
 <script>
 (function () {
     function setSelectedOptionIfExists(selectId, value) {
@@ -942,52 +767,6 @@ $(document).ready(function() {
     syncClientPreview();
     syncSelectedClientDetails();
 })();
-</script>
-
-<script>
-$(document).ready(function() {
-    function formatDate(date) {
-        let year = date.getFullYear();
-        let month = String(date.getMonth() + 1).padStart(2, '0');
-        let day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    $('#registrationDate').on('change', function() {
-        let value = $(this).val();
-        if (!value) return;
-
-        let registrationDate = new Date(value + 'T00:00:00');
-        if (isNaN(registrationDate.getTime())) return;
-
-        let expirationDate = new Date(registrationDate);
-        expirationDate.setFullYear(expirationDate.getFullYear() + 10);
-
-        let declarationOfUseDate = new Date(registrationDate);
-        declarationOfUseDate.setFullYear(declarationOfUseDate.getFullYear() + 3);
-
-        $('#expirationDate').val(formatDate(expirationDate)).trigger('change');
-        $('#declarationOfUseDate').val(formatDate(declarationOfUseDate)).trigger('change');
-        $('#renewalDate').val(formatDate(expirationDate)).trigger('change');
-    });
-
-    $('#lastDeclarationDate').on('change', function() {
-        let renewalDate = $('#renewalDate').val();
-        $('#declarationOfUseDate').val(renewalDate).trigger('change');
-    });
-
-    $('#lastRenewalsDate').on('change', function() {
-        let expirationDate = $('#expirationDate').val();
-        if (!expirationDate) return;
-
-        let d = new Date(expirationDate + 'T00:00:00');
-        d.setFullYear(d.getFullYear() + 10);
-
-        $('#expirationDate').val(formatDate(d)).trigger('change');
-        $('#declarationOfUseDate').val(formatDate(d)).trigger('change');
-        $('#renewalDate').val(formatDate(d)).trigger('change');
-    });
-});
 </script>
 
 <script>

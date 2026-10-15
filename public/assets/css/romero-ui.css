@@ -186,41 +186,64 @@ body.legal-shell, body.ui-auth {
 .legal-shell .tm-compact-file .tm-section { margin-top: 30px; }
 .legal-shell .tm-compact-file .tm-section-heading, .legal-shell .tm-compact-file .tm-section-heading span { font-size: 16px; font-weight: 600; }
 .legal-shell .tm-compact-file .tm-section-heading { margin-bottom: 16px; }
-.legal-shell .tm-compact-file :is(#references, #general) .tm-section-heading,
-.legal-shell .tm-compact-file :is(#references, #general) .tm-section-heading span { font-weight: 600; font-size: 16px; margin-bottom: 16px; }
-.legal-shell .tm-compact-file :is(#references, #general) .tm-field-grid { gap: 0; border-top: 1px solid var(--ui-line); }
-.legal-shell .tm-compact-file :is(#references, #general) .tm-field { min-height: 32px; grid-template-columns: 136px minmax(0, 1fr); border: 0; border-bottom: 1px solid var(--ui-line); border-radius: 0; background: transparent; }
-.legal-shell .tm-compact-file :is(#references, #general) .tm-label { justify-content: flex-start; text-align: left; background: #f7f7fa; border: 0; padding: 5px 9px; font-size: 13px; line-height: 1.35; }
-.legal-shell .tm-compact-file :is(#references, #general) .tm-control { min-width: 0; }
-.legal-shell .tm-compact-file :is(#references, #general) :is(.tm-input, .tm-select, .tm-value) { min-height: 32px; font-size: 14px; line-height: 1.4; padding: 6px 9px; border: 0 !important; background: transparent !important; border-radius: 0 !important; }
-.legal-shell .tm-compact-file :is(#references, #general) :is(input.tm-input, select.tm-select) { height: 32px; }
-.legal-shell .tm-compact-file :is(#references, #general) .select2-container--default .select2-selection--single { min-height: 32px; height: 32px; padding: 3px 9px; border: 0 !important; border-radius: 0 !important; background: transparent !important; }
-.legal-shell .tm-compact-file :is(#references, #general) .select2-selection__rendered { line-height: 26px; font-size: 14px; }
-.legal-shell .tm-compact-file :is(#references, #general) .select2-selection__arrow { height: 32px; }
-.legal-shell .tm-compact-file :is(#references, #general) .tm-date-picker { top: 5px; right: 7px; font-size: 12px; }
-.legal-shell .tm-compact-file :is(#registrationDate-display, #expirationDate-display, .tm-emphasized) { font-weight: 600; }
-.legal-shell .tm-compact-file :is(#our_ref, #client_ref) { font-weight: 600; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-section-heading,
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-section-heading span { font-weight: 600; font-size: 16px; margin-bottom: 16px; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field-grid { gap: 0; border-top: 1px solid var(--ui-line); }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field { min-height: 32px; grid-template-columns: 136px minmax(0, 1fr); border: 0; border-bottom: 1px solid var(--ui-line); border-radius: 0; background: transparent; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-label { justify-content: flex-start; text-align: left; background: #f7f7fa; border: 0; padding: 5px 9px; font-size: 13px; line-height: 1.35; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-control { min-width: 0; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) :is(.tm-input, .tm-select, .tm-value) { min-height: 32px; font-size: 14px; line-height: 1.4; padding: 6px 9px; border: 0 !important; background: transparent !important; border-radius: 0 !important; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) :is(input.tm-input, select.tm-select) { height: 32px; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .select2-container--default .select2-selection--single { min-height: 32px; height: 32px; padding: 3px 9px; border: 0 !important; border-radius: 0 !important; background: transparent !important; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .select2-selection__rendered { line-height: 26px; font-size: 14px; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .select2-selection__arrow { height: 32px; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-date-picker { top: 5px; right: 7px; font-size: 12px; }
+.legal-shell .tm-approved-section :is(.tm-label, .tm-input, .tm-select, .tm-value, .tm-date-display) { font-weight: 400; }
+.legal-shell .tm-approved-section .tm-field-emphasis :is(.tm-input, .tm-select, .tm-value, .tm-date-display) { font-weight: 600; }
+
 .legal-shell .tm-compact-file .tm-field:focus-within { box-shadow: none !important; border-color: var(--ui-line) !important; }
 .legal-shell .tm-compact-file :is(input, select, textarea):focus { box-shadow: none !important; border-color: #a7abb4 !important; outline: 1px solid #8a909b; outline-offset: -1px; background: transparent !important; }
 .legal-shell .tm-compact-file :is(input, select, textarea):focus-visible { outline: 1px solid #8a909b; outline-offset: -1px; }
 @media (min-width: 768px) {
-  .legal-shell .tm-compact-file :is(#references, #general) .tm-field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 575.98px) {
   .legal-shell .tm-compact-file .tm-file-shell { padding: 12px; }
-  .legal-shell .tm-compact-file :is(#references, #general) :is(input.tm-input, select.tm-select, .select2-selection--single) { min-height: 40px; height: 40px; font-size: 16px; }
-  .legal-shell .tm-compact-file :is(#references, #general) .tm-date-picker { top: 9px; }
+  .legal-shell .tm-compact-file :is(#references, #general, #maintenance) :is(input.tm-input, select.tm-select, .select2-selection--single) { min-height: 40px; height: 40px; font-size: 16px; }
+  .legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-date-picker { top: 9px; }
 }
 
 /* Independent columns follow the readable References / General reference. */
 .legal-shell .tm-compact-file .tm-split-tables { display: grid; grid-template-columns: repeat(2, minmax(0, 360px)); gap: 32px; align-items: start; max-width: 752px; }
 .legal-shell .tm-compact-file .tm-field-column { min-width: 0; border: 1px solid var(--ui-line); border-radius: 6px; }
-.legal-shell .tm-compact-file :is(#references, #general) .tm-field-column .tm-field:last-child { border-bottom: 0; }
-.legal-shell .tm-compact-file :is(#references, #general) .tm-field-column:last-child .tm-field { grid-template-columns: 172px minmax(0, 1fr); }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field-column .tm-field:last-child { border-bottom: 0; }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field-column:last-child .tm-field { grid-template-columns: 172px minmax(0, 1fr); }
 @media (max-width: 991.98px) {
   .legal-shell .tm-compact-file .tm-split-tables { grid-template-columns: minmax(0, 360px); gap: 16px; }
 }
 @media (max-width: 575.98px) {
-  .legal-shell .tm-compact-file :is(#references, #general) .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
-  .legal-shell .tm-compact-file :is(#references, #general) .tm-field-column:last-child .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
+  .legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
+  .legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field-column:last-child .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
+}
+
+/* Approved three-section details: spacing and controls, with no new input boxes. */
+.legal-shell .tm-compact-file .tm-record-header .tm-title,
+.legal-shell .tm-compact-file .tm-section-heading,
+.legal-shell .tm-approved-section,
+.legal-shell .tm-approved-section :is(.tm-label, .tm-input, .tm-select, .tm-value, .tm-date-display) { letter-spacing: normal; }
+.legal-shell .tm-approved-section input::placeholder { letter-spacing: normal; }
+.legal-shell .tm-approved-section .tm-spacer-row { height: 12px; border-bottom: 1px solid var(--ui-line); background: #fff; }
+.legal-shell .tm-approved-section .tm-empty-value { color: #868993; }
+.legal-shell .tm-approved-section .tm-date-control { gap: 6px; }
+.legal-shell .tm-approved-section .tm-date-display { flex: 0 1 auto; width: var(--tm-date-width, 120px); max-width: calc(100% - 26px); padding-right: 2px !important; }
+.legal-shell .tm-approved-section .tm-date-picker { position: static; flex: 0 0 20px; width: 20px; height: 32px; padding: 0; margin: 0; display: inline-flex; align-items: center; justify-content: flex-start; }
+.legal-shell .tm-approved-section select.tm-select:not(.select2-hidden-accessible) { appearance: none; -webkit-appearance: none; width: min(100%, var(--tm-select-width, 100%)); padding-right: 30px; }
+.legal-shell .tm-approved-section .tm-select-chevron { position: absolute; pointer-events: none; left: min(calc(100% - 22px), calc(var(--tm-select-text, 0px) + 17px)); top: 13px; width: 6px; height: 6px; border-right: 1px solid #71727d; border-bottom: 1px solid #71727d; transform: rotate(45deg); }
+.legal-shell .tm-approved-section .tm-control:has(.select2-container) > .tm-select-chevron { display: none; }
+.legal-shell .tm-approved-section .tm-control > .select2-container { width: var(--tm-select-width, 100%) !important; max-width: 100%; }
+.legal-shell #maintenance .tm-field-column:first-child .tm-field { grid-template-columns: 172px minmax(0, 1fr); }
+@media (max-width: 575.98px) {
+  .legal-shell #maintenance .tm-field-column:first-child .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
+  .legal-shell .tm-approved-section .tm-select-chevron { top: 17px; }
+  .legal-shell .tm-approved-section .tm-date-picker { height: 40px; }
 }

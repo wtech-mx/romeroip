@@ -94,7 +94,7 @@ class TrademarkFileTest extends TestCase
         $show = $this->document($this->get(route('show.trademarks', $record->id))->assertOk()->getContent());
         $editLabels = $this->texts($edit->query('//section[@id="general"]//*[contains(@class,"tm-label")]'));
         $showLabels = $this->texts($show->query('//section[h2[contains(.,"General")]]//*[contains(@class,"tm-label")]'));
-        $this->assertCount(15, $showLabels);
+        $this->assertCount(16, $showLabels);
         $this->assertSame($editLabels, $showLabels);
         $this->assertStringContainsString('02 |', $show->query('//section[h2[contains(.,"General")]]/h2')->item(0)->textContent);
         $this->get(route('show.trademarks', $record->id))->assertSee('Application No. 12345 – Class 01');
@@ -192,11 +192,40 @@ class TrademarkFileTest extends TestCase
             $this->assertStringContainsString('O/Ref. 13788 – C/Ref. 75.644 | International', $document->query('//header')->item(0)->textContent);
             $this->assertSame([2, 1], array_map(fn ($column) => $document->query('.//*[contains(@class,"tm-label")]', $column)->length,
                 iterator_to_array($document->query('//section[@id="references"]//*[contains(@class,"tm-field-column")]'))));
-            $this->assertSame([8, 7], array_map(fn ($column) => $document->query('.//*[contains(@class,"tm-label")]', $column)->length,
+            $this->assertSame([8, 8], array_map(fn ($column) => $document->query('.//*[contains(@class,"tm-label")]', $column)->length,
                 iterator_to_array($document->query('//section[@id="general"]//*[contains(@class,"tm-field-column")]'))));
             $this->assertSame(1, $document->query('//section[@id="references"]//*[contains(@class,"tm-label") and contains(.,"Department")]')->length);
             $this->assertSame(1, $document->query('//section[@id="general"]//*[contains(@class,"tm-label") and normalize-space(.)="Country / Office"]')->length);
         }
+    }
+
+    public function test_maintenance_and_international_renewal_dates_are_saved_manually(): void
+    {
+        $dates = ['int_renewal_date' => '2032-08-22', 'last_declaration' => '2026-09-08',
+            'last_renewal' => '2022-08-22', 'next_declaration' => '2032-08-17', 'next_renewal' => '2033-08-17'];
+        $this->post(route('store.trademarks'), array_merge(['trademark' => 'Manual Dates'], $dates))
+            ->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', array_merge(['id' => 1], $dates));
+        $this->patch(route('update.trademarks', 1), ['registration_date' => '2025-01-01'])
+            ->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', array_merge(['id' => 1], $dates));
+        $this->patch(route('update.trademarks', 1), ['int_renewal_date' => '2032-02-31'])
+            ->assertSessionHasErrors('int_renewal_date');
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'int_renewal_date' => '2032-08-22']);
+        foreach (['edit.trademarks', 'show.trademarks'] as $route) {
+            $document = $this->document($this->get(route($route, 1))->assertOk()->getContent());
+            $this->assertSame(['registration_date', 'first_date', 'country', 'country_office', 'int_registration_date', 'designated_countries'],
+                array_map(fn ($row) => $row->getAttribute('data-spacer-after'), iterator_to_array($document->query('//section[@id="general"]/*//div[@data-spacer-after]'))));
+            $this->assertSame(['Registration No.', 'Expiration Date'], $this->texts($document->query('//section[@id="general"]//*[contains(@class,"tm-field-emphasis")]/*[contains(@class,"tm-label")]')));
+            $this->assertSame(['Last Declaration of Use', 'Last Renewal', 'Next Declaration of Use', 'Next Renewal'],
+                $this->texts($document->query('//section[@id="maintenance"]//*[contains(@class,"tm-label")]')));
+            foreach (array_keys($dates) as $field) {
+                $this->assertSame(1, $document->query('//*[@data-field="' . $field . '"]')->length);
+            }
+        }
+        $this->get(route('show.trademarks', 1))->assertSee('Aug/22/2032')->assertSee('Sep/08/2026');
+        $this->patch(route('update.trademarks', 1), ['int_renewal_date' => ''])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'int_renewal_date' => null]);
     }
 
     private function texts(\DOMNodeList $nodes): array

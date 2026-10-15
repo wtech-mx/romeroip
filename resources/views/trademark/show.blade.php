@@ -240,36 +240,6 @@
 
     $sections = [
         [
-            'title' => 'References',
-            'columnBreak' => 2,
-            'items' => [
-                $field(__('messages.our_ref'), $trademark->our_ref),
-                $field(__('messages.client_ref'), $trademark->client_ref),
-                $field('Department', \App\Support\TrademarkOrigin::label($trademark->origin)),
-            ],
-        ],
-        [
-            'title' => 'General',
-            'columnBreak' => 8,
-            'items' => [
-                $field(__('messages.application_no'), $trademark->application_no),
-                $field(__('messages.filing_date'), $formatDate($trademark->filing_date_general)),
-                $field(__('messages.registration_no'), $trademark->registration_no),
-                $field(__('messages.registration_date'), $formatDate($trademark->registration_date)),
-                $field(__('messages.first_date'), $formatDate($trademark->first_date)),
-                $field(__('messages.expiration_date'), $formatDate($trademark->expiration_date)),
-                $field(__('messages.status'), \App\Support\TrademarkStatus::label($trademark->status)),
-                $field('Country / Office', strcasecmp((string) $trademark->country, 'mexico') === 0 ? 'Mexico' : $trademark->country),
-                $field('Priority Application No.', $trademark->priority_no),
-                $field(__('messages.priority_date'), $formatDate($trademark->priority_date)),
-                $field('Priority Country / Office', $trademark->country_office),
-                $field("Int'l Registration No.", $trademark->int_registration_no),
-                $field("Int'l Registration Date", $formatDate($trademark->int_registration_date)),
-                $field('Contracting Party', $trademark->contracting_organization),
-                $field('Designated Countries', $trademark->designated_countries),
-            ],
-        ],
-        [
             'title' => 'Trademark',
             'items' => [
                 $field('Trademark', $trademark->trademark),
@@ -318,10 +288,6 @@
                 $field(__('messages.opposition_no'), $trademark->opposition_no),
                 $field('Office Action Date', $formatDate($trademark->filing_date_litigation)),
                 $field(__('messages.litigation_no'), $trademark->litigation_no),
-                $field(__('messages.declarations_use') . ' - ' . __('messages.last'), $formatDate($trademark->last_declaration)),
-                $field(__('messages.declarations_use') . ' - ' . __('messages.next'), $formatDate($trademark->next_declaration)),
-                $field(__('messages.renewals') . ' - ' . __('messages.last'), $formatDate($trademark->last_renewal)),
-                $field(__('messages.renewals') . ' - ' . __('messages.next'), $formatDate($trademark->next_renewal)),
             ],
         ],
         [
@@ -335,7 +301,7 @@
 
     $visibleSections = collect($sections)
         ->map(function ($section, $index) {
-            $section['number'] = $index + 1;
+            $section['number'] = $index + 4;
             $section['items'] = collect($section['items']);
             if (!isset($section['columnBreak'])) {
                 $section['items'] = $section['items']->filter(fn ($item) => filled($item['value']));
@@ -354,6 +320,7 @@
     </div>
     <div class="tm-file-shell">
         @include('trademark._header', ['isNewFile' => false])
+        @include('trademark._file-sections', ['readOnly' => true, 'newFile' => false])
 
         @foreach($visibleSections as $sectionIndex => $section)
             <section class="tm-section" id="{{ \Illuminate\Support\Str::slug($section['title']) }}">

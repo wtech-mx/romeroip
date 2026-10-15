@@ -28,6 +28,7 @@ class Trademarks extends Model
                             'int_registration_no',
                             'registration_date',
                             'int_registration_date',
+                            'int_renewal_date',
                             'expiration_date',
                             'contracting_organization',
                             'publication_date',
