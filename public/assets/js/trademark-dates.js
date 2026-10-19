@@ -62,6 +62,7 @@
 
         const picker = document.createElement('button');
         picker.type = 'button';
+        picker.tabIndex = -1;
         picker.className = 'tm-date-picker';
         picker.setAttribute('aria-label', `Choose ${label?.textContent.trim() || 'date'}`);
         picker.innerHTML = '<i class="bi bi-calendar3" aria-hidden="true"></i>';

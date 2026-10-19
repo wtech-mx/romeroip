@@ -240,19 +240,6 @@
 
     $sections = [
         [
-            'title' => 'Trademark',
-            'items' => [
-                $field('Trademark', $trademark->trademark),
-                $field('Representation / Logo', $trademark->design, false, false, true),
-                $field('Type of Application', $trademark->type_application),
-                $field('Type of Mark', $trademark->type_mark),
-                $field('Description of the Mark', $trademark->description_trademark, false, true),
-                $field(__('messages.translation'), $trademark->translation, false, true),
-                $field(__('messages.transliteration'), $trademark->transliteration_trademark, false, true),
-                $field('Disclaimer', $trademark->disclaimer, false, true),
-            ],
-        ],
-        [
             'title' => 'Goods / Services',
             'single' => true,
             'items' => [
@@ -301,7 +288,7 @@
 
     $visibleSections = collect($sections)
         ->map(function ($section, $index) {
-            $section['number'] = $index + 4;
+            $section['number'] = $index + 5;
             $section['items'] = collect($section['items']);
             if (!isset($section['columnBreak'])) {
                 $section['items'] = $section['items']->filter(fn ($item) => filled($item['value']));
@@ -321,6 +308,7 @@
     <div class="tm-file-shell">
         @include('trademark._header', ['isNewFile' => false])
         @include('trademark._file-sections', ['readOnly' => true, 'newFile' => false])
+        @include('trademark._mark-section', ['readOnly' => true, 'newFile' => false])
 
         @foreach($visibleSections as $sectionIndex => $section)
             <section class="tm-section" id="{{ \Illuminate\Support\Str::slug($section['title']) }}">

@@ -228,6 +228,64 @@ class TrademarkFileTest extends TestCase
         $this->assertDatabaseHas('trademark', ['id' => 1, 'int_renewal_date' => null]);
     }
 
+    public function test_designated_countries_can_be_cleared_on_an_existing_file(): void
+    {
+        $record = Trademarks::create(['trademark' => 'Existing Mark', 'designated_countries' => 'MX']);
+        $this->patch(route('update.trademarks', $record->id), ['designated_countries' => ''])
+            ->assertRedirect(route('show.trademarks', $record->id))->assertSessionHasNoErrors()
+            ->assertSessionMissing('swal_error')->assertSessionHas('trademark_saved', true);
+        $this->assertDatabaseHas('trademark', ['id' => $record->id, 'designated_countries' => null, 'trademark' => 'Existing Mark']);
+        $this->patch(route('update.trademarks', $record->id), ['designated_countries' => 'US, MX'])
+            ->assertSessionHasNoErrors()->assertSessionMissing('swal_error');
+        $this->assertDatabaseHas('trademark', ['id' => $record->id, 'designated_countries' => 'US, MX']);
+    }
+
+    public function test_trademark_text_preserves_unicode_punctuation_and_line_breaks(): void
+    {
+        $text = "Diseño ™ © — 日本語 / (A) [B]\n" . rtrim(str_repeat('Texto largo & símbolos. ', 30));
+        $data = array_fill_keys(['translation', 'transliteration_trademark', 'disclaimer', 'description_trademark'], $text);
+        $data['trademark'] = 'Vencedor y Diseño ™ 日本語';
+        $this->post(route('store.trademarks'), $data)->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', array_merge(['id' => 1], $data));
+        foreach (['edit.trademarks', 'show.trademarks'] as $route) {
+            $document = $this->document($this->get(route($route, 1))->assertOk()->getContent());
+            $this->assertSame(['Trademark', 'Type of Appl.', 'Type of Mark', 'Translation', 'Transliteration', 'Disclaimer', 'Description'],
+                $this->texts($document->query('//section[@id="trademark-section"]//*[contains(@class,"tm-label")]')));
+        }
+        $this->patch(route('update.trademarks', 1), ['translation' => "Updated ©\n第二行"])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'translation' => "Updated ©\n第二行"]);
+    }
+
+    public function test_empty_mark_keeps_desktop_middle_cells_and_hides_empty_footer(): void
+    {
+        $record = Trademarks::create(['trademark' => 'Empty Mark']);
+        $document = $this->document($this->get(route('show.trademarks', $record->id))->assertOk()->getContent());
+        $this->assertSame(3, $document->query('//section[@id="trademark-section"]//*[contains(@class,"tm-mobile-empty")]')->length);
+        $this->assertSame(0, $document->query('//section[@id="trademark-section"]//*[contains(@class,"tm-label") and (text()="Disclaimer" or text()="Description")]')->length);
+    }
+
+    public function test_logo_is_saved_and_retained_when_updating_other_fields(): void
+    {
+        $image = \Illuminate\Http\UploadedFile::fake()->createWithContent('sample.png',
+            base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a3XcAAAAASUVORK5CYII='));
+        $path = null;
+        try {
+            $this->post(route('store.trademarks'), ['trademark' => 'Logo Test', 'design' => $image])
+                ->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors();
+            $name = Trademarks::findOrFail(1)->design;
+            $this->assertNotEmpty($name);
+            $path = public_path('design/' . $name);
+            $this->assertFileExists($path);
+            $this->patch(route('update.trademarks', 1), ['translation' => 'Changed text'])->assertSessionMissing('swal_error');
+            $this->assertDatabaseHas('trademark', ['id' => 1, 'design' => $name]);
+            foreach (['edit.trademarks', 'show.trademarks'] as $route) {
+                $this->get(route($route, 1))->assertOk()->assertSee(asset('design/' . $name));
+            }
+        } finally {
+            if ($path && is_file($path)) unlink($path);
+        }
+    }
+
     private function texts(\DOMNodeList $nodes): array
     {
         return array_map(fn ($node) => trim($node->textContent), iterator_to_array($nodes));

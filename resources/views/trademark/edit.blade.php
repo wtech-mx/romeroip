@@ -336,88 +336,7 @@
 
             @include('trademark._file-sections', ['readOnly' => false, 'newFile' => false])
 
-            <section class="tm-section" id="trademark-section">
-                <h2 class="tm-section-heading"><span>04 |</span> Trademark</h2>
-                <div class="tm-field-grid">
-                    <div class="tm-field autocomplete-wrap">
-                        <label class="tm-label" for="trademark">{{ __('messages.trademark') }}</label>
-                        <div class="tm-control">
-                            <input id="trademark" name="trademark" class="form-control tm-input" type="text" autocomplete="off" maxlength="250" value="{{ old('trademark', $trademark->trademark) }}">
-                            <div id="trademark_suggestions" class="autocomplete-box d-none"></div>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-logo" id="representationLogoField">
-                        <label class="tm-label" for="design">Representation / Logo</label>
-                        <div class="tm-logo-control">
-                            <input id="design" name="design" class="form-control tm-input" type="file" accept=".jpg,.jpeg,.png,.webp,.gif,image/*">
-                            <div class="tm-preview-wrap" id="representationLogoPreview">
-                                <img id="blah" class="tm-preview-image" src="{{ $trademark->design ? asset('design/'.$trademark->design) : asset('design/no-image.jpg') }}" alt="Trademark design preview">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="type_application">Type of Application</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" id="type_application" name="type_application">
-                                <option value="">{{ __('messages.select') }}</option>
-                                <option value="Trademark" {{ old('type_application', $trademark->type_application) == 'Trademark' ? 'selected' : '' }}>Trademark</option>
-                                <option value="Commercial Name" {{ old('type_application', $trademark->type_application) == 'Commercial Name' ? 'selected' : '' }}>Commercial Name</option>
-                                <option value="Slogan" {{ old('type_application', $trademark->type_application) == 'Slogan' ? 'selected' : '' }}>Slogan</option>
-                                <option value="Collective Mark" {{ old('type_application', $trademark->type_application) == 'Collective Mark' ? 'selected' : '' }}>Collective Mark</option>
-                                <option value="Certification Mark" {{ old('type_application', $trademark->type_application) == 'Certification Mark' ? 'selected' : '' }}>Certification Mark</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="type_mark">Type of Mark</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" id="type_mark" name="type_mark">
-                                <option value="">{{ __('messages.select') }}</option>
-                                <option value="Word Mark" {{ old('type_mark', $trademark->type_mark) == 'Word Mark' ? 'selected' : '' }}>Word Mark</option>
-                                <option value="Design Mark" {{ old('type_mark', $trademark->type_mark) == 'Design Mark' ? 'selected' : '' }}>Design Mark</option>
-                                <option value="Mixed Mark" {{ old('type_mark', $trademark->type_mark) == 'Mixed Mark' ? 'selected' : '' }}>Mixed Mark</option>
-                                <option value="Three-Dimensional Mark" {{ old('type_mark', $trademark->type_mark) == 'Three-Dimensional Mark' ? 'selected' : '' }}>Three-Dimensional Mark</option>
-                                <option value="Holographic Mark" {{ old('type_mark', $trademark->type_mark) == 'Holographic Mark' ? 'selected' : '' }}>Holographic Mark</option>
-                                <option value="Sound Mark" {{ old('type_mark', $trademark->type_mark) == 'Sound Mark' ? 'selected' : '' }}>Sound Mark</option>
-                                <option value="Scent Mark" {{ old('type_mark', $trademark->type_mark) == 'Scent Mark' ? 'selected' : '' }}>Scent Mark</option>
-                                <option value="Trade Dress" {{ old('type_mark', $trademark->type_mark) == 'Trade Dress' ? 'selected' : '' }}>Trade Dress</option>
-                                <option value="Other" {{ old('type_mark', $trademark->type_mark) == 'Other' ? 'selected' : '' }}>Other</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-tall" id="descriptionMarkField">
-                        <label class="tm-label" for="description_trademark">Description of the Mark</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="description_trademark" name="description_trademark" rows="4">{{ old('description_trademark', $trademark->description_trademark) }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="translation">{{ __('messages.translation') }}</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="translation" name="translation" rows="4">{{ old('translation', $trademark->translation) }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="transliteration_trademark">{{ __('messages.transliteration') }}</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="transliteration_trademark" name="transliteration_trademark" rows="2">{{ old('transliteration_trademark', $trademark->transliteration_trademark) }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="disclaimer">Disclaimer</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="disclaimer" name="disclaimer" rows="2">{{ old('disclaimer', $trademark->disclaimer) }}</textarea>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            @include('trademark._mark-section', ['readOnly' => false, 'newFile' => false])
 
             <section class="tm-section" id="accounts">
                 <h2 class="tm-section-heading"><span>05 |</span> Goods / Services</h2>
@@ -622,6 +541,7 @@
 <script src="{{ asset('assets/js/trademark-header.js') }}?v={{ filemtime(public_path('assets/js/trademark-header.js')) }}"></script>
 <script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
 <script src="{{ asset('assets/js/trademark-field-controls.js') }}?v={{ filemtime(public_path('assets/js/trademark-field-controls.js')) }}"></script>
+<script src="{{ asset('assets/js/trademark-logo.js') }}?v={{ filemtime(public_path('assets/js/trademark-logo.js')) }}"></script>
 <script>
 (function () {
     function setSelectedOptionIfExists(selectId, value) {
@@ -642,58 +562,9 @@
 })();
 </script>
 
-<script>
-(function () {
-    const typeApplication = document.getElementById('type_application');
-    const typeMark = document.getElementById('type_mark');
-    const descriptionField = document.getElementById('descriptionMarkField');
-    const hasExistingDescription = @json(filled($trademark->description_trademark));
-    const descriptionTypes = new Set(['Holographic Mark', 'Sound Mark', 'Scent Mark', 'Trade Dress', 'Other']);
 
-    function syncTrademarkConditionalFields() {
-        const value = typeMark?.value || '';
-        const showDescription = descriptionTypes.has(value) || (hasExistingDescription && !value);
 
-        if (descriptionField) {
-            descriptionField.classList.toggle('d-none', !showDescription);
-        }
-    }
 
-    function syncTypeApplicationMark() {
-        if (!typeApplication || !typeMark) return;
-
-        if (['Commercial Name', 'Slogan'].includes(typeApplication.value)) {
-            typeMark.value = 'Word Mark';
-            typeMark.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-    }
-
-    typeApplication?.addEventListener('change', syncTypeApplicationMark);
-    typeMark?.addEventListener('change', syncTrademarkConditionalFields);
-    syncTypeApplicationMark();
-    syncTrademarkConditionalFields();
-})();
-</script>
-
-<script>
-(function () {
-    function readURL(input) {
-        if (!input.files || !input.files[0]) return;
-        const file = input.files[0];
-        if (!file.type.startsWith('image/')) return;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('blah').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-
-    document.getElementById('design')?.addEventListener('change', function () {
-        readURL(this);
-    });
-})();
-</script>
 
 <script>
 (function () {

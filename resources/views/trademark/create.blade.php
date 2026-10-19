@@ -292,87 +292,7 @@
 
             @include('trademark._file-sections', ['readOnly' => false, 'newFile' => true])
 
-            <section class="tm-section" id="trademark-section">
-                <h2 class="tm-section-heading"><span>04 |</span> Trademark</h2>
-                <div class="tm-field-grid">
-                    <div class="tm-field">
-                        <label class="tm-label" for="trademark">{{ __('messages.trademark') }}</label>
-                        <div class="tm-control">
-                            <input id="trademark" name="trademark" class="form-control tm-input" type="text" maxlength="250" value="{{ old('trademark') }}">
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-logo" id="representationLogoField">
-                        <label class="tm-label" for="design">Representation / Logo</label>
-                        <div class="tm-logo-control">
-                            <input id="design" name="design" class="form-control tm-input" type="file" accept=".jpg,.jpeg,.png,.webp,.gif,image/*">
-                            <div class="tm-preview-wrap" id="representationLogoPreview">
-                                <img id="blah" class="tm-preview-image" src="{{ asset('design/no-image.jpg') }}" alt="Trademark design preview">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="type_application">Type of Application</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" id="type_application" name="type_application">
-                                <option value="">{{ __('messages.select') }}</option>
-                                <option value="Trademark" {{ $oldSelected('type_application', 'Trademark') }}>Trademark</option>
-                                <option value="Commercial Name" {{ $oldSelected('type_application', 'Commercial Name') }}>Commercial Name</option>
-                                <option value="Slogan" {{ $oldSelected('type_application', 'Slogan') }}>Slogan</option>
-                                <option value="Collective Mark" {{ $oldSelected('type_application', 'Collective Mark') }}>Collective Mark</option>
-                                <option value="Certification Mark" {{ $oldSelected('type_application', 'Certification Mark') }}>Certification Mark</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="type_mark">Type of Mark</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" id="type_mark" name="type_mark">
-                                <option value="">{{ __('messages.select') }}</option>
-                                <option value="Word Mark" {{ $oldSelected('type_mark', 'Word Mark') }}>Word Mark</option>
-                                <option value="Design Mark" {{ $oldSelected('type_mark', 'Design Mark') }}>Design Mark</option>
-                                <option value="Mixed Mark" {{ $oldSelected('type_mark', 'Mixed Mark') }}>Mixed Mark</option>
-                                <option value="Three-Dimensional Mark" {{ $oldSelected('type_mark', 'Three-Dimensional Mark') }}>Three-Dimensional Mark</option>
-                                <option value="Holographic Mark" {{ $oldSelected('type_mark', 'Holographic Mark') }}>Holographic Mark</option>
-                                <option value="Sound Mark" {{ $oldSelected('type_mark', 'Sound Mark') }}>Sound Mark</option>
-                                <option value="Scent Mark" {{ $oldSelected('type_mark', 'Scent Mark') }}>Scent Mark</option>
-                                <option value="Trade Dress" {{ $oldSelected('type_mark', 'Trade Dress') }}>Trade Dress</option>
-                                <option value="Other" {{ $oldSelected('type_mark', 'Other') }}>Other</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-tall" id="descriptionMarkField">
-                        <label class="tm-label" for="description_trademark">Description of the Mark</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="description_trademark" name="description_trademark" rows="4">{{ old('description_trademark') }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="translation">{{ __('messages.translation') }}</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="translation" name="translation" rows="4">{{ old('translation') }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="transliteration_trademark">{{ __('messages.transliteration') }}</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="transliteration_trademark" name="transliteration_trademark" rows="2">{{ old('transliteration_trademark') }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="disclaimer">Disclaimer</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="disclaimer" name="disclaimer" rows="2">{{ old('disclaimer') }}</textarea>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            @include('trademark._mark-section', ['readOnly' => false, 'newFile' => true])
 
             <section class="tm-section" id="accounts">
                 <h2 class="tm-section-heading"><span>05 |</span> Goods / Services</h2>
@@ -563,6 +483,7 @@
 <script src="{{ asset('assets/js/trademark-header.js') }}?v={{ filemtime(public_path('assets/js/trademark-header.js')) }}"></script>
 <script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
 <script src="{{ asset('assets/js/trademark-field-controls.js') }}?v={{ filemtime(public_path('assets/js/trademark-field-controls.js')) }}"></script>
+<script src="{{ asset('assets/js/trademark-logo.js') }}?v={{ filemtime(public_path('assets/js/trademark-logo.js')) }}"></script>
 <script>
 (function () {
     function setSelectedOptionIfExists(selectId, value) {
@@ -589,55 +510,9 @@ $(document).ready(function() {
 });
 </script>
 
-<script>
-(function () {
-    const typeApplication = document.getElementById('type_application');
-    const typeMark = document.getElementById('type_mark');
-    const descriptionField = document.getElementById('descriptionMarkField');
-    const descriptionTypes = new Set(['Holographic Mark', 'Sound Mark', 'Scent Mark', 'Trade Dress', 'Other']);
 
-    function syncTrademarkConditionalFields() {
-        const value = typeMark?.value || '';
-        if (descriptionField) {
-            descriptionField.classList.toggle('d-none', !descriptionTypes.has(value));
-        }
-    }
 
-    function syncTypeApplicationMark() {
-        if (!typeApplication || !typeMark) return;
 
-        if (['Commercial Name', 'Slogan'].includes(typeApplication.value)) {
-            typeMark.value = 'Word Mark';
-            typeMark.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-    }
-
-    typeApplication?.addEventListener('change', syncTypeApplicationMark);
-    typeMark?.addEventListener('change', syncTrademarkConditionalFields);
-    syncTypeApplicationMark();
-    syncTrademarkConditionalFields();
-})();
-</script>
-
-<script>
-(function () {
-    function readURL(input) {
-        if (!input.files || !input.files[0]) return;
-        const file = input.files[0];
-        if (!file.type.startsWith('image/')) return;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('blah').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-
-    document.getElementById('design')?.addEventListener('change', function () {
-        readURL(this);
-    });
-})();
-</script>
 
 <script>
 (function () {
