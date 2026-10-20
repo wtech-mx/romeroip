@@ -260,7 +260,7 @@ class TrademarkFileTest extends TestCase
     {
         $record = Trademarks::create(['trademark' => 'Empty Mark']);
         $document = $this->document($this->get(route('show.trademarks', $record->id))->assertOk()->getContent());
-        $this->assertSame(3, $document->query('//section[@id="trademark-section"]//*[contains(@class,"tm-mobile-empty")]')->length);
+        $this->assertSame(3, $document->query('//section[@id="trademark-section"]//*[contains(@class,"tm-mobile-empty") and not(contains(@class,"tm-spacer-row"))]')->length);
         $this->assertSame(0, $document->query('//section[@id="trademark-section"]//*[contains(@class,"tm-label") and (text()="Disclaimer" or text()="Description")]')->length);
     }
 

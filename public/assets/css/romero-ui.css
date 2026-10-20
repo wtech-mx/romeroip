@@ -329,9 +329,9 @@ body.legal-shell, body.ui-auth {
 .legal-shell .tm-compact-file #trademark-section .tm-mark-name :is(.tm-input,.tm-value) { font-weight: 600; }
 .legal-shell .tm-compact-file #trademark-section.tm-mark-edit .tm-mark-footer-field { min-height: 32px; }
 .legal-shell .tm-compact-file #trademark-section.tm-mark-edit .tm-mark-footer-field textarea { min-height: 32px; height: 32px; resize: vertical; display: block; }
-.legal-shell .tm-compact-file #trademark-section .tm-mark-info { display: grid; grid-template-rows: auto auto 12px minmax(64px,1fr) minmax(64px,1fr); }
+.legal-shell .tm-compact-file #trademark-section .tm-mark-info { display: grid; grid-template-rows: auto auto 12px minmax(64px,1fr) 12px minmax(64px,1fr); }
 .legal-shell .tm-compact-file #trademark-section .tm-label { height: 100%; }
-.legal-shell .tm-mark-readonly .tm-mark-logo .tm-preview-image { max-height: 480px; }
+
 .legal-shell .tm-mark-logo .has-image .tm-upload-hint { display: none; }
 .legal-shell .tm-logo-remove { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border: 1px solid var(--ui-line); border-radius: 50%; background: white; color: var(--ui-ink); display: grid; place-items: center; z-index: 1; }
 .legal-shell .tm-logo-remove[hidden] { display: none; }

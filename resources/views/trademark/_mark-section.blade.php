@@ -61,6 +61,7 @@
                         <textarea id="translation" name="translation" class="form-control tm-input" rows="2" placeholder="Enter translation (if applicable)">{{ $markValue('translation') }}</textarea>
                     </div>@endif
                 </div>
+                <div class="tm-spacer-row tm-mark-spacer {{ $readOnly && (!filled($markValue('translation')) || !filled($markValue('transliteration_trademark'))) ? 'tm-mobile-empty' : '' }}" aria-hidden="true" data-spacer-between="translation-transliteration"></div>
                 <div class="tm-field tm-mark-multiline {{ $readOnly && !filled($markValue('transliteration_trademark')) && true ? 'tm-mobile-empty' : '' }}">
                     <label class="tm-label" @if(!$readOnly) for="transliteration_trademark" @endif>Transliteration</label>
                     @if($readOnly)<p class="tm-value">{{ $markValue('transliteration_trademark') }}</p>
@@ -87,6 +88,9 @@
         @if(!$readOnly || filled($markValue('disclaimer')) || filled($markValue('description_trademark')))
         <div class="tm-field-column">
             @foreach(['disclaimer' => 'Disclaimer', 'description_trademark' => 'Description'] as $key => $label)
+                @if($key === 'description_trademark' && (!$readOnly || (filled($markValue('disclaimer')) && filled($markValue('description_trademark')))))
+                    <div class="tm-spacer-row" aria-hidden="true" data-spacer-between="disclaimer-description"></div>
+                @endif
                 @if(!$readOnly || filled($markValue($key)))
                 <div class="tm-field tm-mark-footer-field">
                     <label class="tm-label" @if(!$readOnly) for="{{ $key }}" @endif>{{ $label }}</label>
