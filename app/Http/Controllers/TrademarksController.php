@@ -337,6 +337,7 @@ class TrademarksController extends Controller
             'industrial_address'      => 'nullable|string|max:255',
 
             'design'                  => 'nullable|file|mimes:jpg,jpeg,png,webp,gif|max:4096',
+            'remove_design'           => 'nullable|boolean',
         ];
     }
 
@@ -419,6 +420,10 @@ class TrademarksController extends Controller
             }
 
             $trademark->{$field} = $value;
+        }
+
+        if ($request->boolean('remove_design') && !$request->hasFile('design')) {
+            $trademark->design = null;
         }
 
         if ($request->hasFile('design')) {

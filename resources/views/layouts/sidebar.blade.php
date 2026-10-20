@@ -1,5 +1,6 @@
 <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 my-3 fixed-start ms-4 legal-sidenav" id="sidenav-main">
   <div class="sidenav-header">
+    <button type="button" class="legal-sidebar-toggle" data-sidebar-toggle aria-controls="sidenav-main" aria-expanded="true" aria-label="Collapse sidebar"><i class="bi bi-layout-sidebar" aria-hidden="true"></i></button>
     <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
     <a class="navbar-brand m-0" href="{{ route('dashboard') }}">
       <img src="{{ asset('logo/'.$configuracion->logo) }}" class="navbar-brand-img h-100" alt="{{ $configuracion->nombre_sistema }}">
@@ -15,30 +16,30 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+        <a class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}" aria-label="Home" title="Home">
           <i class="bi bi-grid" aria-hidden="true"></i><span class="nav-link-text ms-1">Home</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('trademarks*') ? 'active' : '' }}" href="{{ route('index.trademarks') }}">
+        <a class="nav-link {{ Request::is('trademarks*') ? 'active' : '' }}" href="{{ route('index.trademarks') }}" aria-label="Trademarks" title="Trademarks">
           <i class="bi bi-folder2-open" aria-hidden="true"></i><span class="nav-link-text ms-1">Trademarks</span>
         </a>
       </li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-lightbulb" aria-hidden="true"></i><span class="nav-link-text ms-1">Patents</span></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-c-circle" aria-hidden="true"></i><span class="nav-link-text ms-1">Copyrights</span></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-globe2" aria-hidden="true"></i><span class="nav-link-text ms-1">Domain Names</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#" aria-label="Patents" title="Patents"><i class="bi bi-lightbulb" aria-hidden="true"></i><span class="nav-link-text ms-1">Patents</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#" aria-label="Copyrights" title="Copyrights"><i class="bi bi-c-circle" aria-hidden="true"></i><span class="nav-link-text ms-1">Copyrights</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#" aria-label="Domain Names" title="Domain Names"><i class="bi bi-globe2" aria-hidden="true"></i><span class="nav-link-text ms-1">Domain Names</span></a></li>
 
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Contacts</h6>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('clients*') ? 'active' : '' }}" href="{{ route('index.clients') }}">
+        <a class="nav-link {{ Request::is('clients*') ? 'active' : '' }}" href="{{ route('index.clients') }}" aria-label="Clients" title="Clients">
           <i class="bi bi-people" aria-hidden="true"></i><span class="nav-link-text ms-1">Clients</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('holder*') ? 'active' : '' }}" href="{{ route('index.holder') }}">
+        <a class="nav-link {{ Request::is('holder*') ? 'active' : '' }}" href="{{ route('index.holder') }}" aria-label="Owners" title="Owners">
           <i class="bi bi-person-badge" aria-hidden="true"></i><span class="nav-link-text ms-1">Owners</span>
         </a>
       </li>
@@ -47,16 +48,16 @@
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Communications</h6>
       </li>
 
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-chat" aria-hidden="true"></i><span class="nav-link-text ms-1">Chat</span></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-calendar4" aria-hidden="true"></i><span class="nav-link-text ms-1">Calendar</span></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-check2-square" aria-hidden="true"></i><span class="nav-link-text ms-1">Tasks</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#" aria-label="Chat" title="Chat"><i class="bi bi-chat" aria-hidden="true"></i><span class="nav-link-text ms-1">Chat</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#" aria-label="Calendar" title="Calendar"><i class="bi bi-calendar4" aria-hidden="true"></i><span class="nav-link-text ms-1">Calendar</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#" aria-label="Tasks" title="Tasks"><i class="bi bi-check2-square" aria-hidden="true"></i><span class="nav-link-text ms-1">Tasks</span></a></li>
 
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Business</h6>
       </li>
 
       <li class="nav-item">
-        <a data-bs-toggle="collapse" href="#financialMenu" class="nav-link" aria-controls="financialMenu" role="button" aria-expanded="false">
+        <a data-bs-toggle="collapse" href="#financialMenu" class="nav-link" aria-controls="financialMenu" role="button" aria-expanded="false" aria-label="Financial" title="Financial">
           <i class="bi bi-wallet2" aria-hidden="true"></i><span class="nav-link-text ms-1">Financial</span>
         </a>
         <div class="collapse" id="financialMenu">
@@ -179,27 +180,29 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-bar-chart" aria-hidden="true"></i><span class="nav-link-text ms-1">Marketing</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#" aria-label="Marketing" title="Marketing"><i class="bi bi-bar-chart" aria-hidden="true"></i><span class="nav-link-text ms-1">Marketing</span></a></li>
 
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">System</h6>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('roles*') || Request::is('users*') ? 'active' : '' }}" href="{{ route('roles.index') }}">
+        <a class="nav-link {{ Request::is('roles*') || Request::is('users*') ? 'active' : '' }}" href="{{ route('roles.index') }}" aria-label="Roles and Permissions" title="Roles and Permissions">
           <i class="bi bi-shield-check" aria-hidden="true"></i><span class="nav-link-text ms-1">Roles and Permissions</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('configuracion*') ? 'active' : '' }}" href="{{ route('index.configuracion') }}">
+        <a class="nav-link {{ Request::is('configuracion*') ? 'active' : '' }}" href="{{ route('index.configuracion') }}" aria-label="Settings" title="Settings">
           <i class="bi bi-sliders" aria-hidden="true"></i><span class="nav-link-text ms-1">Settings</span>
         </a>
       </li>
     </ul>
   </div>
 
-  <div class="legal-sidebar-profile px-4 pb-4 mt-auto">
+  <div class="legal-sidebar-profile mt-auto">
+    <span class="legal-sidebar-avatar" aria-hidden="true">{{ collect(preg_split('/\s+/u', trim(Auth::user()->name)))->take(2)->map(fn($part) => mb_substr($part, 0, 1))->implode('') }}</span>
+    <div class="legal-sidebar-details">
     <div class="legal-sidebar-name">{{ Auth::user()->name }}</div>
-    <div class="legal-sidebar-role">{{ Auth::user()->getRoleNames()->implode(' / ') }}</div>
+    <div class="legal-sidebar-role">{{ Auth::user()->getRoleNames()->implode(' / ') }}</div></div>
   </div>
 </aside>

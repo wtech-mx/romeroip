@@ -4,11 +4,11 @@
     $markValue = fn($key) => $newFile ? old($key) : ($readOnly ? $trademark->{$key} : old($key, $trademark->{$key}));
     $markDesign = !$newFile ? $trademark->design : null;
 @endphp
-<section class="tm-section tm-approved-section tm-mark-section" id="trademark-section">
+<section class="tm-section tm-approved-section tm-mark-section {{ $readOnly ? 'tm-mark-readonly' : 'tm-mark-edit' }}" id="trademark-section">
     <h2 class="tm-section-heading"><span>04 |</span> Trademark</h2>
     <div class="tm-mark-layout">
         <div class="tm-field-column">
-            <div class="tm-field autocomplete-wrap">
+            <div class="tm-field autocomplete-wrap tm-mark-name">
                 <label class="tm-label" @if(!$readOnly) for="trademark" @endif>Trademark</label>
                 @if($readOnly)<p class="tm-value">{{ $markValue('trademark') ?: '—' }}</p>
                 @else
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="tm-mark-middle">
-            <div class="tm-field-column">
+            <div class="tm-field-column tm-mark-info">
                 <div class="tm-field  {{ $readOnly && !filled($markValue('type_application')) && false ? 'tm-mobile-empty' : '' }}">
                     <label class="tm-label" @if(!$readOnly) for="type_application" @endif>Type of Appl.</label>
                     @if($readOnly)<p class="tm-value">{{ $markValue('type_application') }}</p>
@@ -53,6 +53,7 @@
                             </select>
                     </div>@endif
                 </div>
+                <div class="tm-spacer-row tm-mark-spacer" aria-hidden="true"></div>
                 <div class="tm-field tm-mark-multiline {{ $readOnly && !filled($markValue('translation')) && true ? 'tm-mobile-empty' : '' }}">
                     <label class="tm-label" @if(!$readOnly) for="translation" @endif>Translation</label>
                     @if($readOnly)<p class="tm-value">{{ $markValue('translation') }}</p>
@@ -69,9 +70,11 @@
                 </div>
             </div>
             <div class="tm-field-column tm-mark-logo {{ $readOnly && !$markDesign ? 'tm-mobile-empty' : '' }}" id="representationLogoField">
-                <div class="tm-logo-control" id="representationLogoPreview">
+                <div class="tm-logo-control {{ $markDesign ? 'has-image' : '' }}" id="representationLogoPreview">
                     <img id="blah" class="tm-preview-image" @if($markDesign) src="{{ asset('design/'.$markDesign) }}" @else hidden @endif alt="Trademark representation">
                     @if(!$readOnly)
+                        <input type="hidden" name="remove_design" id="remove_design" value="0">
+                        <button type="button" class="tm-logo-remove" id="removeDesignButton" aria-label="Remove representation" @if(!$markDesign) hidden @endif><i class="bi bi-x-lg" aria-hidden="true"></i></button>
                         <div class="tm-upload-hint"><i class="bi bi-image" aria-hidden="true"></i><label for="design">Representation / Logo</label>
                         <span>Drag and drop an image here<br>or</span>
                         <label class="tm-file-link" for="design">Choose file</label>
@@ -85,10 +88,10 @@
         <div class="tm-field-column">
             @foreach(['disclaimer' => 'Disclaimer', 'description_trademark' => 'Description'] as $key => $label)
                 @if(!$readOnly || filled($markValue($key)))
-                <div class="tm-field tm-mark-multiline">
+                <div class="tm-field tm-mark-footer-field">
                     <label class="tm-label" @if(!$readOnly) for="{{ $key }}" @endif>{{ $label }}</label>
                     @if($readOnly)<p class="tm-value">{{ $markValue($key) }}</p>
-                    @else<div class="tm-control"><textarea id="{{ $key }}" name="{{ $key }}" class="form-control tm-input" rows="2" placeholder="Enter {{ strtolower($label) }} (if applicable)">{{ $markValue($key) }}</textarea></div>@endif
+                    @else<div class="tm-control"><textarea id="{{ $key }}" name="{{ $key }}" class="form-control tm-input" rows="1" placeholder="Enter {{ strtolower($label) }} (if applicable)">{{ $markValue($key) }}</textarea></div>@endif
                 </div>
                 @endif
             @endforeach

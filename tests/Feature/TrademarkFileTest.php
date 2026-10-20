@@ -286,6 +286,31 @@ class TrademarkFileTest extends TestCase
         }
     }
 
+    public function test_logo_removal_is_explicit_and_does_not_affect_other_file_data(): void
+    {
+        $record = Trademarks::create(['trademark' => 'Keep Name', 'design' => 'existing.png']);
+        $this->patch(route('update.trademarks', $record->id), ['translation' => 'Changed'])
+            ->assertRedirect(route('show.trademarks', $record->id));
+        $this->assertDatabaseHas('trademark', ['id' => $record->id, 'design' => 'existing.png']);
+        $this->patch(route('update.trademarks', $record->id), ['remove_design' => '1'])
+            ->assertRedirect(route('show.trademarks', $record->id))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', ['id' => $record->id, 'design' => null, 'trademark' => 'Keep Name', 'translation' => 'Changed']);
+        $this->get(route('edit.trademarks', $record->id))->assertSee('Drag and drop an image here');
+    }
+
+    public function test_goods_and_notes_use_shared_fields_and_preserve_saved_content(): void
+    {
+        $data = ['trademark' => 'Sections Test', 'class' => '07', 'description_good' => "Goods ™\n第二行",
+            'translation_good' => "Translation\nLine two", 'notes' => "Notes ©\nLine two"];
+        $this->post(route('store.trademarks'), $data)->assertRedirect(route('show.trademarks', 1));
+        $this->assertDatabaseHas('trademark', array_merge(['id' => 1], $data));
+        foreach (['edit.trademarks', 'show.trademarks'] as $route) {
+            $document = $this->document($this->get(route($route, 1))->assertOk()->getContent());
+            $this->assertSame(['Class', 'Description', 'Translation'], $this->texts($document->query('//section[@id="accounts"]//*[contains(@class,"tm-label")]')));
+            $this->assertSame(['Notes'], $this->texts($document->query('//section[@id="notes"]//*[contains(@class,"tm-label")]')));
+        }
+    }
+
     private function texts(\DOMNodeList $nodes): array
     {
         return array_map(fn ($node) => trim($node->textContent), iterator_to_array($nodes));

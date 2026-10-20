@@ -294,37 +294,7 @@
 
             @include('trademark._mark-section', ['readOnly' => false, 'newFile' => true])
 
-            <section class="tm-section" id="accounts">
-                <h2 class="tm-section-heading"><span>05 |</span> Goods / Services</h2>
-                <div class="tm-field-grid is-single">
-                    <div class="tm-field">
-                        <label class="tm-label" for="class">{{ __('messages.class') }}</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" id="class" name="class">
-                                <option value="">{{ __('messages.select') }}</option>
-                                @for ($i = 1; $i <= 45; $i++)
-                                    @php($classValue = str_pad($i, 2, '0', STR_PAD_LEFT))
-                                    <option value="{{ $classValue }}" {{ $oldSelected('class', $classValue) }}>{{ $classValue }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="description_good">{{ __('messages.description') }}</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="description_good" name="description_good" rows="5">{{ old('description_good') }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="translation_good">{{ __('messages.translation') }}</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="translation_good" name="translation_good" rows="4">{{ old('translation_good') }}</textarea>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            @include('trademark._text-section', ['fileSectionId' => 'accounts', 'readOnly' => false, 'newFile' => true])
 
             <section class="tm-section" id="holder">
                 <h2 class="tm-section-heading"><span>06 |</span> Owner</h2>
@@ -463,17 +433,7 @@
                     </div>
             </section>
 
-            <section class="tm-section" id="notes">
-                <h2 class="tm-section-heading"><span>09 |</span> Notes</h2>
-                <div class="tm-field-grid is-single">
-                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="notes_text">{{ __('messages.note') }}</label>
-                        <div class="tm-control">
-                            <textarea class="form-control tm-input" id="notes_text" name="notes" rows="5">{{ old('notes') }}</textarea>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            @include('trademark._text-section', ['fileSectionId' => 'notes', 'readOnly' => false, 'newFile' => true])
         </div>
     </form>
 </div>

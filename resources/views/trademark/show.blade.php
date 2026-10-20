@@ -310,7 +310,9 @@
         @include('trademark._file-sections', ['readOnly' => true, 'newFile' => false])
         @include('trademark._mark-section', ['readOnly' => true, 'newFile' => false])
 
+        @include('trademark._text-section', ['fileSectionId' => 'accounts', 'readOnly' => true, 'newFile' => false])
         @foreach($visibleSections as $sectionIndex => $section)
+            @continue(in_array($section['title'], ['Goods / Services', 'Notes']))
             <section class="tm-section" id="{{ \Illuminate\Support\Str::slug($section['title']) }}">
                 <h2 class="tm-section-heading">
                     <span>{{ str_pad($section['number'], 2, '0', STR_PAD_LEFT) }} |</span> {{ $section['title'] }}
@@ -335,6 +337,7 @@
                 @endif
             </section>
         @endforeach
+        @include('trademark._text-section', ['fileSectionId' => 'notes', 'readOnly' => true, 'newFile' => false])
     </div>
 </div>
 @endsection

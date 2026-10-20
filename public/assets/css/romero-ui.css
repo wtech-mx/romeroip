@@ -276,3 +276,84 @@ body.legal-shell, body.ui-auth {
 @media (max-width: 575.98px) {
   .legal-shell .tm-compact-file #trademark-section .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
 }
+/* October review: a distinct navigation card with a persistent icon rail. */
+.legal-shell .legal-sidenav {
+  background: #fff !important; border: 1px solid rgba(36,37,43,.035) !important;
+  border-radius: 24px !important; box-shadow: var(--ui-shadow) !important;
+  margin: 16px !important; width: 280px; max-width: 280px; height: calc(100dvh - 32px);
+  transition: width .2s ease, transform .2s ease;
+}
+.legal-sidenav .sidenav-header { position: relative; padding: 36px 28px 24px; flex-shrink: 0; }
+.legal-sidenav .navbar-brand { display: block; overflow: hidden; }
+.legal-sidenav .navbar-brand-img { width: 210px; max-width: 100%; max-height: 52px; object-fit: contain; }
+.legal-sidenav > .horizontal { display: none; }
+.legal-sidenav #sidenav-collapse-main { padding-top: 4px; min-height: 0; }
+.legal-sidenav .navbar-nav { padding: 0 12px 12px; }
+.legal-sidenav h6 { margin: 16px 0 9px !important; padding-left: 18px !important; font-size: 11px; }
+.legal-sidenav .nav-link { min-height: 46px; padding: 11px 18px !important; gap: 16px; font-size: 14px; }
+.legal-sidenav .nav-link > .bi { font-size: 22px; width: 26px; text-align: center; }
+.legal-sidenav .nav-link.active { background: #f0f0f4 !important; font-weight: 600; }
+.legal-sidebar-toggle { position: absolute; top: 8px; right: 12px; border: 0; background: transparent; color: var(--ui-muted); padding: 4px; line-height: 1; }
+.legal-sidebar-profile { flex-shrink: 0; margin: 0 28px; padding: 18px 0 22px; display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--ui-line); }
+.legal-sidebar-avatar { width: 42px; height: 42px; flex-shrink: 0; border-radius: 50%; background: #b6b7c0; color: white; display: grid; place-items: center; font-size: 16px; }
+.legal-sidebar-details { min-width: 0; }
+.legal-sidebar-name { overflow-wrap: anywhere; font-size: 14px; }
+.legal-sidebar-role { font-size: 12px; }
+@media (min-width: 1200px) {
+  .legal-shell.g-sidenav-show .main-content, .legal-shell.g-sidenav-hidden .main-content { margin-left: 312px; }
+  .legal-shell.legal-sidebar-collapsed .legal-sidenav { width: 80px; }
+  .legal-shell.legal-sidebar-collapsed .main-content { margin-left: 112px; }
+  .legal-sidebar-collapsed .legal-sidenav .sidenav-header { padding: 42px 16px 16px; }
+  .legal-sidebar-collapsed .legal-sidenav .navbar-brand { width: 44px; height: 44px; }
+  .legal-sidebar-collapsed .legal-sidenav .navbar-brand-img { max-width: none; width: 190px; object-fit: contain; object-position: left; }
+  .legal-sidebar-collapsed .legal-sidenav .nav-link { justify-content: center; padding: 11px 0 !important; gap: 0; }
+  .legal-sidebar-collapsed .legal-sidenav .nav-link-text,
+  .legal-sidebar-collapsed .legal-sidenav h6,
+  .legal-sidebar-collapsed .legal-sidebar-details,
+  .legal-sidebar-collapsed .legal-sidenav .collapse:not(#sidenav-collapse-main),
+  .legal-sidebar-collapsed .legal-sidenav [data-bs-toggle="collapse"]::after { display: none !important; }
+  .legal-sidebar-collapsed .legal-sidebar-profile { margin: 0 12px; justify-content: center; }
+}
+@media (max-width: 1199.98px) {
+  .legal-shell .legal-sidenav { transform: translateX(-320px); z-index: 1050; }
+  .legal-shell.legal-sidebar-open .legal-sidenav { transform: translateX(0); }
+  .legal-shell .main-content { margin-left: 0 !important; }
+}
+/* Restore the file header and action proportions; approved data cells stay compact. */
+.legal-shell .tm-compact-file .tm-record-header { padding: 24px; }
+.legal-shell .tm-compact-file .tm-record-header .tm-title { font-size: clamp(24px, 3vw, 36px); }
+.legal-shell .tm-compact-file .tm-header-meta { font-size: 16px; gap: 3px; }
+.legal-shell .tm-compact-file .tm-title-line { margin-bottom: 3px; }
+.legal-shell .tm-compact-file .tm-page-actions { margin-bottom: 18px; }
+.legal-shell .tm-compact-file .tm-page-actions .tm-btn { font-size: 14px; min-height: 40px; padding: 10px 18px; }
+.legal-shell .tm-compact-file #trademark-section .tm-mark-name :is(.tm-input,.tm-value) { font-weight: 600; }
+.legal-shell .tm-compact-file #trademark-section.tm-mark-edit .tm-mark-footer-field { min-height: 32px; }
+.legal-shell .tm-compact-file #trademark-section.tm-mark-edit .tm-mark-footer-field textarea { min-height: 32px; height: 32px; resize: vertical; display: block; }
+.legal-shell .tm-compact-file #trademark-section .tm-mark-info { display: grid; grid-template-rows: auto auto 12px minmax(64px,1fr) minmax(64px,1fr); }
+.legal-shell .tm-compact-file #trademark-section .tm-label { height: 100%; }
+.legal-shell .tm-mark-readonly .tm-mark-logo .tm-preview-image { max-height: 480px; }
+.legal-shell .tm-mark-logo .has-image .tm-upload-hint { display: none; }
+.legal-shell .tm-logo-remove { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border: 1px solid var(--ui-line); border-radius: 50%; background: white; color: var(--ui-ink); display: grid; place-items: center; z-index: 1; }
+.legal-shell .tm-logo-remove[hidden] { display: none; }
+.legal-shell .tm-mark-middle .tm-mark-info { overflow: hidden; }
+.legal-shell .tm-compact-file .tm-text-table { max-width: 752px; }
+.legal-shell .tm-compact-file :is(#accounts,#notes) .tm-field { display: grid; grid-template-columns: 136px minmax(0,1fr); min-height: 32px; border: 0; border-bottom: 1px solid var(--ui-line); border-radius: 0; background: transparent; }
+.legal-shell .tm-compact-file :is(#accounts,#notes) .tm-field:last-child { border-bottom: 0; }
+.legal-shell .tm-compact-file :is(#accounts,#notes) .tm-label { align-items: center; justify-content: flex-start; text-align: left; padding: 5px 9px; background: #f7f7fa; border: 0; font-size: 13px; font-weight: 400; }
+.legal-shell .tm-compact-file :is(#accounts,#notes) :is(.tm-input,.tm-select,.tm-value) { min-height: 32px; font-size: 14px; line-height: 1.4; padding: 6px 9px; border: 0 !important; border-radius: 0 !important; background: transparent !important; margin: 0; }
+.legal-shell .tm-compact-file :is(#accounts,#notes) .tm-select { height: 32px; }
+.legal-shell .tm-compact-file :is(#accounts,#notes) textarea { display: block; min-height: 64px; height: 64px; resize: vertical; }
+.legal-shell .tm-compact-file :is(#accounts,#notes) .tm-value { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 767.98px) {
+  .legal-shell .tm-mark-readonly .tm-mark-info { grid-template-rows: none !important; grid-auto-rows: auto; }
+  .legal-shell .tm-mark-readonly .tm-mark-spacer:has(+ .tm-mobile-empty) { display: none; }
+}
+@media (max-width: 575.98px) {
+  .legal-shell .tm-compact-file :is(#accounts,#notes) .tm-field { grid-template-columns: 44% minmax(0,1fr); }
+  .legal-shell .tm-compact-file :is(#accounts,#notes) :is(input,select,textarea) { font-size: 16px; }
+}
+.legal-shell .legal-sidenav { width: 280px !important; max-width: 280px !important; }
+.legal-shell .legal-sidenav .nav-link > .bi { font-size: 22px !important; }
+@media (min-width: 1200px) {
+  .legal-shell.legal-sidebar-collapsed .legal-sidenav { width: 80px !important; }
+}

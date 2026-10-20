@@ -2,7 +2,7 @@
       <div class="container-fluid py-1 px-3">
 
         <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none px-3" style="margin-right: 30px;">
-            <a href="javascript:;" class="nav-link p-0">
+            <a href="#sidenav-main" class="nav-link p-0" data-sidebar-toggle role="button" aria-label="Toggle sidebar" aria-controls="sidenav-main" aria-expanded="true">
               <div class="sidenav-toggler-inner">
                 <i class="sidenav-toggler-line"></i>
                 <i class="sidenav-toggler-line"></i>
@@ -70,7 +70,7 @@
           <ul class="navbar-nav  justify-content-end">
 
             <li class="nav-item d-xl-none px-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link p-0" id="iconNavbarSidenav">
+              <a href="javascript:;" class="nav-link p-0" id="legalMobileSidebarToggle" data-sidebar-toggle role="button" aria-label="Toggle sidebar" aria-controls="sidenav-main" aria-expanded="false">
                 <div class="sidenav-toggler-inner">
                   <i class="sidenav-toggler-line"></i>
                   <i class="sidenav-toggler-line"></i>
