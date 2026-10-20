@@ -217,13 +217,13 @@ body.legal-shell, body.ui-auth {
 .legal-shell .tm-compact-file .tm-split-tables { display: grid; grid-template-columns: repeat(2, minmax(0, 360px)); gap: 32px; align-items: start; max-width: 752px; }
 .legal-shell .tm-compact-file .tm-field-column { min-width: 0; border: 1px solid var(--ui-line); border-radius: 6px; }
 .legal-shell .tm-compact-file :is(#references, #general, #maintenance, #trademark-section) .tm-field-column .tm-field:last-child { border-bottom: 0; }
-.legal-shell .tm-compact-file :is(#references, #general, #maintenance, #trademark-section) .tm-field-column:last-child .tm-field { grid-template-columns: 172px minmax(0, 1fr); }
+.legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field-column:last-child .tm-field { grid-template-columns: 172px minmax(0, 1fr); }
 @media (max-width: 991.98px) {
   .legal-shell .tm-compact-file .tm-split-tables { grid-template-columns: minmax(0, 360px); gap: 16px; }
 }
 @media (max-width: 575.98px) {
   .legal-shell .tm-compact-file :is(#references, #general, #maintenance, #trademark-section) .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
-  .legal-shell .tm-compact-file :is(#references, #general, #maintenance, #trademark-section) .tm-field-column:last-child .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
+  .legal-shell .tm-compact-file :is(#references, #general, #maintenance) .tm-field-column:last-child .tm-field { grid-template-columns: 44% minmax(0, 1fr); }
 }
 
 /* Approved three-section details: spacing and controls, with no new input boxes. */
@@ -356,4 +356,19 @@ body.legal-shell, body.ui-auth {
 .legal-shell .legal-sidenav .nav-link > .bi { font-size: 22px !important; }
 @media (min-width: 1200px) {
   .legal-shell.legal-sidebar-collapsed .legal-sidenav { width: 80px !important; }
+}
+
+/* A single label width across all three Trademark table groups. */
+.legal-shell .tm-compact-file #trademark-section { --tm-mark-label-width: 136px; }
+.legal-shell .tm-compact-file #trademark-section .tm-field { grid-template-columns: var(--tm-mark-label-width) minmax(0, 1fr); }
+.legal-shell .tm-compact-file :is(.tm-section-heading, .tm-section-heading span, .tm-header-meta strong),
+.legal-shell .tm-compact-file .tm-field-emphasis :is(.tm-input, .tm-select, .tm-value, .tm-date-display),
+.legal-shell .tm-compact-file #trademark-section .tm-mark-name :is(.tm-input, .tm-value),
+.legal-shell .legal-sidenav .nav-link.active {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: normal;
+}
+@media (max-width: 575.98px) {
+  .legal-shell .tm-compact-file #trademark-section { --tm-mark-label-width: min(136px, 36vw); }
 }
