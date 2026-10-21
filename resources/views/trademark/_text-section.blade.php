@@ -10,6 +10,9 @@
     <h2 class="tm-section-heading"><span>{{ $sectionId === 'accounts' ? '05' : '09' }} |</span> {{ $sectionId === 'accounts' ? 'Goods / Services' : 'Notes' }}</h2>
     <div class="tm-text-table tm-field-column">
         @foreach($sectionFields as $key => $label)
+            @if($sectionId === 'accounts' && !$loop->first)
+                <div class="tm-spacer-row" aria-hidden="true"></div>
+            @endif
             @php($value = $newFile ? old($key) : ($readOnly ? $trademark->{$key} : old($key, $trademark->{$key})))
             <div class="tm-field {{ $key !== 'class' ? 'tm-text-multiline' : '' }}">
                 <label class="tm-label" @if(!$readOnly) for="{{ $key === 'notes' ? 'notes_text' : $key }}" @endif>{{ $label }}</label>
