@@ -311,6 +311,39 @@ class TrademarkFileTest extends TestCase
         }
     }
 
+    public function test_large_goods_translation_and_notes_can_be_created_and_updated(): void
+    {
+        $text = str_repeat("Installation, maintenance & reparación de grúas.\n", 150);
+        $data = array_fill_keys(['notes', 'description_good', 'translation_good', 'description_trademark', 'translation', 'transliteration_trademark', 'disclaimer'], trim($text));
+        $this->post(route('store.trademarks'), array_merge(['trademark' => 'Long Text'], $data))
+            ->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors()->assertSessionMissing('swal_error');
+        $this->assertDatabaseHas('trademark', array_merge(['id' => 1], $data));
+        $this->patch(route('update.trademarks', 1), ['notes' => trim($text . $text)])
+            ->assertSessionHasNoErrors()->assertSessionMissing('swal_error');
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'notes' => trim($text . $text)]);
+    }
+
+    public function test_deadlines_save_manually_and_empty_dates_display_a_dash(): void
+    {
+        $fields = ['opposition_deadline', 'opposition_response_date', 'closing_arguments_deadline', 'closing_arguments_date',
+            'first_office_action_deadline', 'second_office_action_deadline', 'office_action_response',
+            'additional_office_action_date', 'suspension_request_date', 'suspension_period_end_date'];
+        $dates = array_fill_keys($fields, '2027-03-16');
+        $this->post(route('store.trademarks'), array_merge(['trademark' => 'Deadline Test'], $dates))
+            ->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', array_merge(['id' => 1], $dates));
+        $this->patch(route('update.trademarks', 1), ['opposition_deadline' => '2027-02-31'])->assertSessionHasErrors('opposition_deadline');
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'opposition_deadline' => '2027-03-16']);
+        $this->patch(route('update.trademarks', 1), ['opposition_deadline' => ''])->assertSessionHasNoErrors();
+        $document = $this->document($this->get(route('show.trademarks', 1))->assertOk()->getContent());
+        $this->assertSame('—', trim($document->query('//*[@data-field="opposition_deadline"]/*[contains(@class,"tm-value")]')->item(0)->textContent));
+        $this->assertSame(13, $document->query('//section[@id="dates-deadlines"]//*[@data-field]')->length);
+        foreach (['owner', 'client'] as $id) {
+            $this->assertSame(2, $document->query('//section[@id="' . $id . '"]//div[contains(@class,"tm-contact-pair")][1]/div')->length);
+            $this->assertSame(['—', '—'], $this->texts($document->query('//section[@id="' . $id . '"]//div[contains(@class,"tm-contact-pair")][1]//p')));
+        }
+    }
+
     private function texts(\DOMNodeList $nodes): array
     {
         return array_map(fn ($node) => trim($node->textContent), iterator_to_array($nodes));

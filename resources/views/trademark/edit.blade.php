@@ -340,32 +340,15 @@
 
             @include('trademark._text-section', ['fileSectionId' => 'accounts', 'readOnly' => false, 'newFile' => false])
 
-            <section class="tm-section" id="holder">
-                <h2 class="tm-section-heading"><span>06 |</span> Owner</h2>
-                <div class="tm-field-grid">
-                    <div class="tm-field autocomplete-wrap">
-                        <label class="tm-label" for="holder_search">{{ __('messages.holder') }}</label>
+            <section class="tm-section tm-approved-section tm-contact-section" id="holder"><h2 class="tm-section-heading"><span>06 |</span> Owner</h2><div class="tm-contact-layout">                    <div class="tm-field autocomplete-wrap">
+                        <label class="tm-label" for="holder_search">{{ 'Owner' }}</label>
                         <div class="tm-control">
                             <input type="text" id="holder_search" class="form-control tm-input" autocomplete="off" value="{{ old('holder_search', optional($trademark->Holder)->company_name) }}">
                             <input type="hidden" id="id_holder" name="id_holder" value="{{ old('id_holder', $trademark->id_holder) }}">
                             <div id="holder_search_suggestions" class="autocomplete-box d-none"></div>
                         </div>
                     </div>
-
-                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="industrial_address">{{ __('messages.industrial_address') }}</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" name="industrial_address" id="industrial_address">
-                                @if($trademark->industrial_address)
-                                    <option value="{{ $trademark->industrial_address }}" selected>{{ $trademark->industrial_address }}</option>
-                                @else
-                                    <option value="">{{ __('messages.select') }}</option>
-                                @endif
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-tall">
+<div class="tm-contact-pair tm-contact-addresses">                    <div class="tm-field is-tall">
                         <label class="tm-label" for="address_holder">{{ __('messages.address') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" name="address_holder" id="address_holder">
@@ -376,14 +359,21 @@
                                 @endif
                             </select>
                         </div>
+                    </div>                    <div class="tm-field is-tall">
+                        <label class="tm-label" for="industrial_address">{{ 'Commercial Address' }}</label>
+                        <div class="tm-control">
+                            <select class="form-control tm-select" name="industrial_address" id="industrial_address">
+                                @if($trademark->industrial_address)
+                                    <option value="{{ $trademark->industrial_address }}" selected>{{ $trademark->industrial_address }}</option>
+                                @else
+                                    <option value="">{{ __('messages.select') }}</option>
+                                @endif
+                            </select>
+                        </div>
                     </div>
-                </div>
-            </section>
+</div></div></section>
 
-            <section class="tm-section" id="sessions">
-                <h2 class="tm-section-heading"><span>07 |</span> Client</h2>
-                <div class="tm-field-grid">
-                    <div class="tm-field autocomplete-wrap">
+            <section class="tm-section tm-approved-section tm-contact-section" id="sessions"><h2 class="tm-section-heading"><span>07 |</span> Client</h2><div class="tm-contact-layout">                    <div class="tm-field autocomplete-wrap">
                         <label class="tm-label" for="client_search">{{ __('messages.client') }}</label>
                         <div class="tm-control">
                             <input type="text" id="client_search" class="form-control tm-input" autocomplete="off" value="{{ old('client_search', optional($trademark->Client)->company_name) }}">
@@ -391,35 +381,13 @@
                             <div id="client_search_suggestions" class="autocomplete-box d-none"></div>
                         </div>
                     </div>
-
                     <div class="tm-field">
                         <label class="tm-label" for="invoice_recipient_preview">Invoice Recipient</label>
                         <div class="tm-control">
                             <input id="invoice_recipient_preview" class="form-control tm-input" type="text" value="{{ old('client_search', optional($trademark->Client)->company_name) }}" disabled>
                         </div>
                     </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="id_contact">{{ __('messages.contact') }}</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" name="id_contact" id="id_contact">
-                                @if($trademark->id_contact && $trademark->ContactClient)
-                                    <option value="{{ $trademark->id_contact }}" selected data-email="{{ $trademark->ContactClient->email }}">{{ $trademark->ContactClient->name }}</option>
-                                @else
-                                    <option value="">{{ __('messages.select') }}</option>
-                                @endif
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="client_contact_email">{{ __('messages.email') }}</label>
-                        <div class="tm-control">
-                            <input id="client_contact_email" class="form-control tm-input" type="text" value="{{ optional($trademark->ContactClient)->email }}" disabled>
-                        </div>
-                    </div>
-
-                    <div class="tm-field is-tall">
+<div class="tm-contact-pair tm-contact-addresses">                    <div class="tm-field is-tall">
                         <label class="tm-label" for="id_address">{{ __('messages.address') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" name="id_address" id="id_address">
@@ -431,7 +399,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="tm-field is-tall">
                         <label class="tm-label" for="billing_address_preview">{{ __('messages.billing_address') }}</label>
                         <div class="tm-control">
@@ -439,53 +406,27 @@
                                 <option value="">{{ optional($trademark->AddressContact)->billing_address ?? __('messages.select') }}</option>
                             </select>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="tm-section" id="dates-deadlines">
-                <h2 class="tm-section-heading"><span>08 |</span> Dates and Deadlines</h2>
-                <div class="tm-field-grid">
-                    <div class="tm-field">
-                        <label class="tm-label" for="publication_date">{{ __('messages.publication_date') }}</label>
+                    </div></div><div class="tm-contact-pair">                    <div class="tm-field">
+                        <label class="tm-label" for="id_contact">{{ __('messages.contact') }}</label>
                         <div class="tm-control">
-                            <input id="publication_date" name="publication_date" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('publication_date') }}">
+                            <select class="form-control tm-select" name="id_contact" id="id_contact">
+                                @if($trademark->id_contact && $trademark->ContactClient)
+                                    <option value="{{ $trademark->id_contact }}" selected data-email="{{ $trademark->ContactClient->email }}">{{ $trademark->ContactClient->name }}</option>
+                                @else
+                                    <option value="">{{ __('messages.select') }}</option>
+                                @endif
+                            </select>
                         </div>
                     </div>
-
                     <div class="tm-field">
-                        <label class="tm-label" for="filing_date_opposition">Opposition Date</label>
+                        <label class="tm-label" for="client_contact_email">{{ __('messages.email') }}</label>
                         <div class="tm-control">
-                            <input id="filing_date_opposition" name="filing_date_opposition" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('filing_date_opposition') }}">
+                            <input id="client_contact_email" class="form-control tm-input" type="text" value="{{ optional($trademark->ContactClient)->email }}" disabled>
                         </div>
                     </div>
+</div></div></section>
 
-                    <div class="tm-field">
-                        <label class="tm-label" for="opposition_no">{{ __('messages.opposition_no') }}</label>
-                        <div class="tm-control">
-                            <input id="opposition_no" name="opposition_no" class="form-control tm-input" type="text" value="{{ old('opposition_no', $trademark->opposition_no) }}">
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="filing_date_litigation">Office Action Date</label>
-                        <div class="tm-control">
-                            <input id="filing_date_litigation" name="filing_date_litigation" class="form-control tm-input date-mask" type="date" value="{{ $dateValue('filing_date_litigation') }}">
-                        </div>
-                    </div>
-
-                    <div class="tm-field">
-                        <label class="tm-label" for="litigation_no">{{ __('messages.litigation_no') }}</label>
-                        <div class="tm-control">
-                            <input id="litigation_no" name="litigation_no" class="form-control tm-input" type="text" value="{{ old('litigation_no', $trademark->litigation_no) }}">
-                        </div>
-                    </div>
-
-
-
-
-                    </div>
-            </section>
+            @include('trademark._deadline-section', ['readOnly' => false, 'newFile' => false])
 
             @include('trademark._text-section', ['fileSectionId' => 'notes', 'readOnly' => false, 'newFile' => false])
         </div>

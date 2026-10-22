@@ -311,8 +311,11 @@
         @include('trademark._mark-section', ['readOnly' => true, 'newFile' => false])
 
         @include('trademark._text-section', ['fileSectionId' => 'accounts', 'readOnly' => true, 'newFile' => false])
+        @include('trademark._contact-view', ['contactSection' => 'owner'])
+        @include('trademark._contact-view', ['contactSection' => 'client'])
+        @include('trademark._deadline-section', ['readOnly' => true, 'newFile' => false])
         @foreach($visibleSections as $sectionIndex => $section)
-            @continue(in_array($section['title'], ['Goods / Services', 'Notes']))
+            @continue(in_array($section['title'], ['Goods / Services', 'Notes', 'Owner', 'Client', 'Dates and Deadlines']))
             <section class="tm-section" id="{{ \Illuminate\Support\Str::slug($section['title']) }}">
                 <h2 class="tm-section-heading">
                     <span>{{ str_pad($section['number'], 2, '0', STR_PAD_LEFT) }} |</span> {{ $section['title'] }}

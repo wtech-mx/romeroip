@@ -24,7 +24,7 @@
                         <div class="tm-field {{ $fileField['emphasis'] ? 'tm-field-emphasis' : '' }} {{ !$readOnly && !$newFile && $key === 'client_ref' ? 'autocomplete-wrap' : '' }}" data-field="{{ $key }}">
                             @if($readOnly)
                                 <span class="tm-label">{{ $fileField['label'] }}</span>
-                                <p class="tm-value {{ !filled($value) ? 'tm-empty-value' : '' }}">{{ filled($value) ? $value : ($fileField['type'] === 'date' ? 'mm/dd/yyyy' : '—') }}</p>
+                                <p class="tm-value {{ !filled($value) ? 'tm-empty-value' : '' }}">{{ filled($value) ? $value : '—' }}</p>
                             @else
                                 <label class="tm-label" for="{{ $fileField['id'] }}">{{ $fileField['label'] }}</label>
                                 <div class="tm-control">
