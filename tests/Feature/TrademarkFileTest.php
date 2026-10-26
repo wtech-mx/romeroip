@@ -340,8 +340,25 @@ class TrademarkFileTest extends TestCase
         $this->assertSame(13, $document->query('//section[@id="dates-deadlines"]//*[@data-field]')->length);
         foreach (['owner', 'client'] as $id) {
             $this->assertSame(2, $document->query('//section[@id="' . $id . '"]//div[contains(@class,"tm-contact-pair")][1]/div')->length);
-            $this->assertSame(['—', '—'], $this->texts($document->query('//section[@id="' . $id . '"]//div[contains(@class,"tm-contact-pair")][1]//p')));
+            $this->assertSame(array_fill(0, $id === 'owner' ? 2 : 3, '—'), $this->texts($document->query('//section[@id="' . $id . '"]//div[contains(@class,"tm-contact-pair")][1]//p')));
         }
+    }
+
+    public function test_contact_layout_removes_billing_fields_and_edit_uses_four_lines(): void
+    {
+        $record = Trademarks::create(['trademark' => 'Layout Test']);
+        foreach (['edit.trademarks', 'show.trademarks'] as $route) {
+            $document = $this->document($this->get(route($route, $record->id))->assertOk()->getContent());
+            $this->assertSame(0, $document->query('//section[@id="sessions" or @id="client"]//*[contains(@class,"tm-label") and (contains(.,"Invoice Recipient") or contains(.,"Billing Address"))]')->length);
+            $this->assertSame(1, $document->query('//section[@id="holder" or @id="owner"]//*[contains(@class,"tm-label") and contains(.,"Estab.")]')->length);
+            $this->assertSame(2, $document->query('//*[contains(@class,"tm-client-details")]/*[contains(@class,"tm-field")]')->length);
+        }
+        $document = $this->document($this->get(route('edit.trademarks', $record->id))->assertOk()->getContent());
+        foreach (['disclaimer', 'description_trademark', 'description_good', 'translation_good', 'notes_text'] as $id) {
+            $this->assertSame('4', $document->query('//textarea[@id="' . $id . '"]')->item(0)->getAttribute('rows'));
+        }
+        $document = $this->document($this->get(route('create.trademarks'))->assertOk()->getContent());
+        $this->assertSame('2', $document->query('//textarea[@id="notes_text"]')->item(0)->getAttribute('rows'));
     }
 
     private function texts(\DOMNodeList $nodes): array

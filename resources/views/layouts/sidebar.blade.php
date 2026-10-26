@@ -3,7 +3,8 @@
     <button type="button" class="legal-sidebar-toggle" data-sidebar-toggle aria-controls="sidenav-main" aria-expanded="true" aria-label="Collapse sidebar"><i class="bi bi-layout-sidebar" aria-hidden="true"></i></button>
     <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
     <a class="navbar-brand m-0" href="{{ route('dashboard') }}">
-      <img src="{{ asset('logo/'.$configuracion->logo) }}" class="navbar-brand-img h-100" alt="{{ $configuracion->nombre_sistema }}">
+      <img src="{{ asset('logo/romeroip-logo.jpeg') }}" class="navbar-brand-img legal-brand-full" alt="ROMEROIP Intellectual Property">
+      <img src="{{ asset('logo/romeroip-symbol.jpeg') }}" class="legal-brand-symbol" alt="ROMEROIP" aria-hidden="true">
     </a>
   </div>
 

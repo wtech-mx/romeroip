@@ -296,7 +296,7 @@
 
             @include('trademark._text-section', ['fileSectionId' => 'accounts', 'readOnly' => false, 'newFile' => true])
 
-            <section class="tm-section tm-approved-section tm-contact-section" id="holder"><h2 class="tm-section-heading"><span>06 |</span> Owner</h2><div class="tm-contact-layout">                    <div class="tm-field">
+            <section class="tm-section tm-approved-section tm-contact-section" id="holder" data-address-url="{{ url('/trademarks/holder') }}" data-estab-url="{{ url('/trademarks/holder/industrial') }}"><h2 class="tm-section-heading"><span>06 |</span> Owner</h2><div class="tm-contact-layout"><div class="tm-field">
                         <label class="tm-label" for="id_holder">{{ 'Owner' }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select js-example-basic-single" id="id_holder" name="id_holder">
@@ -306,25 +306,23 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
-<div class="tm-contact-pair tm-contact-addresses">                    <div class="tm-field is-tall">
+                    </div><div class="tm-contact-pair tm-contact-addresses"><div class="tm-field is-tall">
                         <label class="tm-label" for="address_holder">{{ __('messages.address') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" name="address_holder" id="address_holder">
                                 <option value="">{{ __('messages.select') }}</option>
                             </select>
                         </div>
-                    </div>                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="industrial_address">{{ 'Commercial Address' }}</label>
+                    </div><div class="tm-field is-tall">
+                        <label class="tm-label" for="industrial_address">Estab.<br>Address</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" name="industrial_address" id="industrial_address">
                                 <option value="">Seleccione Industrial / Commercial Address</option>
                             </select>
                         </div>
-                    </div>
-</div></div></section>
+                    </div></div></div></section>
 
-            <section class="tm-section tm-approved-section tm-contact-section" id="sessions"><h2 class="tm-section-heading"><span>07 |</span> Client</h2><div class="tm-contact-layout">                    <div class="tm-field">
+            <section class="tm-section tm-approved-section tm-contact-section" id="sessions" data-contact-url="{{ url('/trademarks/crear') }}" data-address-url="{{ url('/trademarks/address') }}"><h2 class="tm-section-heading"><span>07 |</span> Client</h2><div class="tm-contact-layout"><div class="tm-field">
                         <label class="tm-label" for="id_client">{{ __('messages.client') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select js-example-basic-single" id="id_client" name="id_client">
@@ -334,43 +332,26 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
-                    <div class="tm-field">
-                        <label class="tm-label" for="invoice_recipient_preview">Invoice Recipient</label>
-                        <div class="tm-control">
-                            <input id="invoice_recipient_preview" class="form-control tm-input" type="text" disabled>
-                        </div>
-                    </div>
-<div class="tm-contact-pair tm-contact-addresses">                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="id_address">{{ __('messages.address') }}</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" name="id_address" id="id_address">
-                                <option value="">{{ __('messages.select') }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="tm-field is-tall">
-                        <label class="tm-label" for="billing_address_preview">{{ __('messages.billing_address') }}</label>
-                        <div class="tm-control">
-                            <select class="form-control tm-select" id="billing_address_preview" disabled>
-                                <option value="">{{ __('messages.select') }}</option>
-                            </select>
-                        </div>
-                    </div></div><div class="tm-contact-pair">                    <div class="tm-field">
+                    </div><div class="tm-contact-pair tm-client-pair"><div class="tm-contact-table tm-client-details"><div class="tm-field">
                         <label class="tm-label" for="id_contact">{{ __('messages.contact') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select" name="id_contact" id="id_contact">
                                 <option value="">{{ __('messages.select') }}</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="tm-field">
+                    </div><div class="tm-field">
                         <label class="tm-label" for="client_contact_email">{{ __('messages.email') }}</label>
                         <div class="tm-control">
-                            <input id="client_contact_email" class="form-control tm-input" type="text" disabled>
+                            <select id="client_contact_email" class="form-control tm-select"><option value="">Select</option></select>
                         </div>
-                    </div>
-</div></div></section>
+                    </div></div><div class="tm-contact-table tm-client-address"><div class="tm-field is-tall">
+                        <label class="tm-label" for="id_address">{{ __('messages.address') }}</label>
+                        <div class="tm-control">
+                            <select class="form-control tm-select" name="id_address" id="id_address">
+                                <option value="">{{ __('messages.select') }}</option>
+                            </select>
+                        </div>
+                    </div></div></div></div></section>
 
             @include('trademark._deadline-section', ['readOnly' => false, 'newFile' => true])
 
@@ -417,28 +398,7 @@ $(document).ready(function() {
 
 <script>
 (function () {
-    function syncClientPreview() {
-        const select = document.getElementById('id_client');
-        const invoicePreview = document.getElementById('invoice_recipient_preview');
-        if (!select || !invoicePreview) return;
-        invoicePreview.value = select.selectedOptions[0]?.textContent?.trim() || '';
-    }
 
-    function syncSelectedClientDetails() {
-        const contactSelect = document.getElementById('id_contact');
-        const emailInput = document.getElementById('client_contact_email');
-        const addressSelect = document.getElementById('id_address');
-        const billingSelect = document.getElementById('billing_address_preview');
-
-        if (contactSelect && emailInput) {
-            emailInput.value = contactSelect.selectedOptions[0]?.dataset.email || '';
-        }
-
-        if (addressSelect && billingSelect) {
-            const billing = addressSelect.selectedOptions[0]?.dataset.billing || '';
-            billingSelect.innerHTML = `<option value="">${billing || @json(__('messages.select'))}</option>`;
-        }
-    }
 
     function loadClientContacts(id) {
         $('#id_contact').empty().append(`<option value="" selected>Loading...</option>`);
@@ -451,7 +411,7 @@ $(document).ready(function() {
                 const data = typeof response === 'string' ? JSON.parse(response) : response;
                 $('#id_contact').empty().append(`<option value="">{{ __('messages.select') }}</option>`);
                 data.forEach(element => {
-                    $('#id_contact').append(`<option value="${element.id}" data-email="${element.email ?? ''}">${element.name}</option>`);
+                    const option = new Option(element.name ?? '', element.id); option.dataset.email = element.email ?? ''; $('#id_contact').append(option);
                 });
             }
         });
@@ -459,7 +419,6 @@ $(document).ready(function() {
 
     function loadClientAddresses(id) {
         $('#id_address').empty().append(`<option value="" selected>Loading...</option>`);
-        $('#billing_address_preview').empty().append(`<option value="" selected>Loading...</option>`);
 
         $.ajax({
             type: 'GET',
@@ -468,10 +427,9 @@ $(document).ready(function() {
                 const data = typeof response === 'string' ? JSON.parse(response) : response;
 
                 $('#id_address').empty().append(`<option value="">{{ __('messages.select') }}</option>`);
-                $('#billing_address_preview').empty().append(`<option value="">{{ __('messages.select') }}</option>`);
 
                 data.forEach(element => {
-                    $('#id_address').append(`<option value="${element.id}" data-billing="${element.billing_address ?? ''}">${element.address ?? ''}</option>`);
+                    const option = new Option(element.address ?? '', element.id); $('#id_address').append(option);
                 });
             }
         });
@@ -487,7 +445,7 @@ $(document).ready(function() {
                 const data = typeof response === 'string' ? JSON.parse(response) : response;
                 $('#address_holder').empty().append(`<option value="">{{ __('messages.select') }}</option>`);
                 data.forEach(element => {
-                    $('#address_holder').append(`<option value="${element.id}">${element.address}</option>`);
+                    const option = new Option(element.address ?? '', element.id); $('#address_holder').append(option);
                 });
             }
         });
@@ -503,7 +461,7 @@ $(document).ready(function() {
                 const data = typeof response === 'string' ? JSON.parse(response) : response;
                 $('#industrial_address').empty().append(`<option value="">{{ __('messages.select') }}</option>`);
                 data.forEach(element => {
-                    $('#industrial_address').append(`<option value="${element.commercial_address}">${element.commercial_address}</option>`);
+                    const option = new Option(element.commercial_address ?? '', element.commercial_address); $('#industrial_address').append(option);
                 });
             }
         });
@@ -511,12 +469,10 @@ $(document).ready(function() {
 
     $('#id_client').on('change', function () {
         const id = $(this).val();
-        syncClientPreview();
 
         if (!id) {
             $('#id_contact').empty().append(`<option value="">{{ __('messages.select') }}</option>`);
             $('#id_address').empty().append(`<option value="">{{ __('messages.select') }}</option>`);
-            $('#billing_address_preview').empty().append(`<option value="">{{ __('messages.select') }}</option>`);
             $('#client_contact_email').val('');
             return;
         }
@@ -538,10 +494,6 @@ $(document).ready(function() {
         loadHolderIndustrialAddresses(id);
     });
 
-    document.getElementById('id_contact')?.addEventListener('change', syncSelectedClientDetails);
-    document.getElementById('id_address')?.addEventListener('change', syncSelectedClientDetails);
-    syncClientPreview();
-    syncSelectedClientDetails();
 })();
 </script>
 
@@ -684,4 +636,5 @@ $(document).ready(function() {
     });
 })();
 </script>
+<script src="{{ asset('assets/js/trademark-contacts.js') }}?v={{ filemtime(public_path('assets/js/trademark-contacts.js')) }}"></script>
 @endsection

@@ -401,3 +401,46 @@ body.legal-shell, body.ui-auth {
   .legal-shell .tm-compact-file :is(.tm-contact-section,.tm-deadline-section) :is(input,select) { font-size: 16px; }
 }
 .legal-shell .tm-compact-file .tm-contact-addresses .tm-field { min-height: 80px; }
+/* ROMEROIP brand assets and the three independently scrolling sidebar areas. */
+.legal-shell .legal-sidenav { overflow: hidden !important; }
+.legal-shell .legal-sidenav .sidenav-header { flex: 0 0 auto; }
+.legal-shell .legal-sidenav #sidenav-collapse-main { flex: 1 1 0 !important; min-height: 0 !important; max-height: none !important; height: auto !important; overflow-y: auto !important; overscroll-behavior: contain; }
+.legal-shell .legal-sidenav .legal-sidebar-profile { flex: 0 0 auto; }
+.legal-shell .legal-sidenav .navbar-brand { width: 100%; height: 52px; display: flex; justify-content: center; align-items: center; }
+.legal-shell .legal-sidenav .legal-brand-full { display: block; width: 210px; max-width: 100%; height: auto; max-height: 52px; object-fit: contain; }
+.legal-shell .legal-sidenav .legal-brand-symbol { display: none; width: 40px; height: auto; max-height: 44px; object-fit: contain; }
+@media (min-width: 1200px) {
+  .legal-shell.legal-sidebar-collapsed .legal-sidenav .navbar-brand { width: 100%; height: 44px; justify-content: center; }
+  .legal-shell.legal-sidebar-collapsed .legal-sidenav .legal-brand-full { display: none; }
+  .legal-shell.legal-sidebar-collapsed .legal-sidenav .legal-brand-symbol { display: block; }
+}
+/* Only the requested Edit fields start at four text lines (4 x 19.6 + padding). */
+.legal-shell .tm-compact-file #trademark-section.tm-mark-edit .tm-edit-four-lines textarea.tm-input,
+.legal-shell .tm-compact-file :is(#accounts,#notes) .tm-edit-four-lines textarea.tm-input { height: 92px; min-height: 92px; resize: vertical; }
+/* In View the text rows take their own intrinsic height instead of sharing 1fr. */
+.legal-shell .tm-compact-file #trademark-section.tm-mark-readonly .tm-mark-info { display: flex; flex-direction: column; }
+.legal-shell .tm-compact-file #trademark-section.tm-mark-readonly .tm-mark-info > .tm-field { flex: 0 0 auto; }
+.legal-shell .tm-compact-file #trademark-section.tm-mark-readonly .tm-mark-info > .tm-spacer-row { flex: 0 0 12px; }
+.legal-shell .tm-mark-readonly .tm-mark-middle { align-items: stretch; }
+.legal-shell .tm-mark-readonly .tm-mark-logo .tm-logo-control { min-height: 0; }
+/* Compact contact columns, multiline full-cell choices, and equal lower table heights. */
+.legal-shell .tm-compact-file .tm-contact-section .tm-field { grid-template-columns: 100px minmax(0,1fr); }
+.legal-shell .tm-compact-file .tm-contact-section .tm-label { height: 100%; }
+.legal-shell .tm-contact-pair { align-items: stretch; }
+.legal-shell .tm-contact-table { border: 1px solid var(--ui-line); border-radius: 6px; min-width: 0; overflow: hidden; }
+.legal-shell .tm-compact-file .tm-contact-table .tm-field { border: 0; border-bottom: 1px solid var(--ui-line); border-radius: 0; height: 100%; }
+.legal-shell .tm-compact-file .tm-contact-table .tm-field:last-child { border-bottom: 0; }
+.legal-shell .tm-client-details { display: grid; grid-template-rows: minmax(40px,1fr) minmax(40px,1fr); }
+.legal-shell .tm-client-address { display: grid; min-height: 80px; }
+.legal-shell .tm-contact-section .tm-control { display: flex; align-items: stretch; }
+.legal-shell .tm-compact-file .tm-contact-section .tm-control > .select2-container { width: 100% !important; max-width: 100%; flex: 1 1 0; min-width: 0; }
+.legal-shell .tm-contact-section .select2-container .selection { display: block; height: 100%; }
+.legal-shell .tm-compact-file .tm-contact-section .select2-selection--single { height: 100%; min-height: 40px; display: flex; align-items: center; border: 0 !important; border-radius: 0 !important; background: transparent !important; padding: 0; }
+.legal-shell .tm-compact-file .tm-contact-section .select2-selection__rendered { white-space: pre-wrap; overflow-wrap: anywhere; text-overflow: clip; line-height: 1.4; padding: 8px 30px 8px 9px; font-size: 14px; width: 100%; }
+.legal-shell .tm-compact-file .tm-contact-section .select2-selection__arrow { right: 8px; top: 50%; transform: translateY(-50%); height: 24px; }
+.legal-shell .tm-contact-section .select2-container--focus .select2-selection,
+.legal-shell .tm-contact-section .select2-container--open .select2-selection { outline: 1px solid #8a909b; outline-offset: -1px; }
+.tm-contact-options .select2-results__option { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.4; font-family: 'Inter', sans-serif; font-size: 14px; padding: 10px 12px; border-bottom: 1px solid var(--ui-line); }
+.tm-contact-options .select2-results__option:last-child { border-bottom: 0; }
+.tm-contact-options .select2-results__options { max-height: 320px !important; }
+.legal-shell .legal-sidenav .sidenav-header { width: 100%; align-self: stretch; }

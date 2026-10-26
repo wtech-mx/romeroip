@@ -14,7 +14,7 @@
                 <div class="tm-spacer-row" aria-hidden="true"></div>
             @endif
             @php($value = $newFile ? old($key) : ($readOnly ? $trademark->{$key} : old($key, $trademark->{$key})))
-            <div class="tm-field {{ $key !== 'class' ? 'tm-text-multiline' : '' }}">
+            <div class="tm-field {{ $key !== 'class' ? 'tm-text-multiline' : '' }} {{ !$readOnly && !$newFile && $key !== 'class' ? 'tm-edit-four-lines' : '' }}">
                 <label class="tm-label" @if(!$readOnly) for="{{ $key === 'notes' ? 'notes_text' : $key }}" @endif>{{ $label }}</label>
                 @if($readOnly)<p class="tm-value">{{ filled($value) ? $value : '—' }}</p>
                 @else<div class="tm-control">
@@ -26,7 +26,7 @@
                             <option value="{{ $classOption }}" @selected($value === $classOption)>{{ $classOption }}</option>
                         @endfor
                     </select>
-                    @else<textarea class="form-control tm-input" name="{{ $key }}" id="{{ $key === 'notes' ? 'notes_text' : $key }}" rows="2">{{ $value }}</textarea>@endif
+                    @else<textarea class="form-control tm-input" name="{{ $key }}" id="{{ $key === 'notes' ? 'notes_text' : $key }}" rows="{{ !$newFile ? 4 : 2 }}">{{ $value }}</textarea>@endif
                 </div>@endif
             </div>
         @endforeach

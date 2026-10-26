@@ -92,10 +92,10 @@
                     <div class="tm-spacer-row" aria-hidden="true" data-spacer-between="disclaimer-description"></div>
                 @endif
                 @if(!$readOnly || filled($markValue($key)))
-                <div class="tm-field tm-mark-footer-field">
+                <div class="tm-field tm-mark-footer-field {{ !$readOnly && !$newFile ? 'tm-edit-four-lines' : '' }}">
                     <label class="tm-label" @if(!$readOnly) for="{{ $key }}" @endif>{{ $label }}</label>
                     @if($readOnly)<p class="tm-value">{{ $markValue($key) }}</p>
-                    @else<div class="tm-control"><textarea id="{{ $key }}" name="{{ $key }}" class="form-control tm-input" rows="1" placeholder="Enter {{ strtolower($label) }} (if applicable)">{{ $markValue($key) }}</textarea></div>@endif
+                    @else<div class="tm-control"><textarea id="{{ $key }}" name="{{ $key }}" class="form-control tm-input" rows="{{ !$newFile ? 4 : 1 }}" placeholder="Enter {{ strtolower($label) }} (if applicable)">{{ $markValue($key) }}</textarea></div>@endif
                 </div>
                 @endif
             @endforeach
