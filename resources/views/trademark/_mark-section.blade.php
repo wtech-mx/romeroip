@@ -37,14 +37,14 @@
                 </div>
                 <div class="tm-field  {{ $readOnly && !filled($markValue('type_mark')) && false ? 'tm-mobile-empty' : '' }}">
                     <label class="tm-label" @if(!$readOnly) for="type_mark" @endif>Type of Mark</label>
-                    @if($readOnly)<p class="tm-value">{{ $markValue('type_mark') }}</p>
+                    @if($readOnly)<p class="tm-value">{{ $markValue('type_mark') === 'Three-Dimensional Mark' ? '3D Mark' : $markValue('type_mark') }}</p>
                     @else<div class="tm-control">
 <select class="form-control tm-select" id="type_mark" name="type_mark">
                                 <option value="">{{ __('messages.select') }}</option>
                                 <option value="Word Mark" {{ $markValue('type_mark') == 'Word Mark' ? 'selected' : '' }}>Word Mark</option>
                                 <option value="Design Mark" {{ $markValue('type_mark') == 'Design Mark' ? 'selected' : '' }}>Design Mark</option>
                                 <option value="Mixed Mark" {{ $markValue('type_mark') == 'Mixed Mark' ? 'selected' : '' }}>Mixed Mark</option>
-                                <option value="Three-Dimensional Mark" {{ $markValue('type_mark') == 'Three-Dimensional Mark' ? 'selected' : '' }}>Three-Dimensional Mark</option>
+                                <option value="Three-Dimensional Mark" {{ $markValue('type_mark') == 'Three-Dimensional Mark' ? 'selected' : '' }}>3D Mark</option>
                                 <option value="Holographic Mark" {{ $markValue('type_mark') == 'Holographic Mark' ? 'selected' : '' }}>Holographic Mark</option>
                                 <option value="Sound Mark" {{ $markValue('type_mark') == 'Sound Mark' ? 'selected' : '' }}>Sound Mark</option>
                                 <option value="Scent Mark" {{ $markValue('type_mark') == 'Scent Mark' ? 'selected' : '' }}>Scent Mark</option>
@@ -56,7 +56,7 @@
                 <div class="tm-spacer-row tm-mark-spacer" aria-hidden="true"></div>
                 <div class="tm-field tm-mark-multiline {{ $readOnly && !filled($markValue('translation')) && true ? 'tm-mobile-empty' : '' }}">
                     <label class="tm-label" @if(!$readOnly) for="translation" @endif>Translation</label>
-                    @if($readOnly)<p class="tm-value">{{ $markValue('translation') }}</p>
+                    @if($readOnly)<p class="tm-value">{{ filled($markValue('translation')) ? $markValue('translation') : '—' }}</p>
                     @else<div class="tm-control">
                         <textarea id="translation" name="translation" class="form-control tm-input" rows="2" placeholder="Enter translation (if applicable)">{{ $markValue('translation') }}</textarea>
                     </div>@endif
@@ -64,7 +64,7 @@
                 <div class="tm-spacer-row tm-mark-spacer {{ $readOnly && (!filled($markValue('translation')) || !filled($markValue('transliteration_trademark'))) ? 'tm-mobile-empty' : '' }}" aria-hidden="true" data-spacer-between="translation-transliteration"></div>
                 <div class="tm-field tm-mark-multiline {{ $readOnly && !filled($markValue('transliteration_trademark')) && true ? 'tm-mobile-empty' : '' }}">
                     <label class="tm-label" @if(!$readOnly) for="transliteration_trademark" @endif>Transliteration</label>
-                    @if($readOnly)<p class="tm-value">{{ $markValue('transliteration_trademark') }}</p>
+                    @if($readOnly)<p class="tm-value">{{ filled($markValue('transliteration_trademark')) ? $markValue('transliteration_trademark') : '—' }}</p>
                     @else<div class="tm-control">
                         <textarea id="transliteration_trademark" name="transliteration_trademark" class="form-control tm-input" rows="2" placeholder="Enter transliteration (if applicable)">{{ $markValue('transliteration_trademark') }}</textarea>
                     </div>@endif

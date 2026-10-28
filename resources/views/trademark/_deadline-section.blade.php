@@ -99,15 +99,6 @@
                 @if($readOnly)<p class="tm-value">{{ filled($value) ? $value : '—' }}</p>
                 @else<div class="tm-control"><input type="date" class="form-control tm-input date-mask" id="office_action_response" name="office_action_response" value="{{ $value }}"></div>@endif
             </div>
-            @php
-                $value = $newFile ? old('additional_office_action_date') : ($readOnly ? $trademark->additional_office_action_date : old('additional_office_action_date', $trademark->additional_office_action_date));
-                if (filled($value)) { try { $value = \Carbon\Carbon::parse($value)->format($readOnly ? 'M/d/Y' : 'Y-m-d'); } catch (\Throwable $error) {} }
-            @endphp
-            <div class="tm-field" data-field="additional_office_action_date">
-                <label class="tm-label" @if(!$readOnly) for="additional_office_action_date" @endif>+ Office Action Date</label>
-                @if($readOnly)<p class="tm-value">{{ filled($value) ? $value : '—' }}</p>
-                @else<div class="tm-control"><input type="date" class="form-control tm-input date-mask" id="additional_office_action_date" name="additional_office_action_date" value="{{ $value }}"></div>@endif
-            </div>
             <div class="tm-spacer-row" aria-hidden="true"></div>
             @php
                 $value = $newFile ? old('suspension_request_date') : ($readOnly ? $trademark->suspension_request_date : old('suspension_request_date', $trademark->suspension_request_date));

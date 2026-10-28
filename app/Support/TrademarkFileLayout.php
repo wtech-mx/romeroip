@@ -17,7 +17,7 @@ class TrademarkFileLayout
         return [
             ['id' => 'references', 'number' => '01', 'title' => 'References', 'columns' => [
                 [self::field('our_ref', 'Our Reference', 'text', ['limit' => 5, 'emphasis' => true]),
-                 self::field('client_ref', 'Client Reference', 'text', ['limit' => 20, 'emphasis' => true])],
+                 self::field('client_ref', 'Client Reference', 'text', ['emphasis' => true])],
                 [self::field('origin', 'Department', 'origin')],
             ]],
             ['id' => 'general', 'number' => '02', 'title' => 'General', 'columns' => [

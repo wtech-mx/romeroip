@@ -14,7 +14,7 @@
                 <div class="tm-spacer-row" aria-hidden="true"></div>
             @endif
             @php($value = $newFile ? old($key) : ($readOnly ? $trademark->{$key} : old($key, $trademark->{$key})))
-            <div class="tm-field {{ $key !== 'class' ? 'tm-text-multiline' : '' }} {{ !$readOnly && !$newFile && $key !== 'class' ? 'tm-edit-four-lines' : '' }}">
+            <div class="tm-field {{ $key === 'class' ? 'tm-class-value' : '' }} {{ $key !== 'class' ? 'tm-text-multiline' : '' }} {{ !$readOnly && !$newFile && $key !== 'class' ? 'tm-edit-four-lines' : '' }}">
                 <label class="tm-label" @if(!$readOnly) for="{{ $key === 'notes' ? 'notes_text' : $key }}" @endif>{{ $label }}</label>
                 @if($readOnly)<p class="tm-value">{{ filled($value) ? $value : '—' }}</p>
                 @else<div class="tm-control">

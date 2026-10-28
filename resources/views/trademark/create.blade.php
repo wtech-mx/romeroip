@@ -285,6 +285,7 @@
         </div>
         <div class="tm-file-shell">
             @include('trademark._header', ['isNewFile' => true])
+            @include('trademark._sections-nav', ['readOnly' => false, 'editing' => false])
 
             <div class="mt-3">
                 @includeif('partials.errors')
@@ -296,7 +297,7 @@
 
             @include('trademark._text-section', ['fileSectionId' => 'accounts', 'readOnly' => false, 'newFile' => true])
 
-            <section class="tm-section tm-approved-section tm-contact-section" id="holder" data-address-url="{{ url('/trademarks/holder') }}" data-estab-url="{{ url('/trademarks/holder/industrial') }}"><h2 class="tm-section-heading"><span>06 |</span> Owner</h2><div class="tm-contact-layout"><div class="tm-field">
+            <section class="tm-section tm-approved-section tm-contact-section" id="holder" data-address-url="{{ url('/trademarks/holder') }}" data-estab-url="{{ url('/trademarks/holder/industrial') }}"><h2 class="tm-section-heading"><span>06 |</span> Owner</h2><div class="tm-contact-layout"><div class="tm-field tm-party-name">
                         <label class="tm-label" for="id_holder">{{ 'Owner' }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select js-example-basic-single" id="id_holder" name="id_holder">
@@ -322,7 +323,7 @@
                         </div>
                     </div></div></div></section>
 
-            <section class="tm-section tm-approved-section tm-contact-section" id="sessions" data-contact-url="{{ url('/trademarks/crear') }}" data-address-url="{{ url('/trademarks/address') }}"><h2 class="tm-section-heading"><span>07 |</span> Client</h2><div class="tm-contact-layout"><div class="tm-field">
+            <section class="tm-section tm-approved-section tm-contact-section" id="sessions" data-contact-url="{{ url('/trademarks/crear') }}" data-address-url="{{ url('/trademarks/address') }}"><h2 class="tm-section-heading"><span>07 |</span> Client</h2><div class="tm-contact-layout"><div class="tm-field tm-party-name">
                         <label class="tm-label" for="id_client">{{ __('messages.client') }}</label>
                         <div class="tm-control">
                             <select class="form-control tm-select js-example-basic-single" id="id_client" name="id_client">
@@ -581,7 +582,7 @@ $(document).ready(function() {
     });
 
     document.getElementById('client_ref')?.addEventListener('input', function () {
-        this.value = this.value.replace(/[^\p{L}\p{N} .\/()\[\]-]/gu, '').slice(0, 20);
+        this.value = this.value.replace(/[^\p{L}\p{N} .\/()\[\]-]/gu, '');
     });
 
     form.addEventListener('submit', function (e) {

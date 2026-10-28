@@ -337,7 +337,7 @@ class TrademarkFileTest extends TestCase
         $this->patch(route('update.trademarks', 1), ['opposition_deadline' => ''])->assertSessionHasNoErrors();
         $document = $this->document($this->get(route('show.trademarks', 1))->assertOk()->getContent());
         $this->assertSame('—', trim($document->query('//*[@data-field="opposition_deadline"]/*[contains(@class,"tm-value")]')->item(0)->textContent));
-        $this->assertSame(13, $document->query('//section[@id="dates-deadlines"]//*[@data-field]')->length);
+        $this->assertSame(12, $document->query('//section[@id="dates-deadlines"]//*[@data-field]')->length);
         foreach (['owner', 'client'] as $id) {
             $this->assertSame(2, $document->query('//section[@id="' . $id . '"]//div[contains(@class,"tm-contact-pair")][1]/div')->length);
             $this->assertSame(array_fill(0, $id === 'owner' ? 2 : 3, '—'), $this->texts($document->query('//section[@id="' . $id . '"]//div[contains(@class,"tm-contact-pair")][1]//p')));
@@ -359,6 +359,65 @@ class TrademarkFileTest extends TestCase
         }
         $document = $this->document($this->get(route('create.trademarks'))->assertOk()->getContent());
         $this->assertSame('2', $document->query('//textarea[@id="notes_text"]')->item(0)->getAttribute('rows'));
+    }
+
+    public function test_quick_search_is_exact_combines_three_fields_and_deduplicates_records(): void
+    {
+        $first = Trademarks::create(['trademark' => 'First', 'our_ref' => '13735', 'application_no' => '13735']);
+        $second = Trademarks::create(['trademark' => 'Second', 'registration_no' => '13735']);
+        Trademarks::create(['trademark' => 'Partial', 'application_no' => '137350']);
+        $this->getJson(route('trademarks.quick-search', ['number' => '13735']))->assertOk()
+            ->assertJsonCount(2, 'matches')->assertJsonPath('matches.0.id', $first->id)
+            ->assertJsonPath('matches.0.matched_fields', ['Our Reference', 'Application No.'])
+            ->assertJsonPath('matches.1.id', $second->id);
+        foreach (['1373', '0013735', '999999'] as $number) {
+            $this->getJson(route('trademarks.quick-search', ['number' => $number]))->assertOk()->assertJsonCount(0, 'matches');
+        }
+        $this->getJson(route('trademarks.quick-search', ['number' => '137350']))->assertOk()->assertJsonCount(1, 'matches');
+        $this->getJson(route('trademarks.quick-search', ['number' => '13735x']))->assertUnprocessable()->assertJsonValidationErrors('number');
+    }
+
+    public function test_long_references_three_d_mark_and_sections_navigation(): void
+    {
+        $reference = str_repeat('CLIENT-123/ABC. ', 100) . '[END]';
+        $this->post(route('store.trademarks'), ['trademark' => 'Navigation Test', 'our_ref' => '13545', 'client_ref' => $reference, 'type_mark' => 'Three-Dimensional Mark'])
+            ->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'client_ref' => $reference]);
+        foreach (['edit.trademarks', 'show.trademarks'] as $route) {
+            $response = $this->get(route($route, 1))->assertOk()->assertSee('3D Mark')->assertSee('File 13545');
+            $document = $this->document($response->getContent());
+            $this->assertSame(9, $document->query('//*[@data-section-link]')->length);
+            foreach ($document->query('//*[@data-section-link]') as $link) {
+                $this->assertSame(1, $document->query('//*[@id="' . $link->getAttribute('data-section-link') . '"]')->length);
+            }
+            $this->assertSame($route === 'edit.trademarks' ? 1 : 0, $document->query('//button[@form="trademarkEditForm"]')->length);
+            $this->assertSame([6, 6], array_map(fn ($column) => $document->query('.//*[@data-field]', $column)->length,
+                iterator_to_array($document->query('//section[@id="dates-deadlines"]/*[contains(@class,"tm-deadline-tables")]/div'))));
+        }
+        $document = $this->document($this->get(route('edit.trademarks', 1))->getContent());
+        $this->assertFalse($document->query('//input[@id="client_ref"]')->item(0)->hasAttribute('maxlength'));
+        $document = $this->document($this->get(route('show.trademarks', 1))->getContent());
+        $this->assertSame($reference, $document->query('//*[@data-field="client_ref"]/p')->item(0)->getAttribute('title'));
+    }
+
+    public function test_account_settings_only_update_the_authenticated_users_allowed_fields(): void
+    {
+        Schema::create('users', function (Blueprint $table) { $table->id(); $table->string('name'); $table->string('email'); $table->timestamps(); });
+        DB::table('users')->insert([['id' => 1, 'name' => 'UI Review', 'email' => 'first@example.test'], ['id' => 2, 'name' => 'Other User', 'email' => 'second@example.test']]);
+        $this->app['auth']->user()->exists = true;
+        $this->app['auth']->user()->setTable('users');
+        $this->app['auth']->user()->forceFill(['email' => 'first@example.test']);
+        $this->patch(route('account.update'), ['id' => 2, 'name' => 'Updated Name', 'email' => 'updated@example.test', 'locale' => 'en', 'roles' => ['Administrator']])
+            ->assertRedirect(route('account.settings'))->assertSessionHas('account_saved', true);
+        $this->assertDatabaseHas('users', ['id' => 1, 'name' => 'Updated Name', 'email' => 'updated@example.test']);
+        $this->assertDatabaseHas('users', ['id' => 2, 'name' => 'Other User', 'email' => 'second@example.test']);
+        $this->get(route('account.profile'))->assertOk()->assertSee('Updated Name');
+    }
+
+    public function test_quick_search_requires_an_authenticated_session(): void
+    {
+        $this->app['auth']->guard()->logout();
+        $this->getJson(route('trademarks.quick-search', ['number' => '13735']))->assertUnauthorized();
     }
 
     private function texts(\DOMNodeList $nodes): array

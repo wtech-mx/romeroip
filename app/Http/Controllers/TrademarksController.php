@@ -283,6 +283,27 @@ class TrademarksController extends Controller
         echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
     }
 
+    public function quickSearch(Request $request)
+    {
+        $data = $request->validate(['number' => ['required', 'string', 'max:64', 'regex:/^[0-9]+$/']]);
+        $number = $data['number'];
+        $labels = ['our_ref' => 'Our Reference', 'application_no' => 'Application No.', 'registration_no' => 'Registration No.'];
+        $matches = Trademarks::query()->select(['id', 'trademark', 'our_ref', 'application_no', 'registration_no'])
+            ->where(function ($query) use ($number) {
+                $query->where('our_ref', $number)->orWhere('application_no', $number)->orWhere('registration_no', $number);
+            })->orderBy('id')->get()->map(function ($record) use ($number, $labels) {
+                $fields = [];
+                foreach ($labels as $key => $label) {
+                    if ((string) $record->{$key} === $number) $fields[] = $label;
+                }
+                return ['id' => $record->id, 'trademark' => $record->trademark ?: 'Trademark',
+                    'our_ref' => $record->our_ref, 'application_no' => $record->application_no,
+                    'registration_no' => $record->registration_no, 'matched_fields' => $fields,
+                    'url' => route('show.trademarks', $record->id)];
+            })->filter(fn ($record) => count($record['matched_fields']) > 0)->values();
+        return response()->json(['number' => $number, 'matches' => $matches]);
+    }
+
     private function trademarkRules(?int $id = null, bool $requireCoreFields = true): array
     {
         $ourRefRules = ['nullable', 'regex:/^[1-9][0-9]{0,4}$/', Rule::unique('trademark', 'our_ref')->ignore($id)];
@@ -291,7 +312,7 @@ class TrademarksController extends Controller
         return [
             'notes'                   => 'nullable|string',
             'our_ref'                 => $ourRefRules,
-            'client_ref'              => ['nullable', 'string', 'max:20', 'regex:~^[\p{L}\p{N} ./()\[\]-]+$~u'],
+            'client_ref'              => ['nullable', 'string', 'regex:~^[\p{L}\p{N} ./()\[\]-]+$~u'],
             'opposition_no'           => 'nullable|string|max:100',
             'filing_date_opposition'  => $dateRule,
             'litigation_no'           => 'nullable|string|max:100',

@@ -6,7 +6,7 @@
 <section class="tm-section tm-approved-section tm-contact-section" id="{{ $contactSection }}">
     <h2 class="tm-section-heading"><span>{{ $isOwner ? '06' : '07' }} |</span> {{ $isOwner ? 'Owner' : 'Client' }}</h2>
     <div class="tm-contact-layout">
-        <div class="tm-field"><span class="tm-label">{{ $isOwner ? 'Owner' : 'Client' }}</span><p class="tm-value">{{ filled($name) ? $name : '—' }}</p></div>
+        <div class="tm-field tm-party-name"><span class="tm-label">{{ $isOwner ? 'Owner' : 'Client' }}</span><p class="tm-value">{{ filled($name) ? $name : '—' }}</p></div>
         @if($isOwner)
         <div class="tm-contact-pair tm-contact-addresses">
             <div class="tm-field"><span class="tm-label">Address</span><p class="tm-value">{{ filled($address) ? $address : '—' }}</p></div>

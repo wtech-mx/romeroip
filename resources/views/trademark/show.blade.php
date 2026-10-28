@@ -307,6 +307,7 @@
     </div>
     <div class="tm-file-shell">
         @include('trademark._header', ['isNewFile' => false])
+        @include('trademark._sections-nav', ['readOnly' => true, 'editing' => false])
         @include('trademark._file-sections', ['readOnly' => true, 'newFile' => false])
         @include('trademark._mark-section', ['readOnly' => true, 'newFile' => false])
 

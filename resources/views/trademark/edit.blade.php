@@ -318,7 +318,7 @@
     <form method="POST"
           action="{{ route('update.trademarks', $trademark->id) }}"
           enctype="multipart/form-data"
-          id="trademarkEditForm"
+          id="trademarkEditForm" data-unsaved-input="{{ session()->hasOldInput() ? 'true' : 'false' }}"
           novalidate>
         @csrf
         @method('PATCH')
@@ -329,6 +329,7 @@
         </div>
         <div class="tm-file-shell">
             @include('trademark._header', ['isNewFile' => false])
+            @include('trademark._sections-nav', ['readOnly' => false, 'editing' => true])
 
             <div class="mt-3">
                 @includeIf('partials.errors')
@@ -340,7 +341,7 @@
 
             @include('trademark._text-section', ['fileSectionId' => 'accounts', 'readOnly' => false, 'newFile' => false])
 
-            <section class="tm-section tm-approved-section tm-contact-section" id="holder" data-address-url="{{ url('/trademarks/holder') }}" data-estab-url="{{ url('/trademarks/holder/industrial') }}"><h2 class="tm-section-heading"><span>06 |</span> Owner</h2><div class="tm-contact-layout"><div class="tm-field autocomplete-wrap">
+            <section class="tm-section tm-approved-section tm-contact-section" id="holder" data-address-url="{{ url('/trademarks/holder') }}" data-estab-url="{{ url('/trademarks/holder/industrial') }}"><h2 class="tm-section-heading"><span>06 |</span> Owner</h2><div class="tm-contact-layout"><div class="tm-field tm-party-name autocomplete-wrap">
                         <label class="tm-label" for="holder_search">{{ 'Owner' }}</label>
                         <div class="tm-control">
                             <input type="text" id="holder_search" class="form-control tm-input" autocomplete="off" value="{{ old('holder_search', optional($trademark->Holder)->company_name) }}">
@@ -371,7 +372,7 @@
                         </div>
                     </div></div></div></section>
 
-            <section class="tm-section tm-approved-section tm-contact-section" id="sessions" data-contact-url="{{ url('/trademarks/crear') }}" data-address-url="{{ url('/trademarks/address') }}"><h2 class="tm-section-heading"><span>07 |</span> Client</h2><div class="tm-contact-layout"><div class="tm-field autocomplete-wrap">
+            <section class="tm-section tm-approved-section tm-contact-section" id="sessions" data-contact-url="{{ url('/trademarks/crear') }}" data-address-url="{{ url('/trademarks/address') }}"><h2 class="tm-section-heading"><span>07 |</span> Client</h2><div class="tm-contact-layout"><div class="tm-field tm-party-name autocomplete-wrap">
                         <label class="tm-label" for="client_search">{{ __('messages.client') }}</label>
                         <div class="tm-control">
                             <input type="text" id="client_search" class="form-control tm-input" autocomplete="off" value="{{ old('client_search', optional($trademark->Client)->company_name) }}">
@@ -733,7 +734,7 @@
     });
 
     document.getElementById('client_ref')?.addEventListener('input', function () {
-        this.value = this.value.replace(/[^\p{L}\p{N} .\/()\[\]-]/gu, '').slice(0, 20);
+        this.value = this.value.replace(/[^\p{L}\p{N} .\/()\[\]-]/gu, '');
     });
 
     form.addEventListener('submit', function (e) {
