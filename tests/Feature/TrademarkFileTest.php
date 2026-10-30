@@ -43,6 +43,53 @@ class TrademarkFileTest extends TestCase
         $this->actingAs($user);
     }
 
+    public function test_search_queries_all_number_fields_and_combines_primary_and_advanced_filters(): void
+    {
+        $holder = DB::table('holder')->insertGetId(['company_name' => 'Example Owner']);
+        $client = DB::table('clients')->insertGetId(['company_name' => 'Example Client']);
+        $record = Trademarks::create([
+            'trademark' => 'Searchable Mark', 'our_ref' => '77889', 'client_ref' => 'UniqueRef',
+            'application_no' => '123456', 'registration_no' => '654321',
+            'int_registration_no' => 'INT887', 'opposition_no' => 'OPP991', 'litigation_no' => 'LIT992',
+            'id_holder' => $holder, 'id_client' => $client, 'country' => 'MEXICO',
+            'origin' => 'International', 'class' => '07', 'status' => 'Registered',
+            'filing_date_general' => '2025-06-15',
+        ]);
+        $record->forceFill(['id_holder' => $holder])->save();
+        foreach (['77889', 'UniqueRef', 'Searchable', '123456', '654321', 'INT887', 'OPP991', 'LIT992', 'Example Owner', 'Example Client'] as $query) {
+            $response = $this->get(route('advance_search', ['q' => $query, 'country' => 'Mexico',
+                'origin' => 'International', 'class' => '07', 'status' => 'Registered',
+                'filing_from' => '2025-01-01', 'filing_to' => '2025-12-31']))->assertOk();
+            $this->assertSame([$record->id], $response->viewData('trademarks')->pluck('id')->all(), $query);
+        }
+        $response = $this->get(route('advance_search', ['q' => 'Example', 'class' => '08']))->assertOk();
+        $this->assertSame(0, $response->viewData('trademarks')->total());
+        $response = $this->get(route('advance_search', ['q' => 'Example']))->assertOk();
+        $this->assertSame(1, $response->viewData('trademarks')->total());
+    }
+
+    public function test_general_search_does_not_ignore_zero(): void
+    {
+        $match = Trademarks::create(['trademark' => 'Matching', 'our_ref' => '100']);
+        Trademarks::create(['trademark' => 'Unrelated', 'our_ref' => '999']);
+        $response = $this->get(route('advance_search', ['q' => '0']))->assertOk();
+        $this->assertSame([$match->id], $response->viewData('trademarks')->pluck('id')->all());
+    }
+
+    public function test_search_has_no_duplicate_controls_and_preserves_country_values(): void
+    {
+        Trademarks::create(['country' => 'Legacy Territory']);
+        $response = $this->get(route('index.trademarks'))->assertOk();
+        $doc = $this->document($response->getContent());
+        foreach (['our_ref', 'client_ref', 'trademark', 'application_no', 'registration_no', 'int_registration_no', 'opposition_no', 'litigation_no', 'id_holder', 'id_client'] as $name) {
+            $this->assertSame(0, $doc->query('//form[@id="trademark-search-form"]//*[@name="'.$name.'"]')->length);
+        }
+        $response->assertSee('Trademark, Reference, Number, Owner or Client...');
+        $response->assertSee('Legacy Territory')->assertSee('Afghanistan');
+        $this->assertSame(4, $doc->query('//*[contains(@class,"tm-primary-filters")]//select')->length);
+        $this->assertSame(10, $doc->query('//*[@id="advancedSearch"]//input')->length);
+    }
+
     public function test_create_and_update_return_to_the_saved_file(): void
     {
         $this->post(route('store.trademarks'), [

@@ -68,7 +68,7 @@ class TrademarksController extends Controller
                     $query->where('our_ref', 'like', '%' . trim($filters['our_ref']) . '%')
                 )
 
-                ->when(!empty($filters['q']), function ($query) use ($filters) {
+                ->when(trim((string) ($filters['q'] ?? '')) !== '', function ($query) use ($filters) {
                     $value = trim($filters['q']);
 
                     $query->where(function ($q) use ($value) {
@@ -78,6 +78,8 @@ class TrademarksController extends Controller
                             ->orWhere('application_no', 'like', "%{$value}%")
                             ->orWhere('registration_no', 'like', "%{$value}%")
                             ->orWhere('int_registration_no', 'like', "%{$value}%")
+                            ->orWhere('opposition_no', 'like', "%{$value}%")
+                            ->orWhere('litigation_no', 'like', "%{$value}%")
                             ->orWhereHas('Client', function (Builder $client) use ($value) {
                                 $client->where('company_name', 'like', "%{$value}%");
                             })
@@ -173,7 +175,7 @@ class TrademarksController extends Controller
                 })
 
                 ->when(!empty($filters['country']), fn ($query) =>
-                    $query->where('country', $filters['country'])
+                    $query->whereRaw('LOWER(country) = ?', [mb_strtolower($filters['country'])])
                 )
 
                 ->when(

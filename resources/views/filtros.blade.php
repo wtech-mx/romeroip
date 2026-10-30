@@ -15,33 +15,27 @@
                                 <p class="text-sm mb-0">Quick global search across trademark files.</p>
                             </div>
 
-                            <div class="ms-auto my-auto mt-lg-0 mt-4">
-                                <a class="btn btn-sm mb-0 mt-sm-0 mt-1" data-bs-toggle="collapse" href="#advancedSearch" role="button" aria-expanded="false" aria-controls="advancedSearch">
-                                    Advanced
-                                </a>
-                                <button class="btn btn-sm mb-0 mt-sm-0 mt-1" type="submit">{{ __('messages.search') }}</button>
-                            </div>
                         </div>
                     </div>
 
                     <div class="card-body">
-                        <div class="row align-items-end">
-                            <div class="col-lg-5 col-md-12">
+                        <div class="row align-items-end tm-primary-filters">
+                            <div class="col-12 tm-global-search">
                                 <label class="form-label">Search</label>
                                 <input name="q" class="form-control" type="text" value="{{ request('q') }}"
-                                    placeholder="Our Ref., Client Ref., Trademark, Application No., Registration No., Client or Owner"
+                                    placeholder="Trademark, Reference, Number, Owner or Client..."
                                     autocomplete="off">
                             </div>
 
-                            <div class="col-lg-2 col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <label class="form-label">{{ __('messages.country') }}</label>
                                 <select class="form-control js-example-basic-single" name="country" id="country">
                                     <option value="" {{ request('country') == '' ? 'selected' : '' }}>{{ __('messages.all') }}</option>
-                                    @include('client.paises')
+                                    @include('trademark._search-country-options')
                                 </select>
                             </div>
 
-                            <div class="col-lg-2 col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <label class="form-label">{{ __('messages.origin') }}</label>
                                 <select class="form-control" name="origin" id="origin">
                                     <option value="" {{ $selectedOrigin == '' ? 'selected' : '' }}>{{ __('messages.all') }}</option>
@@ -55,7 +49,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-lg-2 col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <label class="form-label">{{ __('messages.status') }}</label>
                                 <select class="form-control" name="status" id="status">
                                     <option value="all_except_abandoned" {{ $selectedStatus == 'all_except_abandoned' ? 'selected' : '' }}>All except Abandoned</option>
@@ -68,7 +62,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-lg-1 col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <label class="form-label">{{ __('messages.class') }}</label>
                                 <select class="form-control" name="class">
                                     <option value="" {{ request('class') == '' ? 'selected' : '' }}>{{ __('messages.all') }}</option>
@@ -80,56 +74,11 @@
                             </div>
                         </div>
 
+                        <div class="tm-search-actions">
+                            <button class="btn btn-sm mb-0" type="button" id="tm-advanced-toggle" data-bs-toggle="collapse" data-bs-target="#advancedSearch" aria-expanded="false" aria-controls="advancedSearch">Advanced Search<span id="tm-advanced-count"></span></button>
+                            <button class="btn btn-sm mb-0" type="submit">{{ __('messages.search') }}</button>
+                        </div>
                         <div class="collapse" id="advancedSearch">
-                            <div class="row mt-3">
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.our_ref') }}</label>
-                                    <input name="our_ref" class="form-control" type="text" value="{{ request('our_ref') }}">
-                                </div>
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.client_ref') }}</label>
-                                    <input name="client_ref" class="form-control" type="text" value="{{ request('client_ref') }}">
-                                </div>
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.trademark') }}</label>
-                                    <input name="trademark" class="form-control" type="text" value="{{ request('trademark') }}">
-                                </div>
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.application_no') }}</label>
-                                    <input name="application_no" class="form-control" type="text" value="{{ request('application_no') }}">
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.registration_no') }}</label>
-                                    <input name="registration_no" class="form-control" type="text" value="{{ request('registration_no') }}">
-                                </div>
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.int_registration_no') }}</label>
-                                    <input name="int_registration_no" class="form-control" type="text" value="{{ request('int_registration_no') }}">
-                                </div>
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.client') }}</label>
-                                    <input name="id_client" class="form-control" type="text" value="{{ request('id_client') }}">
-                                </div>
-                                <div class="col-3">
-                                    <label class="form-label">Owner</label>
-                                    <input name="id_holder" class="form-control" type="text" value="{{ request('id_holder') }}">
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.opposition_no') }}</label>
-                                    <input name="opposition_no" class="form-control" type="text" value="{{ request('opposition_no') }}">
-                                </div>
-                                <div class="col-3">
-                                    <label class="form-label">{{ __('messages.litigation_no') }}</label>
-                                    <input name="litigation_no" class="form-control" type="text" value="{{ request('litigation_no') }}">
-                                </div>
-                            </div>
-
                             <div class="row mt-3">
                                 <div class="col-6">
                                     <label class="form-label">Our Refs.</label>
