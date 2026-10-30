@@ -1,6 +1,6 @@
 @php
     $selectedOrigin = request()->has('origin') ? request('origin') : '';
-    $selectedStatus = request()->has('status') ? request('status') : 'all_except_abandoned';
+    $selectedStatus = request('status') ?: 'all_except_abandoned';
 @endphp
 
 <div class="container-fluid">
@@ -28,37 +28,29 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label class="form-label">{{ __('messages.country') }}</label>
-                                <select class="form-control js-example-basic-single" name="country" id="country">
+                                <label class="form-label">Country / Office</label>
+                                <select class="form-control" name="country" id="country">
                                     <option value="" {{ request('country') == '' ? 'selected' : '' }}>{{ __('messages.all') }}</option>
                                     @include('trademark._search-country-options')
                                 </select>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label class="form-label">{{ __('messages.origin') }}</label>
+                                <label class="form-label">Department</label>
                                 <select class="form-control" name="origin" id="origin">
                                     <option value="" {{ $selectedOrigin == '' ? 'selected' : '' }}>{{ __('messages.all') }}</option>
-                                    <option value="Foreign" {{ $selectedOrigin == 'Foreign' ? 'selected' : '' }}>Foreign</option>
-                                    <option value="{{ __('messages.national') }}" {{ $selectedOrigin == __('messages.national') ? 'selected' : '' }}>
-                                        {{ __('messages.national') }}
-                                    </option>
-                                    <option value="{{ __('messages.international') }}" {{ $selectedOrigin == __('messages.international') ? 'selected' : '' }}>
-                                        {{ __('messages.international') }}
-                                    </option>
+                                    <option value="National" @selected($selectedOrigin === 'National')>National</option>
+                                    <option value="International" @selected(in_array($selectedOrigin, ['International', 'Foreign'], true))>International</option>
                                 </select>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
                                 <label class="form-label">{{ __('messages.status') }}</label>
                                 <select class="form-control" name="status" id="status">
-                                    <option value="all_except_abandoned" {{ $selectedStatus == 'all_except_abandoned' ? 'selected' : '' }}>All except Abandoned</option>
-                                    <option value="" {{ $selectedStatus == '' ? 'selected' : '' }}>{{ __('messages.all') }}</option>
-                                    <option value="Registered" {{ $selectedStatus == 'Registered' ? 'selected' : '' }}>{{ __('messages.registered') }}</option>
-                                    <option value="Pending" {{ $selectedStatus == 'Pending' ? 'selected' : '' }}>{{ __('messages.pending') }}</option>
-                                    <option value="Abandoned" {{ $selectedStatus == 'Abandoned' ? 'selected' : '' }}>{{ __('messages.abandoned') }}</option>
-                                    <option value="Lapsed" {{ $selectedStatus == 'Lapsed' ? 'selected' : '' }}>{{ __('messages.lapsed') }}</option>
-                                    <option value="Inactive" {{ $selectedStatus == 'Inactive' ? 'selected' : '' }}>{{ __('messages.inactive') }}</option>
+                                    <option value="all_except_abandoned" @selected($selectedStatus === 'all_except_abandoned')>All</option>
+                                    <option value="Pending" @selected($selectedStatus === 'Pending')>Pending</option>
+                                    <option value="Registered" @selected($selectedStatus === 'Registered')>Registered</option>
+                                    <option value="Abandoned" @selected($selectedStatus === 'Abandoned')>Abandoned</option>
                                 </select>
                             </div>
 
@@ -90,8 +82,8 @@
                                 <div class="col-6">
                                     <label class="form-label">Filing Date</label>
                                     <div class="row">
-                                        <div class="col-6"><input name="filing_from" class="form-control" type="date" value="{{ request('filing_from') }}"></div>
-                                        <div class="col-6"><input name="filing_to" class="form-control" type="date" value="{{ request('filing_to') }}"></div>
+                                        <div class="col-6 tm-search-date"><input id="search-filing_from" name="filing_from" aria-label="filing from" class="form-control date-mask" type="date" value="{{ request('filing_from') }}"></div>
+                                        <div class="col-6 tm-search-date"><input id="search-filing_to" name="filing_to" aria-label="filing to" class="form-control date-mask" type="date" value="{{ request('filing_to') }}"></div>
                                     </div>
                                 </div>
                             </div>
@@ -100,15 +92,15 @@
                                 <div class="col-6">
                                     <label class="form-label">Registration Date</label>
                                     <div class="row">
-                                        <div class="col-6"><input name="registration_from" class="form-control" type="date" value="{{ request('registration_from') }}"></div>
-                                        <div class="col-6"><input name="registration_to" class="form-control" type="date" value="{{ request('registration_to') }}"></div>
+                                        <div class="col-6 tm-search-date"><input id="search-registration_from" name="registration_from" aria-label="registration from" class="form-control date-mask" type="date" value="{{ request('registration_from') }}"></div>
+                                        <div class="col-6 tm-search-date"><input id="search-registration_to" name="registration_to" aria-label="registration to" class="form-control date-mask" type="date" value="{{ request('registration_to') }}"></div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label">{{ __('messages.declarations_use') }}</label>
                                     <div class="row">
-                                        <div class="col-6"><input name="last_declaration" class="form-control" type="date" value="{{ request('last_declaration') }}"></div>
-                                        <div class="col-6"><input name="next_declaration" class="form-control" type="date" value="{{ request('next_declaration') }}"></div>
+                                        <div class="col-6 tm-search-date"><input id="search-last_declaration" name="last_declaration" aria-label="last declaration" class="form-control date-mask" type="date" value="{{ request('last_declaration') }}"></div>
+                                        <div class="col-6 tm-search-date"><input id="search-next_declaration" name="next_declaration" aria-label="next declaration" class="form-control date-mask" type="date" value="{{ request('next_declaration') }}"></div>
                                     </div>
                                 </div>
                             </div>
@@ -117,8 +109,8 @@
                                 <div class="col-6">
                                     <label class="form-label">{{ __('messages.renewals') }}</label>
                                     <div class="row">
-                                        <div class="col-6"><input name="last_renewal" class="form-control" type="date" value="{{ request('last_renewal') }}"></div>
-                                        <div class="col-6"><input name="next_renewal" class="form-control" type="date" value="{{ request('next_renewal') }}"></div>
+                                        <div class="col-6 tm-search-date"><input id="search-last_renewal" name="last_renewal" aria-label="last renewal" class="form-control date-mask" type="date" value="{{ request('last_renewal') }}"></div>
+                                        <div class="col-6 tm-search-date"><input id="search-next_renewal" name="next_renewal" aria-label="next renewal" class="form-control date-mask" type="date" value="{{ request('next_renewal') }}"></div>
                                     </div>
                                 </div>
                             </div>

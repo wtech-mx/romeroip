@@ -43,7 +43,7 @@
     if (typeof document === 'undefined') return;
 
     const controls = [];
-    document.querySelectorAll('.tm-page input.date-mask[type="date"]').forEach(native => {
+    document.querySelectorAll('.tm-page input.date-mask[type="date"], .tm-search-page input.date-mask[type="date"]').forEach(native => {
         const wrapper = native.parentElement;
         wrapper.classList.add('tm-date-control');
         const display = document.createElement('input');
@@ -52,6 +52,7 @@
         display.className = 'form-control tm-input tm-date-display';
         display.placeholder = 'mm/dd/yyyy';
         display.autocomplete = 'off';
+        if (native.getAttribute('aria-label')) display.setAttribute('aria-label', native.getAttribute('aria-label'));
         display.value = format(native.value);
         display.title = 'Enter month/day/year. 07/06/23 becomes Jul/06/2023. For dates before 2000, use four year digits.';
         const label = document.querySelector(`label[for="${native.id}"]`);

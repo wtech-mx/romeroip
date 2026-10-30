@@ -1,15 +1,14 @@
 @php
     // Names stay as values: existing files store country names, not ISO codes.
-    $rows = array_map('str_getcsv', file(resource_path('data/kept01_countries_territories.csv'), FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
-    array_shift($rows);
-    $catalogCountries = array_column($rows, 0);
+    $catalogCountries = array_values(\App\Support\CountryCatalog::entries(true));
     $savedCountries = \App\Models\Trademarks::whereNotNull('country')->distinct()->pluck('country')->all();
     $countryNames = [];
     foreach (array_filter(array_merge($catalogCountries, $savedCountries, [(string) request('country')])) as $name) {
+        $name = \App\Support\CountryCatalog::label($name, true);
         $countryNames[mb_strtolower(trim($name))] = $countryNames[mb_strtolower(trim($name))] ?? $name;
     }
     natcasesort($countryNames);
 @endphp
 @foreach($countryNames as $countryName)
-    <option value="{{ $countryName }}" {{ strcasecmp((string) request('country'), $countryName) === 0 ? 'selected' : '' }}>{{ $countryName }}</option>
+    <option value="{{ $countryName }}" {{ strcasecmp(\App\Support\CountryCatalog::label(request('country'), true), $countryName) === 0 ? 'selected' : '' }}>{{ $countryName }}</option>
 @endforeach

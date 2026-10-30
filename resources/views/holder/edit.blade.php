@@ -67,6 +67,7 @@
                                         <div class="card-body pt-0" id="address_holder">
                                             <div class="row">
                                                 @foreach ($address_holder as $address)
+                                                <input type="hidden" name="address_ids[]" value="{{ $address->id }}">
                                                 <div class="col-6">
                                                     <label class="form-label">{{ __('messages.address') }}</label>
                                                     <div class="input-group">
@@ -77,7 +78,7 @@
                                                 <div class="col-6 input_fac">
                                                     <label class="form-label">{{ __('messages.industrial_address')}}</label>
                                                     <div class="input-group">
-                                                        <textarea class="form-control" name="commercial_address[]" id="commercial_address[]" rows="5">{{$address->address}}</textarea>
+                                                        <textarea class="form-control" name="commercial_address[]" id="commercial_address[]" rows="5">{{$address->commercial_address}}</textarea>
                                                     </div>
                                                 </div>
                                                 @endforeach

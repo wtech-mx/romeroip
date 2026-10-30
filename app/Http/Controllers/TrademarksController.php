@@ -145,18 +145,13 @@ class TrademarksController extends Controller
                     $query->where('trademark', 'like', '%' . trim($filters['trademark']) . '%')
                 )
 
-                ->when(!empty($filters['status']), function ($query) use ($filters) {
-                    if ($filters['status'] === 'all_except_abandoned') {
-                        $query->where(function ($q) {
-                            $q->whereNull('status')
-                                ->orWhere('status', '')
-                                ->orWhere('status', '!=', 'Abandoned');
-                        });
-
-                        return;
+                ->when(true, function ($query) use ($filters) {
+                    $status = $filters['status'] ?? 'all_except_abandoned';
+                    if (!$status || $status === 'all_except_abandoned' || $status === 'All') {
+                        $query->whereIn(\Illuminate\Support\Facades\DB::raw('LOWER(status)'), ['pending', 'registered']);
+                    } else {
+                        $query->whereRaw('LOWER(status) = ?', [mb_strtolower($status)]);
                     }
-
-                    $query->where('status', $filters['status']);
                 })
 
                 ->when(!empty($filters['opposition_no']), fn ($query) =>
@@ -175,7 +170,9 @@ class TrademarksController extends Controller
                 })
 
                 ->when(!empty($filters['country']), fn ($query) =>
-                    $query->whereRaw('LOWER(country) = ?', [mb_strtolower($filters['country'])])
+                    $query->whereIn(\Illuminate\Support\Facades\DB::raw('LOWER(country)'), array_map('mb_strtolower', array_filter([
+                        $filters['country'], \App\Support\CountryCatalog::code($filters['country'], true), \App\Support\CountryCatalog::label($filters['country'], true)
+                    ])))
                 )
 
                 ->when(

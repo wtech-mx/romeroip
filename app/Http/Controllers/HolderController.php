@@ -76,42 +76,28 @@ class HolderController extends Controller
 
     public function update(Request $request, $id)
     {
-        $holder = Holder::findOrFail($id);
-        $holder->company_name = $request->get('company_name');
-        $holder->country = $request->get('country');
-        $holder->notas = $request->get('notas');
-        $holder->update();
-
-        $address_holder = AddressHolder::where('id_holder', $holder->id)->delete();
-
-        if($request->address != NULL){
-            $address = $request->address;
-            if($request->commercial_address != NULL){
-                $commercial_address = $request->commercial_address;
-            }else{
-                $commercial_address = $request->address;
+        $data = $request->validate([
+            'company_name' => 'required|string|max:255',
+            'country' => 'nullable|string|max:255',
+            'notas' => 'nullable|string',
+            'address' => 'nullable|array', 'address.*' => 'nullable|string',
+            'commercial_address' => 'nullable|array', 'commercial_address.*' => 'nullable|string',
+            'address_ids' => 'nullable|array', 'address_ids.*' => 'nullable|integer',
+        ]);
+        \Illuminate\Support\Facades\DB::transaction(function () use ($id, $data) {
+            $holder = Holder::findOrFail($id);
+            $holder->update(collect($data)->only(['company_name', 'country', 'notas'])->all());
+            $existing = AddressHolder::where('id_holder', $holder->id)->orderBy('id')->get();
+            foreach (($data['address'] ?? []) as $index => $address) {
+                $addressId = $data['address_ids'][$index] ?? null;
+                $row = $addressId
+                    ? AddressHolder::where('id_holder', $holder->id)->findOrFail($addressId)
+                    : ($existing[$index] ?? new AddressHolder(['id_holder' => $holder->id]));
+                $row->address = $address;
+                $row->commercial_address = $data['commercial_address'][$index] ?? $address;
+                $row->save();
             }
-
-            for ($count = 0; $count < count($address); $count++) {
-                if($request->commercial_address == NULL){
-                    $data = array(
-                        'address' => $address[$count],
-                        'commercial_address' => $commercial_address[$count],
-                        'id_holder' => $holder->id,
-                    );
-                }else{
-                    $data = array(
-                        'address' => $address[$count],
-                        'commercial_address' => $address[$count],
-                        'id_holder' => $holder->id,
-                    );
-                }
-
-                $insert_data[] = $data;
-            }
-
-            AddressHolder::insert($insert_data);
-        }
+        });
 
         Session::flash('edit', 'Se ha editado sus datos con exito');
         return redirect()->route('index.holder')

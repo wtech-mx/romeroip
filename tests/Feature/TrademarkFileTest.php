@@ -116,10 +116,47 @@ class TrademarkFileTest extends TestCase
         } finally { foreach ($paths as $path) @unlink(public_path($path)); }
     }
 
+    public function test_search_status_all_means_pending_and_registered_and_office_filter_targets_country(): void
+    {
+        foreach (['Pending', 'Registered', 'Abandoned', 'Lapsed', null] as $status) {
+            Trademarks::create(['trademark' => 'Office Test', 'country' => 'OA', 'country_office' => 'Mexico', 'status' => $status]);
+        }
+        foreach ([[], ['status' => 'all_except_abandoned'], ['status' => '']] as $filters) {
+            $response = $this->get(route('advance_search', $filters + ['country' => 'African Intellectual Property Organization (OAPI)']))->assertOk();
+            $this->assertSame(['Registered', 'Pending'], $response->viewData('trademarks')->pluck('status')->all());
+        }
+        $response = $this->get(route('advance_search', ['country' => 'Mexico']))->assertOk();
+        $this->assertSame(0, $response->viewData('trademarks')->total());
+        $response = $this->get(route('advance_search', ['status' => 'Abandoned']))->assertOk();
+        $this->assertSame(['Abandoned'], $response->viewData('trademarks')->pluck('status')->all());
+        $doc = $this->document($this->get(route('index.trademarks'))->assertOk()->getContent());
+        $this->assertSame(['All', 'National', 'International'], $this->texts($doc->query('//select[@id="origin"]/option')));
+        $this->assertSame(['All', 'Pending', 'Registered', 'Abandoned'], $this->texts($doc->query('//select[@id="status"]/option')));
+        $this->assertSame('all_except_abandoned', $doc->query('//select[@id="status"]/option[@selected]')->item(0)->getAttribute('value'));
+        $this->assertStringContainsString('African Intellectual Property Organization (OAPI)', $doc->query('//select[@id="country"]')->item(0)->textContent);
+    }
+
+    public function test_owner_update_preserves_address_ids_used_by_trademarks(): void
+    {
+        Schema::table('holder', function (Blueprint $table) { $table->text('country')->nullable(); $table->text('notas')->nullable(); });
+        $owner = DB::table('holder')->insertGetId(['company_name' => 'Original', 'country' => 'Mexico']);
+        $address = DB::table('address_holder')->insertGetId(['id_holder' => $owner, 'address' => 'Original Address', 'commercial_address' => 'Business Address']);
+        $record = new Trademarks();
+        $record->forceFill(['trademark' => 'Linked Mark', 'address_holder' => $address])->save();
+        $this->patch(route('update.holder', $owner), ['company_name' => 'Updated', 'country' => 'Mexico',
+            'address' => ['New Address'], 'commercial_address' => ['New Business'], 'address_ids' => [$address]])
+            ->assertRedirect(route('index.holder'))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('address_holder', ['id' => $address, 'address' => 'New Address', 'commercial_address' => 'New Business']);
+        $this->assertDatabaseHas('trademark', ['id' => $record->id, 'address_holder' => $address]);
+        $this->patch(route('update.holder', $owner), ['company_name' => 'Updated Again', 'country' => 'Mexico'])
+            ->assertRedirect(route('index.holder'));
+        $this->assertDatabaseCount('address_holder', 1);
+    }
+
     public function test_general_search_does_not_ignore_zero(): void
     {
-        $match = Trademarks::create(['trademark' => 'Matching', 'our_ref' => '100']);
-        Trademarks::create(['trademark' => 'Unrelated', 'our_ref' => '999']);
+        $match = Trademarks::create(['trademark' => 'Matching', 'our_ref' => '100', 'status' => 'Registered']);
+        Trademarks::create(['trademark' => 'Unrelated', 'our_ref' => '999', 'status' => 'Pending']);
         $response = $this->get(route('advance_search', ['q' => '0']))->assertOk();
         $this->assertSame([$match->id], $response->viewData('trademarks')->pluck('id')->all());
     }

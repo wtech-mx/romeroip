@@ -540,3 +540,11 @@ body.legal-shell, body.ui-auth {
 .legal-shell .tm-compact-file select.tm-country-select { width: 100%; max-width: none; padding-right: 24px; appearance: auto; border: 0 !important; outline: 0; box-shadow: none; }
 .legal-shell .account-photo { margin-bottom: 24px; }
 .legal-shell .account-photo > .legal-profile-avatar { width: 64px; height: 64px; margin-bottom: 12px; }
+/* Search controls use the same date entry and keyboard behavior as the file. */
+.legal-shell .tm-search-page .tm-search-date { position: relative; }
+.legal-shell .tm-search-page .tm-search-date .tm-date-display { padding-right: 34px; }
+.legal-shell .tm-search-page .tm-date-picker { top: 3px; right: 15px; width: 26px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.legal-shell .tm-search-page .tm-date-feedback { display: block; font-size: 12px; color: #b33b3b; }
+.legal-shell .tm-search-page .tm-date-feedback[hidden] { display: none; }
+.legal-shell .tm-index-page .tm-search-panel select.form-control { appearance: none !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23646b7d' stroke-width='1.5'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 12px center !important; padding-right: 34px; }
+.legal-shell .tm-index-page .tm-search-panel .form-control:focus { outline: 1px solid #8a909b !important; outline-offset: -1px; border-color: #8a909b !important; box-shadow: none !important; }

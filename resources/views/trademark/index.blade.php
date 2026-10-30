@@ -223,7 +223,7 @@
 
 @section('content')
 
-<div class="tm-index-page">
+<div class="tm-index-page tm-search-page">
   <div class="container-fluid">
       <div class="tm-index-actions">
           <a href="{{ route('create.trademarks') }}" class="btn btn-sm tm-primary-action">
@@ -248,6 +248,7 @@
 @endsection
 
 @section('js_custom')
+<script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
     <script>
     (function () {
         const trademarkForm = document.getElementById('trademark-search-form');
@@ -256,7 +257,7 @@
         const advancedCount = document.getElementById('tm-advanced-count');
         function updateAdvancedCount() {
             if (!advancedPanel || !advancedCount) return;
-            const count = Array.from(advancedPanel.querySelectorAll('input, select'))
+            const count = Array.from(advancedPanel.querySelectorAll('input[name], select[name]'))
                 .filter(field => field.value.trim() !== '').length;
             advancedCount.textContent = count ? ` (${count})` : '';
             document.getElementById('tm-advanced-toggle').classList.toggle('has-active-filters', count > 0);
