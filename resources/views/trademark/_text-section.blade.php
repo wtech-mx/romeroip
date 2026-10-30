@@ -6,7 +6,7 @@
         ? ['class' => 'Class', 'description_good' => 'Description', 'translation_good' => 'Translation']
         : ['notes' => 'Notes'];
 @endphp
-<section class="tm-section tm-approved-section tm-text-section" id="{{ $sectionId }}">
+<section class="tm-section tm-approved-section tm-text-section {{ $readOnly ? 'tm-text-readonly' : '' }}" id="{{ $sectionId }}">
     <h2 class="tm-section-heading"><span>{{ $sectionId === 'accounts' ? '05' : '09' }} |</span> {{ $sectionId === 'accounts' ? 'Goods / Services' : 'Notes' }}</h2>
     <div class="tm-text-table tm-field-column">
         @foreach($sectionFields as $key => $label)

@@ -30,7 +30,7 @@
             collapsed = false;
             try { localStorage.setItem('romero-sidebar-collapsed', 'false'); } catch (_) {}
             render();
-        } else if (!desktop.matches && !event.target.closest('#sidenav-main')) {
+        } else if (!desktop.matches && (!event.target.closest('#sidenav-main') || event.target.closest('#sidenav-main a:not([data-bs-toggle])'))) {
             document.body.classList.remove('legal-sidebar-open'); render();
         }
     }, true);

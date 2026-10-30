@@ -34,6 +34,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/my-profile', [App\Http\Controllers\AccountController::class, 'show'])->name('account.profile');
     Route::get('/account-settings', [App\Http\Controllers\AccountController::class, 'edit'])->name('account.settings');
     Route::patch('/account-settings', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update');
+    Route::post('/my-profile/photo', [App\Http\Controllers\AccountController::class, 'photo'])->name('account.photo');
+    Route::delete('/my-profile/photo', [App\Http\Controllers\AccountController::class, 'removePhoto'])->name('account.photo.remove');
     Route::get('/trademarks/quick-search', [App\Http\Controllers\TrademarksController::class, 'quickSearch'])->name('trademarks.quick-search');
     Route::resource('roles', RoleController::class);
     Route::resource('permisos', PermisosController::class);

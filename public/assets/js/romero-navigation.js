@@ -66,6 +66,9 @@
         const picker = panel.querySelector('[data-section-picker]');
         let chosenSection = null;
         function activate(id) {
+            const editLink = panel.querySelector('[data-edit-current-section]');
+            const editSection = ({ owner: 'holder', client: 'sessions' })[id] || id;
+            if (editLink) editLink.setAttribute('href', editLink.href.split('#')[0] + '#' + editSection);
             links.forEach(link => {
                 const active = link.dataset.sectionLink === id;
                 link.classList.toggle('is-active', active);
@@ -87,13 +90,22 @@
             scheduled = false;
             if (chosenSection) { activate(chosenSection); return; }
             let active = sections[0];
-            sections.forEach(section => { if (section.getBoundingClientRect().top <= sectionOffset + 2) active = section; });
-            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 3) active = sections[sections.length - 1];
+            // Short final sections cannot always reach the sticky header. Track
+            // the upper reading area instead of jumping straight to Notes.
+            const readingLine = Math.max(sectionOffset + 2, window.innerHeight * 0.35);
+            sections.forEach(section => { if (section.getBoundingClientRect().top <= readingLine) active = section; });
+            // Near the document end a short Notes section must not mask Dates.
+            const last = sections[sections.length - 1];
+            if (last && last.getBoundingClientRect().top <= sectionOffset + 2) active = last;
             if (active) activate(active.id);
         }
         window.addEventListener('scroll', () => { if (!scheduled) { scheduled = true; requestAnimationFrame(updateActive); } }, { passive: true });
         ['wheel', 'touchmove', 'pointerdown', 'keydown'].forEach(type => window.addEventListener(type, () => { chosenSection = null; }, { passive: true }));
         updateActive();
+        const initialSection = decodeURIComponent(location.hash.slice(1));
+        if (sections.some(section => section.id === initialSection)) {
+            requestAnimationFrame(() => scrollToSection(initialSection));
+        }
     }
     const ourRef = document.getElementById('our_ref');
     ourRef?.addEventListener('input', () => document.querySelectorAll('[data-breadcrumb-reference]').forEach(part => { part.textContent = 'File ' + (ourRef.value || '—'); }));

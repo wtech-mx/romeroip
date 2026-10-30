@@ -4,9 +4,9 @@
     $isFileEdit = Route::is('edit.trademarks');
     $signedUser = Auth::user();
     $initials = collect(preg_split('/\s+/u', trim($signedUser->name)))->take(2)->map(fn($part) => mb_strtoupper(mb_substr($part, 0, 1)))->implode('');
-    $profilePhoto = $signedUser->getAttribute('profile_photo_url') ?: $signedUser->getAttribute('avatar_url');
+    $profilePhoto = $signedUser->getAttribute('profile_photo_path') ? asset($signedUser->profile_photo_path) : ($signedUser->getAttribute('profile_photo_url') ?: $signedUser->getAttribute('avatar_url'));
 @endphp
-<nav aria-label="Main navigation" class="legal-navbar legal-topbar" id="navbarBlur">
+<nav aria-label="Main navigation" class="legal-navbar legal-topbar {{ !$isOpenFile ? 'legal-topbar-no-search' : '' }}" id="navbarBlur">
     <div class="legal-topbar-left">
         <button type="button" class="legal-menu-toggle" id="legalMobileSidebarToggle" data-sidebar-toggle aria-label="Toggle sidebar" aria-controls="sidenav-main" aria-expanded="true"><i class="bi bi-list" aria-hidden="true"></i></button>
         <nav aria-label="Breadcrumb"><ol class="legal-breadcrumb">
@@ -17,11 +17,13 @@
             @elseif(Route::is('create.trademarks'))<li aria-current="page">New Trademark</li>@endif
         </ol></nav>
     </div>
+    @if($isOpenFile)
     <form class="legal-quick-search" data-quick-search action="{{ route('trademarks.quick-search') }}" method="GET" role="search" novalidate>
         <button type="submit" aria-label="Quick Search"><i class="bi bi-search" aria-hidden="true"></i></button>
         <input name="number" aria-label="Quick Search" placeholder="Search by case, application or registration number..." inputmode="numeric" autocomplete="off" required>
         <p class="legal-search-status" role="status" aria-live="polite" hidden></p>
     </form>
+    @endif
     <div class="dropdown legal-profile">
         <button class="legal-profile-button" type="button" id="legalProfileButton" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ $signedUser->name }}" title="{{ $signedUser->name }}">
             @if($profilePhoto)<img class="legal-profile-avatar" src="{{ $profilePhoto }}" alt="">@else<span class="legal-profile-avatar" aria-hidden="true">{{ $initials }}</span>@endif

@@ -527,3 +527,16 @@ body.legal-shell, body.ui-auth {
 .legal-shell .legal-sidenav .navbar-brand .legal-brand-full { width: 190px !important; max-width: 100% !important; height: auto !important; max-height: 42px !important; object-position: center; }
 .legal-shell .legal-sidenav .navbar-brand .legal-brand-symbol { width: 36px !important; max-width: 100% !important; height: auto !important; max-height: 40px !important; object-position: center; }
 .legal-shell .tm-index-page .tm-search-panel select.form-control { appearance: auto !important; padding-right: 10px; }
+/* Pending file refinements: preserve the approved table dimensions. */
+.legal-breadcrumb { font-size: 14px; }
+.legal-shell .legal-topbar.legal-topbar-no-search { grid-template-columns: minmax(0,1fr) auto; }
+.legal-shell #notes.tm-text-readonly .tm-field { min-height: 56px; }
+.legal-shell #notes.tm-text-readonly .tm-value { min-height: 56px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.legal-shell .tm-compact-file #notes { margin-top: 30px; }
+@container (min-width: 986px) {
+  .legal-shell .tm-sections-panel { float: right; margin-left: 24px; margin-right: calc(100% - 986px); }
+}
+.legal-shell .tm-compact-file .tm-control:has(> .tm-country-select):focus-within { outline: 1px solid #8a909b; outline-offset: -1px; }
+.legal-shell .tm-compact-file select.tm-country-select { width: 100%; max-width: none; padding-right: 24px; appearance: auto; border: 0 !important; outline: 0; box-shadow: none; }
+.legal-shell .account-photo { margin-bottom: 24px; }
+.legal-shell .account-photo > .legal-profile-avatar { width: 64px; height: 64px; margin-bottom: 12px; }

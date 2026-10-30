@@ -19,7 +19,7 @@
                             }
                             if ($readOnly && $fileField['type'] === 'origin') $value = \App\Support\TrademarkOrigin::label($value);
                             if ($readOnly && $fileField['type'] === 'status') $value = \App\Support\TrademarkStatus::label($value);
-                            if ($readOnly && $fileField['type'] === 'country' && strcasecmp((string) $value, 'mexico') === 0) $value = 'Mexico';
+                            if ($readOnly && $fileField['type'] === 'country') $value = \App\Support\CountryCatalog::label($value, true);
                         @endphp
                         <div class="tm-field {{ $fileField['emphasis'] ? 'tm-field-emphasis' : '' }} {{ !$readOnly && !$newFile && $key === 'client_ref' ? 'autocomplete-wrap' : '' }}" data-field="{{ $key }}">
                             @if($readOnly)
@@ -29,7 +29,7 @@
                                 <label class="tm-label" for="{{ $fileField['id'] }}">{{ $fileField['label'] }}</label>
                                 <div class="tm-control">
                                     @if(in_array($fileField['type'], ['country', 'status', 'origin'], true))
-                                        <select id="{{ $fileField['id'] }}" name="{{ $key }}" class="form-control tm-select {{ in_array($key, ['country', 'contracting_organization'], true) ? 'js-example-basic-single' : '' }}">
+                                        <select id="{{ $fileField['id'] }}" name="{{ $key }}" class="form-control tm-select {{ $fileField['type'] === 'country' ? 'tm-country-select' : '' }}">
                                             @if($fileField['type'] === 'country')
                                                 @include('trademark._country-options', ['currentCountry' => $value])
                                             @elseif($fileField['type'] === 'status')

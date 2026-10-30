@@ -35,13 +35,13 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('clients*') ? 'active' : '' }}" href="{{ route('index.clients') }}" aria-label="Clients" title="Clients">
-          <i class="bi bi-people" aria-hidden="true"></i><span class="nav-link-text ms-1">Clients</span>
+        <a class="nav-link {{ Request::is('holder*') ? 'active' : '' }}" href="{{ route('index.holder') }}" aria-label="Owners" title="Owners">
+          <i class="bi bi-person-badge" aria-hidden="true"></i><span class="nav-link-text ms-1">Owners</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('holder*') ? 'active' : '' }}" href="{{ route('index.holder') }}" aria-label="Owners" title="Owners">
-          <i class="bi bi-person-badge" aria-hidden="true"></i><span class="nav-link-text ms-1">Owners</span>
+        <a class="nav-link {{ Request::is('clients*') ? 'active' : '' }}" href="{{ route('index.clients') }}" aria-label="Clients" title="Clients">
+          <i class="bi bi-people" aria-hidden="true"></i><span class="nav-link-text ms-1">Clients</span>
         </a>
       </li>
 
@@ -200,10 +200,4 @@
     </ul>
   </div>
 
-  <div class="legal-sidebar-profile mt-auto">
-    <span class="legal-sidebar-avatar" aria-hidden="true">{{ collect(preg_split('/\s+/u', trim(Auth::user()->name)))->take(2)->map(fn($part) => mb_substr($part, 0, 1))->implode('') }}</span>
-    <div class="legal-sidebar-details">
-    <div class="legal-sidebar-name">{{ Auth::user()->name }}</div>
-    <div class="legal-sidebar-role">{{ Auth::user()->getRoleNames()->implode(' / ') }}</div></div>
-  </div>
 </aside>

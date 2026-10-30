@@ -68,6 +68,54 @@ class TrademarkFileTest extends TestCase
         $this->assertSame(1, $response->viewData('trademarks')->total());
     }
 
+    public function test_catalogs_preserve_saved_values_and_use_distinct_country_and_office_lists(): void
+    {
+        $countries = \App\Support\CountryCatalog::entries();
+        $offices = \App\Support\CountryCatalog::entries(true);
+        $this->assertCount(249, $countries);
+        $this->assertArrayNotHasKey('OA', $countries);
+        $this->assertArrayHasKey('OA', $offices);
+        $this->assertSame('Mexico', \App\Support\CountryCatalog::label('MX', true));
+        $html = view('shared.country-options', ['currentCountry' => 'MEXICO', 'offices' => true])->render();
+        $this->assertStringContainsString('value="MEXICO" data-country-code="MX" selected>Mexico', $html);
+        $record = Trademarks::create(['trademark' => 'Catalog Test', 'country' => 'MEXICO', 'country_office' => 'OA']);
+        $response = $this->get(route('show.trademarks', $record->id))->assertOk();
+        $response->assertSee('African Intellectual Property Organization (OAPI)');
+        $doc = $this->document($response->getContent());
+        $this->assertSame(1, $doc->query('//*[@data-edit-current-section]')->length);
+        $this->assertSame(0, $doc->query('//*[contains(@class,"legal-sidebar-profile")]')->length);
+        $this->get(route('index.trademarks'))->assertOk()->assertDontSee('data-quick-search', false);
+        $this->get(route('edit.trademarks', $record->id))->assertOk()->assertSee('data-quick-search', false);
+        $this->assertDatabaseHas('trademark', ['id' => $record->id, 'country' => 'MEXICO', 'country_office' => 'OA']);
+    }
+
+    public function test_profile_photo_upload_replace_remove_and_validation(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id(); $table->string('name'); $table->string('email'); $table->string('profile_photo_path')->nullable(); $table->timestamps();
+        });
+        DB::table('users')->insert(['id' => 1, 'name' => 'UI Review', 'email' => 'photo@example.test']);
+        $user = $this->app['auth']->user();
+        $user->exists = true; $user->setTable('users');
+        $this->post(route('account.photo'), ['photo' => \Illuminate\Http\UploadedFile::fake()->create('bad.svg', 1, 'image/svg+xml')])->assertSessionHasErrors('photo');
+        $paths = [];
+        try {
+            for ($i = 0; $i < 2; $i++) {
+                $temp = tempnam(sys_get_temp_dir(), 'photo');
+                file_put_contents($temp, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a7WQAAAAASUVORK5CYII='));
+                $upload = new \Illuminate\Http\UploadedFile($temp, 'avatar.png', 'image/png', null, true);
+                $this->post(route('account.photo'), ['photo' => $upload])->assertRedirect(route('account.profile'))->assertSessionHasNoErrors();
+                $paths[] = $user->profile_photo_path;
+                $this->assertFileExists(public_path($user->profile_photo_path));
+            }
+            $this->assertFileDoesNotExist(public_path($paths[0]));
+            $this->get(route('account.profile'))->assertOk()->assertSee($paths[1]);
+            $this->delete(route('account.photo.remove'))->assertRedirect(route('account.profile'));
+            $this->assertNull($user->profile_photo_path);
+            $this->assertFileDoesNotExist(public_path($paths[1]));
+        } finally { foreach ($paths as $path) @unlink(public_path($path)); }
+    }
+
     public function test_general_search_does_not_ignore_zero(): void
     {
         $match = Trademarks::create(['trademark' => 'Matching', 'our_ref' => '100']);

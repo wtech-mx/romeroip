@@ -51,9 +51,7 @@
                                                     <label class="form-label">{{ __('messages.country') }}</label>
                                                     <div class="input-group">
                                                         <select class="form-control js-example-basic-single" name="country" id="country">
-                                                            <option value="{{$holder->country}}">{{$holder->country}}
-                                                            </option>
-                                                            @include('client.paises')
+                                                            @include('shared.country-options', ['currentCountry' => old('country', $holder->country), 'offices' => false])
                                                         </select>
                                                     </div>
                                                 </div>

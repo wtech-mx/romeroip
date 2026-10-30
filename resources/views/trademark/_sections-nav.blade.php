@@ -17,5 +17,7 @@
     </label>
     @if($editing)
     <div class="tm-sections-save"><button class="tm-btn tm-btn-primary" type="submit" form="trademarkEditForm">Update</button></div>
+    @elseif($readOnly)
+    <div class="tm-sections-save"><a class="tm-btn tm-btn-primary" data-edit-current-section href="{{ route('edit.trademarks', $trademark->id) }}">Edit</a></div>
     @endif
 </aside>
