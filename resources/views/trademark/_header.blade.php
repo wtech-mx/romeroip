@@ -25,8 +25,8 @@
 <header class="tm-header tm-record-header" data-trademark-header>
     <div>
         <div class="tm-title-line">
-            <h1 class="tm-title" data-header="title">{{ $fileTitle }}</h1>
-            <span data-header="status" class="tm-status-pill {{ in_array(strtolower($fileStatus), ['registered', 'pending', 'abandoned'], true) ? 'is-' . strtolower($fileStatus) : '' }}" @if($fileStatus === '') hidden @endif>{{ $fileStatus }}</span>
+            <h1 class="tm-title"><span data-header="title">{{ $fileTitle }}</span>
+            <span data-header="status" class="tm-status-pill {{ in_array(strtolower($fileStatus), ['registered', 'pending', 'abandoned'], true) ? 'is-' . strtolower($fileStatus) : '' }}" @if($fileStatus === '') hidden @endif>{{ $fileStatus }}</span></h1>
         </div>
         <div class="tm-header-meta">
             <strong data-header="number">{{ $fileNumber }} – {{ $fileClass }}</strong>

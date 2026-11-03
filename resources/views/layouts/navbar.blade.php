@@ -19,8 +19,9 @@
     </div>
     @if($isOpenFile)
     <form class="legal-quick-search" data-quick-search action="{{ route('trademarks.quick-search') }}" method="GET" role="search" novalidate>
-        <button type="submit" aria-label="Quick Search"><i class="bi bi-search" aria-hidden="true"></i></button>
-        <input name="number" aria-label="Quick Search" placeholder="Search by case, application or registration number..." inputmode="numeric" autocomplete="off" required>
+        <button type="button" data-quick-toggle aria-label="Open Quick Search" aria-expanded="false" aria-controls="quick-search-number"><i class="bi bi-search" aria-hidden="true"></i></button>
+        <input id="quick-search-number" name="number" aria-label="Quick Search" placeholder="Search by File, Application or Registration Number..." hidden inputmode="numeric" autocomplete="off" required>
+        <button type="button" data-quick-close aria-label="Close Quick Search" hidden><i class="bi bi-x-lg" aria-hidden="true"></i></button>
         <p class="legal-search-status" role="status" aria-live="polite" hidden></p>
     </form>
     @endif

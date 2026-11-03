@@ -116,7 +116,7 @@ class TrademarkFileTest extends TestCase
         } finally { foreach ($paths as $path) @unlink(public_path($path)); }
     }
 
-    public function test_search_status_all_means_pending_and_registered_and_office_filter_targets_country(): void
+    public function test_search_status_live_defaults_and_office_filter_targets_country(): void
     {
         foreach (['Pending', 'Registered', 'Abandoned', 'Lapsed', null] as $status) {
             Trademarks::create(['trademark' => 'Office Test', 'country' => 'OA', 'country_office' => 'Mexico', 'status' => $status]);
@@ -131,9 +131,45 @@ class TrademarkFileTest extends TestCase
         $this->assertSame(['Abandoned'], $response->viewData('trademarks')->pluck('status')->all());
         $doc = $this->document($this->get(route('index.trademarks'))->assertOk()->getContent());
         $this->assertSame(['All', 'National', 'International'], $this->texts($doc->query('//select[@id="origin"]/option')));
-        $this->assertSame(['All', 'Pending', 'Registered', 'Abandoned'], $this->texts($doc->query('//select[@id="status"]/option')));
-        $this->assertSame('all_except_abandoned', $doc->query('//select[@id="status"]/option[@selected]')->item(0)->getAttribute('value'));
+        $this->assertSame(['All', 'Live', 'Pending', 'Registered', 'Abandoned'], $this->texts($doc->query('//select[@id="status"]/option')));
+        $this->assertSame('Live', $doc->query('//select[@id="status"]/option[@selected]')->item(0)->getAttribute('value'));
         $this->assertStringContainsString('African Intellectual Property Organization (OAPI)', $doc->query('//select[@id="country"]')->item(0)->textContent);
+    }
+
+    public function test_specific_files_are_exact_inclusive_and_combine_without_duplicates(): void
+    {
+        foreach (['1002', '1005', '1006', '1008', '1009', '11002', '1002x'] as $ref) {
+            Trademarks::create(['our_ref' => $ref, 'trademark' => 'Specific Test', 'status' => 'Pending']);
+        }
+        $filters = ['specific_files' => '1002, 1005-1008, 1006, 8888'];
+        $response = $this->get(route('advance_search', $filters))->assertOk();
+        $this->assertSame(['1008', '1006', '1005', '1002'], $response->viewData('trademarks')->pluck('our_ref')->all());
+        $response = $this->get(route('advance_search', $filters + ['from_refs' => '1005', 'to_refs' => '1006']))->assertOk();
+        $this->assertSame(['1006', '1005'], $response->viewData('trademarks')->pluck('our_ref')->all());
+        foreach (['1002,', '1005-1002', '100x', '1002,,1005', '1-2-3', '0', '-1', '99999999999'] as $invalid) {
+            $this->getJson(route('advance_search', ['specific_files' => $invalid]))->assertUnprocessable()->assertJsonValidationErrors('specific_files');
+        }
+        $this->getJson(route('advance_search', ['from_refs' => '10', 'to_refs' => '9']))->assertUnprocessable()->assertJsonValidationErrors('to_refs');
+    }
+
+    public function test_due_date_ranges_are_inclusive_and_accept_either_bound(): void
+    {
+        foreach (['2026-01-01', '2026-06-15', '2026-12-31'] as $i => $date) {
+            Trademarks::create(['trademark' => 'Due Test', 'our_ref' => (string) ($i + 1), 'status' => 'Registered',
+                'filing_date_general' => $date, 'registration_date' => $date, 'next_declaration' => $date, 'next_renewal' => $date,
+                'last_declaration' => '2020-01-01', 'last_renewal' => '2020-01-01']);
+        }
+        foreach ([['filing_from', 'filing_to'], ['registration_from', 'registration_to'], ['last_declaration', 'next_declaration'], ['last_renewal', 'next_renewal']] as [$from, $to]) {
+            foreach ([[$from => '2026-06-15'], [$to => '2026-06-15'], [$from => '2026-06-15', $to => '2026-06-15']] as $filters) {
+                $result = $this->get(route('advance_search', $filters))->assertOk()->viewData('trademarks');
+                $this->assertSame(count($filters) === 2 ? 1 : 2, $result->total());
+            }
+            $this->getJson(route('advance_search', [$from => '2026-12-31', $to => '2026-01-01']))->assertUnprocessable()->assertJsonValidationErrors($to);
+        }
+        Trademarks::create(['status' => 'Abandoned']);
+        Trademarks::create(['status' => 'Lapsed']);
+        $result = $this->get(route('advance_search', ['status' => 'All']))->assertOk()->viewData('trademarks');
+        $this->assertSame(4, $result->total());
     }
 
     public function test_owner_update_preserves_address_ids_used_by_trademarks(): void
@@ -172,7 +208,7 @@ class TrademarkFileTest extends TestCase
         $response->assertSee('Trademark, Reference, Number, Owner or Client...');
         $response->assertSee('Legacy Territory')->assertSee('Afghanistan');
         $this->assertSame(4, $doc->query('//*[contains(@class,"tm-primary-filters")]//select')->length);
-        $this->assertSame(10, $doc->query('//*[@id="advancedSearch"]//input')->length);
+        $this->assertSame(11, $doc->query('//*[@id="advancedSearch"]//input')->length);
     }
 
     public function test_create_and_update_return_to_the_saved_file(): void

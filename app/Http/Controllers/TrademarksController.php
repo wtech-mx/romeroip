@@ -31,6 +31,10 @@ class TrademarksController extends Controller
     {
         try {
             $filters = $request->validate([
+                'specific_files' => ['nullable', 'string', 'max:4000', function ($attribute, $value, $fail) {
+                    try { \App\Support\SpecificFiles::parse($value); }
+                    catch (\InvalidArgumentException $error) { $fail($error->getMessage()); }
+                }],
                 'q'                   => ['nullable', 'string', 'max:255'],
                 'our_ref'             => ['nullable', 'string', 'max:100'],
                 'client_ref'          => ['nullable', 'string', 'max:100'],
@@ -57,6 +61,13 @@ class TrademarksController extends Controller
                 'from_refs'           => ['nullable', 'integer'],
                 'to_refs'             => ['nullable', 'integer'],
             ]);
+
+            foreach ([['from_refs', 'to_refs'], ['filing_from', 'filing_to'], ['registration_from', 'registration_to'], ['last_declaration', 'next_declaration'], ['last_renewal', 'next_renewal']] as [$from, $to]) {
+                if (isset($filters[$from], $filters[$to]) && $filters[$from] > $filters[$to]) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([$to => 'To must be greater than or equal to From.']);
+                }
+            }
+            $referenceNumber = DB::raw(DB::getDriverName() === 'mysql' ? 'CAST(our_ref AS SIGNED)' : 'CAST(our_ref AS INTEGER)');
 
             $trademarks = Trademarks::query()
                 ->with([
@@ -146,11 +157,13 @@ class TrademarksController extends Controller
                 )
 
                 ->when(true, function ($query) use ($filters) {
-                    $status = $filters['status'] ?? 'all_except_abandoned';
-                    if (!$status || $status === 'all_except_abandoned' || $status === 'All') {
-                        $query->whereIn(\Illuminate\Support\Facades\DB::raw('LOWER(status)'), ['pending', 'registered']);
+                    $status = strtolower($filters['status'] ?? 'Live');
+                    if (in_array($status, ['', 'live', 'all_except_abandoned'], true)) {
+                        $query->whereIn(DB::raw('LOWER(status)'), ['pending', 'registered']);
+                    } elseif ($status === 'all') {
+                        $query->whereIn(DB::raw('LOWER(status)'), ['pending', 'registered', 'abandoned']);
                     } else {
-                        $query->whereRaw('LOWER(status) = ?', [mb_strtolower($status)]);
+                        $query->whereRaw('LOWER(status) = ?', [$status]);
                     }
                 })
 
@@ -175,51 +188,28 @@ class TrademarksController extends Controller
                     ])))
                 )
 
-                ->when(
-                    !empty($filters['filing_from']) && !empty($filters['filing_to']),
-                    fn ($query) =>
-                        $query->whereBetween('filing_date_general', [
-                            $filters['filing_from'],
-                            $filters['filing_to']
-                        ])
-                )
-
-                ->when(
-                    !empty($filters['registration_from']) && !empty($filters['registration_to']),
-                    fn ($query) =>
-                        $query->whereBetween('registration_date', [
-                            $filters['registration_from'],
-                            $filters['registration_to']
-                        ])
-                )
-
-                ->when(
-                    !empty($filters['last_declaration']) && !empty($filters['next_declaration']),
-                    fn ($query) =>
-                        $query->whereBetween('last_declaration', [
-                            $filters['last_declaration'],
-                            $filters['next_declaration']
-                        ])
-                )
-
-                ->when(
-                    !empty($filters['last_renewal']) && !empty($filters['next_renewal']),
-                    fn ($query) =>
-                        $query->whereBetween('last_renewal', [
-                            $filters['last_renewal'],
-                            $filters['next_renewal']
-                        ])
-                )
-
-                ->when(
-                    isset($filters['from_refs']) && isset($filters['to_refs']) &&
-                    $filters['from_refs'] !== null && $filters['to_refs'] !== null,
-                    fn ($query) =>
-                        $query->whereBetween('our_ref', [
-                            $filters['from_refs'],
-                            $filters['to_refs']
-                        ])
-                )
+                ->when(true, function ($query) use ($filters, $referenceNumber) {
+                    foreach ([
+                        ['filing_date_general', 'filing_from', 'filing_to'],
+                        ['registration_date', 'registration_from', 'registration_to'],
+                        ['next_declaration', 'last_declaration', 'next_declaration'],
+                        ['next_renewal', 'last_renewal', 'next_renewal'],
+                    ] as [$column, $from, $to]) {
+                        if (!empty($filters[$from])) $query->whereDate($column, '>=', $filters[$from]);
+                        if (!empty($filters[$to])) $query->whereDate($column, '<=', $filters[$to]);
+                    }
+                    if (isset($filters['from_refs'])) $query->where($referenceNumber, '>=', $filters['from_refs']);
+                    if (isset($filters['to_refs'])) $query->where($referenceNumber, '<=', $filters['to_refs']);
+                    $ranges = \App\Support\SpecificFiles::parse($filters['specific_files'] ?? '');
+                    if ($ranges || isset($filters['from_refs']) || isset($filters['to_refs'])) {
+                        $query->whereRaw(DB::getDriverName() === 'mysql'
+                            ? "our_ref REGEXP '^[0-9]+$'"
+                            : "our_ref NOT GLOB '*[^0-9]*' AND our_ref <> ''");
+                    }
+                    if ($ranges) $query->where(function ($numbers) use ($ranges, $referenceNumber) {
+                        foreach ($ranges as [$from, $to]) $numbers->orWhereBetween($referenceNumber, [$from, $to]);
+                    });
+                })
 
                 ->orderByDesc('id');
 
@@ -239,6 +229,7 @@ class TrademarksController extends Controller
             return view('trademark.index', compact('trademarks'));
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->expectsJson()) return response()->json(['errors' => $e->errors()], 422);
             return redirect()
                 ->back()
                 ->withErrors($e->validator)

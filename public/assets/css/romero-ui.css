@@ -548,3 +548,43 @@ body.legal-shell, body.ui-auth {
 .legal-shell .tm-search-page .tm-date-feedback[hidden] { display: none; }
 .legal-shell .tm-index-page .tm-search-panel select.form-control { appearance: none !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23646b7d' stroke-width='1.5'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 12px center !important; padding-right: 34px; }
 .legal-shell .tm-index-page .tm-search-panel .form-control:focus { outline: 1px solid #8a909b !important; outline-offset: -1px; border-color: #8a909b !important; box-shadow: none !important; }
+/* November refinements are scoped to record headers and trademark search. */
+.legal-shell .tm-compact-file .tm-record-header .tm-title { display: block; font: 600 24px/1.25 'Inter', sans-serif; letter-spacing: normal; margin: 0; overflow-wrap: anywhere; }
+.legal-shell .tm-record-header .tm-title .tm-status-pill { display: inline-block; vertical-align: middle; margin-left: 10px; white-space: nowrap; font: 500 12px/1.3 'Inter', sans-serif; letter-spacing: normal; }
+.legal-shell .tm-record-header .tm-title .tm-status-pill[hidden] { display: none; }
+.legal-shell .legal-topbar:not(.legal-topbar-no-search) { grid-template-columns: minmax(0,1fr) auto auto; }
+.legal-shell .legal-quick-search { width: 38px; height: 38px; padding: 0; gap: 0; border-radius: 50%; justify-content: center; }
+.legal-shell .legal-quick-search.is-expanded { width: 425px; max-width: 100%; border-radius: 50px; padding: 0 12px; gap: 8px; }
+.legal-shell .legal-quick-search input, .legal-shell .legal-quick-search input:focus { outline: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; background: transparent !important; padding: 0 !important; font-size: 12px; }
+.legal-shell .legal-quick-search [hidden] { display: none !important; }
+.legal-shell .legal-quick-search button { flex-shrink: 0; display: grid; place-items: center; width: 20px; height: 28px; }
+.legal-shell .legal-quick-search:not(.is-expanded) button { width: 36px; height: 36px; border-radius: 50%; }
+.legal-shell .tm-search-page > .container-fluid { padding-left: 0; padding-right: 0; }
+.legal-shell .main-content > .container-fluid:has(> .tm-search-page) { padding-left: 16px; padding-right: 16px; }
+.legal-shell .tm-search-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.legal-shell .tm-search-heading .tm-search-actions { margin-top: 0; flex-shrink: 0; }
+.legal-shell .tm-search-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+.legal-shell .tm-advanced-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px 24px; padding-top: 24px; }
+.legal-shell .tm-search-range { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.legal-shell .tm-search-date { min-width: 0; position: relative; }
+.legal-shell .tm-search-page .tm-date-picker { right: 5px; }
+.legal-shell #tm-search-error { color: #a53636; margin: 12px 0 0; font-size: 13px; }
+.legal-shell .tm-country-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23646b7d' stroke-width='1.5'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 10px center !important; }
+.legal-shell .tm-compact-file select.tm-country-select { appearance: none; padding-right: 32px; }
+.legal-shell .tm-compact-file select.tm-country-select:focus { border: 0 !important; outline: 0 !important; box-shadow: none !important; }
+@media(max-width: 767.98px) {
+  .legal-shell .legal-topbar:not(.legal-topbar-no-search) { grid-template-columns: minmax(0,1fr) 38px auto; }
+  .legal-shell .legal-quick-search { grid-column: 2; grid-row: 1; }
+  .legal-shell .legal-quick-search.is-expanded { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+  .legal-shell .legal-topbar:not(.legal-topbar-no-search) .legal-profile { grid-column: 3; grid-row: 1; }
+  .legal-shell .tm-search-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .legal-shell .tm-advanced-grid { grid-template-columns: minmax(0,1fr); }
+}
+@media(max-width: 479.98px) {
+  .legal-shell .tm-search-heading { flex-wrap: wrap; }
+  .legal-shell .tm-search-heading .tm-search-actions { margin-left: auto; }
+  .legal-shell .legal-quick-search.is-expanded input { font-size: 10px; }
+}
+.legal-shell .tm-compact-file .tm-record-header .tm-title { display: inline-flex; align-items: baseline; max-width: 100%; gap: 10px; }
+.legal-shell .tm-record-header .tm-title > [data-header="title"] { min-width: 0; }
+.legal-shell .tm-record-header .tm-title .tm-status-pill { flex: 0 0 auto; margin-left: 0; }

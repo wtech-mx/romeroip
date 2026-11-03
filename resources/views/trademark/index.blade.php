@@ -255,6 +255,7 @@
         const trademarkResults = document.getElementById('trademark-results');
         const advancedPanel = document.getElementById('advancedSearch');
         const advancedCount = document.getElementById('tm-advanced-count');
+        const searchError = document.getElementById('tm-search-error');
         function updateAdvancedCount() {
             if (!advancedPanel || !advancedCount) return;
             const count = Array.from(advancedPanel.querySelectorAll('input[name], select[name]'))
@@ -277,6 +278,7 @@
             }
 
             trademarkResults.style.opacity = '0.55';
+            searchError.hidden = true;
 
             try {
                 const requestUrl = data ? `${url}?${data.toString()}` : url;
@@ -286,13 +288,20 @@
                     }
                 });
 
+                if (response.status === 422) {
+                    const data = await response.json();
+                    searchError.textContent = Object.values(data.errors).flat().join(' ');
+                    searchError.hidden = false;
+                    return;
+                }
                 if (!response.ok) {
                     throw new Error('Search request failed.');
                 }
 
                 trademarkResults.innerHTML = await response.text();
             } catch (error) {
-                alert('No se pudo realizar la busqueda. Intenta nuevamente.');
+                searchError.textContent = 'Unable to search. Please try again.';
+                searchError.hidden = false;
             } finally {
                 trademarkResults.style.opacity = '1';
 

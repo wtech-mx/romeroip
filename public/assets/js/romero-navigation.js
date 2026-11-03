@@ -115,8 +115,27 @@
     if (!search || !dialog) return;
     const input = search.querySelector('input');
     const status = search.querySelector('[role="status"]');
+    const toggle = search.querySelector('[data-quick-toggle]');
+    const closeSearch = search.querySelector('[data-quick-close]');
     let request;
     function message(text) { status.textContent = text; status.hidden = !text; }
+    function setSearchOpen(open) {
+        search.classList.toggle('is-expanded', open);
+        input.hidden = !open;
+        closeSearch.hidden = !open;
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Quick Search' : 'Open Quick Search');
+        if (open) input.focus();
+        else { request?.abort(); message(''); toggle.focus(); }
+    }
+    toggle.addEventListener('click', () => {
+        if (search.classList.contains('is-expanded')) search.requestSubmit();
+        else setSearchOpen(true);
+    });
+    closeSearch.addEventListener('click', () => setSearchOpen(false));
+    search.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { event.preventDefault(); setSearchOpen(false); }
+    });
     input.addEventListener('input', () => { request?.abort(); message(''); });
     dialog.querySelector('[data-close-search]').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });

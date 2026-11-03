@@ -118,6 +118,13 @@
             if (invalid.length) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
+                const advanced = invalid[0].display.closest('#advancedSearch');
+                if (advanced && !advanced.classList.contains('show')) {
+                    advanced.classList.add('show');
+                    const toggle = document.getElementById('tm-advanced-toggle');
+                    toggle?.setAttribute('aria-expanded', 'true');
+                    toggle?.classList.remove('collapsed');
+                }
                 invalid[0].display.focus();
             }
         }, true);
