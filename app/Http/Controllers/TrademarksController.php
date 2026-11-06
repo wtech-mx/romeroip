@@ -294,15 +294,50 @@ class TrademarksController extends Controller
         return response()->json(['number' => $number, 'matches' => $matches]);
     }
 
+    public function globalSearch(Request $request)
+    {
+        $data = $request->validate(['q' => 'required|string|max:255']);
+        $term = trim($data['q']);
+        $numeric = ctype_digit($term);
+        $numberFields = ['our_ref' => 'Our Reference', 'application_no' => 'Application No.', 'registration_no' => 'Registration No.',
+            'int_registration_no' => "Int’l Registration No.", 'opposition_no' => 'Opposition No.', 'litigation_no' => 'Litigation No.'];
+        $textFields = ['client_ref' => 'Client Reference', 'trademark' => 'Trademark'];
+        $matches = Trademarks::with(['Client:id,company_name', 'Holder:id,company_name'])
+            ->where(function ($query) use ($term, $numeric, $numberFields, $textFields) {
+                foreach ($numberFields as $key => $label) $query->orWhere($key, $numeric ? '=' : 'like', $numeric ? $term : "%{$term}%");
+                foreach ($textFields as $key => $label) $query->orWhere($key, 'like', "%{$term}%");
+                $query->orWhereHas('Client', fn ($party) => $party->where('company_name', 'like', "%{$term}%"))
+                    ->orWhereHas('Holder', fn ($party) => $party->where('company_name', 'like', "%{$term}%"));
+            })->orderBy('id')->get()->map(function ($record) use ($term, $numeric, $numberFields, $textFields) {
+                $fields = [];
+                foreach ($numberFields + $textFields as $key => $label) {
+                    $value = (string) $record->{$key};
+                    if ($numeric && isset($numberFields[$key]) ? $value === $term : mb_stripos($value, $term) !== false) $fields[] = $label;
+                }
+                foreach (['Holder' => 'Owner', 'Client' => 'Client'] as $relation => $label) {
+                    if (mb_stripos((string) optional($record->{$relation})->company_name, $term) !== false) $fields[] = $label;
+                }
+                return ['id' => $record->id, 'trademark' => $record->trademark ?: 'Trademark', 'our_ref' => $record->our_ref,
+                    'application_no' => $record->application_no, 'registration_no' => $record->registration_no,
+                    'matched_fields' => $fields, 'url' => route('show.trademarks', $record->id)];
+            })->filter(fn ($record) => count($record['matched_fields']) > 0)->values();
+        return response()->json(['query' => $term, 'matches' => $matches]);
+    }
+
     private function trademarkRules(?int $id = null, bool $requireCoreFields = true): array
     {
         $ourRefRules = ['nullable', 'regex:/^[1-9][0-9]{0,4}$/', Rule::unique('trademark', 'our_ref')->ignore($id)];
         $dateRule = 'nullable|date_format:Y-m-d';
+        $originalReference = $id ? (string) Trademarks::findOrFail($id)->client_ref : '';
 
         return [
             'notes'                   => 'nullable|string',
             'our_ref'                 => $ourRefRules,
-            'client_ref'              => ['nullable', 'string', 'regex:~^[\p{L}\p{N} ./()\[\]-]+$~u'],
+            'client_ref' => ['nullable', 'string', function ($attribute, $value, $fail) use ($originalReference) {
+                if ($originalReference !== '' && $value === $originalReference) return;
+                if (mb_strlen($value) > 30) $fail('Client Reference must contain no more than 30 characters.');
+                elseif (!preg_match('~^[\p{L}\p{N} ./()\[\]-]+$~u', $value)) $fail('Client Reference allows letters, numbers, spaces and - . / ( ) [ ].');
+            }],
             'opposition_no'           => 'nullable|string|max:100',
             'filing_date_opposition'  => $dateRule,
             'litigation_no'           => 'nullable|string|max:100',

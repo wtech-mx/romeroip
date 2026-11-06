@@ -24,12 +24,12 @@
                         <div class="tm-field {{ $fileField['emphasis'] ? 'tm-field-emphasis' : '' }} {{ !$readOnly && !$newFile && $key === 'client_ref' ? 'autocomplete-wrap' : '' }}" data-field="{{ $key }}">
                             @if($readOnly)
                                 <span class="tm-label">{{ $fileField['label'] }}</span>
-                                <p @if($key === 'client_ref') title="{{ $value }}" @endif class="tm-value {{ !filled($value) ? 'tm-empty-value' : '' }}">{{ filled($value) ? $value : '—' }}</p>
+                                <p @if($key === 'client_ref' || $fileField['type'] === 'country') title="{{ $value }}" @endif class="tm-value {{ !filled($value) ? 'tm-empty-value' : '' }}">{{ filled($value) ? $value : '—' }}</p>
                             @else
                                 <label class="tm-label" for="{{ $fileField['id'] }}">{{ $fileField['label'] }}</label>
                                 <div class="tm-control">
                                     @if(in_array($fileField['type'], ['country', 'status', 'origin'], true))
-                                        <select id="{{ $fileField['id'] }}" name="{{ $key }}" class="form-control tm-select {{ $fileField['type'] === 'country' ? 'tm-country-select' : '' }}">
+                                        <select id="{{ $fileField['id'] }}" name="{{ $key }}" @if($fileField['type'] === 'country') title="{{ \App\Support\CountryCatalog::label($value, true) }}" @endif class="form-control tm-select {{ $fileField['type'] === 'country' ? 'tm-country-select' : '' }}">
                                             @if($fileField['type'] === 'country')
                                                 @include('trademark._country-options', ['currentCountry' => $value])
                                             @elseif($fileField['type'] === 'status')
@@ -39,8 +39,9 @@
                                             @endif
                                         </select>
                                     @else
-                                        <input id="{{ $fileField['id'] }}" name="{{ $key }}" class="form-control tm-input {{ $fileField['type'] === 'date' ? 'date-mask' : '' }}" type="{{ $fileField['type'] === 'date' ? 'date' : 'text' }}" value="{{ $value }}" @if($fileField['limit']) maxlength="{{ $fileField['limit'] }}" @endif @if(in_array($key, ['our_ref', 'application_no', 'registration_no'], true)) inputmode="numeric" pattern="[1-9][0-9]{0,{{ $fileField['limit'] - 1 }}}" @endif @if($key === 'client_ref') autocomplete="off" @endif>
+                                        <input id="{{ $fileField['id'] }}" name="{{ $key }}" class="form-control tm-input {{ $fileField['type'] === 'date' ? 'date-mask' : '' }}" type="{{ $fileField['type'] === 'date' ? 'date' : 'text' }}" value="{{ $value }}" @if($fileField['limit']) maxlength="{{ $fileField['limit'] }}" @endif @if(in_array($key, ['our_ref', 'application_no', 'registration_no'], true)) inputmode="numeric" pattern="[1-9][0-9]{0,{{ $fileField['limit'] - 1 }}}" @endif @if($key === 'client_ref') autocomplete="off" data-original-reference="{{ $newFile ? '' : $trademark->client_ref }}" @endif>
                                     @endif
+                                    @error($key)<div class="invalid-feedback d-block" role="alert">{{ $message }}</div>@enderror
                                     @if(!$newFile && $key === 'client_ref')
                                         <div id="client_ref_suggestions" class="autocomplete-box d-none"></div>
                                     @endif

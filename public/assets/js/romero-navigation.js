@@ -40,7 +40,7 @@
         if (event.defaultPrevented) return;
         if (event.target === editForm) {
             if (editForm.checkValidity()) leaving = true;
-        } else if (!event.target.matches('[data-quick-search]')) {
+        } else if (!event.target.matches('[data-quick-search], [data-global-search], #trademark-search-form')) {
             if (!confirmLeave()) { event.preventDefault(); event.stopImmediatePropagation(); }
             else leaving = true;
         }
@@ -110,54 +110,50 @@
     const ourRef = document.getElementById('our_ref');
     ourRef?.addEventListener('input', () => document.querySelectorAll('[data-breadcrumb-reference]').forEach(part => { part.textContent = 'File ' + (ourRef.value || '—'); }));
 
-    const search = document.querySelector('[data-quick-search]');
+    document.querySelectorAll('select.tm-country-select').forEach(select => {
+        const updateTitle = () => { select.title = select.selectedOptions[0]?.textContent.trim() || ''; };
+        select.addEventListener('change', updateTitle); updateTitle();
+    });
+
+    const search = document.querySelector('[data-global-search]');
     const dialog = document.querySelector('.legal-search-results');
     if (!search || !dialog) return;
     const input = search.querySelector('input');
     const status = search.querySelector('[role="status"]');
-    const toggle = search.querySelector('[data-quick-toggle]');
-    const closeSearch = search.querySelector('[data-quick-close]');
+    const placeholder = input.placeholder;
     let request;
-    function message(text) { status.textContent = text; status.hidden = !text; }
-    function setSearchOpen(open) {
-        search.classList.toggle('is-expanded', open);
-        input.hidden = !open;
-        closeSearch.hidden = !open;
-        toggle.setAttribute('aria-expanded', String(open));
-        toggle.setAttribute('aria-label', open ? 'Quick Search' : 'Open Quick Search');
-        if (open) input.focus();
-        else { request?.abort(); message(''); toggle.focus(); }
+    function message(text) {
+        status.textContent = text; status.hidden = !text;
+        search.classList.toggle('has-message', !!text);
     }
-    toggle.addEventListener('click', () => {
-        if (search.classList.contains('is-expanded')) search.requestSubmit();
-        else setSearchOpen(true);
+    window.RomeroGlobalStatus = message;
+    search.querySelector('[data-global-clear]').addEventListener('click', () => {
+        request?.abort(); input.value = ''; input.placeholder = placeholder; message('');
+        window.RomeroSearch?.clearQuery(); input.focus();
     });
-    closeSearch.addEventListener('click', () => setSearchOpen(false));
-    search.addEventListener('keydown', event => {
-        if (event.key === 'Escape') { event.preventDefault(); setSearchOpen(false); }
-    });
-    input.addEventListener('input', () => { request?.abort(); message(''); });
+    input.addEventListener('input', () => { request?.abort(); window.RomeroSearch?.cancel(); message(''); });
     dialog.querySelector('[data-close-search]').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
     search.addEventListener('submit', async event => {
         event.preventDefault();
         const number = input.value.trim();
-        if (!/^[0-9]+$/.test(number)) { message('Enter a number using digits only.'); return; }
+        if (!number) { input.focus(); return; }
+        if (window.RomeroSearch) { window.RomeroSearch.search(number); return; }
         request?.abort();
         request = new AbortController();
         const current = request;
         message('Searching…');
         try {
             const url = new URL(search.action);
-            url.searchParams.set('number', number);
+            url.searchParams.set('q', number);
             const response = await fetch(url, { signal: current.signal, headers: { Accept: 'application/json' } });
             if (!response.ok) throw new Error('Search failed');
             const data = await response.json();
             if (current !== request || current.signal.aborted) return;
             message('');
-            if (!data.matches.length) { message('No matching records found'); return; }
-            if (data.matches.length === 1) { navigate(data.matches[0].url); return; }
-            dialog.querySelector('[data-result-count]').textContent = data.matches.length + ' exact matches for “' + number + '”';
+            if (!data.matches.length) { input.value = ''; message('No matching records found.'); return; }
+            if (data.matches.length === 1) { if (navigate(data.matches[0].url)) input.value = ''; return; }
+            dialog.querySelector('[data-result-count]').textContent = data.matches.length + ' matches for “' + number + '”';
             const list = dialog.querySelector('[data-result-list]');
             list.replaceChildren();
             data.matches.forEach(record => {
@@ -170,6 +166,7 @@
                 card.append(title, tags, detail, open); list.append(card);
             });
             dialog.showModal();
+            input.value = '';
         } catch (error) { if (error.name !== 'AbortError') message('Unable to search. Please try again.'); }
     });
 })();

@@ -1,9 +1,9 @@
-<div class="card tm-results-panel">
+<div class="card tm-results-panel" data-results-total="{{ isset($trademarks) ? $trademarks->total() : 0 }}">
     <div class="card-header pb-0">
         <div class="d-lg-flex">
             <div>
                 <h5 class="mb-0">{{ __('messages.all_trademark') }}: {{ isset($trademarks) ? $trademarks->total() : 0 }}</h5>
-                <p class="text-sm mb-0"></p>
+                <p class="text-sm mb-0" data-results-query></p>
             </div>
 
             <div class="ms-auto my-auto mt-lg-0 mt-4">

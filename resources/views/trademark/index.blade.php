@@ -224,14 +224,6 @@
 @section('content')
 
 <div class="tm-index-page tm-search-page">
-  <div class="container-fluid">
-      <div class="tm-index-actions">
-          <a href="{{ route('create.trademarks') }}" class="btn btn-sm tm-primary-action">
-              {{ __('messages.new_trademark') }}
-          </a>
-      </div>
-  </div>
-
   @include('filtros')
 
 <div class="container-fluid py-0">
@@ -249,6 +241,7 @@
 
 @section('js_custom')
 <script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
+<script src="{{ asset('assets/js/trademark-date-ranges.js') }}?v={{ filemtime(public_path('assets/js/trademark-date-ranges.js')) }}"></script>
     <script>
     (function () {
         const trademarkForm = document.getElementById('trademark-search-form');
@@ -259,7 +252,7 @@
         function updateAdvancedCount() {
             if (!advancedPanel || !advancedCount) return;
             const count = Array.from(advancedPanel.querySelectorAll('input[name], select[name]'))
-                .filter(field => field.value.trim() !== '').length;
+                .filter(field => field.value.trim() !== '' && !(field.name === 'status' && field.value === 'Live')).length;
             advancedCount.textContent = count ? ` (${count})` : '';
             document.getElementById('tm-advanced-toggle').classList.toggle('has-active-filters', count > 0);
         }
@@ -269,8 +262,14 @@
         }
         updateAdvancedCount();
 
-        async function loadTrademarkResults(url, data = null) {
+        let lastQuery = @json((string) request('q', ''));
+        let activeSearchRequest;
+        let pendingGlobalSearch = false;
+        async function loadTrademarkResults(url, data = null, directMatch = false) {
             if (!trademarkResults) return;
+            activeSearchRequest?.abort();
+            const controller = new AbortController();
+            activeSearchRequest = controller;
 
             const submitButton = trademarkForm ? trademarkForm.querySelector('[type="submit"]') : null;
             if (submitButton) {
@@ -279,10 +278,12 @@
 
             trademarkResults.style.opacity = '0.55';
             searchError.hidden = true;
+            window.RomeroGlobalStatus?.('Searching…');
 
             try {
                 const requestUrl = data ? `${url}?${data.toString()}` : url;
                 const response = await fetch(requestUrl, {
+                    signal: controller.signal,
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
@@ -292,17 +293,33 @@
                     const data = await response.json();
                     searchError.textContent = Object.values(data.errors).flat().join(' ');
                     searchError.hidden = false;
+                    window.RomeroGlobalStatus?.('');
                     return;
                 }
                 if (!response.ok) {
                     throw new Error('Search request failed.');
                 }
 
-                trademarkResults.innerHTML = await response.text();
+                const html = await response.text();
+                if (activeSearchRequest !== controller || controller.signal.aborted) return;
+                trademarkResults.innerHTML = html;
+                const summary = trademarkResults.querySelector('[data-results-query]');
+                if (summary) summary.textContent = lastQuery ? `Results for “${lastQuery}”` : '';
+                const globalInput = document.querySelector('[data-global-search] input[name="q"]');
+                if (globalInput) globalInput.value = '';
+                window.RomeroGlobalStatus?.(trademarkResults.querySelector('[data-results-total]')?.dataset.resultsTotal === '0' ? 'No matching records found.' : '');
+                if (directMatch && trademarkResults.querySelector('[data-results-total]')?.dataset.resultsTotal === '1') {
+                    const recordLink = trademarkResults.querySelector('a[data-bs-original-title="View trademark"]');
+                    if (recordLink) window.RomeroNavigation?.navigate(recordLink.href);
+                }
+                return true;
             } catch (error) {
+                if (error.name === 'AbortError') return;
+                window.RomeroGlobalStatus?.('');
                 searchError.textContent = 'Unable to search. Please try again.';
                 searchError.hidden = false;
             } finally {
+                if (activeSearchRequest !== controller) return;
                 trademarkResults.style.opacity = '1';
 
                 if (submitButton) {
@@ -314,9 +331,26 @@
         if (trademarkForm) {
             trademarkForm.addEventListener('submit', function (event) {
                 event.preventDefault();
-                loadTrademarkResults(trademarkForm.action, new URLSearchParams(new FormData(trademarkForm)));
+                const data = new URLSearchParams(new FormData(trademarkForm));
+                const typed = document.querySelector('[data-global-search] input[name="q"]')?.value.trim();
+                if (typed) lastQuery = typed;
+                data.set('q', lastQuery);
+                const directMatch = pendingGlobalSearch;
+                pendingGlobalSearch = false;
+                loadTrademarkResults(trademarkForm.action, data, directMatch);
             });
         }
+
+        window.RomeroSearch = {
+            search(query) { lastQuery = query; pendingGlobalSearch = true; trademarkForm.requestSubmit(); pendingGlobalSearch = false; },
+            clearQuery() { lastQuery = ''; activeSearchRequest?.abort(); },
+            cancel() { activeSearchRequest?.abort(); trademarkResults.style.opacity = '1'; }
+        };
+        trademarkForm.addEventListener('keydown', event => {
+            if (event.key === 'Enter' && !event.target.closest('button') && !event.isComposing) {
+                event.preventDefault(); trademarkForm.requestSubmit();
+            }
+        });
 
         if (trademarkResults) {
             trademarkResults.addEventListener('click', function (event) {

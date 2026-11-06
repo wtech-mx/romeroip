@@ -10,7 +10,7 @@ final class SpecificFiles
         $ranges = [];
         foreach (explode(',', $text) as $part) {
             if (!preg_match('/^\s*([0-9]{1,10})\s*(?:-\s*([0-9]{1,10})\s*)?$/D', $part, $match)) {
-                throw new \InvalidArgumentException('Use file numbers separated by commas or ranges, for example 1002, 1005-1008.');
+                throw new \InvalidArgumentException('Specific Files must use numbers and ranges, e.g. 1002, 1005-1008.');
             }
             $from = (int) $match[1];
             $to = isset($match[2]) ? (int) $match[2] : $from;

@@ -6,7 +6,7 @@
     $initials = collect(preg_split('/\s+/u', trim($signedUser->name)))->take(2)->map(fn($part) => mb_strtoupper(mb_substr($part, 0, 1)))->implode('');
     $profilePhoto = $signedUser->getAttribute('profile_photo_path') ? asset($signedUser->profile_photo_path) : ($signedUser->getAttribute('profile_photo_url') ?: $signedUser->getAttribute('avatar_url'));
 @endphp
-<nav aria-label="Main navigation" class="legal-navbar legal-topbar {{ !$isOpenFile ? 'legal-topbar-no-search' : '' }}" id="navbarBlur">
+<nav aria-label="Main navigation" class="legal-navbar legal-topbar legal-topbar-global" id="navbarBlur">
     <div class="legal-topbar-left">
         <button type="button" class="legal-menu-toggle" id="legalMobileSidebarToggle" data-sidebar-toggle aria-label="Toggle sidebar" aria-controls="sidenav-main" aria-expanded="true"><i class="bi bi-list" aria-hidden="true"></i></button>
         <nav aria-label="Breadcrumb"><ol class="legal-breadcrumb">
@@ -17,14 +17,34 @@
             @elseif(Route::is('create.trademarks'))<li aria-current="page">New Trademark</li>@endif
         </ol></nav>
     </div>
-    @if($isOpenFile)
-    <form class="legal-quick-search" data-quick-search action="{{ route('trademarks.quick-search') }}" method="GET" role="search" novalidate>
-        <button type="button" data-quick-toggle aria-label="Open Quick Search" aria-expanded="false" aria-controls="quick-search-number"><i class="bi bi-search" aria-hidden="true"></i></button>
-        <input id="quick-search-number" name="number" aria-label="Quick Search" placeholder="Search by File, Application or Registration Number..." hidden inputmode="numeric" autocomplete="off" required>
-        <button type="button" data-quick-close aria-label="Close Quick Search" hidden><i class="bi bi-x-lg" aria-hidden="true"></i></button>
-        <p class="legal-search-status" role="status" aria-live="polite" hidden></p>
+    <div class="legal-header-tools">
+    <form class="legal-global-search" data-global-search action="{{ route('trademarks.global-search') }}" method="GET" role="search" novalidate>
+        <button type="submit" aria-label="Global Search"><i class="bi bi-search" aria-hidden="true"></i></button>
+        <input id="global-search-query" name="q" aria-label="Global Search" placeholder="Trademark, Reference, Number, Owner or Client..." value="{{ Route::is('index.trademarks', 'advance_search') ? request('q') : '' }}" autocomplete="off" required>
+        <button type="button" data-global-clear aria-label="Clear search"><i class="bi bi-x" aria-hidden="true"></i></button>
+        <span class="legal-global-status" role="status" aria-live="polite" hidden></span>
     </form>
-    @endif
+    <div class="dropdown legal-new">
+        <button class="legal-new-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">+ New <span class="legal-chevron" aria-hidden="true"></span></button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{{ route('create.trademarks') }}">New Trademark</a></li>
+            <li><a class="dropdown-item" href="{{ route('create.holder') }}">New Owner</a></li>
+            <li><a class="dropdown-item" href="{{ route('create.clients') }}">New Client</a></li>
+            <li><a class="dropdown-item" href="{{ route('tasks.create') }}">New Task</a></li>
+            <li><a class="dropdown-item" href="{{ route('events.create') }}">New Event</a></li>
+        </ul>
+    </div>
+    <div class="dropdown">
+        <button class="legal-header-icon" type="button" aria-label="Notifications" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-bell" aria-hidden="true"></i></button>
+        <div class="dropdown-menu dropdown-menu-end p-3"><p class="mb-0 text-sm">No notifications.</p></div>
+    </div>
+    <div class="dropdown legal-language">
+        <button class="legal-language-button" type="button" aria-label="Language" data-bs-toggle="dropdown" aria-expanded="false">{{ strtoupper(session('locale', 'en')) }} <span class="legal-chevron" aria-hidden="true"></span></button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{{ route('changeLang', ['lang' => 'en']) }}" lang="en">EN</a></li>
+            <li><a class="dropdown-item" href="{{ route('changeLang', ['lang' => 'es']) }}" lang="es">ES</a></li>
+        </ul>
+    </div>
     <div class="dropdown legal-profile">
         <button class="legal-profile-button" type="button" id="legalProfileButton" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ $signedUser->name }}" title="{{ $signedUser->name }}">
             @if($profilePhoto)<img class="legal-profile-avatar" src="{{ $profilePhoto }}" alt="">@else<span class="legal-profile-avatar" aria-hidden="true">{{ $initials }}</span>@endif
@@ -35,6 +55,7 @@
             <li><a class="dropdown-item" href="{{ route('account.settings') }}">Account Settings</a></li>
             <li><form id="logout-form" method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item">Sign Out</button></form></li>
         </ul>
+    </div>
     </div>
 </nav>
 <dialog class="legal-search-results" aria-labelledby="quick-search-results-title">

@@ -85,7 +85,7 @@ class TrademarkFileTest extends TestCase
         $this->assertSame(1, $doc->query('//*[@data-edit-current-section]')->length);
         $this->assertSame(0, $doc->query('//*[contains(@class,"legal-sidebar-profile")]')->length);
         $this->get(route('index.trademarks'))->assertOk()->assertDontSee('data-quick-search', false);
-        $this->get(route('edit.trademarks', $record->id))->assertOk()->assertSee('data-quick-search', false);
+        $this->get(route('edit.trademarks', $record->id))->assertOk()->assertSee('data-global-search', false);
         $this->assertDatabaseHas('trademark', ['id' => $record->id, 'country' => 'MEXICO', 'country_office' => 'OA']);
     }
 
@@ -208,7 +208,8 @@ class TrademarkFileTest extends TestCase
         $response->assertSee('Trademark, Reference, Number, Owner or Client...');
         $response->assertSee('Legacy Territory')->assertSee('Afghanistan');
         $this->assertSame(4, $doc->query('//*[contains(@class,"tm-primary-filters")]//select')->length);
-        $this->assertSame(11, $doc->query('//*[@id="advancedSearch"]//input')->length);
+        $this->assertSame(4, $doc->query('//*[@data-range-display]')->length);
+        $this->assertSame(0, $doc->query('//form[@id="trademark-search-form"]//input[@name="q"] | //input[@name="from_refs"] | //input[@name="to_refs"]')->length);
     }
 
     public function test_create_and_update_return_to_the_saved_file(): void
@@ -548,7 +549,8 @@ class TrademarkFileTest extends TestCase
     public function test_long_references_three_d_mark_and_sections_navigation(): void
     {
         $reference = str_repeat('CLIENT-123/ABC. ', 100) . '[END]';
-        $this->post(route('store.trademarks'), ['trademark' => 'Navigation Test', 'our_ref' => '13545', 'client_ref' => $reference, 'type_mark' => 'Three-Dimensional Mark'])
+        Trademarks::create(['trademark' => 'Navigation Test', 'our_ref' => '13545', 'client_ref' => $reference, 'type_mark' => 'Three-Dimensional Mark']);
+        $this->patch(route('update.trademarks', 1), ['client_ref' => $reference])
             ->assertRedirect(route('show.trademarks', 1))->assertSessionHasNoErrors();
         $this->assertDatabaseHas('trademark', ['id' => 1, 'client_ref' => $reference]);
         foreach (['edit.trademarks', 'show.trademarks'] as $route) {
@@ -580,6 +582,49 @@ class TrademarkFileTest extends TestCase
         $this->assertDatabaseHas('users', ['id' => 1, 'name' => 'Updated Name', 'email' => 'updated@example.test']);
         $this->assertDatabaseHas('users', ['id' => 2, 'name' => 'Other User', 'email' => 'second@example.test']);
         $this->get(route('account.profile'))->assertOk()->assertSee('Updated Name');
+    }
+
+    public function test_client_reference_accepts_thirty_characters_and_explains_new_errors(): void
+    {
+        $reference = str_repeat('A', 30);
+        $this->post(route('store.trademarks'), ['trademark' => 'Reference Test', 'client_ref' => $reference])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('trademark', ['client_ref' => $reference]);
+        $this->patch(route('update.trademarks', 1), ['client_ref' => str_repeat('B', 31)])->assertSessionHasErrors('client_ref');
+        $this->assertDatabaseHas('trademark', ['id' => 1, 'client_ref' => $reference]);
+        $this->patch(route('update.trademarks', 1), ['client_ref' => 'Unsupported@'])->assertSessionHasErrors('client_ref');
+    }
+
+    public function test_global_search_matches_names_references_and_exact_numbers(): void
+    {
+        $owner = DB::table('holder')->insertGetId(['company_name' => 'Global Owner']);
+        $client = DB::table('clients')->insertGetId(['company_name' => 'Global Client']);
+        $record = new Trademarks();
+        $record->forceFill(['trademark' => 'Global Mark', 'id_holder' => $owner, 'id_client' => $client,
+            'our_ref' => '13811', 'application_no' => '13811', 'registration_no' => '999', 'client_ref' => 'ABC-Ref'])->save();
+        foreach (['Global Mark', 'Global Owner', 'Global Client', 'ABC-Ref', '13811', '999'] as $term) {
+            $this->getJson(route('trademarks.global-search', ['q' => $term]))->assertOk()->assertJsonCount(1, 'matches')->assertJsonPath('matches.0.id', $record->id);
+        }
+        $this->getJson(route('trademarks.global-search', ['q' => '1381']))->assertOk()->assertJsonCount(0, 'matches');
+        $this->getJson(route('trademarks.global-search', ['q' => 'No Such Mark']))->assertOk()->assertJsonCount(0, 'matches');
+        $this->getJson(route('trademarks.global-search', ['q' => '']))->assertUnprocessable();
+        $response = $this->get(route('index.trademarks'))->assertOk();
+        $doc = $this->document($response->getContent());
+        $this->assertSame(1, $doc->query('//*[@data-global-search]')->length);
+        $this->assertSame(5, $doc->query('//*[contains(@class,"legal-new")]//li/a')->length);
+        $this->assertSame(0, $doc->query('//form[@id="trademark-search-form"]//button[@type="submit"]')->length);
+    }
+
+    public function test_new_task_and_event_forms_save_only_valid_user_owned_records(): void
+    {
+        $migration = require database_path('migrations/2026_11_06_000001_create_crm_activities.php');
+        $migration->up();
+        $this->get(route('tasks.create'))->assertOk()->assertSee('New Task');
+        $this->get(route('events.create'))->assertOk()->assertSee('New Event');
+        $this->post(route('tasks.store'), ['title' => 'Review file', 'created_by' => 99])->assertRedirect(route('tasks.create'));
+        $this->assertDatabaseHas('crm_activities', ['kind' => 'task', 'title' => 'Review file', 'created_by' => 1]);
+        $this->post(route('events.store'), ['title' => 'Meeting', 'starts_at' => '2026-11-06T10:00', 'ends_at' => '2026-11-06T11:00'])->assertRedirect(route('events.create'));
+        $this->post(route('events.store'), ['title' => 'Invalid Meeting', 'starts_at' => '2026-11-06T11:00', 'ends_at' => '2026-11-06T10:00'])->assertSessionHasErrors('ends_at');
+        $this->assertDatabaseCount('crm_activities', 2);
     }
 
     public function test_quick_search_requires_an_authenticated_session(): void

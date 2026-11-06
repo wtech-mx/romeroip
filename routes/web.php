@@ -37,6 +37,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/my-profile/photo', [App\Http\Controllers\AccountController::class, 'photo'])->name('account.photo');
     Route::delete('/my-profile/photo', [App\Http\Controllers\AccountController::class, 'removePhoto'])->name('account.photo.remove');
     Route::get('/trademarks/quick-search', [App\Http\Controllers\TrademarksController::class, 'quickSearch'])->name('trademarks.quick-search');
+    Route::get('/trademarks/global-search', [App\Http\Controllers\TrademarksController::class, 'globalSearch'])->name('trademarks.global-search');
+    Route::get('/tasks/create', [App\Http\Controllers\ActivityController::class, 'task'])->name('tasks.create');
+    Route::post('/tasks', [App\Http\Controllers\ActivityController::class, 'storeTask'])->name('tasks.store');
+    Route::get('/events/create', [App\Http\Controllers\ActivityController::class, 'event'])->name('events.create');
+    Route::post('/events', [App\Http\Controllers\ActivityController::class, 'storeEvent'])->name('events.store');
     Route::resource('roles', RoleController::class);
     Route::resource('permisos', PermisosController::class);
     Route::resource('users', UserController::class);

@@ -549,10 +549,15 @@ $(document).ready(function() {
             errors.push('O/Ref.');
         }
 
-        if (clientRefValue && !/^[\p{L}\p{N} .\/()\[\]-]{1,20}$/u.test(clientRefValue)) {
-            markInvalid(clientRef, 'C/Ref. allows letters, numbers, spaces, - . / ( ) [ ], up to 20 characters.');
-            errors.push('C/Ref.');
+        const unchanged = clientRefValue === String(clientRef?.dataset.originalReference || '').trim();
+        if (!unchanged && clientRefValue && !/^[\p{L}\p{N} .\/()\[\]-]+$/u.test(clientRefValue)) {
+            markInvalid(clientRef, 'Client Reference allows letters, numbers, spaces and - . / ( ) [ ].');
+            errors.push('Client Reference contains an unsupported character.');
+        } else if (!unchanged && [...clientRefValue].length > 30) {
+            markInvalid(clientRef, 'Client Reference must contain no more than 30 characters.');
+            errors.push('Client Reference exceeds 30 characters.');
         }
+
     }
 
     function validateStructuralNumberFields(errors) {
@@ -581,9 +586,6 @@ $(document).ready(function() {
         this.value = this.value.replace(/\D/g, '').slice(0, 5);
     });
 
-    document.getElementById('client_ref')?.addEventListener('input', function () {
-        this.value = this.value.replace(/[^\p{L}\p{N} .\/()\[\]-]/gu, '');
-    });
 
     form.addEventListener('submit', function (e) {
         let errors = [];
