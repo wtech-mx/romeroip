@@ -7,9 +7,9 @@
     <div class="card tm-search-panel">
         <form id="trademark-search-form" action="{{ route('advance_search') }}" method="GET" novalidate>
             <div class="card-header tm-search-heading">
-                <div><h5>Search</h5><p class="text-sm mb-0">Use advanced search to apply multiple filters and find specific trademark records.</p></div>
+                <div><h5>Search</h5><p class="text-sm mb-0">Use filters to find specific trademark records.</p></div>
                 <div class="tm-search-actions">
-                    <button class="btn btn-sm mb-0" type="button" id="tm-advanced-toggle" data-bs-toggle="collapse" data-bs-target="#advancedSearch" aria-expanded="false" aria-controls="advancedSearch">Advanced<span id="tm-advanced-count"></span><i class="bi bi-chevron-up tm-advanced-chevron" aria-hidden="true"></i></button>
+                    <button class="btn btn-sm mb-0" type="button" id="tm-advanced-toggle" data-bs-toggle="collapse" data-bs-target="#advancedSearch" aria-expanded="false" aria-controls="advancedSearch">Filters</button>
                 </div>
             </div>
             <div class="collapse" id="advancedSearch">

@@ -1,20 +1,26 @@
-<div class="card tm-results-panel" data-results-total="{{ isset($trademarks) ? $trademarks->total() : 0 }}">
+<div class="card tm-results-panel" data-results-total="{{ isset($trademarks) ? $trademarks->total() : 0 }}"
+    data-results-per-page="{{ isset($trademarks) ? $trademarks->perPage() : ($perPage ?? 50) }}"
+    data-results-url="{{ isset($trademarks) ? $trademarks->url($trademarks->currentPage()) : route('advance_search') }}"
+    data-results-query="{{ request('q', '') }}">
     <div class="card-header pb-0">
         <div class="d-lg-flex">
             <div>
-                <h5 class="mb-0">{{ __('messages.all_trademark') }}: {{ isset($trademarks) ? $trademarks->total() : 0 }}</h5>
-                <p class="text-sm mb-0" data-results-query></p>
+                <h5 class="mb-0">Results</h5>
+                <p class="text-sm mb-0">Use global search or advanced filters to find specific trademark records.</p>
             </div>
 
             <div class="ms-auto my-auto mt-lg-0 mt-4">
                 <div class="ms-auto my-auto">
-                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">{{ __('messages.export') }}</button>
+                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" data-type="csv" data-results-export type="button" name="button" @disabled(!isset($trademarks) || $trademarks->isEmpty())>{{ __('messages.export') }}</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="card-body px-0 pb-0">
+        @if(isset($trademarks) && $trademarks->total() > 0)
+            @include('trademark._results-pagination', ['position' => 'top'])
+        @endif
         <div class="table-responsive tm-table-wrap">
             <table class="table table-flush tm-results-table" id="products-list">
                 <thead class="thead-light">
@@ -72,15 +78,15 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="15" class="text-center py-4">
-                                    No records were found with the selected filters.
+                                <td colspan="15" class="tm-empty-results py-4">
+                                    No results to display.
                                 </td>
                             </tr>
                         @endforelse
                     @else
                         <tr>
-                            <td colspan="15" class="text-center py-4">
-                                Use the filters to search trademarks.
+                            <td colspan="15" class="tm-empty-results py-4">
+                                No results to display.
                             </td>
                         </tr>
                     @endif
@@ -88,10 +94,8 @@
             </table>
         </div>
 
-        @if(isset($trademarks) && $trademarks->hasPages())
-            <div class="px-4 py-3">
-                {{ $trademarks->links() }}
-            </div>
+        @if(isset($trademarks) && $trademarks->total() > 0)
+            @include('trademark._results-pagination', ['position' => 'bottom'])
         @endif
     </div>
 </div>

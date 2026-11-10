@@ -205,7 +205,7 @@ class TrademarkFileTest extends TestCase
         foreach (['our_ref', 'client_ref', 'trademark', 'application_no', 'registration_no', 'int_registration_no', 'opposition_no', 'litigation_no', 'id_holder', 'id_client'] as $name) {
             $this->assertSame(0, $doc->query('//form[@id="trademark-search-form"]//*[@name="'.$name.'"]')->length);
         }
-        $response->assertSee('Trademark, Reference, Number, Owner or Client...');
+        $response->assertSee('Search by trademark, reference, number, owner or client...');
         $response->assertSee('Legacy Territory')->assertSee('Afghanistan');
         $this->assertSame(4, $doc->query('//*[contains(@class,"tm-primary-filters")]//select')->length);
         $this->assertSame(4, $doc->query('//*[@data-range-display]')->length);
@@ -612,6 +612,61 @@ class TrademarkFileTest extends TestCase
         $this->assertSame(1, $doc->query('//*[@data-global-search]')->length);
         $this->assertSame(5, $doc->query('//*[contains(@class,"legal-new")]//li/a')->length);
         $this->assertSame(0, $doc->query('//form[@id="trademark-search-form"]//button[@type="submit"]')->length);
+    }
+
+    public function test_live_results_paginate_on_the_server_with_synchronized_controls(): void
+    {
+        $rows = [];
+        for ($i = 1; $i <= 125; $i++) {
+            $rows[] = ['our_ref' => (string) (10000 + $i), 'trademark' => 'Page Test', 'status' => $i % 2 ? 'Pending' : 'Registered'];
+        }
+        $rows[] = ['our_ref' => '99999', 'trademark' => 'Abandoned record', 'status' => 'Abandoned'];
+        DB::table('trademark')->insert($rows);
+        $response = $this->get(route('advance_search', ['status' => 'Live']))->assertOk();
+        $page = $response->viewData('trademarks');
+        $this->assertSame(125, $page->total());
+        $this->assertSame(50, $page->count());
+        $this->assertSame(50, $page->perPage());
+        $doc = $this->document($response->getContent());
+        $this->assertSame(2, $doc->query('//*[@data-results-pagination]')->length);
+        $this->assertSame(2, $doc->query('//*[@data-results-page-size]/option[@selected and @value="50"]')->length);
+        $this->assertSame(15, $doc->query('//table[@id="products-list"]/thead/tr/th')->length);
+        $this->assertSame('Results', trim($doc->query('//*[contains(@class,"tm-results-panel")]//h5')->item(0)->textContent));
+        $this->assertSame(2, $doc->query('//*[@data-results-page and normalize-space(.)="Last"]')->length);
+        $response = $this->get(route('advance_search', ['status' => 'Live', 'page' => 3]))->assertOk();
+        $lastPage = $response->viewData('trademarks');
+        $this->assertSame(25, $lastPage->count());
+        $this->assertSame(3, $lastPage->currentPage());
+        $this->assertSame(125, $lastPage->total());
+        $doc = $this->document($response->getContent());
+        $this->assertSame(2, $doc->query('//*[@data-results-page and normalize-space(.)="First"]')->length);
+        $clamped = $this->get(route('advance_search', ['status' => 'Live', 'page' => 99]))->assertOk()->viewData('trademarks');
+        $this->assertSame(3, $clamped->currentPage());
+        $response = $this->get(route('advance_search', ['q' => 'NotFound']))->assertOk();
+        $response->assertSee('No results to display.')->assertSee('Use global search or advanced filters to find specific trademark records.');
+        $this->assertSame(0, $this->document($response->getContent())->query('//*[@data-results-pagination]')->length);
+    }
+
+    public function test_page_size_is_validated_and_saved_for_future_requests(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id(); $table->string('name'); $table->unsignedSmallInteger('trademark_results_per_page')->default(50); $table->timestamps();
+        });
+        DB::table('users')->insert(['id' => 1, 'name' => 'UI Review']);
+        $user = $this->app['auth']->user();
+        $user->exists = true;
+        $user->setTable('users');
+        Trademarks::create(['trademark' => 'Preference Test', 'status' => 'Registered']);
+        $this->get(route('advance_search', ['per_page' => 25]))->assertOk();
+        $this->assertDatabaseHas('users', ['id' => 1, 'trademark_results_per_page' => 25]);
+        $user->setRawAttributes((array) DB::table('users')->where('id', 1)->first(), true);
+        $response = $this->get(route('advance_search'))->assertOk();
+        $this->assertSame(25, $response->viewData('trademarks')->perPage());
+        $this->get(route('index.trademarks'))->assertOk()->assertSee('data-results-per-page="25"', false);
+        $this->getJson(route('advance_search', ['per_page' => 10]))->assertUnprocessable()->assertJsonValidationErrors('per_page');
+        $this->assertDatabaseHas('users', ['id' => 1, 'trademark_results_per_page' => 25]);
+        $this->get(route('advance_search', ['per_page' => 100]))->assertOk();
+        $this->assertDatabaseHas('users', ['id' => 1, 'trademark_results_per_page' => 100]);
     }
 
     public function test_new_task_and_event_forms_save_only_valid_user_owned_records(): void

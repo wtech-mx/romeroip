@@ -18,9 +18,9 @@
         </ol></nav>
     </div>
     <div class="legal-header-tools">
-    <form class="legal-global-search" data-global-search action="{{ route('trademarks.global-search') }}" method="GET" role="search" novalidate>
+    <form class="legal-global-search" data-global-search data-live-results="{{ route('advance_search', ['status' => 'Live']) }}" action="{{ route('trademarks.global-search') }}" method="GET" role="search" novalidate>
         <button type="submit" aria-label="Global Search"><i class="bi bi-search" aria-hidden="true"></i></button>
-        <input id="global-search-query" name="q" aria-label="Global Search" placeholder="Trademark, Reference, Number, Owner or Client..." value="{{ Route::is('index.trademarks', 'advance_search') ? request('q') : '' }}" autocomplete="off" required>
+        <input id="global-search-query" name="q" aria-label="Global Search" placeholder="Search by trademark, reference, number, owner or client..." value="{{ Route::is('index.trademarks', 'advance_search') ? request('q') : '' }}" autocomplete="off" required>
         <button type="button" data-global-clear aria-label="Clear search"><i class="bi bi-x" aria-hidden="true"></i></button>
         <span class="legal-global-status" role="status" aria-live="polite" hidden></span>
     </form>

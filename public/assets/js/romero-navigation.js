@@ -94,13 +94,23 @@
             // the upper reading area instead of jumping straight to Notes.
             const readingLine = Math.max(sectionOffset + 2, window.innerHeight * 0.35);
             sections.forEach(section => { if (section.getBoundingClientRect().top <= readingLine) active = section; });
-            // Near the document end a short Notes section must not mask Dates.
+            // The last section may be too short to reach the reading line.
             const last = sections[sections.length - 1];
-            if (last && last.getBoundingClientRect().top <= sectionOffset + 2) active = last;
+            const atEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 3;
+            if (last && atEnd) active = last;
             if (active) activate(active.id);
         }
-        window.addEventListener('scroll', () => { if (!scheduled) { scheduled = true; requestAnimationFrame(updateActive); } }, { passive: true });
-        ['wheel', 'touchmove', 'pointerdown', 'keydown'].forEach(type => window.addEventListener(type, () => { chosenSection = null; }, { passive: true }));
+        function scheduleUpdate() {
+            if (!scheduled) {
+                scheduled = true;
+                requestAnimationFrame(updateActive);
+            }
+        }
+        window.addEventListener('scroll', scheduleUpdate, { passive: true });
+        ['wheel', 'touchmove', 'pointerdown', 'keydown'].forEach(type => window.addEventListener(type, () => {
+            chosenSection = null;
+            scheduleUpdate();
+        }, { passive: true }));
         updateActive();
         const initialSection = decodeURIComponent(location.hash.slice(1));
         if (sections.some(section => section.id === initialSection)) {
@@ -137,7 +147,11 @@
     search.addEventListener('submit', async event => {
         event.preventDefault();
         const number = input.value.trim();
-        if (!number) { input.focus(); return; }
+        if (!number) {
+            if (window.RomeroSearch) window.RomeroSearch.showLive();
+            else navigate(search.dataset.liveResults);
+            return;
+        }
         if (window.RomeroSearch) { window.RomeroSearch.search(number); return; }
         request?.abort();
         request = new AbortController();

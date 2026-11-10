@@ -116,9 +116,12 @@
         const invalid = controls.find(control => !commit(control));
         if (invalid) {
             event.preventDefault(); event.stopImmediatePropagation();
-            document.getElementById('advancedSearch').classList.add('show');
-            document.getElementById('tm-advanced-toggle').setAttribute('aria-expanded', 'true');
-            invalid.display.focus(); invalid.display.reportValidity();
+            const filters = document.getElementById('tm-advanced-toggle');
+            const revealError = () => { invalid.display.focus(); invalid.display.reportValidity(); };
+            if (filters.getAttribute('aria-expanded') === 'false') {
+                document.getElementById('advancedSearch').addEventListener('shown.bs.collapse', revealError, { once: true });
+                filters.click();
+            } else revealError();
         }
     }, true);
 })(typeof window !== 'undefined' ? window : globalThis);

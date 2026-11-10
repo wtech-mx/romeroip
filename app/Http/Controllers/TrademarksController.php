@@ -23,14 +23,24 @@ class TrademarksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function index() {
-        return view('trademark.index');
-     }
+    public function index(Request $request)
+    {
+        $perPage = $this->resultsPerPage($request);
+        return view('trademark.index', compact('perPage'));
+    }
+
+    private function resultsPerPage(Request $request): int
+    {
+        $perPage = (int) $request->user()->getAttribute('trademark_results_per_page');
+        return in_array($perPage, [25, 50, 100], true) ? $perPage : 50;
+    }
 
     public function advance(Request $request)
     {
         try {
             $filters = $request->validate([
+                'per_page' => ['nullable', 'integer', Rule::in([25, 50, 100])],
+                'page' => ['nullable', 'integer', 'min:1'],
                 'specific_files' => ['nullable', 'string', 'max:4000', function ($attribute, $value, $fail) {
                     try { \App\Support\SpecificFiles::parse($value); }
                     catch (\InvalidArgumentException $error) { $fail($error->getMessage()); }
@@ -68,6 +78,12 @@ class TrademarksController extends Controller
                 }
             }
             $referenceNumber = DB::raw(DB::getDriverName() === 'mysql' ? 'CAST(our_ref AS SIGNED)' : 'CAST(our_ref AS INTEGER)');
+            $perPage = (int) ($filters['per_page'] ?? $this->resultsPerPage($request));
+            $user = $request->user();
+            if (isset($filters['per_page']) && $user->exists && $perPage !== $this->resultsPerPage($request)) {
+                $user->setAttribute('trademark_results_per_page', $perPage);
+                $user->save();
+            }
 
             $trademarks = Trademarks::query()
                 ->with([
@@ -213,9 +229,12 @@ class TrademarksController extends Controller
 
                 ->orderByDesc('id');
 
-            $trademarks = $trademarks
-                ->paginate(10)
-                ->appends($request->query());
+            $query = $trademarks;
+            $trademarks = $query->paginate($perPage);
+            if ($trademarks->total() > 0 && $trademarks->currentPage() > $trademarks->lastPage()) {
+                $trademarks = $query->paginate($perPage, ['*'], 'page', $trademarks->lastPage());
+            }
+            $trademarks->appends(array_merge($request->query(), ['per_page' => $perPage]));
 
             if ($request->ajax()) {
                 return view('trademark._results', compact('trademarks'));
