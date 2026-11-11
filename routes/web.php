@@ -32,6 +32,7 @@ Route::get('/lang/change', [HomeController::class, 'change'])->name('changeLang'
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/my-profile', [App\Http\Controllers\AccountController::class, 'show'])->name('account.profile');
+    Route::patch('/account-settings/results', [App\Http\Controllers\AccountController::class, 'results'])->name('account.results');
     Route::get('/account-settings', [App\Http\Controllers\AccountController::class, 'edit'])->name('account.settings');
     Route::patch('/account-settings', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update');
     Route::post('/my-profile/photo', [App\Http\Controllers\AccountController::class, 'photo'])->name('account.photo');

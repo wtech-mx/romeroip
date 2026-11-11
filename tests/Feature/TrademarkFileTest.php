@@ -123,7 +123,7 @@ class TrademarkFileTest extends TestCase
         }
         foreach ([[], ['status' => 'all_except_abandoned'], ['status' => '']] as $filters) {
             $response = $this->get(route('advance_search', $filters + ['country' => 'African Intellectual Property Organization (OAPI)']))->assertOk();
-            $this->assertSame(['Registered', 'Pending'], $response->viewData('trademarks')->pluck('status')->all());
+            $this->assertSame(['Pending', 'Registered'], $response->viewData('trademarks')->pluck('status')->all());
         }
         $response = $this->get(route('advance_search', ['country' => 'Mexico']))->assertOk();
         $this->assertSame(0, $response->viewData('trademarks')->total());
@@ -143,9 +143,9 @@ class TrademarkFileTest extends TestCase
         }
         $filters = ['specific_files' => '1002, 1005-1008, 1006, 8888'];
         $response = $this->get(route('advance_search', $filters))->assertOk();
-        $this->assertSame(['1008', '1006', '1005', '1002'], $response->viewData('trademarks')->pluck('our_ref')->all());
+        $this->assertSame(['1002', '1005', '1006', '1008'], $response->viewData('trademarks')->pluck('our_ref')->all());
         $response = $this->get(route('advance_search', $filters + ['from_refs' => '1005', 'to_refs' => '1006']))->assertOk();
-        $this->assertSame(['1006', '1005'], $response->viewData('trademarks')->pluck('our_ref')->all());
+        $this->assertSame(['1005', '1006'], $response->viewData('trademarks')->pluck('our_ref')->all());
         foreach (['1002,', '1005-1002', '100x', '1002,,1005', '1-2-3', '0', '-1', '99999999999'] as $invalid) {
             $this->getJson(route('advance_search', ['specific_files' => $invalid]))->assertUnprocessable()->assertJsonValidationErrors('specific_files');
         }
@@ -572,7 +572,7 @@ class TrademarkFileTest extends TestCase
 
     public function test_account_settings_only_update_the_authenticated_users_allowed_fields(): void
     {
-        Schema::create('users', function (Blueprint $table) { $table->id(); $table->string('name'); $table->string('email'); $table->timestamps(); });
+        Schema::create('users', function (Blueprint $table) { $table->id(); $table->string('name'); $table->string('email'); $table->string('preferred_locale')->nullable(); $table->timestamps(); });
         DB::table('users')->insert([['id' => 1, 'name' => 'UI Review', 'email' => 'first@example.test'], ['id' => 2, 'name' => 'Other User', 'email' => 'second@example.test']]);
         $this->app['auth']->user()->exists = true;
         $this->app['auth']->user()->setTable('users');
@@ -645,6 +645,65 @@ class TrademarkFileTest extends TestCase
         $response = $this->get(route('advance_search', ['q' => 'NotFound']))->assertOk();
         $response->assertSee('No results to display.')->assertSee('Use global search or advanced filters to find specific trademark records.');
         $this->assertSame(0, $this->document($response->getContent())->query('//*[@data-results-pagination]')->length);
+    }
+
+    public function test_result_sorting_is_typed_and_applies_before_pagination(): void
+    {
+        foreach (['100', '9', '20'] as $i => $ref) {
+            $holder = DB::table('holder')->insertGetId(['company_name' => ['Zulu', 'Alpha', 'Middle'][$i]]);
+            $client = DB::table('clients')->insertGetId(['company_name' => ['Alpha', 'Zulu', 'Middle'][$i]]);
+            $record = new Trademarks();
+            $record->forceFill(['our_ref' => $ref, 'id_holder' => $holder, 'id_client' => $client,
+                'trademark' => ['C', 'A', 'B'][$i], 'application_no' => $ref, 'registration_no' => $ref,
+                'registration_date' => ['2023-01-01', '2021-01-01', '2022-01-01'][$i], 'status' => 'Registered'])->save();
+        }
+        foreach (['our_ref', 'application_no', 'registration_no', 'registration_date', 'trademark', 'owner'] as $sort) {
+            $page = $this->get(route('advance_search', ['sort' => $sort]))->assertOk()->viewData('trademarks');
+            $this->assertSame(['9', '20', '100'], $page->pluck('our_ref')->all(), $sort);
+            $page = $this->get(route('advance_search', ['sort' => $sort, 'direction' => 'desc']))->assertOk()->viewData('trademarks');
+            $this->assertSame(['100', '20', '9'], $page->pluck('our_ref')->all(), $sort);
+        }
+        $page = $this->get(route('advance_search', ['sort' => 'client']))->assertOk()->viewData('trademarks');
+        $this->assertSame(['100', '20', '9'], $page->pluck('our_ref')->all());
+        for ($i = 30; $i < 60; $i++) Trademarks::create(['our_ref' => (string) $i, 'status' => 'Registered']);
+        $page = $this->get(route('advance_search', ['per_page' => 25, 'page' => 2]))->assertOk()->viewData('trademarks');
+        $this->assertSame(['53', '54', '55', '56', '57', '58', '59', '100'], $page->pluck('our_ref')->all());
+        $this->getJson(route('advance_search', ['sort' => 'id; DROP TABLE trademark']))->assertUnprocessable()->assertJsonValidationErrors('sort');
+        $this->getJson(route('advance_search', ['direction' => 'invalid']))->assertUnprocessable()->assertJsonValidationErrors('direction');
+    }
+
+    public function test_results_preferences_are_private_persistent_and_keep_frozen_columns(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id(); $table->string('name'); $table->string('email'); $table->timestamps();
+        });
+        $migration = require database_path('migrations/2026_11_11_000001_add_results_preferences_to_users.php');
+        $migration->up();
+        DB::table('users')->insert([
+            ['id' => 1, 'name' => 'UI Review', 'email' => 'one@example.test'],
+            ['id' => 2, 'name' => 'Other User', 'email' => 'two@example.test'],
+        ]);
+        $user = $this->app['auth']->user(); $user->exists = true; $user->setTable('users');
+        $preferences = ['order' => ['status', 'client', 'our_ref'], 'visible' => ['status'], 'widths' => ['trademark' => 310]];
+        $response = $this->patchJson(route('account.results'), $preferences)->assertOk();
+        $this->assertSame(['select', 'edit', 'our_ref', 'trademark'], array_slice($response->json('order'), 0, 4));
+        $this->assertContains('trademark', $response->json('visible'));
+        $this->assertSame(310, $response->json('widths.trademark'));
+        $stored = User::find(1)->results_columns;
+        $this->assertSame($response->json(), $stored);
+        $this->assertNull(User::find(2)->results_columns);
+        $this->patchJson(route('account.results'), $preferences + ['user_id' => 2])->assertOk();
+        $this->assertNull(User::find(2)->results_columns);
+        $this->get(route('account.settings'))->assertOk()->assertSee('Results preferences');
+        $this->patchJson(route('account.results'), array_replace($preferences, ['widths' => ['trademark' => 900]]))->assertUnprocessable();
+        $this->patch(route('account.update'), ['name' => 'UI Review', 'email' => 'one@example.test', 'locale' => 'es'])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('users', ['id' => 1, 'preferred_locale' => 'es']);
+        $this->get(route('changeLang', ['lang' => 'en']))->assertRedirect();
+        $this->assertDatabaseHas('users', ['id' => 1, 'preferred_locale' => 'en']);
+        $this->app['auth']->user()->setAttribute('preferred_locale', 'es');
+        $this->withSession(['locale' => 'en'])->get(route('index.trademarks'))->assertOk()->assertSee('lang="es"', false);
+        $defaults = \App\Support\ResultsColumns::normalize(null);
+        $this->patchJson(route('account.results'), $defaults)->assertOk()->assertExactJson($defaults);
     }
 
     public function test_page_size_is_validated_and_saved_for_future_requests(): void

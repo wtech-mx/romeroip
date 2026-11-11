@@ -39,6 +39,8 @@ class TrademarksController extends Controller
     {
         try {
             $filters = $request->validate([
+                'sort' => ['nullable', Rule::in(array_slice(array_keys(\App\Support\ResultsColumns::definitions()), 2))],
+                'direction' => ['nullable', Rule::in(['asc', 'desc'])],
                 'per_page' => ['nullable', 'integer', Rule::in([25, 50, 100])],
                 'page' => ['nullable', 'integer', 'min:1'],
                 'specific_files' => ['nullable', 'string', 'max:4000', function ($attribute, $value, $fail) {
@@ -225,9 +227,22 @@ class TrademarksController extends Controller
                     if ($ranges) $query->where(function ($numbers) use ($ranges, $referenceNumber) {
                         foreach ($ranges as [$from, $to]) $numbers->orWhereBetween($referenceNumber, [$from, $to]);
                     });
-                })
+                });
 
-                ->orderByDesc('id');
+            $sort = $filters['sort'] ?? 'our_ref';
+            $direction = $filters['direction'] ?? 'asc';
+            if (in_array($sort, ['owner', 'client'], true)) {
+                $model = $sort === 'owner' ? Holder::class : Clients::class;
+                $foreign = $sort === 'owner' ? 'id_holder' : 'id_client';
+                $table = (new $model)->getTable();
+                $trademarks->orderBy($model::select('company_name')->whereColumn($table.'.id', 'trademark.'.$foreign)->limit(1), $direction);
+            } elseif ((\App\Support\ResultsColumns::definitions()[$sort]['type'] ?? '') === 'number') {
+                $cast = DB::getDriverName() === 'mysql' ? 'DECIMAL(30, 6)' : 'REAL';
+                $trademarks->orderByRaw("CAST(`{$sort}` AS {$cast}) {$direction}")->orderBy($sort, $direction);
+            } else {
+                $trademarks->orderBy($sort, $direction);
+            }
+            $trademarks->orderBy('id');
 
             $query = $trademarks;
             $trademarks = $query->paginate($perPage);

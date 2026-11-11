@@ -46,6 +46,19 @@ class AccountController extends Controller
         return view('account.profile', ['account' => $request->user(), 'editing' => true]);
     }
 
+    public function results(Request $request)
+    {
+        $data = $request->validate([
+            'order' => 'required|array|max:15', 'order.*' => 'required|string|distinct',
+            'visible' => 'present|array|max:15', 'visible.*' => 'required|string|distinct',
+            'widths' => 'required|array|max:15', 'widths.*' => 'integer|min:36|max:800',
+        ]);
+        $preferences = \App\Support\ResultsColumns::normalize($data);
+        $request->user()->setAttribute('results_columns', $preferences);
+        $request->user()->save();
+        return response()->json($preferences);
+    }
+
     public function update(Request $request)
     {
         $data = $request->validate([
@@ -54,6 +67,7 @@ class AccountController extends Controller
             'locale' => ['required', Rule::in(['en', 'es'])],
         ]);
         $request->user()->update(['name' => $data['name'], 'email' => $data['email']]);
+        $request->user()->setAttribute('preferred_locale', $data['locale'])->save();
         $request->session()->put('locale', $data['locale']);
         return redirect()->route('account.settings')->with('account_saved', true);
     }

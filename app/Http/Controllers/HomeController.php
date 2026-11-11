@@ -37,6 +37,7 @@ class HomeController extends Controller
         $request->validate(['lang' => 'required|in:en,es']);
         App::setLocale($request->lang);
         session()->put('locale', $request->lang);
+        $request->user()->setAttribute('preferred_locale', $request->lang)->save();
 
         return redirect()->back();
     }

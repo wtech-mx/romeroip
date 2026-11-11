@@ -29,13 +29,20 @@
             @error('name')<p role="alert">{{ $message }}</p>@enderror
             <label for="account-email">Email</label><input id="account-email" name="email" type="email" class="form-control" value="{{ old('email', $account->email) }}" required maxlength="255">
             @error('email')<p role="alert">{{ $message }}</p>@enderror
-            <label for="account-locale">Language</label><select id="account-locale" name="locale" class="form-control"><option value="en" @selected(old('locale', session('locale', 'en')) === 'en')>English</option><option value="es" @selected(old('locale', session('locale')) === 'es')>Español</option></select>
+            <label for="account-locale">Language</label><select id="account-locale" name="locale" class="form-control"><option value="en" @selected(old('locale', $account->preferred_locale ?: session('locale', 'en')) === 'en')>English</option><option value="es" @selected(old('locale', $account->preferred_locale ?: session('locale')) === 'es')>Español</option></select>
             <button class="btn btn-primary mt-3" type="submit">Save</button>
         </form>
+        <section class="mt-4"><h2 class="h5">Results preferences</h2>
+            @include('trademark._column-preferences')
+        </section>
         @else
         <dl><dt>Name</dt><dd>{{ $account->name }}</dd><dt>Email</dt><dd>{{ $account->email }}</dd></dl>
         <a class="btn" href="{{ route('account.settings') }}">Account Settings</a>
         @endif
     </div>
 </div>
+@endsection
+
+@section('js_custom')
+@if($editing) @include('trademark._column-config') @endif
 @endsection

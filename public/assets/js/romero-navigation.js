@@ -34,7 +34,18 @@
         const destination = new URL(link.href, location.href);
         if (destination.pathname === location.pathname && destination.search === location.search && destination.origin === location.origin) return;
         if (!confirmLeave()) { event.preventDefault(); event.stopImmediatePropagation(); }
-        else leaving = true;
+        else {
+            leaving = true;
+            if (link.hasAttribute('data-edit-current-section')) {
+                const id = decodeURIComponent(destination.hash.slice(1));
+                const sourceId = ({ holder: 'owner', sessions: 'client' })[id] || id;
+                const section = document.getElementById(sourceId);
+                try { sessionStorage.setItem('tm-edit-position', JSON.stringify({ path: destination.pathname, section: id, top: section?.getBoundingClientRect().top, y: window.scrollY })); } catch (error) { /* Navigation still works when storage is disabled. */ }
+                destination.hash = '';
+                event.preventDefault();
+                location.assign(destination.href);
+            }
+        }
     }, true);
     document.addEventListener('submit', event => {
         if (event.defaultPrevented) return;
@@ -112,10 +123,34 @@
             scheduleUpdate();
         }, { passive: true }));
         updateActive();
+        function restoreFilePosition() {
+        let restored = false;
+        try {
+            const saved = JSON.parse(sessionStorage.getItem('tm-edit-position') || 'null');
+            sessionStorage.removeItem('tm-edit-position');
+            if (saved && saved.path === location.pathname) {
+                const section = document.getElementById(saved.section);
+                const y = section && typeof saved.top === 'number' ? window.scrollY + section.getBoundingClientRect().top - saved.top : saved.y;
+                window.scrollTo({ top: y, behavior: 'instant' });
+                activate(saved.section); restored = true;
+            }
+        } catch (error) { /* Fall back to the requested section. */ }
         const initialSection = decodeURIComponent(location.hash.slice(1));
-        if (sections.some(section => section.id === initialSection)) {
-            requestAnimationFrame(() => scrollToSection(initialSection));
+        if (!restored && sections.some(section => section.id === initialSection)) {
+            const section = document.getElementById(initialSection);
+            chosenSection = initialSection; activate(initialSection);
+            window.scrollTo({ top: window.scrollY + section.getBoundingClientRect().top - sectionOffset, behavior: 'instant' });
         }
+        }
+        const restoreWhenReady = () => {
+            Promise.resolve(document.fonts?.ready).then(() => requestAnimationFrame(() => {
+                restoreFilePosition();
+                document.documentElement.style.visibility = '';
+                document.documentElement.style.overflowAnchor = '';
+            }));
+        };
+        if (document.readyState === 'complete') restoreWhenReady();
+        else window.addEventListener('load', restoreWhenReady, { once: true });
     }
     const ourRef = document.getElementById('our_ref');
     ourRef?.addEventListener('input', () => document.querySelectorAll('[data-breadcrumb-reference]').forEach(part => { part.textContent = 'File ' + (ourRef.value || '—'); }));

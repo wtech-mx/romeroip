@@ -3,6 +3,17 @@
 
 <head>
   <meta charset="utf-8" />
+  <script>
+    // Prepare a View-to-Edit scroll restoration before the new form is painted.
+    try {
+      const position = JSON.parse(sessionStorage.getItem('tm-edit-position') || 'null');
+      if (position && position.path === location.pathname) {
+        document.documentElement.style.visibility = 'hidden';
+        document.documentElement.style.overflowAnchor = 'none';
+        window.setTimeout(() => { document.documentElement.style.visibility = ''; }, 3000);
+      }
+    } catch (error) { /* Storage is optional for normal navigation. */ }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('favicon/'. $configuracion->favicon) }}">

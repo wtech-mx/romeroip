@@ -17,8 +17,10 @@ class LanguageManager
      */
     public function handle(Request $request, Closure $next)
     {
-        if (session()->has('locale')) {
-            App::setLocale(session()->get('locale'));
+        $locale = $request->user()?->getAttribute('preferred_locale') ?: session('locale', 'en');
+        if (in_array($locale, ['en', 'es'], true)) {
+            App::setLocale($locale);
+            session()->put('locale', $locale);
         }
 
         return $next($request);

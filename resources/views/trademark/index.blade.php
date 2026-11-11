@@ -240,6 +240,7 @@
 @endsection
 
 @section('js_custom')
+@include('trademark._column-config')
 <script src="{{ asset('assets/js/trademark-dates.js') }}?v={{ filemtime(public_path('assets/js/trademark-dates.js')) }}"></script>
 <script src="{{ asset('assets/js/trademark-date-ranges.js') }}?v={{ filemtime(public_path('assets/js/trademark-date-ranges.js')) }}"></script>
 <script src="{{ asset('assets/js/trademark-search.js') }}?v={{ filemtime(public_path('assets/js/trademark-search.js')) }}"></script>
