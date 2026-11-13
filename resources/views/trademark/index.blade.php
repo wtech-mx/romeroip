@@ -225,6 +225,7 @@
 
 <div class="tm-index-page tm-search-page">
   @include('filtros')
+@include('trademark._export-template-dialog')
 
 <div class="container-fluid py-0">
       <div class="row">

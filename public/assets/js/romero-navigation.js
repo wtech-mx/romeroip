@@ -36,11 +36,12 @@
         if (!confirmLeave()) { event.preventDefault(); event.stopImmediatePropagation(); }
         else {
             leaving = true;
-            if (link.hasAttribute('data-edit-current-section')) {
-                const id = decodeURIComponent(destination.hash.slice(1));
+            if (link.matches('[data-edit-current-section], [data-enter-edit]')) {
+                const activeSection = document.querySelector('[data-section-link].is-active')?.dataset.sectionLink || 'references';
+                const id = decodeURIComponent(destination.hash.slice(1)) || ({ owner: 'holder', client: 'sessions' })[activeSection] || activeSection;
                 const sourceId = ({ holder: 'owner', sessions: 'client' })[id] || id;
                 const section = document.getElementById(sourceId);
-                try { sessionStorage.setItem('tm-edit-position', JSON.stringify({ path: destination.pathname, section: id, top: section?.getBoundingClientRect().top, y: window.scrollY })); } catch (error) { /* Navigation still works when storage is disabled. */ }
+                try { sessionStorage.setItem('tm-edit-position', JSON.stringify({ path: destination.pathname, section: id, top: window.scrollY < 10 ? null : section?.getBoundingClientRect().top, y: window.scrollY })); } catch (error) { /* Navigation still works when storage is disabled. */ }
                 destination.hash = '';
                 event.preventDefault();
                 location.assign(destination.href);
@@ -145,12 +146,11 @@
         const restoreWhenReady = () => {
             Promise.resolve(document.fonts?.ready).then(() => requestAnimationFrame(() => {
                 restoreFilePosition();
-                document.documentElement.style.visibility = '';
-                document.documentElement.style.overflowAnchor = '';
+
             }));
         };
-        if (document.readyState === 'complete') restoreWhenReady();
-        else window.addEventListener('load', restoreWhenReady, { once: true });
+        if (document.readyState !== 'loading') restoreWhenReady();
+        else document.addEventListener('DOMContentLoaded', restoreWhenReady, { once: true });
     }
     const ourRef = document.getElementById('our_ref');
     ourRef?.addEventListener('input', () => document.querySelectorAll('[data-breadcrumb-reference]').forEach(part => { part.textContent = 'File ' + (ourRef.value || '—'); }));
@@ -166,6 +166,8 @@
     const input = search.querySelector('input');
     const status = search.querySelector('[role="status"]');
     const placeholder = input.placeholder;
+    const fileSearch = search.dataset.searchMode === 'file';
+    if (fileSearch) input.focus({ preventScroll: true });
     let request;
     function message(text) {
         status.textContent = text; status.hidden = !text;
@@ -182,6 +184,7 @@
     search.addEventListener('submit', async event => {
         event.preventDefault();
         const number = input.value.trim();
+        if (fileSearch && (!number || !/^[0-9]+$/.test(number))) { message(number ? 'Enter an exact file, application or registration number.' : ''); return; }
         if (!number) {
             if (window.RomeroSearch) window.RomeroSearch.showLive();
             else navigate(search.dataset.liveResults);
@@ -194,7 +197,7 @@
         message('Searching…');
         try {
             const url = new URL(search.action);
-            url.searchParams.set('q', number);
+            url.searchParams.set(fileSearch ? 'number' : 'q', number);
             const response = await fetch(url, { signal: current.signal, headers: { Accept: 'application/json' } });
             if (!response.ok) throw new Error('Search failed');
             const data = await response.json();

@@ -9,16 +9,22 @@
                 <p class="text-sm mb-0">Use global search or advanced filters to find specific trademark records.</p>
             </div>
 
-            <div class="ms-auto my-auto mt-lg-0 mt-4">
-                <div class="ms-auto my-auto">
-                    <button type="button" class="btn btn-sm" data-columns-toggle>Columns</button>
-                    <button class="btn btn-sm mb-0 mt-sm-0 mt-1" data-type="csv" data-results-export type="button" name="button" @disabled(!isset($trademarks) || $trademarks->isEmpty())>{{ __('messages.export') }}</button>
+            <div class="tm-results-tools">
+                <button type="button" class="btn tm-columns-button" data-columns-toggle title="Columns" aria-label="Columns" aria-expanded="false"><i class="bi bi-layout-three-columns" aria-hidden="true"></i></button>
+                <div class="dropdown">
+                    <button class="btn tm-export-button" data-results-export type="button" data-bs-toggle="dropdown" aria-expanded="false" @disabled(!isset($trademarks) || $trademarks->isEmpty())>Export <span class="legal-chevron" aria-hidden="true"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-end tm-export-menu">
+                        @foreach(['xlsx' => 'Excel (.xlsx)', 'docx' => 'Word (.docx)', 'pdf' => 'PDF (.pdf)', 'csv' => 'CSV (.csv)', 'template' => 'Export to Template…'] as $format => $label)
+                        <li><button type="button" class="dropdown-item" data-export-format="{{ $format }}">{{ $label }}</button></li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
     @include('trademark._column-preferences')
+    <p data-export-status role="status" class="tm-export-status" hidden></p>
     <div class="card-body px-0 pb-0">
         @if(isset($trademarks) && $trademarks->total() > 0)
             @include('trademark._results-pagination', ['position' => 'top'])
@@ -51,17 +57,10 @@
                             @if($key === 'select')
                                 <input class="form-check-input js-select-trademark" type="checkbox" value="{{ $trademark->id }}" aria-label="Select trademark {{ $trademark->our_ref }}">
                             @elseif($key === 'edit')
-                                <a href="{{ route('edit.trademarks', $trademark->id) }}" class="tm-pencil-link" title="Edit trademark" aria-label="Edit trademark {{ $trademark->our_ref }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m16 3 5 5-12 12-6 1 1-6Z"/><path d="m13 6 5 5"/></svg></a>
+                                <a href="{{ route('edit.trademarks', $trademark->id) }}" class="tm-pencil-link" title="Edit trademark" aria-label="Edit trademark {{ $trademark->our_ref }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="m16 3 5 5-10 10-5 1 1-5Z"/><path d="m13 6 5 5"/></svg></a>
                             @else
                                 @php
-                                    $value = match($key) {
-                                        'owner' => optional($trademark->Holder)->company_name,
-                                        'client' => optional($trademark->Client)->company_name,
-                                        default => $trademark->getAttribute($key),
-                                    };
-                                    if (($column['type'] ?? '') === 'date' && $value) {
-                                        try { $value = \Carbon\Carbon::parse($value)->format('m/d/Y'); } catch (\Throwable $error) { /* Preserve unrecognized legacy text. */ }
-                                    }
+                                    $value = \App\Support\ResultsColumns::value($trademark, $key);
                                 @endphp
                                 @if($key === 'our_ref')
                                 <a class="tm-result-reference tm-cell-content" data-view-record href="{{ route('show.trademarks', $trademark->id) }}" title="{{ $value }}">{{ $value }}</a>
@@ -73,7 +72,7 @@
                         @endforeach
                     </tr>
                     @empty
-                        <tr><td colspan="15" class="tm-empty-results py-4">No results to display.</td></tr>
+                        <tr><td colspan="20" class="tm-empty-results py-4">No results to display.</td></tr>
                     @endforelse
                 </tbody>
             </table>

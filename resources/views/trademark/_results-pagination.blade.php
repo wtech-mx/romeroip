@@ -8,10 +8,12 @@
 <div class="tm-results-pagination" data-results-pagination>
     <span class="tm-results-count">{{ number_format($trademarks->total()) }} results</span>
     <nav class="tm-results-pages" aria-label="Results pages {{ $position }}">
+        @if($last > 1)
         @if($trademarks->onFirstPage())
-            <span class="tm-page-disabled" aria-disabled="true" aria-label="Previous page">‹</span>
+            <span class="tm-page-disabled tm-page-arrow" aria-disabled="true" aria-label="Previous page">‹</span>
         @else
-            <a href="{{ $trademarks->previousPageUrl() }}" data-results-page aria-label="Previous page">‹</a>
+            <a href="{{ $trademarks->previousPageUrl() }}" data-results-page class="tm-page-arrow" aria-label="Previous page">‹</a>
+        @endif
         @endif
         @foreach($pages as $page)
             @if($previousPageNumber !== null && $page > $previousPageNumber + 1)<span class="tm-page-gap" aria-hidden="true">…</span>@endif
@@ -22,15 +24,17 @@
             @endif
             @php($previousPageNumber = $page)
         @endforeach
+        @if($last > 1)
         @if($current === $last)
             <a href="{{ $trademarks->url(1) }}" data-results-page>First</a>
         @else
             <a href="{{ $trademarks->url($last) }}" data-results-page>Last</a>
         @endif
         @if($trademarks->hasMorePages())
-            <a href="{{ $trademarks->nextPageUrl() }}" data-results-page aria-label="Next page">›</a>
+            <a href="{{ $trademarks->nextPageUrl() }}" data-results-page class="tm-page-arrow" aria-label="Next page">›</a>
         @else
-            <span class="tm-page-disabled" aria-disabled="true" aria-label="Next page">›</span>
+            <span class="tm-page-disabled tm-page-arrow" aria-disabled="true" aria-label="Next page">›</span>
+        @endif
         @endif
     </nav>
     <label class="tm-results-page-size">Show

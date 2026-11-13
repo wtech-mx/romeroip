@@ -38,6 +38,81 @@ class TrademarksController extends Controller
     public function advance(Request $request)
     {
         try {
+            $filters = $this->searchFilters($request);
+            $perPage = (int) ($filters['per_page'] ?? $this->resultsPerPage($request));
+            $user = $request->user();
+            if (isset($filters['per_page']) && $user->exists && $perPage !== $this->resultsPerPage($request)) {
+                $user->setAttribute('trademark_results_per_page', $perPage);
+                $user->save();
+            }
+
+            $trademarks = $this->resultsQuery($filters);
+
+            $query = $trademarks;
+            $trademarks = $query->paginate($perPage);
+            if ($trademarks->total() > 0 && $trademarks->currentPage() > $trademarks->lastPage()) {
+                $trademarks = $query->paginate($perPage, ['*'], 'page', $trademarks->lastPage());
+            }
+            $trademarks->appends(array_merge($request->query(), ['per_page' => $perPage]));
+
+            if ($request->ajax()) {
+                return view('trademark._results', compact('trademarks'));
+            }
+
+            if ($trademarks->isEmpty()) {
+                return view('trademark.index', compact('trademarks'))
+                    ->with('info', 'No records were found with the selected filters.');
+            }
+
+            return view('trademark.index', compact('trademarks'));
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->expectsJson()) return response()->json(['errors' => $e->errors()], 422);
+            return redirect()
+                ->back()
+                ->withErrors($e->validator)
+                ->withInput()
+                ->with('swal_error', 'Please review the search filters.');
+
+        } catch (\Throwable $e) {
+            Log::error('Trademark advance search failed', [
+                'message' => $e->getMessage(),
+                'filters' => $request->all(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('swal_error', 'An unexpected error occurred while searching. Please try again.');
+        }
+    }
+
+    /* Trae los contacto con el cliente seleccionado  */
+    public function GetClientAgainstMainCatEdit($id)
+    {
+        echo json_encode(DB::table('contact_clients')->where('id_client', $id)->get());
+    }
+
+    /* Trae los contacto con el cliente seleccionado  */
+    public function GetAddressAgainstMainCatEdit($id)
+    {
+        echo json_encode(DB::table('adress_clients')->where('id_clients', $id)->get());
+    }
+
+    /* Trae los contacto con el cliente seleccionado  */
+    public function GetHolderAgainstMainCatEdit($id)
+    {
+        echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
+    }
+
+    /* Trae los contacto con el cliente seleccionado  */
+    public function GetHolderIAgainstMainCatEdit($id)
+    {
+        echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
+    }
+
+    private function searchFilters(Request $request): array
+    {
             $filters = $request->validate([
                 'sort' => ['nullable', Rule::in(array_slice(array_keys(\App\Support\ResultsColumns::definitions()), 2))],
                 'direction' => ['nullable', Rule::in(['asc', 'desc'])],
@@ -79,18 +154,17 @@ class TrademarksController extends Controller
                     throw \Illuminate\Validation\ValidationException::withMessages([$to => 'To must be greater than or equal to From.']);
                 }
             }
-            $referenceNumber = DB::raw(DB::getDriverName() === 'mysql' ? 'CAST(our_ref AS SIGNED)' : 'CAST(our_ref AS INTEGER)');
-            $perPage = (int) ($filters['per_page'] ?? $this->resultsPerPage($request));
-            $user = $request->user();
-            if (isset($filters['per_page']) && $user->exists && $perPage !== $this->resultsPerPage($request)) {
-                $user->setAttribute('trademark_results_per_page', $perPage);
-                $user->save();
-            }
+        return $filters;
+    }
 
+    private function resultsQuery(array $filters)
+    {
+        $referenceNumber = DB::raw(DB::getDriverName() === 'mysql' ? 'CAST(our_ref AS SIGNED)' : 'CAST(our_ref AS INTEGER)');
             $trademarks = Trademarks::query()
                 ->with([
                     'Client:id,company_name',
                     'Holder:id,company_name',
+                    'AddressHolder:id,address', 'AddressContact:id,address',
                 ])
 
                 ->when(!empty($filters['our_ref']), fn ($query) =>
@@ -236,75 +310,36 @@ class TrademarksController extends Controller
                 $foreign = $sort === 'owner' ? 'id_holder' : 'id_client';
                 $table = (new $model)->getTable();
                 $trademarks->orderBy($model::select('company_name')->whereColumn($table.'.id', 'trademark.'.$foreign)->limit(1), $direction);
+            } elseif (in_array($sort, ['owner_address', 'client_address'], true)) {
+                $model = $sort === 'owner_address' ? \App\Models\AddressHolder::class : AddressContact::class;
+                $foreign = $sort === 'owner_address' ? 'address_holder' : 'id_address';
+                $table = (new $model)->getTable();
+                $trademarks->orderBy($model::select('address')->whereColumn($table.'.id', 'trademark.'.$foreign)->limit(1), $direction);
             } elseif ((\App\Support\ResultsColumns::definitions()[$sort]['type'] ?? '') === 'number') {
                 $cast = DB::getDriverName() === 'mysql' ? 'DECIMAL(30, 6)' : 'REAL';
                 $trademarks->orderByRaw("CAST(`{$sort}` AS {$cast}) {$direction}")->orderBy($sort, $direction);
             } else {
-                $trademarks->orderBy($sort, $direction);
+                $trademarks->orderBy(\App\Support\ResultsColumns::definitions()[$sort]['field'] ?? $sort, $direction);
             }
             $trademarks->orderBy('id');
 
-            $query = $trademarks;
-            $trademarks = $query->paginate($perPage);
-            if ($trademarks->total() > 0 && $trademarks->currentPage() > $trademarks->lastPage()) {
-                $trademarks = $query->paginate($perPage, ['*'], 'page', $trademarks->lastPage());
-            }
-            $trademarks->appends(array_merge($request->query(), ['per_page' => $perPage]));
+        return $trademarks;
+    }
 
-            if ($request->ajax()) {
-                return view('trademark._results', compact('trademarks'));
-            }
-
-            if ($trademarks->isEmpty()) {
-                return view('trademark.index', compact('trademarks'))
-                    ->with('info', 'No records were found with the selected filters.');
-            }
-
-            return view('trademark.index', compact('trademarks'));
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            if ($request->ajax() || $request->expectsJson()) return response()->json(['errors' => $e->errors()], 422);
-            return redirect()
-                ->back()
-                ->withErrors($e->validator)
-                ->withInput()
-                ->with('swal_error', 'Please review the search filters.');
-
-        } catch (\Throwable $e) {
-            Log::error('Trademark advance search failed', [
-                'message' => $e->getMessage(),
-                'filters' => $request->all(),
-            ]);
-
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('swal_error', 'An unexpected error occurred while searching. Please try again.');
+    public function export(Request $request, \App\Services\TrademarkExport $exporter)
+    {
+        $data = $request->validate([
+            'format' => ['required', Rule::in(['xlsx', 'csv', 'docx', 'pdf', 'template'])],
+            'ids' => 'required|array|min:1|max:10000', 'ids.*' => 'required|integer|min:1|distinct',
+            'template' => ['nullable', Rule::in(array_keys($exporter->templates()))],
+        ]);
+        if ($data['format'] === 'template' && empty($data['template'])) {
+            throw \Illuminate\Validation\ValidationException::withMessages(['template' => 'Choose a stored template.']);
         }
-    }
-
-    /* Trae los contacto con el cliente seleccionado  */
-    public function GetClientAgainstMainCatEdit($id)
-    {
-        echo json_encode(DB::table('contact_clients')->where('id_client', $id)->get());
-    }
-
-    /* Trae los contacto con el cliente seleccionado  */
-    public function GetAddressAgainstMainCatEdit($id)
-    {
-        echo json_encode(DB::table('adress_clients')->where('id_clients', $id)->get());
-    }
-
-    /* Trae los contacto con el cliente seleccionado  */
-    public function GetHolderAgainstMainCatEdit($id)
-    {
-        echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
-    }
-
-    /* Trae los contacto con el cliente seleccionado  */
-    public function GetHolderIAgainstMainCatEdit($id)
-    {
-        echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
+        $filters = $this->searchFilters($request);
+        $records = $this->resultsQuery($filters)->whereIn('trademark.id', $data['ids'])->get();
+        abort_if($records->isEmpty(), 422, 'No records to export.');
+        return $exporter->download($records, $data['format'], $data['template'] ?? null);
     }
 
     public function quickSearch(Request $request)

@@ -49,9 +49,9 @@ class AccountController extends Controller
     public function results(Request $request)
     {
         $data = $request->validate([
-            'order' => 'required|array|max:15', 'order.*' => 'required|string|distinct',
-            'visible' => 'present|array|max:15', 'visible.*' => 'required|string|distinct',
-            'widths' => 'required|array|max:15', 'widths.*' => 'integer|min:36|max:800',
+            'order' => 'required|array|max:20', 'order.*' => 'required|string|distinct',
+            'visible' => 'present|array|max:20', 'visible.*' => 'required|string|distinct',
+            'widths' => 'required|array|max:20', 'widths.*' => 'integer|min:36|max:800',
         ]);
         $preferences = \App\Support\ResultsColumns::normalize($data);
         $request->user()->setAttribute('results_columns', $preferences);
@@ -64,9 +64,15 @@ class AccountController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($request->user()->id)],
+            'profile_photo_x' => 'sometimes|integer|min:0|max:100',
+            'profile_photo_y' => 'sometimes|integer|min:0|max:100',
+            'profile_photo_zoom' => 'sometimes|numeric|min:1|max:3',
             'locale' => ['required', Rule::in(['en', 'es'])],
         ]);
         $request->user()->update(['name' => $data['name'], 'email' => $data['email']]);
+        foreach (['profile_photo_x', 'profile_photo_y', 'profile_photo_zoom'] as $field) {
+            if (isset($data[$field])) $request->user()->setAttribute($field, $data[$field]);
+        }
         $request->user()->setAttribute('preferred_locale', $data['locale'])->save();
         $request->session()->put('locale', $data['locale']);
         return redirect()->route('account.settings')->with('account_saved', true);

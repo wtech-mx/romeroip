@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::patch('/account-settings', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update');
     Route::post('/my-profile/photo', [App\Http\Controllers\AccountController::class, 'photo'])->name('account.photo');
     Route::delete('/my-profile/photo', [App\Http\Controllers\AccountController::class, 'removePhoto'])->name('account.photo.remove');
+    Route::post('/trademarks/export', [App\Http\Controllers\TrademarksController::class, 'export'])->name('trademarks.export');
     Route::get('/trademarks/quick-search', [App\Http\Controllers\TrademarksController::class, 'quickSearch'])->name('trademarks.quick-search');
     Route::get('/trademarks/global-search', [App\Http\Controllers\TrademarksController::class, 'globalSearch'])->name('trademarks.global-search');
     Route::get('/tasks/create', [App\Http\Controllers\ActivityController::class, 'task'])->name('tasks.create');

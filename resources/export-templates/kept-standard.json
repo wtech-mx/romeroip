@@ -1,0 +1,30 @@
+{
+  "id": "kept-standard",
+  "name": "kept — Excel standard",
+  "font": "Helvetica Neue",
+  "font_size": 10,
+  "zoom": 120,
+  "header_fill": "D9D9D9",
+  "row_height": 21,
+  "header_height": 27,
+  "widths": {
+    "our_ref": 10.83,
+    "trademark": 30.83,
+    "class": 10.83,
+    "application_no": 15.83,
+    "registration_no": 15.83,
+    "registration_date": 18.83,
+    "last_declaration": 18.83,
+    "last_renewal": 19,
+    "previous_declaration": 20,
+    "previous_renewal": 18.83,
+    "owner": 25.83,
+    "owner_address": 35,
+    "client": 25.83,
+    "client_address": 35,
+    "client_ref": 20.83,
+    "origin": 14.83,
+    "country": 25,
+    "status": 14.83
+  }
+}

@@ -303,7 +303,7 @@
 <div class="container-fluid mt-3 tm-show-page tm-compact-file">
     <div class="tm-actions tm-page-actions" aria-label="File actions">
         <a class="tm-btn" href="{{ route('index.trademarks') }}">{{ __('messages.back') }}</a>
-        <a class="tm-btn tm-btn-primary" href="{{ route('edit.trademarks', $trademark->id) }}">Edit</a>
+        <a class="tm-btn tm-btn-primary" data-enter-edit href="{{ route('edit.trademarks', $trademark->id) }}">Edit</a>
     </div>
     <div class="tm-file-shell">
         @include('trademark._header', ['isNewFile' => false])

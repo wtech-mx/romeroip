@@ -630,7 +630,7 @@ class TrademarkFileTest extends TestCase
         $doc = $this->document($response->getContent());
         $this->assertSame(2, $doc->query('//*[@data-results-pagination]')->length);
         $this->assertSame(2, $doc->query('//*[@data-results-page-size]/option[@selected and @value="50"]')->length);
-        $this->assertSame(15, $doc->query('//table[@id="products-list"]/thead/tr/th')->length);
+        $this->assertSame(20, $doc->query('//table[@id="products-list"]/thead/tr/th')->length);
         $this->assertSame('Results', trim($doc->query('//*[contains(@class,"tm-results-panel")]//h5')->item(0)->textContent));
         $this->assertSame(2, $doc->query('//*[@data-results-page and normalize-space(.)="Last"]')->length);
         $response = $this->get(route('advance_search', ['status' => 'Live', 'page' => 3]))->assertOk();
@@ -670,6 +670,95 @@ class TrademarkFileTest extends TestCase
         $this->assertSame(['53', '54', '55', '56', '57', '58', '59', '100'], $page->pluck('our_ref')->all());
         $this->getJson(route('advance_search', ['sort' => 'id; DROP TABLE trademark']))->assertUnprocessable()->assertJsonValidationErrors('sort');
         $this->getJson(route('advance_search', ['direction' => 'invalid']))->assertUnprocessable()->assertJsonValidationErrors('direction');
+    }
+
+    public function test_results_use_next_dates_and_include_saved_addresses_and_country(): void
+    {
+        $owner = DB::table('holder')->insertGetId(['company_name' => 'Owner Test']);
+        $client = DB::table('clients')->insertGetId(['company_name' => 'Client Test']);
+        $oa = DB::table('address_holder')->insertGetId(['id_holder' => $owner, 'address' => 'Owner Street 10']);
+        $ca = DB::table('adress_clients')->insertGetId(['id_clients' => $client, 'address' => 'Client Street 20']);
+        $record = new Trademarks(); $record->forceFill(['trademark' => 'Dates and Addresses', 'status' => 'Registered', 'our_ref' => '123',
+            'id_holder' => $owner, 'id_client' => $client, 'address_holder' => $oa, 'id_address' => $ca, 'country' => 'MX',
+            'next_renewal' => '2034-07-12', 'last_renewal' => '2024-07-12', 'next_declaration' => '2030-07-12', 'last_declaration' => '2027-07-12'])->save();
+        $response = $this->get(route('advance_search'))->assertOk();
+        $doc = $this->document($response->getContent());
+        foreach (['last_renewal' => 'Jul/12/2034', 'previous_renewal' => 'Jul/12/2024', 'last_declaration' => 'Jul/12/2030',
+            'previous_declaration' => 'Jul/12/2027', 'owner_address' => 'Owner Street 10', 'client_address' => 'Client Street 20', 'country' => 'Mexico'] as $key => $value) {
+            $this->assertSame($value, trim($doc->query('//tbody/tr/td[@data-column="'.$key.'"]')->item(0)->textContent));
+        }
+        $this->get(route('show.trademarks', $record->id))->assertOk()->assertSee('Search by file, application or registration number...');
+        $this->get(route('create.trademarks'))->assertOk()->assertSee('data-search-mode="file"', false);
+        $this->get(route('index.trademarks'))->assertOk()->assertSee('Search by trademark, reference, number, owner or client...')->assertDontSee('aria-label="Language"', false);
+        $this->assertSame(0, $doc->query('//*[@aria-label="Previous page" or @aria-label="Next page"]')->length);
+        $this->assertSame(0, $doc->query('//*[@data-results-page and (normalize-space(.)="First" or normalize-space(.)="Last")]')->length);
+        $old = ['order' => ['select','edit','our_ref','trademark','last_renewal','owner','client','origin'], 'visible' => ['our_ref','trademark','owner']];
+        $preferences = \App\Support\ResultsColumns::normalize($old);
+        $this->assertSame(array_search('last_renewal', $preferences['order']) + 1, array_search('previous_declaration', $preferences['order']));
+        $this->assertSame(array_search('owner', $preferences['order']) + 1, array_search('owner_address', $preferences['order']));
+        $this->assertNotContains('owner_address', $preferences['visible']);
+    }
+
+    public function test_profile_photo_position_is_saved_only_for_current_user(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id(); $table->string('name'); $table->string('email'); $table->string('profile_photo_path')->nullable(); $table->string('preferred_locale')->nullable(); $table->timestamps();
+        });
+        $migration = require database_path('migrations/2026_11_13_000001_add_profile_photo_position.php'); $migration->up();
+        DB::table('users')->insert([['id' => 1, 'name' => 'UI Review', 'email' => 'one@example.test'], ['id' => 2, 'name' => 'Other', 'email' => 'two@example.test']]);
+        $user = $this->app['auth']->user(); $user->exists = true; $user->setTable('users');
+        $data = ['name' => 'UI Review', 'email' => 'one@example.test', 'locale' => 'en', 'profile_photo_x' => 25, 'profile_photo_y' => 70, 'profile_photo_zoom' => 1.5, 'user_id' => 2];
+        $this->patchJson(route('account.update'), $data)->assertRedirect(route('account.settings'));
+        $this->assertDatabaseHas('users', ['id' => 1, 'profile_photo_x' => 25, 'profile_photo_y' => 70, 'profile_photo_zoom' => 1.5]);
+        $this->assertDatabaseHas('users', ['id' => 2, 'profile_photo_x' => 50, 'profile_photo_y' => 50, 'profile_photo_zoom' => 1]);
+        $this->patchJson(route('account.update'), array_replace($data, ['profile_photo_x' => 101, 'profile_photo_zoom' => 4]))->assertUnprocessable()->assertJsonValidationErrors(['profile_photo_x', 'profile_photo_zoom']);
+    }
+
+    public function test_all_export_formats_use_real_complete_records_and_applied_sort(): void
+    {
+        $one = Trademarks::create(['our_ref' => '2', 'trademark' => 'Diseño & Associates '.str_repeat('complete ', 35), 'status' => 'Registered', 'client_ref' => '=1+1', 'next_renewal' => '2034-07-12']);
+        $two = Trademarks::create(['our_ref' => '10', 'trademark' => 'Second Record', 'status' => 'Pending']);
+        $abandoned = Trademarks::create(['our_ref' => '3', 'trademark' => 'Excluded', 'status' => 'Abandoned']);
+        foreach (['xlsx', 'csv', 'docx', 'pdf', 'template'] as $format) {
+            $response = $this->postJson(route('trademarks.export'), ['ids' => [$one->id, $two->id, $abandoned->id], 'format' => $format,
+                'template' => 'kept-standard', 'sort' => 'our_ref', 'direction' => 'desc'])->assertOk();
+            $path = $response->baseResponse->getFile()->getPathname();
+            try {
+                if (in_array($format, ['xlsx', 'template'])) {
+                    $book = \PhpOffice\PhpSpreadsheet\IOFactory::load($path); $sheet = $book->getActiveSheet();
+                    $this->assertSame('10', $sheet->getCell('A2')->getValue());
+                    $this->assertSame('2', $sheet->getCell('A3')->getValue());
+                    $this->assertSame(3, $sheet->getHighestRow());
+                    $this->assertSame($one->trademark, $sheet->getCell('B3')->getValue());
+                    $this->assertSame('s', $sheet->getCell('O3')->getDataType());
+                    $this->assertSame('=1+1', $sheet->getCell('O3')->getValue());
+                    $this->assertSame('Helvetica Neue', $sheet->getCell('B3')->getStyle()->getFont()->getName());
+                    $this->assertSame(10.0, $sheet->getCell('B3')->getStyle()->getFont()->getSize());
+                    $this->assertSame(120, $sheet->getSheetView()->getZoomScale());
+                    $this->assertSame('A2', $sheet->getFreezePane());
+                    $this->assertSame('FFD9D9D9', $sheet->getStyle('A1')->getFill()->getStartColor()->getARGB());
+                    $this->assertSame('thin', $sheet->getStyle('A2')->getBorders()->getLeft()->getBorderStyle());
+                    $this->assertSame('center', $sheet->getStyle('A2')->getAlignment()->getHorizontal());
+                    $this->assertStringContainsString('mmm/dd/yyyy', $sheet->getStyle('H3')->getNumberFormat()->getFormatCode());
+                    $this->assertGreaterThan(21, $sheet->getRowDimension(3)->getRowHeight());
+                    $book->disconnectWorksheets();
+                } elseif ($format === 'csv') {
+                    $file = fopen($path, 'rb'); $headers = fgetcsv($file); $first = fgetcsv($file); $second = fgetcsv($file); fclose($file);
+                    $this->assertSame('10', $first[0]); $this->assertSame('2', $second[0]);
+                    $this->assertSame($one->trademark, $second[1]);
+                    $this->assertContains("'=1+1", $second);
+                } elseif ($format === 'docx') {
+                    $zip = new \ZipArchive(); $zip->open($path); $xml = $zip->getFromName('word/document.xml'); $zip->close();
+                    $this->assertStringContainsString('Diseño &amp; Associates', $xml);
+                    $this->assertStringNotContainsString('Excluded', $xml);
+                } else {
+                    $this->assertStringStartsWith('%PDF-', file_get_contents($path));
+                    $this->assertGreaterThan(5000, filesize($path));
+                }
+            } finally { @unlink($path); }
+        }
+        $this->postJson(route('trademarks.export'), ['ids' => [$one->id], 'format' => 'template', 'template' => '../../secrets'])->assertUnprocessable();
+        $this->postJson(route('trademarks.export'), ['ids' => [], 'format' => 'xlsx'])->assertUnprocessable();
     }
 
     public function test_results_preferences_are_private_persistent_and_keep_frozen_columns(): void

@@ -30,6 +30,17 @@
             <label for="account-email">Email</label><input id="account-email" name="email" type="email" class="form-control" value="{{ old('email', $account->email) }}" required maxlength="255">
             @error('email')<p role="alert">{{ $message }}</p>@enderror
             <label for="account-locale">Language</label><select id="account-locale" name="locale" class="form-control"><option value="en" @selected(old('locale', $account->preferred_locale ?: session('locale', 'en')) === 'en')>English</option><option value="es" @selected(old('locale', $account->preferred_locale ?: session('locale')) === 'es')>Español</option></select>
+            @if($account->profile_photo_path)
+            <fieldset class="mt-3" data-photo-position>
+                <legend class="h6">Center profile photo</legend>
+                <span class="account-avatar-frame"><img data-photo-preview src="{{ asset($account->profile_photo_path) }}" alt="Profile photo preview"></span>
+                @foreach(['x' => 'Horizontal position', 'y' => 'Vertical position', 'zoom' => 'Zoom'] as $axis => $label)
+                <label for="photo-{{ $axis }}">{{ $label }}</label>
+                <input id="photo-{{ $axis }}" type="range" name="profile_photo_{{ $axis }}" min="{{ $axis === 'zoom' ? 1 : 0 }}" max="{{ $axis === 'zoom' ? 3 : 100 }}" step="{{ $axis === 'zoom' ? '0.05' : 1 }}" value="{{ old('profile_photo_'.$axis, $account->getAttribute('profile_photo_'.$axis) ?? ($axis === 'zoom' ? 1 : 50)) }}">
+                @endforeach
+                <button type="button" class="btn btn-sm" data-photo-center>Center</button>
+            </fieldset>
+            @endif
             <button class="btn btn-primary mt-3" type="submit">Save</button>
         </form>
         <section class="mt-4"><h2 class="h5">Results preferences</h2>
@@ -44,5 +55,7 @@
 @endsection
 
 @section('js_custom')
-@if($editing) @include('trademark._column-config') @endif
+@if($editing) @include('trademark._column-config')
+<script src="{{ asset('assets/js/profile-position.js') }}?v={{ filemtime(public_path('assets/js/profile-position.js')) }}"></script>
+@endif
 @endsection

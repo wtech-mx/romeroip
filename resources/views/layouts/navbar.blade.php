@@ -1,6 +1,7 @@
 @php
     $isTrademarkModule = Request::is('trademarks*');
     $isOpenFile = Route::is('show.trademarks', 'edit.trademarks') && isset($trademark);
+    $isFileSearch = Route::is('show.trademarks', 'edit.trademarks', 'create.trademarks');
     $isFileEdit = Route::is('edit.trademarks');
     $signedUser = Auth::user();
     $initials = collect(preg_split('/\s+/u', trim($signedUser->name)))->take(2)->map(fn($part) => mb_strtoupper(mb_substr($part, 0, 1)))->implode('');
@@ -18,9 +19,9 @@
         </ol></nav>
     </div>
     <div class="legal-header-tools">
-    <form class="legal-global-search" data-global-search data-live-results="{{ route('advance_search', ['status' => 'Live']) }}" action="{{ route('trademarks.global-search') }}" method="GET" role="search" novalidate>
+    <form class="legal-global-search" data-global-search data-search-mode="{{ $isFileSearch ? 'file' : 'global' }}" data-live-results="{{ route('advance_search', ['status' => 'Live']) }}" action="{{ $isFileSearch ? route('trademarks.quick-search') : route('trademarks.global-search') }}" method="GET" role="search" novalidate>
         <button type="submit" aria-label="Global Search"><i class="bi bi-search" aria-hidden="true"></i></button>
-        <input id="global-search-query" name="q" aria-label="Global Search" placeholder="Search by trademark, reference, number, owner or client..." value="{{ Route::is('index.trademarks', 'advance_search') ? request('q') : '' }}" autocomplete="off" required>
+        <input id="global-search-query" name="q" aria-label="Global Search" placeholder="{{ $isFileSearch ? 'Search by file, application or registration number...' : 'Search by trademark, reference, number, owner or client...' }}" value="{{ Route::is('index.trademarks', 'advance_search') ? request('q') : '' }}" autocomplete="off" required>
         <button type="button" data-global-clear aria-label="Clear search"><i class="bi bi-x" aria-hidden="true"></i></button>
         <span class="legal-global-status" role="status" aria-live="polite" hidden></span>
     </form>
@@ -38,17 +39,10 @@
         <button class="legal-header-icon" type="button" aria-label="Notifications" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-bell" aria-hidden="true"></i></button>
         <div class="dropdown-menu dropdown-menu-end p-3"><p class="mb-0 text-sm">No notifications.</p></div>
     </div>
-    <div class="dropdown legal-language">
-        <button class="legal-language-button" type="button" aria-label="Language" data-bs-toggle="dropdown" aria-expanded="false">{{ strtoupper(session('locale', 'en')) }} <span class="legal-chevron" aria-hidden="true"></span></button>
-        <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="{{ route('changeLang', ['lang' => 'en']) }}" lang="en">EN</a></li>
-            <li><a class="dropdown-item" href="{{ route('changeLang', ['lang' => 'es']) }}" lang="es">ES</a></li>
-        </ul>
-    </div>
     <div class="dropdown legal-profile">
         <button class="legal-profile-button" type="button" id="legalProfileButton" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ $signedUser->name }}" title="{{ $signedUser->name }}">
-            @if($profilePhoto)<img class="legal-profile-avatar" src="{{ $profilePhoto }}" alt="">@else<span class="legal-profile-avatar" aria-hidden="true">{{ $initials }}</span>@endif
-            <span class="legal-profile-name">{{ $signedUser->name }}</span><span class="legal-chevron" aria-hidden="true"></span>
+            @if($profilePhoto)<span class="legal-avatar-crop"><img class="legal-profile-avatar" src="{{ $profilePhoto }}" alt="" style="object-position:{{ $signedUser->profile_photo_x ?? 50 }}% {{ $signedUser->profile_photo_y ?? 50 }}%;transform:scale({{ $signedUser->profile_photo_zoom ?? 1 }});transform-origin:{{ $signedUser->profile_photo_x ?? 50 }}% {{ $signedUser->profile_photo_y ?? 50 }}%"></span>@else<span class="legal-profile-avatar" aria-hidden="true">{{ $initials }}</span>@endif
+            <span class="legal-chevron" aria-hidden="true"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="legalProfileButton">
             <li><a class="dropdown-item" href="{{ route('account.profile') }}">My Profile</a></li>

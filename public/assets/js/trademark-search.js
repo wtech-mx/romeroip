@@ -35,14 +35,34 @@
         selectAll.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
     }
 
-    function exportCells(row) {
-        return Object.fromEntries([...row.cells].filter(cell => !['select', 'edit'].includes(cell.dataset.column)).map(cell => [cell.dataset.column, cell.textContent.trim()]));
-    }
-
     function selectRow(checkbox) {
-        if (checkbox.checked) selectedRows.set(checkbox.value, exportCells(checkbox.closest('tr')));
+        if (checkbox.checked) selectedRows.set(checkbox.value, true);
         else selectedRows.delete(checkbox.value);
     }
+
+    const exportConfig = JSON.parse(document.getElementById('tm-column-config').textContent);
+    const templateDialog = document.querySelector('[data-export-template-dialog]');
+    async function exportRecords(format, template) {
+        const ids = selectedRows.size ? [...selectedRows.keys()] : [...results.querySelectorAll('.js-select-trademark')].map(input => input.value);
+        if (!ids.length) return;
+        const message = results.querySelector('[data-export-status]');
+        message.hidden = false; message.textContent = 'Preparing export…';
+        try {
+            const body = Object.fromEntries(appliedUrl.searchParams);
+            Object.assign(body, { format, ids, template });
+            const response = await fetch(exportConfig.exportUrl, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-TOKEN': exportConfig.token }, body: JSON.stringify(body) });
+            if (!response.ok) throw new Error('Export failed');
+            const blob = await response.blob(); const url = URL.createObjectURL(blob);
+            const link = document.createElement('a'); link.href = url; link.download = 'trademarks.' + (format === 'template' ? 'xlsx' : format);
+            document.body.append(link); link.click(); link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            message.textContent = ''; message.hidden = true;
+        } catch (error) { message.textContent = 'Unable to export. Please try again.'; }
+    }
+    templateDialog?.querySelector('[data-template-export]').addEventListener('click', () => {
+        const template = templateDialog.querySelector('select').value;
+        templateDialog.close(); exportRecords('template', template);
+    });
 
     function cancelRequest() {
         activeRequest?.abort();
@@ -50,6 +70,7 @@
     }
 
     async function loadResults(url, options = {}) {
+        const scrollLeft = results.querySelector('.tm-table-wrap')?.scrollLeft || 0;
         cancelRequest();
         const controller = new AbortController();
         activeRequest = controller;
@@ -81,6 +102,7 @@
             appliedUrl = new URL(panel.dataset.resultsUrl, location.href);
             pageSize = Number(panel.dataset.resultsPerPage);
             window.RomeroColumns?.apply();
+            results.querySelector('.tm-table-wrap').scrollLeft = scrollLeft;
             showSort();
             updateSelection();
             if (globalInput) globalInput.value = '';
@@ -162,26 +184,11 @@
             loadResults(new URL(link.href));
             return;
         }
-        if (!event.target.closest('[data-results-export]')) return;
-        const keys = window.RomeroColumns.keys();
-        const headers = keys.map(window.RomeroColumns.label);
-        const rows = selectedRows.size > 0
-            ? [...selectedRows.values()]
-            : [...results.querySelectorAll('tbody tr')].filter(row => row.querySelector('.js-select-trademark')).map(exportCells);
-        if (rows.length === 0) return;
-        const csvCell = value => {
-            const safeValue = /^[=+\-@\t\r]/.test(value) ? "'" + value : value;
-            return '"' + safeValue.replace(/"/g, '""') + '"';
-        };
-        const csv = [headers, ...rows.map(row => keys.map(key => row[key] || ''))].map(row => row.map(csvCell).join(',')).join('\r\n');
-        const url = URL.createObjectURL(new Blob(['\uFEFF', csv], { type: 'text/csv;charset=utf-8;' }));
-        const download = document.createElement('a');
-        download.href = url;
-        download.download = 'trademarks.csv';
-        document.body.append(download);
-        download.click();
-        download.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 0);
+        const exportOption = event.target.closest('[data-export-format]');
+        if (!exportOption) return;
+        if (exportOption.dataset.exportFormat === 'template') templateDialog.showModal();
+        else exportRecords(exportOption.dataset.exportFormat);
+
     });
 
     results.addEventListener('change', event => {

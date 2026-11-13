@@ -3,5 +3,6 @@
     'preferences' => \App\Support\ResultsColumns::normalize(auth()->user()->getAttribute('results_columns')),
     'url' => route('account.results'),
     'token' => csrf_token(),
+    'exportUrl' => route('trademarks.export'),
 ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
 <script src="{{ asset('assets/js/trademark-columns.js') }}?v={{ filemtime(public_path('assets/js/trademark-columns.js')) }}"></script>

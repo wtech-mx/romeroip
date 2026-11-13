@@ -14,22 +14,45 @@ class ResultsColumns
             'application_no' => ['label' => 'Application No.', 'width' => 140, 'type' => 'number'],
             'registration_no' => ['label' => 'Registration No.', 'width' => 140, 'type' => 'number'],
             'registration_date' => ['label' => 'Registration Date', 'width' => 145, 'type' => 'date'],
-            'last_declaration' => ['label' => 'Declaration of Use', 'width' => 150, 'type' => 'date'],
-            'last_renewal' => ['label' => 'Renewal', 'width' => 130, 'type' => 'date'],
+            'last_declaration' => ['label' => 'Declaration of Use', 'width' => 150, 'type' => 'date', 'field' => 'next_declaration'],
+            'last_renewal' => ['label' => 'Renewal', 'width' => 130, 'type' => 'date', 'field' => 'next_renewal'],
+            'previous_declaration' => ['label' => 'Last Declaration of Use', 'width' => 170, 'type' => 'date', 'field' => 'last_declaration'],
+            'previous_renewal' => ['label' => 'Last Renewal', 'width' => 130, 'type' => 'date', 'field' => 'last_renewal'],
             'owner' => ['label' => 'Owner', 'width' => 220],
+            'owner_address' => ['label' => 'Owner Address', 'width' => 240],
             'client' => ['label' => 'Client', 'width' => 220],
+            'client_address' => ['label' => 'Client Address', 'width' => 240],
             'client_ref' => ['label' => 'Client Ref.', 'width' => 140, 'type' => 'number'],
             'origin' => ['label' => 'Department', 'width' => 140],
+            'country' => ['label' => 'Country / Office', 'width' => 190],
             'status' => ['label' => 'Status', 'width' => 120],
         ];
         if (app()->getLocale() === 'es') {
             $labels = ['edit' => 'Editar', 'our_ref' => 'Nuestra Ref.', 'trademark' => 'Marca', 'class' => 'Clase',
                 'application_no' => 'Solicitud No.', 'registration_no' => 'Registro No.', 'registration_date' => 'Fecha de Registro',
                 'last_declaration' => 'Declaración de Uso', 'last_renewal' => 'Renovación', 'owner' => 'Titular', 'client' => 'Cliente',
+                'previous_declaration' => 'Última Declaración de Uso', 'previous_renewal' => 'Última Renovación', 'owner_address' => 'Dirección del Titular', 'client_address' => 'Dirección del Cliente', 'country' => 'País / Oficina',
                 'client_ref' => 'Ref. del Cliente', 'origin' => 'Departamento', 'status' => 'Estatus'];
             foreach ($labels as $key => $label) $columns[$key]['label'] = $label;
         }
         return $columns;
+    }
+
+    public static function value(\App\Models\Trademarks $record, string $key, bool $displayDate = true): string
+    {
+        $column = self::definitions()[$key];
+        $value = match ($key) {
+            'owner' => optional($record->Holder)->company_name,
+            'client' => optional($record->Client)->company_name,
+            'owner_address' => optional($record->AddressHolder)->address,
+            'client_address' => optional($record->AddressContact)->address,
+            'country' => CountryCatalog::label($record->country, true) ?: $record->country,
+            default => $record->getAttribute($column['field'] ?? $key),
+        };
+        if ($value && ($column['type'] ?? '') === 'date' && $displayDate) {
+            try { return \Carbon\Carbon::parse($value)->locale('en')->format('M/d/Y'); } catch (\Throwable $error) { /* Retain legacy text. */ }
+        }
+        return (string) ($value ?? '');
     }
 
     public static function normalize(?array $saved): array
@@ -37,6 +60,13 @@ class ResultsColumns
         $definitions = self::definitions();
         $fixed = array_slice(array_keys($definitions), 0, 4);
         $order = array_values(array_unique(array_merge($fixed, array_filter($saved['order'] ?? [], fn ($key) => isset($definitions[$key]) && !in_array($key, $fixed)), array_keys($definitions))));
+        // Insert new columns beside their related field without disturbing a saved order.
+        foreach (['previous_declaration' => 'last_renewal', 'previous_renewal' => 'previous_declaration', 'owner_address' => 'owner', 'client_address' => 'client', 'country' => 'origin'] as $key => $anchor) {
+            if ($saved && !in_array($key, $saved['order'] ?? [], true)) {
+                $order = array_values(array_diff($order, [$key]));
+                array_splice($order, array_search($anchor, $order, true) + 1, 0, [$key]);
+            }
+        }
         $visible = array_values(array_unique(array_merge($fixed, array_values(array_intersect($saved['visible'] ?? array_keys($definitions), array_keys($definitions))))));
         $widths = [];
         foreach ($definitions as $key => $column) $widths[$key] = max($key === 'select' ? 36 : 48, min(800, (int) ($saved['widths'][$key] ?? $column['width'])));
