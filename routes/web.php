@@ -31,6 +31,7 @@ Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 Route::get('/lang/change', [HomeController::class, 'change'])->name('changeLang');
 
 Route::group(['middleware' => ['auth']], function() {
+    Route::patch('/my-profile', [App\Http\Controllers\AccountController::class, 'updateProfile'])->name('account.profile.update');
     Route::get('/my-profile', [App\Http\Controllers\AccountController::class, 'show'])->name('account.profile');
     Route::patch('/account-settings/results', [App\Http\Controllers\AccountController::class, 'results'])->name('account.results');
     Route::get('/account-settings', [App\Http\Controllers\AccountController::class, 'edit'])->name('account.settings');

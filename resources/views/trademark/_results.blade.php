@@ -14,8 +14,8 @@
                 <div class="dropdown">
                     <button class="btn tm-export-button" data-results-export type="button" data-bs-toggle="dropdown" aria-expanded="false" @disabled(!isset($trademarks) || $trademarks->isEmpty())>Export <span class="legal-chevron" aria-hidden="true"></span></button>
                     <ul class="dropdown-menu dropdown-menu-end tm-export-menu">
-                        @foreach(['xlsx' => 'Excel (.xlsx)', 'docx' => 'Word (.docx)', 'pdf' => 'PDF (.pdf)', 'csv' => 'CSV (.csv)', 'template' => 'Export to Template…'] as $format => $label)
-                        <li><button type="button" class="dropdown-item" data-export-format="{{ $format }}">{{ $label }}</button></li>
+                        @foreach(['xlsx' => 'Excel (.xlsx)', 'docx' => 'Word (.docx)', 'pdf' => 'PDF (.pdf)', 'csv' => 'CSV (.csv)', 'template' => 'Custom Template'] as $format => $label)
+                        <li><button type="button" class="dropdown-item" data-export-format="{{ $format }}">@if($format === 'template')<i class="bi bi-file-earmark-text" aria-hidden="true"></i> @endif{{ $label }}</button></li>
                         @endforeach
                     </ul>
                 </div>

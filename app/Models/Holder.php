@@ -13,5 +13,5 @@ class Holder extends Model
     protected $table = 'holder';
     protected $fillable = ['company_name',
                             'country',
-                            'notas'];
+                            'notas', 'owner_type', 'rfc', 'curp', 'sex', 'date_of_birth', 'place_of_birth', 'telephone', 'extension', 'mobile', 'email'];
 }

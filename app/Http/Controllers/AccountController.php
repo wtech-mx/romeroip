@@ -59,9 +59,23 @@ class AccountController extends Controller
         return response()->json($preferences);
     }
 
+    public function updateProfile(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255', 'job_title' => 'sometimes|nullable|string|max:255',
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($request->user()->id)],
+            'profile_photo_x' => 'sometimes|integer|min:0|max:100', 'profile_photo_y' => 'sometimes|integer|min:0|max:100',
+            'profile_photo_zoom' => 'sometimes|numeric|min:1|max:3',
+        ]);
+        foreach ($data as $key => $value) $request->user()->setAttribute($key, $value);
+        $request->user()->save();
+        return redirect()->route('account.profile')->with('account_saved', true);
+    }
+
     public function update(Request $request)
     {
         $data = $request->validate([
+            'job_title' => 'sometimes|nullable|string|max:255',
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($request->user()->id)],
             'profile_photo_x' => 'sometimes|integer|min:0|max:100',
@@ -70,8 +84,8 @@ class AccountController extends Controller
             'locale' => ['required', Rule::in(['en', 'es'])],
         ]);
         $request->user()->update(['name' => $data['name'], 'email' => $data['email']]);
-        foreach (['profile_photo_x', 'profile_photo_y', 'profile_photo_zoom'] as $field) {
-            if (isset($data[$field])) $request->user()->setAttribute($field, $data[$field]);
+        foreach (['job_title', 'profile_photo_x', 'profile_photo_y', 'profile_photo_zoom'] as $field) {
+            if (array_key_exists($field, $data)) $request->user()->setAttribute($field, $data[$field]);
         }
         $request->user()->setAttribute('preferred_locale', $data['locale'])->save();
         $request->session()->put('locale', $data['locale']);

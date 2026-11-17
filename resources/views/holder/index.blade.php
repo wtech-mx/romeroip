@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('page_actuality')
-{{ __('messages.holder') }}
+Owners
 @endsection
 
 @section('content')
@@ -13,12 +13,12 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title">
-                            {{ __('messages.holder') }}
+                            Owners
                         </span>
 
                          <div class="float-right">
                             <a href="{{ route('create.holder') }}" class="btn btn-sm float-right"  data-placement="left" style="background: {{$configuracion->color_boton_add}}; color: #ffff">
-                              {{ __('messages.new') }} {{ __('messages.holder') }}
+                              New Owner
                             </a>
                           </div>
                     </div>
@@ -30,7 +30,7 @@
                             <thead class="thead">
                                 <tr class="text-center">
                                     <th>No</th>
-                                    <th>{{ __('messages.company_name') }}</th>
+                                    <th>Owner</th>
                                     <th>{{ __('messages.country') }}</th>
                                     <th>{{ __('messages.note') }}</th>
                                     <th></th>
@@ -47,7 +47,7 @@
 
                                         <td>
                                             <a class="dropdown-item" href="{{ route('edit.holder', $holders->id) }}">
-                                                Editar
+                                                Edit
                                             </a>
                                         </td>
                                     </tr>

@@ -114,7 +114,7 @@
     new Set(controls.map(control => control.native.form)).forEach(form => {
         if (!form) return;
         form.addEventListener('submit', event => {
-            const invalid = controls.filter(control => control.native.form === form && !control.commit());
+            const invalid = controls.filter(control => control.native.form === form && !control.native.disabled && !control.commit());
             if (invalid.length) {
                 event.preventDefault();
                 event.stopImmediatePropagation();

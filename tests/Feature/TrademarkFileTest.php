@@ -43,6 +43,85 @@ class TrademarkFileTest extends TestCase
         $this->actingAs($user);
     }
 
+    private function extendOwnersAndProfile(): void
+    {
+        Schema::table('holder', function (Blueprint $table) { $table->text('country')->nullable(); $table->text('notas')->nullable(); });
+        Schema::create('users', function (Blueprint $table) { $table->id(); $table->string('name'); $table->string('email'); $table->timestamps(); });
+        $migration = require database_path('migrations/2026_11_17_000001_extend_owners_and_profile.php');
+        $migration->up();
+    }
+
+    public function test_owner_company_and_individual_share_name_and_preserve_addresses_and_trademarks(): void
+    {
+        $this->extendOwnersAndProfile();
+        $this->post(route('store.holder'), ['owner_type' => 'Company', 'company_name' => 'Example Company', 'rfc' => 'ABC010203XX1',
+            'country' => 'Mexico', 'telephone' => '+52 555 123', 'extension' => '103', 'mobile' => '+52 555 321', 'email' => 'owner@example.test',
+            'address' => [str_repeat('Long address ', 1000)], 'commercial_address' => ['Industrial address']])->assertRedirect(route('index.holder'))->assertSessionHasNoErrors();
+        $owner = \App\Models\Holder::first(); $address = \App\Models\AddressHolder::first();
+        $this->assertSame('Industrial address', $address->commercial_address);
+        $this->assertGreaterThan(10000, strlen($address->address));
+        $record = new Trademarks(); $record->forceFill(['id_holder' => $owner->id, 'address_holder' => $address->id, 'trademark' => 'Linked Mark'])->save();
+        $response = $this->patch(route('update.holder', $owner->id), ['owner_type' => 'Individual', 'company_name' => 'Example Full Name', 'country' => 'Italy',
+            'curp' => 'CURP010203EXAMPLE', 'rfc' => 'RFC010203XX1', 'sex' => 'Female', 'date_of_birth' => '1980-05-06', 'place_of_birth' => 'Rome',
+            'telephone' => '123', 'extension' => '4', 'mobile' => '567', 'email' => 'person@example.test',
+            'address_ids' => [$address->id, null], 'address' => ['Changed address', 'Second address'], 'commercial_address' => ['Changed commercial address', 'Second commercial address']]);
+        $response->assertRedirect(route('index.holder'))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('holder', ['id' => $owner->id, 'owner_type' => 'Individual', 'company_name' => 'Example Full Name', 'date_of_birth' => '1980-05-06', 'place_of_birth' => 'Rome', 'email' => 'person@example.test']);
+        $this->assertDatabaseHas('address_holder', ['id' => $address->id, 'address' => 'Changed address', 'commercial_address' => 'Changed commercial address']);
+        $this->assertDatabaseHas('trademark', ['id' => $record->id, 'id_holder' => $owner->id, 'address_holder' => $address->id]);
+        $this->assertDatabaseCount('address_holder', 2);
+        $this->patch(route('update.holder', $owner->id), ['owner_type' => 'Company', 'company_name' => 'Changed Company', 'country' => 'Italy'])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('holder', ['id' => $owner->id, 'curp' => 'CURP010203EXAMPLE', 'date_of_birth' => '1980-05-06']);
+        $this->assertDatabaseCount('address_holder', 2);
+        $this->get(route('edit.holder', $owner->id))->assertOk()->assertSee('Changed commercial address')->assertSee('Country')->assertSee('Contact Information');
+        $this->patchJson(route('update.holder', $owner->id), ['owner_type' => 'Unknown', 'company_name' => 'Name', 'date_of_birth' => 'not-a-date', 'email' => 'not-email'])->assertUnprocessable()->assertJsonValidationErrors(['owner_type','date_of_birth','email']);
+    }
+
+    public function test_owner_forms_keep_country_catalog_and_reject_another_owners_address(): void
+    {
+        $this->extendOwnersAndProfile();
+        $owner = \App\Models\Holder::create(['company_name' => 'Original owner', 'country' => 'MEXICO', 'notas' => 'Keep legacy notes']);
+        $other = \App\Models\Holder::create(['company_name' => 'Other']);
+        $address = \App\Models\AddressHolder::create(['id_holder' => $other->id, 'address' => 'Other address']);
+        $this->patchJson(route('update.holder', $owner->id), ['company_name' => 'Attempted change', 'address_ids' => [$address->id], 'address' => ['Bad update']])->assertNotFound();
+        $this->assertDatabaseHas('holder', ['id' => $owner->id, 'company_name' => 'Original owner', 'notas' => 'Keep legacy notes']);
+        $this->assertDatabaseHas('address_holder', ['id' => $address->id, 'address' => 'Other address']);
+        $response = $this->get(route('create.holder'))->assertOk();
+        $doc = $this->document($response->getContent());
+        $this->assertSame('Company', $doc->query('//input[@name="owner_type" and @checked]')->item(0)->getAttribute('value'));
+        $this->assertSame(1, $doc->query('//input[@name="company_name"]')->length);
+        $this->assertSame(250, $doc->query('//select[@id="country"]/option')->length);
+        $this->assertSame(3, $doc->query('//section[contains(@class,"owner-section")]')->length);
+        $this->assertSame(4, $doc->query('//*[contains(@class,"owner-contact-grid")]//input')->length);
+        $this->assertSame(0, $doc->query('//input[@name="first_name" or @name="last_name"]')->length);
+        $this->get(route('edit.holder', $owner->id))->assertOk()->assertSee('value="MEXICO" data-country-code="MX" selected', false);
+        $created = $this->get(route('create.trademarks'))->assertOk();
+        $doc = $this->document($created->getContent());
+        $this->assertSame(1, $doc->query('//aside//button[@form="trademarkForm" and normalize-space(.)="Save"]')->length);
+    }
+
+    public function test_profile_menu_uses_saved_name_position_email_and_shared_photo_crop(): void
+    {
+        $this->extendOwnersAndProfile();
+        DB::table('users')->insert([['id' => 1, 'name' => 'UI Review', 'email' => 'one@example.test'], ['id' => 2, 'name' => 'Other user', 'email' => 'two@example.test']]);
+        $user = $this->app['auth']->user(); $user->exists = true; $user->setTable('users');
+        $this->patch(route('account.profile.update'), ['name' => 'Display Name Test', 'job_title' => 'Example Position', 'email' => 'updated@example.test', 'user_id' => 2])->assertRedirect(route('account.profile'))->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('users', ['id' => 1, 'name' => 'Display Name Test', 'job_title' => 'Example Position', 'email' => 'updated@example.test']);
+        $this->assertDatabaseHas('users', ['id' => 2, 'name' => 'Other user', 'email' => 'two@example.test', 'job_title' => null]);
+        $user->forceFill(['profile_photo_path' => 'logo/romeroip-logo.jpeg', 'profile_photo_x' => 30, 'profile_photo_y' => 65, 'profile_photo_zoom' => 1.5]);
+        $response = $this->get(route('index.trademarks'))->assertOk(); $doc = $this->document($response->getContent());
+        $this->assertSame(0, $doc->query('//button[@id="legalProfileButton"]//*[contains(@class,"legal-chevron")]')->length);
+        $this->assertSame(2, $doc->query('//div[contains(@class,"legal-profile")]//img[contains(@style,"object-position:30% 65%;transform:scale(1.5)")]')->length);
+        $this->assertSame(1, $doc->query('//li[contains(@class,"legal-profile-summary")]//strong[normalize-space(.)="Display Name Test"]')->length);
+        $response->assertSee('Example Position')->assertSee('updated@example.test')->assertSee('Custom Template');
+        $this->assertSame(['My Profile','Account Settings','Sign Out'], $this->texts($doc->query('//ul[contains(@class,"legal-profile-menu")]//a | //ul[contains(@class,"legal-profile-menu")]//button')));
+        $this->get(route('account.profile'))->assertOk()->assertSee('Job Title / Position')->assertSee('Display Name');
+        $user->setAttribute('job_title', null);
+        $html = $this->get(route('index.trademarks'))->assertOk()->getContent();
+        $this->assertStringNotContainsString('Example Position', $html);
+        $this->patchJson(route('account.profile.update'), ['name' => 'A', 'email' => 'bad-email', 'job_title' => str_repeat('x', 256)])->assertUnprocessable()->assertJsonValidationErrors(['email','job_title']);
+    }
+
     public function test_search_queries_all_number_fields_and_combines_primary_and_advanced_filters(): void
     {
         $holder = DB::table('holder')->insertGetId(['company_name' => 'Example Owner']);

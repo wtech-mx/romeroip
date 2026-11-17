@@ -4,7 +4,7 @@ return [
 
     'dashboard' => 'Dashboard',
     'client' => 'Client',
-    'holder' => 'Holder',
+    'holder' => 'Owner',
     'trademark' => 'Trademark',
     'modules' => 'Modules',
     'roles_permissions' => 'Roles and permissions',
@@ -125,7 +125,7 @@ return [
     'billing_address' => 'Billing Address',
     'vat_no' => 'VAT No.',
 
-    'holder_info' => 'Holder Information',
-    'holder' => 'Holder',
+    'holder_info' => 'Owner Information',
+    'holder' => 'Owner',
     'industrial_address' => 'Industrial / Commercial Address',
 ];

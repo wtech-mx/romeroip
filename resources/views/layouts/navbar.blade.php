@@ -4,8 +4,6 @@
     $isFileSearch = Route::is('show.trademarks', 'edit.trademarks', 'create.trademarks');
     $isFileEdit = Route::is('edit.trademarks');
     $signedUser = Auth::user();
-    $initials = collect(preg_split('/\s+/u', trim($signedUser->name)))->take(2)->map(fn($part) => mb_strtoupper(mb_substr($part, 0, 1)))->implode('');
-    $profilePhoto = $signedUser->getAttribute('profile_photo_path') ? asset($signedUser->profile_photo_path) : ($signedUser->getAttribute('profile_photo_url') ?: $signedUser->getAttribute('avatar_url'));
 @endphp
 <nav aria-label="Main navigation" class="legal-navbar legal-topbar legal-topbar-global" id="navbarBlur">
     <div class="legal-topbar-left">
@@ -41,10 +39,17 @@
     </div>
     <div class="dropdown legal-profile">
         <button class="legal-profile-button" type="button" id="legalProfileButton" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ $signedUser->name }}" title="{{ $signedUser->name }}">
-            @if($profilePhoto)<span class="legal-avatar-crop"><img class="legal-profile-avatar" src="{{ $profilePhoto }}" alt="" style="object-position:{{ $signedUser->profile_photo_x ?? 50 }}% {{ $signedUser->profile_photo_y ?? 50 }}%;transform:scale({{ $signedUser->profile_photo_zoom ?? 1 }});transform-origin:{{ $signedUser->profile_photo_x ?? 50 }}% {{ $signedUser->profile_photo_y ?? 50 }}%"></span>@else<span class="legal-profile-avatar" aria-hidden="true">{{ $initials }}</span>@endif
-            <span class="legal-chevron" aria-hidden="true"></span>
+            @include('shared.profile-avatar', ['user' => $signedUser, 'avatarClass' => 'legal-header-avatar'])
         </button>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="legalProfileButton">
+        <ul class="dropdown-menu dropdown-menu-end legal-profile-menu" aria-labelledby="legalProfileButton">
+            <li class="legal-profile-summary">
+                @include('shared.profile-avatar', ['user' => $signedUser, 'avatarClass' => 'legal-menu-avatar'])
+                <div><strong>{{ $signedUser->name }}</strong>
+                    @if(filled($signedUser->job_title))<span>{{ $signedUser->job_title }}</span>@endif
+                    @if(filled($signedUser->email))<span>{{ $signedUser->email }}</span>@endif
+                </div>
+            </li>
+            <li role="separator"><hr class="legal-profile-divider"></li>
             <li><a class="dropdown-item" href="{{ route('account.profile') }}">My Profile</a></li>
             <li><a class="dropdown-item" href="{{ route('account.settings') }}">Account Settings</a></li>
             <li><form id="logout-form" method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item">Sign Out</button></form></li>

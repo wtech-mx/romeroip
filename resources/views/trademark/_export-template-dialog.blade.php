@@ -1,5 +1,5 @@
 <dialog class="tm-template-dialog" data-export-template-dialog>
-    <form method="dialog"><h2>Export to Template</h2>
+    <form method="dialog"><h2>Custom Template</h2>
         <label for="export-template">Stored template</label>
         <select id="export-template" class="form-control">
             @foreach(app(\App\Services\TrademarkExport::class)->templates() as $id => $template)

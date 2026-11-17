@@ -6,11 +6,7 @@
     <div class="card-body">
         @if(session('account_saved'))<p role="status">Account settings saved.</p>@endif
         <div class="account-photo">
-            @if($account->getAttribute('profile_photo_path'))
-                <img class="legal-profile-avatar" src="{{ asset($account->profile_photo_path) }}" alt="Profile photograph">
-            @else
-                <span class="legal-profile-avatar">{{ collect(preg_split('/\s+/u', trim($account->name)))->take(2)->map(fn($part) => mb_strtoupper(mb_substr($part, 0, 1)))->implode('') }}</span>
-            @endif
+            @include('shared.profile-avatar', ['user' => $account, 'avatarClass' => 'account-profile-avatar'])
             <form action="{{ route('account.photo') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <label for="profile-photo">Profile photograph</label>
@@ -22,14 +18,17 @@
             <form action="{{ route('account.photo.remove') }}" method="POST">@csrf @method('DELETE')<button class="btn" type="submit">Remove photo</button></form>
             @endif
         </div>
-        @if($editing)
-        <form action="{{ route('account.update') }}" method="POST">
+        <form action="{{ $editing ? route('account.update') : route('account.profile.update') }}" method="POST">
             @csrf @method('PATCH')
-            <label for="account-name">Name</label><input id="account-name" name="name" class="form-control" value="{{ old('name', $account->name) }}" required maxlength="255">
+            <label for="account-name">Display Name</label><input id="account-name" name="name" class="form-control" value="{{ old('name', $account->name) }}" required maxlength="255">
             @error('name')<p role="alert">{{ $message }}</p>@enderror
+            <label for="account-job-title">Job Title / Position</label><input id="account-job-title" name="job_title" class="form-control" maxlength="255" value="{{ old('job_title', $account->job_title) }}">
+            @error('job_title')<p role="alert">{{ $message }}</p>@enderror
             <label for="account-email">Email</label><input id="account-email" name="email" type="email" class="form-control" value="{{ old('email', $account->email) }}" required maxlength="255">
             @error('email')<p role="alert">{{ $message }}</p>@enderror
+            @if($editing)
             <label for="account-locale">Language</label><select id="account-locale" name="locale" class="form-control"><option value="en" @selected(old('locale', $account->preferred_locale ?: session('locale', 'en')) === 'en')>English</option><option value="es" @selected(old('locale', $account->preferred_locale ?: session('locale')) === 'es')>Español</option></select>
+            @endif
             @if($account->profile_photo_path)
             <fieldset class="mt-3" data-photo-position>
                 <legend class="h6">Center profile photo</legend>
@@ -43,19 +42,16 @@
             @endif
             <button class="btn btn-primary mt-3" type="submit">Save</button>
         </form>
+        @if($editing)
         <section class="mt-4"><h2 class="h5">Results preferences</h2>
             @include('trademark._column-preferences')
         </section>
-        @else
-        <dl><dt>Name</dt><dd>{{ $account->name }}</dd><dt>Email</dt><dd>{{ $account->email }}</dd></dl>
-        <a class="btn" href="{{ route('account.settings') }}">Account Settings</a>
         @endif
     </div>
 </div>
 @endsection
 
 @section('js_custom')
-@if($editing) @include('trademark._column-config')
+@if($editing) @include('trademark._column-config') @endif
 <script src="{{ asset('assets/js/profile-position.js') }}?v={{ filemtime(public_path('assets/js/profile-position.js')) }}"></script>
-@endif
 @endsection
