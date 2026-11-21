@@ -102,13 +102,13 @@ class TrademarksController extends Controller
     /* Trae los contacto con el cliente seleccionado  */
     public function GetHolderAgainstMainCatEdit($id)
     {
-        echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
+        echo json_encode(DB::table('address_holder')->where('id_holder', $id)->whereNull('removed_at')->get());
     }
 
     /* Trae los contacto con el cliente seleccionado  */
     public function GetHolderIAgainstMainCatEdit($id)
     {
-        echo json_encode(DB::table('address_holder')->where('id_holder', $id)->get());
+        echo json_encode(DB::table('address_holder')->where('id_holder', $id)->whereNull('removed_at')->get());
     }
 
     private function searchFilters(Request $request): array
@@ -339,7 +339,7 @@ class TrademarksController extends Controller
         $filters = $this->searchFilters($request);
         $records = $this->resultsQuery($filters)->whereIn('trademark.id', $data['ids'])->get();
         abort_if($records->isEmpty(), 422, 'No records to export.');
-        return $exporter->download($records, $data['format'], $data['template'] ?? null);
+        return $exporter->download($records, $data['format'], $data['template'] ?? null, $request->user()->getAttribute('results_columns'));
     }
 
     public function quickSearch(Request $request)

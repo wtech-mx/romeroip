@@ -19,11 +19,12 @@ class TrademarkExport
         return [$template['id'] => $template];
     }
 
-    public function download(Collection $records, string $format, ?string $templateId = null)
+    public function download(Collection $records, string $format, ?string $templateId = null, ?array $preferences = null)
     {
         $template = $this->templates()[$templateId ?: 'kept-standard'];
         if ($format === 'template') $format = 'xlsx';
-        $columns = array_diff_key(ResultsColumns::definitions(), array_flip(['select', 'edit']));
+        $visible = ResultsColumns::normalize($preferences)['visible'];
+        $columns = array_filter(array_diff_key(ResultsColumns::definitions(), array_flip(['select', 'edit'])), fn ($column, $key) => ($column['defaultVisible'] ?? true) || in_array($key, $visible, true), ARRAY_FILTER_USE_BOTH);
         $rows = $records->map(fn ($record) => array_map(fn ($key) => ResultsColumns::value($record, $key), array_keys($columns)))->all();
         $headers = array_column($columns, 'label');
         $path = tempnam(sys_get_temp_dir(), 'kept-export-');

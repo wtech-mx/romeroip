@@ -32,26 +32,42 @@ class HolderController extends Controller
             'rfc' => 'sometimes|nullable|string|max:30', 'curp' => 'sometimes|nullable|string|max:30',
             'sex' => 'sometimes|nullable|in:Female,Male,Other', 'date_of_birth' => 'sometimes|nullable|date_format:Y-m-d|before_or_equal:today',
             'place_of_birth' => 'sometimes|nullable|string|max:255',
+            'telephone_secondary' => 'sometimes|nullable|string|max:60',
             'telephone' => 'sometimes|nullable|string|max:60', 'extension' => 'sometimes|nullable|string|max:20',
             'mobile' => 'sometimes|nullable|string|max:60', 'email' => 'sometimes|nullable|email|max:255',
             'address' => 'nullable|array', 'address.*' => 'nullable|string',
             'commercial_address' => 'nullable|array', 'commercial_address.*' => 'nullable|string',
+            'removed_address_ids' => 'sometimes|array', 'removed_address_ids.*' => 'required|integer|min:1|distinct',
             'address_ids' => 'nullable|array', 'address_ids.*' => 'nullable|integer|distinct',
         ]);
     }
 
     private function saveAddresses(Holder $holder, array $data): void
     {
-        $existing = AddressHolder::where('id_holder', $holder->id)->orderBy('id')->get();
+        $existing = AddressHolder::where('id_holder', $holder->id)->whereNull('removed_at')->orderBy('id')->get();
+        $explicitIds = array_key_exists('address_ids', $data);
         foreach (($data['address'] ?? []) as $index => $address) {
             $addressId = $data['address_ids'][$index] ?? null;
             // Existing addresses keep their IDs, including those referenced by trademarks.
             $row = $addressId
-                ? AddressHolder::where('id_holder', $holder->id)->findOrFail($addressId)
-                : ($existing[$index] ?? new AddressHolder(['id_holder' => $holder->id]));
+                ? AddressHolder::where('id_holder', $holder->id)->whereNull('removed_at')->findOrFail($addressId)
+                : (!$explicitIds && isset($existing[$index]) ? $existing[$index] : new AddressHolder(['id_holder' => $holder->id]));
             $row->address = $address;
             $row->commercial_address = array_key_exists($index, $data['commercial_address'] ?? []) ? $data['commercial_address'][$index] : $address;
             $row->save();
+        }
+    }
+
+    private function archiveAddresses(Holder $holder, array $data): void
+    {
+        $originalId = AddressHolder::where('id_holder', $holder->id)->orderBy('id')->value('id');
+        foreach ($data['removed_address_ids'] ?? [] as $id) {
+            $row = AddressHolder::where('id_holder', $holder->id)->findOrFail($id);
+            if ((int) $id === (int) $originalId || in_array((string) $id, array_map('strval', $data['address_ids'] ?? []), true)) {
+                throw \Illuminate\Validation\ValidationException::withMessages(['removed_address_ids' => 'Only additional addresses can be removed.']);
+            }
+            // Keep the exact address and ID for all historical trademark relationships.
+            if (!$row->removed_at) { $row->removed_at = now(); $row->save(); }
         }
     }
 
@@ -59,7 +75,7 @@ class HolderController extends Controller
     {
         $data = $this->ownerData($request);
         \Illuminate\Support\Facades\DB::transaction(function () use ($data) {
-            $holder = Holder::create(collect($data)->except(['address', 'commercial_address', 'address_ids'])->all());
+            $holder = Holder::create(collect($data)->except(['address', 'commercial_address', 'address_ids', 'removed_address_ids'])->all());
             $this->saveAddresses($holder, $data);
         });
         return redirect()->route('index.holder')->with('success', 'Owner created successfully.');
@@ -68,7 +84,7 @@ class HolderController extends Controller
     public function edit($id)
     {
         $holder = Holder::findOrFail($id);
-        $address_holder = AddressHolder::where('id_holder', $id)->get();
+        $address_holder = AddressHolder::where('id_holder', $id)->whereNull('removed_at')->orderBy('id')->get();
 
         return view('holder.edit', compact('holder', 'address_holder'));
     }
@@ -78,7 +94,8 @@ class HolderController extends Controller
         $data = $this->ownerData($request);
         \Illuminate\Support\Facades\DB::transaction(function () use ($id, $data) {
             $holder = Holder::findOrFail($id);
-            $holder->update(collect($data)->except(['address', 'commercial_address', 'address_ids'])->all());
+            $this->archiveAddresses($holder, $data);
+            $holder->update(collect($data)->except(['address', 'commercial_address', 'address_ids', 'removed_address_ids'])->all());
             $this->saveAddresses($holder, $data);
         });
         return redirect()->route('index.holder')->with('success', 'Owner updated successfully.');

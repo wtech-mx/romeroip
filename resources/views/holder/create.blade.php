@@ -2,7 +2,7 @@
 @section('template_title', 'New Owner')
 @section('content')
 <div class="owner-page">
-    <form id="owner-form" action="{{ route('store.holder') }}" method="POST">
+    <form data-owner-type="{{ old('owner_type', 'Company') ?: 'Company' }}" id="owner-form" action="{{ route('store.holder') }}" method="POST">
         @csrf
 
         <header class="owner-heading"><h1>New Owner</h1><div><a class="tm-btn" href="{{ route('index.holder') }}">Back</a><button class="tm-btn tm-btn-primary" type="submit">Save</button></div></header>

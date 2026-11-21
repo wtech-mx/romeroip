@@ -2,7 +2,7 @@
 @section('template_title', 'Edit Owner')
 @section('content')
 <div class="owner-page">
-    <form id="owner-form" action="{{ route('update.holder', $holder->id) }}" method="POST">
+    <form data-owner-type="{{ old('owner_type', $holder->owner_type) ?: 'Company' }}" id="owner-form" action="{{ route('update.holder', $holder->id) }}" method="POST">
         @csrf
         @method('PATCH')
         <header class="owner-heading"><h1>Edit Owner</h1><div><a class="tm-btn" href="{{ route('index.holder') }}">Back</a><button class="tm-btn tm-btn-primary" type="submit">Update</button></div></header>

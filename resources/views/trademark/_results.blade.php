@@ -6,7 +6,7 @@
         <div class="d-lg-flex">
             <div>
                 <h5 class="mb-0">Results</h5>
-                <p class="text-sm mb-0">Use global search or advanced filters to find specific trademark records.</p>
+                <p class="text-sm tm-results-subtitle mb-0">Use global search or advanced filters to find specific trademark records.</p>
             </div>
 
             <div class="tm-results-tools">
@@ -33,11 +33,12 @@
             <table class="table table-flush tm-results-table" id="products-list">
                 @php
                     $columns = \App\Support\ResultsColumns::definitions();
+                    $visibleColumns = \App\Support\ResultsColumns::normalize(auth()->user()->getAttribute('results_columns'))['visible'];
                 @endphp
-                <colgroup>@foreach($columns as $key => $column)<col data-column="{{ $key }}">@endforeach</colgroup>
+                <colgroup>@foreach($columns as $key => $column)<col data-column="{{ $key }}" @if(!in_array($key, $visibleColumns, true)) hidden @endif>@endforeach</colgroup>
                 <thead class="thead-light"><tr>
                     @foreach($columns as $key => $column)
-                    <th title="{{ $column['label'] }}" data-column="{{ $key }}" @if(!empty($column['fixed'])) data-fixed="true" @else draggable="true" @endif>
+                    <th @if(!in_array($key, $visibleColumns, true)) hidden @endif title="{{ $column['label'] }}" data-column="{{ $key }}" @if(!empty($column['fixed'])) data-fixed="true" @else draggable="true" @endif>
                         @if($key === 'select')
                             <input class="form-check-input js-select-all-trademarks" type="checkbox" aria-label="Select all search results">
                         @elseif($key === 'edit')
@@ -53,11 +54,11 @@
                     @forelse(($trademarks ?? collect()) as $trademark)
                     <tr>
                         @foreach($columns as $key => $column)
-                        <td data-column="{{ $key }}">
+                        <td data-column="{{ $key }}" @if(!in_array($key, $visibleColumns, true)) hidden @endif>
                             @if($key === 'select')
                                 <input class="form-check-input js-select-trademark" type="checkbox" value="{{ $trademark->id }}" aria-label="Select trademark {{ $trademark->our_ref }}">
                             @elseif($key === 'edit')
-                                <a href="{{ route('edit.trademarks', $trademark->id) }}" class="tm-pencil-link" title="Edit trademark" aria-label="Edit trademark {{ $trademark->our_ref }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="m16 3 5 5-10 10-5 1 1-5Z"/><path d="m13 6 5 5"/></svg></a>
+                                <a href="{{ route('edit.trademarks', $trademark->id) }}" class="tm-pencil-link" title="Edit" aria-label="Edit trademark {{ $trademark->our_ref }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4.5H6a2.5 2.5 0 0 0-2.5 2.5v11a2.5 2.5 0 0 0 2.5 2.5h11a2.5 2.5 0 0 0 2.5-2.5V12"/><path d="m14.5 5.5 4 4M10.5 17l-4 .75.75-4L17 4a2.12 2.12 0 0 1 3 3L10.5 17Z"/></svg></a>
                             @else
                                 @php
                                     $value = \App\Support\ResultsColumns::value($trademark, $key);

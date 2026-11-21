@@ -5,7 +5,7 @@
     $isFileEdit = Route::is('edit.trademarks');
     $signedUser = Auth::user();
 @endphp
-<nav aria-label="Main navigation" class="legal-navbar legal-topbar legal-topbar-global" id="navbarBlur">
+<nav aria-label="Main navigation" class="legal-navbar legal-topbar legal-topbar-global {{ Route::is('index.trademarks', 'advance_search') && config('kept.search_frosted_header') ? 'legal-search-frosted' : '' }}" id="navbarBlur">
     <div class="legal-topbar-left">
         <button type="button" class="legal-menu-toggle" id="legalMobileSidebarToggle" data-sidebar-toggle aria-label="Toggle sidebar" aria-controls="sidenav-main" aria-expanded="true"><i class="bi bi-list" aria-hidden="true"></i></button>
         <nav aria-label="Breadcrumb"><ol class="legal-breadcrumb">

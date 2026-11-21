@@ -1,0 +1,1 @@
+<div class="owner-common-field owner-country"><label for="country">Country</label><select id="country" name="country" class="form-control js-owner-country">@include('shared.country-options', ['currentCountry' => old('country', $owner->country ?? ''), 'offices' => false])</select></div>

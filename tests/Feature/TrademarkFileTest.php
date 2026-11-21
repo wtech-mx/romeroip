@@ -28,7 +28,7 @@ class TrademarkFileTest extends TestCase
             'holder' => ['company_name'],
             'contact_clients' => ['id_client', 'name', 'email'],
             'adress_clients' => ['id_clients', 'address', 'billing_address'],
-            'address_holder' => ['id_holder', 'address', 'commercial_address'],
+            'address_holder' => ['id_holder', 'address', 'commercial_address', 'removed_at'],
             'configuracion' => ['nombre_sistema', 'logo', 'favicon'],
         ] as $name => $fields) {
             Schema::create($name, function (Blueprint $table) use ($fields) {
@@ -49,6 +49,7 @@ class TrademarkFileTest extends TestCase
         Schema::create('users', function (Blueprint $table) { $table->id(); $table->string('name'); $table->string('email'); $table->timestamps(); });
         $migration = require database_path('migrations/2026_11_17_000001_extend_owners_and_profile.php');
         $migration->up();
+        Schema::table('holder', fn (Blueprint $table) => $table->string('telephone_secondary', 60)->nullable());
     }
 
     public function test_owner_company_and_individual_share_name_and_preserve_addresses_and_trademarks(): void
@@ -92,7 +93,7 @@ class TrademarkFileTest extends TestCase
         $this->assertSame(1, $doc->query('//input[@name="company_name"]')->length);
         $this->assertSame(250, $doc->query('//select[@id="country"]/option')->length);
         $this->assertSame(3, $doc->query('//section[contains(@class,"owner-section")]')->length);
-        $this->assertSame(4, $doc->query('//*[contains(@class,"owner-contact-grid")]//input')->length);
+        $this->assertSame(4, $doc->query('//*[contains(@class,"owner-contact-grid")]//input[not(@disabled)]')->length);
         $this->assertSame(0, $doc->query('//input[@name="first_name" or @name="last_name"]')->length);
         $this->get(route('edit.holder', $owner->id))->assertOk()->assertSee('value="MEXICO" data-country-code="MX" selected', false);
         $created = $this->get(route('create.trademarks'))->assertOk();
@@ -120,6 +121,81 @@ class TrademarkFileTest extends TestCase
         $html = $this->get(route('index.trademarks'))->assertOk()->getContent();
         $this->assertStringNotContainsString('Example Position', $html);
         $this->patchJson(route('account.profile.update'), ['name' => 'A', 'email' => 'bad-email', 'job_title' => str_repeat('x', 256)])->assertUnprocessable()->assertJsonValidationErrors(['email','job_title']);
+    }
+
+    public function test_new_optional_columns_preserve_existing_preferences_and_export_only_when_enabled(): void
+    {
+        $oldKeys = array_values(array_diff(array_keys(\App\Support\ResultsColumns::definitions()), ['application_date', 'int_registration_no']));
+        $saved = ['order' => $oldKeys, 'visible' => ['select','edit','our_ref','trademark','owner'], 'widths' => ['trademark' => 319, 'owner' => 287]];
+        $normalized = \App\Support\ResultsColumns::normalize($saved);
+        $this->assertSame($oldKeys, array_values(array_diff($normalized['order'], ['application_date','int_registration_no'])));
+        $this->assertSame($saved['visible'], $normalized['visible']);
+        $this->assertSame(319, $normalized['widths']['trademark']);
+        $this->assertNotContains('application_date', \App\Support\ResultsColumns::normalize(null)['visible']);
+        $this->assertNotContains('int_registration_no', \App\Support\ResultsColumns::normalize(null)['visible']);
+        $record = Trademarks::create(['our_ref' => '123', 'status' => 'Pending', 'filing_date_general' => '2023-07-12', 'int_registration_no' => '001234567']);
+        $this->assertSame('Jul/12/2023', \App\Support\ResultsColumns::value($record, 'application_date'));
+        $response = $this->get(route('advance_search'))->assertOk();
+        $doc = $this->document($response->getContent());
+        $this->assertSame(2, $doc->query('//thead//th[@hidden and (@data-column="application_date" or @data-column="int_registration_no")]')->length);
+        $response->assertSee('Customize column visibility, order, and width.')->assertSee('data-columns-reset>Reset', false);
+        foreach ([false, true] as $enabled) {
+            $visible = $saved; if ($enabled) $visible['visible'] = array_merge($visible['visible'], ['application_date','int_registration_no']);
+            $this->app['auth']->user()->setAttribute('results_columns', $visible);
+            $export = $this->postJson(route('trademarks.export'), ['ids' => [$record->id], 'format' => 'csv'])->assertOk();
+            $path = $export->baseResponse->getFile()->getPathname();
+            try {
+                $file = fopen($path, 'rb'); $headers = fgetcsv($file); $row = fgetcsv($file); fclose($file);
+                $this->assertSame($enabled, in_array('Application Date', $headers, true));
+                $this->assertSame($enabled, in_array("Int'l Registration No.", $headers, true));
+                if ($enabled) { $this->assertContains('Jul/12/2023', $row); $this->assertContains('001234567', $row); }
+            } finally { @unlink($path); }
+        }
+    }
+
+    public function test_additional_address_removal_preserves_history_and_never_reuses_archived_rows(): void
+    {
+        $this->extendOwnersAndProfile();
+        $owner = \App\Models\Holder::create(['company_name' => 'Legacy owner', 'extension' => '123', 'rfc' => 'TAX123']);
+        $original = \App\Models\AddressHolder::create(['id_holder' => $owner->id, 'address' => 'Original address']);
+        $additional = \App\Models\AddressHolder::create(['id_holder' => $owner->id, 'address' => 'Historical address', 'commercial_address' => 'Historical commercial']);
+        $record = new Trademarks(); $record->forceFill(['trademark' => 'History', 'id_holder' => $owner->id, 'address_holder' => $additional->id])->save();
+        $response = $this->patch(route('update.holder', $owner->id), ['owner_type' => 'Company', 'company_name' => 'Legacy owner',
+            'telephone_secondary' => '555-222', 'removed_address_ids' => [$additional->id], 'address_ids' => [$original->id, null],
+            'address' => ['Original address', 'Brand new address'], 'commercial_address' => [null,'Brand new commercial']])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('holder', ['id' => $owner->id, 'telephone_secondary' => '555-222', 'extension' => '123', 'rfc' => 'TAX123']);
+        $this->assertNotNull($additional->fresh()->removed_at);
+        $this->assertSame('Historical address', $additional->fresh()->address);
+        $this->assertDatabaseCount('address_holder', 3);
+        $this->assertDatabaseHas('trademark', ['id' => $record->id, 'address_holder' => $additional->id]);
+        $this->get(route('show.trademarks', $record->id))->assertOk()->assertSee('Historical address');
+        $edit = $this->get(route('edit.holder', $owner->id))->assertOk();
+        $edit->assertDontSee('Historical address')->assertSee('Brand new address')->assertSee('Tax No.');
+        $doc = $this->document($edit->getContent());
+        $this->assertSame(1, $doc->query('//*[@data-owner-addresses]//button[@data-owner-remove-address]')->length);
+        $this->assertSame(['Owner Information','Contact Information','Address Information'], $this->texts($doc->query('//section[contains(@class,"owner-section")]/h2')));
+        $this->patchJson(route('update.holder', $owner->id), ['company_name' => 'Should roll back', 'removed_address_ids' => [$original->id]])->assertUnprocessable();
+        $this->assertDatabaseHas('holder', ['id' => $owner->id, 'company_name' => 'Legacy owner']);
+        $other = \App\Models\Holder::create(['company_name' => 'Other']);
+        $foreign = \App\Models\AddressHolder::create(['id_holder' => $other->id, 'address' => 'Other owner']);
+        $this->patchJson(route('update.holder', $owner->id), ['company_name' => 'Should roll back', 'removed_address_ids' => [$foreign->id]])->assertNotFound();
+        $this->assertNull($foreign->fresh()->removed_at);
+    }
+
+    public function test_search_frosted_header_trial_is_scoped_and_can_be_disabled(): void
+    {
+        Trademarks::create(['trademark' => 'Scope Test']);
+        foreach (['index.trademarks','advance_search'] as $route) {
+            $doc = $this->document($this->get(route($route))->assertOk()->getContent());
+            $this->assertSame(1, $doc->query('//nav[contains(@class,"legal-search-frosted")]')->length);
+        }
+        foreach (['create.trademarks','create.holder','account.profile'] as $route) {
+            $doc = $this->document($this->get(route($route))->assertOk()->getContent());
+            $this->assertSame(0, $doc->query('//nav[contains(@class,"legal-search-frosted")]')->length);
+        }
+        $this->get(route('show.trademarks', 1))->assertOk()->assertDontSee('legal-search-frosted');
+        config(['kept.search_frosted_header' => false]);
+        $this->get(route('index.trademarks'))->assertOk()->assertDontSee('legal-search-frosted');
     }
 
     public function test_search_queries_all_number_fields_and_combines_primary_and_advanced_filters(): void
@@ -709,7 +785,7 @@ class TrademarkFileTest extends TestCase
         $doc = $this->document($response->getContent());
         $this->assertSame(2, $doc->query('//*[@data-results-pagination]')->length);
         $this->assertSame(2, $doc->query('//*[@data-results-page-size]/option[@selected and @value="50"]')->length);
-        $this->assertSame(20, $doc->query('//table[@id="products-list"]/thead/tr/th')->length);
+        $this->assertSame(22, $doc->query('//table[@id="products-list"]/thead/tr/th')->length);
         $this->assertSame('Results', trim($doc->query('//*[contains(@class,"tm-results-panel")]//h5')->item(0)->textContent));
         $this->assertSame(2, $doc->query('//*[@data-results-page and normalize-space(.)="Last"]')->length);
         $response = $this->get(route('advance_search', ['status' => 'Live', 'page' => 3]))->assertOk();

@@ -6,22 +6,27 @@
     const definitions = config.definitions;
     const keys = Object.keys(definitions);
     let preferences = config.preferences;
-    let saveTimer, dragKey, saving = false, pendingSave = false;
+    let saveTimer, statusTimer, dragKey, revision = 0, saving = false, pendingSave = false;
     const fixed = keys.slice(0, 4);
-    const defaults = () => ({ order: [...keys], visible: [...keys], widths: Object.fromEntries(keys.map(key => [key, definitions[key].width])) });
-    function status(text) { document.querySelectorAll('[data-preferences-status]').forEach(node => { node.textContent = text; }); }
+    const defaults = () => ({ order: [...keys], visible: keys.filter(key => definitions[key].defaultVisible !== false), widths: Object.fromEntries(keys.map(key => [key, definitions[key].width])) });
+    function status(text = '') { clearTimeout(statusTimer); document.querySelectorAll('[data-preferences-status]').forEach(node => { node.textContent = text; node.hidden = !text; }); }
+    function markChanged() { revision++; status(); }
     async function save() {
         if (saving) { pendingSave = true; return; }
         saving = true;
-        status('Saving…');
+        const savingRevision = revision;
+        status();
         try {
             const response = await fetch(config.url, { method: 'PATCH', headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-TOKEN': config.token }, body: JSON.stringify(preferences), keepalive: true });
             if (!response.ok) throw new Error('Unable to save preferences');
-            status('Preferences saved.');
+            if (savingRevision === revision && !pendingSave) {
+                status('Column preferences saved.');
+                statusTimer = setTimeout(() => status(), 3000);
+            }
         } catch (error) { status('Unable to save preferences. Change a setting to retry.'); }
         finally { saving = false; if (pendingSave) { pendingSave = false; save(); } }
     }
-    function changed() { apply(); clearTimeout(saveTimer); saveTimer = undefined; save(); }
+    function changed() { markChanged(); apply(); clearTimeout(saveTimer); saveTimer = undefined; save(); }
     function apply(render = true) {
         const table = document.getElementById('products-list');
         if (table) {
@@ -60,7 +65,7 @@
                 check.addEventListener('change', () => { preferences.visible = check.checked ? [...preferences.visible, key] : preferences.visible.filter(item => item !== key); changed(); });
                 label.append(check, document.createTextNode(definitions[key].label || 'Selection'));
                 const width = document.createElement('input'); width.type = 'number'; width.min = key === 'select' ? 36 : 48; width.max = 800; width.value = preferences.widths[key]; width.setAttribute('aria-label', 'Width of ' + (definitions[key].label || 'selection'));
-                width.addEventListener('input', () => { if (width.checkValidity()) { preferences.widths[key] = Number(width.value); apply(false); clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveTimer = undefined; save(); }, 400); } });
+                width.addEventListener('input', () => { if (width.checkValidity()) { preferences.widths[key] = Number(width.value); markChanged(); apply(false); clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveTimer = undefined; save(); }, 400); } });
                 row.append(label, width);
                 [-1, 1].forEach(delta => {
                     const button = document.createElement('button'); button.type = 'button'; button.textContent = delta < 0 ? '↑' : '↓'; button.setAttribute('aria-label', 'Move ' + definitions[key].label + (delta < 0 ? ' left' : ' right'));
@@ -91,7 +96,7 @@
         preferences.order.splice(targetIndex, 0, key); changed();
     });
     document.addEventListener('dragend', () => { dragKey = null; });
-    function setWidth(key, width) { preferences.widths[key] = Math.max(key === 'select' ? 36 : 48, Math.min(800, Math.round(width))); apply(); }
+    function setWidth(key, width) { markChanged(); preferences.widths[key] = Math.max(key === 'select' ? 36 : 48, Math.min(800, Math.round(width))); apply(); }
     document.addEventListener('pointerdown', event => {
         const handle = event.target.closest('.tm-column-resize'); if (!handle) return;
         event.preventDefault(); event.stopPropagation();

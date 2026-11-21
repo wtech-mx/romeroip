@@ -12,6 +12,7 @@ class ResultsColumns
             'trademark' => ['label' => 'Trademark', 'width' => 220, 'fixed' => true],
             'class' => ['label' => 'Class', 'width' => 80, 'type' => 'number'],
             'application_no' => ['label' => 'Application No.', 'width' => 140, 'type' => 'number'],
+            'application_date' => ['label' => 'Application Date', 'width' => 145, 'type' => 'date', 'field' => 'filing_date_general', 'defaultVisible' => false],
             'registration_no' => ['label' => 'Registration No.', 'width' => 140, 'type' => 'number'],
             'registration_date' => ['label' => 'Registration Date', 'width' => 145, 'type' => 'date'],
             'last_declaration' => ['label' => 'Declaration of Use', 'width' => 150, 'type' => 'date', 'field' => 'next_declaration'],
@@ -25,6 +26,7 @@ class ResultsColumns
             'client_ref' => ['label' => 'Client Ref.', 'width' => 140, 'type' => 'number'],
             'origin' => ['label' => 'Department', 'width' => 140],
             'country' => ['label' => 'Country / Office', 'width' => 190],
+            'int_registration_no' => ['label' => "Int'l Registration No.", 'width' => 160, 'type' => 'number', 'defaultVisible' => false],
             'status' => ['label' => 'Status', 'width' => 120],
         ];
         if (app()->getLocale() === 'es') {
@@ -61,13 +63,14 @@ class ResultsColumns
         $fixed = array_slice(array_keys($definitions), 0, 4);
         $order = array_values(array_unique(array_merge($fixed, array_filter($saved['order'] ?? [], fn ($key) => isset($definitions[$key]) && !in_array($key, $fixed)), array_keys($definitions))));
         // Insert new columns beside their related field without disturbing a saved order.
-        foreach (['previous_declaration' => 'last_renewal', 'previous_renewal' => 'previous_declaration', 'owner_address' => 'owner', 'client_address' => 'client', 'country' => 'origin'] as $key => $anchor) {
+        foreach (['application_date' => 'application_no', 'int_registration_no' => 'country', 'previous_declaration' => 'last_renewal', 'previous_renewal' => 'previous_declaration', 'owner_address' => 'owner', 'client_address' => 'client', 'country' => 'origin'] as $key => $anchor) {
             if ($saved && !in_array($key, $saved['order'] ?? [], true)) {
                 $order = array_values(array_diff($order, [$key]));
                 array_splice($order, array_search($anchor, $order, true) + 1, 0, [$key]);
             }
         }
-        $visible = array_values(array_unique(array_merge($fixed, array_values(array_intersect($saved['visible'] ?? array_keys($definitions), array_keys($definitions))))));
+        $defaultVisible = array_keys(array_filter($definitions, fn ($column) => ($column['defaultVisible'] ?? true)));
+        $visible = array_values(array_unique(array_merge($fixed, array_values(array_intersect($saved['visible'] ?? $defaultVisible, array_keys($definitions))))));
         $widths = [];
         foreach ($definitions as $key => $column) $widths[$key] = max($key === 'select' ? 36 : 48, min(800, (int) ($saved['widths'][$key] ?? $column['width'])));
         return compact('order', 'visible', 'widths');

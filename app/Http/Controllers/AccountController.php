@@ -48,10 +48,11 @@ class AccountController extends Controller
 
     public function results(Request $request)
     {
+        $max = count(\App\Support\ResultsColumns::definitions());
         $data = $request->validate([
-            'order' => 'required|array|max:20', 'order.*' => 'required|string|distinct',
-            'visible' => 'present|array|max:20', 'visible.*' => 'required|string|distinct',
-            'widths' => 'required|array|max:20', 'widths.*' => 'integer|min:36|max:800',
+            'order' => 'required|array|max:'.$max, 'order.*' => 'required|string|distinct',
+            'visible' => 'present|array|max:'.$max, 'visible.*' => 'required|string|distinct',
+            'widths' => 'required|array|max:'.$max, 'widths.*' => 'integer|min:36|max:800',
         ]);
         $preferences = \App\Support\ResultsColumns::normalize($data);
         $request->user()->setAttribute('results_columns', $preferences);
